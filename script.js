@@ -204,8 +204,8 @@ function renderPortfolioGrid(container, items, activeFilter) {
 
 function initPortfolioGrid(gridSelector, filterRowSelector, limit) {
   const grid = qs(gridSelector);
-  if (!grid) return;
-  fetchJSON("portfolio.json")
+  if (!grid) return Promise.resolve();
+  return fetchJSON("portfolio.json")
     .then((data) => {
       DS.portfolio = data;
       const items = limit ? data.slice(0, limit) : data;
@@ -316,8 +316,8 @@ function renderBlogGrid(container, items, activeFilter) {
 
 function initBlogGrid(gridSelector, filterRowSelector, limit) {
   const grid = qs(gridSelector);
-  if (!grid) return;
-  fetchJSON("posts.json")
+  if (!grid) return Promise.resolve();
+  return fetchJSON("posts.json")
     .then((data) => {
       DS.posts = data;
       const sorted = data.slice().sort((a, b) => (a.date < b.date ? 1 : -1));
@@ -420,6 +420,18 @@ function showQuoteSuccess() {
   const success = qs("#quoteSuccess");
   if (form) form.style.display = "none";
   if (success) success.style.display = "block";
+}
+
+/* ---------- hash scrolling ---------- */
+
+function scrollToHash() {
+  if (!window.location.hash) return;
+  const target = qs(window.location.hash);
+  if (!target) return;
+  const prevBehavior = document.documentElement.style.scrollBehavior;
+  document.documentElement.style.scrollBehavior = "auto";
+  target.scrollIntoView({ block: "start" });
+  document.documentElement.style.scrollBehavior = prevBehavior;
 }
 
 /* ---------- boot ---------- */

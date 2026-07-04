@@ -228,8 +228,11 @@
 
   <script src="script.js"></script>
   <script>
-    initPortfolioGrid('#homePortfolioGrid', null, 6);
-    initBlogGrid('#homeBlogGrid', null, 3);
+    Promise.all([
+      initPortfolioGrid('#homePortfolioGrid', null, 6),
+      initBlogGrid('#homeBlogGrid', null, 3),
+      document.fonts ? document.fonts.ready : Promise.resolve()
+    ]).then(scrollToHash);
   </script>
 </body>
 </html>
