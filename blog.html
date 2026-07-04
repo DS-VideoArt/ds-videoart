@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בלוג AI | AI Blog — DS VideoArt</title>
+  <meta name="description" content="עדכונים, חדשות וטיפים מעולם הבינה המלאכותית ויצירת הווידאו. Updates, news, and tips from the world of AI and video generation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">🎬</span>
+        <span>DS VideoArt</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" data-he="בית" data-en="Home">בית</a>
+        <a href="portfolio.html" data-he="תיק עבודות" data-en="Portfolio">תיק עבודות</a>
+        <a href="blog.html" class="active" data-he="בלוג AI" data-en="AI Blog">בלוג AI</a>
+        <a href="index.html#contact" data-he="צור קשר" data-en="Contact">צור קשר</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch">
+          <button class="lang-btn" data-lang="he">עב</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button class="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu">
+    <a href="index.html" data-he="בית" data-en="Home">בית</a>
+    <a href="portfolio.html" data-he="תיק עבודות" data-en="Portfolio">תיק עבודות</a>
+    <a href="blog.html" data-he="בלוג AI" data-en="AI Blog">בלוג AI</a>
+    <a href="index.html#contact" data-he="צור קשר" data-en="Contact">צור קשר</a>
+  </div>
+
+  <div class="container page-header">
+    <span class="eyebrow" data-he="בלוג AI" data-en="AI Blog">בלוג AI</span>
+    <h1 class="section-title gradient-text" data-he="עולם הבינה המלאכותית" data-en="The World of AI">עולם הבינה המלאכותית</h1>
+    <p class="section-subtitle" style="margin-inline:auto" data-he="חדשות, כלים, מדריכים ותובנות מעולם יצירת הווידאו ב-AI." data-en="News, tools, guides, and insights from the world of AI video creation.">חדשות, כלים, מדריכים ותובנות מעולם יצירת הווידאו ב-AI.</p>
+  </div>
+
+  <section style="padding-top:0">
+    <div class="container">
+      <div class="filter-row" id="blogFilters">
+        <button class="filter-pill active" data-filter="all" data-he="הכל" data-en="All">הכל</button>
+        <button class="filter-pill" data-filter="news" data-he="חדשות" data-en="News">חדשות</button>
+        <button class="filter-pill" data-filter="guides" data-he="מדריכים" data-en="Guides">מדריכים</button>
+        <button class="filter-pill" data-filter="insights" data-he="תובנות" data-en="Insights">תובנות</button>
+      </div>
+      <div class="card-grid" id="blogGrid"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo">
+            <span class="logo-mark">🎬</span>
+            <span>DS VideoArt</span>
+          </div>
+          <p data-he="סטודיו וידאו מבוסס בינה מלאכותית — פרסומות, תוכן יצירתי, ועדכונים מעולם ה-AI." data-en="An AI-powered video studio — ads, creative content, and updates from the world of AI.">סטודיו וידאו מבוסס בינה מלאכותית — פרסומות, תוכן יצירתי, ועדכונים מעולם ה-AI.</p>
+        </div>
+        <div class="footer-col">
+          <h4 data-he="ניווט" data-en="Navigation">ניווט</h4>
+          <a href="index.html" data-he="בית" data-en="Home">בית</a>
+          <a href="portfolio.html" data-he="תיק עבודות" data-en="Portfolio">תיק עבודות</a>
+          <a href="blog.html" data-he="בלוג AI" data-en="AI Blog">בלוג AI</a>
+          <a href="index.html#contact" data-he="צור קשר" data-en="Contact">צור קשר</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-he="משפטי" data-en="Legal">משפטי</h4>
+          <a href="privacy.html" data-he="פרטיות" data-en="Privacy">פרטיות</a>
+          <a href="terms.html" data-he="תנאי שימוש" data-en="Terms">תנאי שימוש</a>
+          <a href="accessibility.html" data-he="נגישות" data-en="Accessibility">נגישות</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 DS VideoArt</span>
+        <div class="social-row">
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶️</a>
+          <a href="#" aria-label="TikTok">🎵</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    initBlogGrid('#blogGrid', '#blogFilters');
+  </script>
+</body>
+</html>
