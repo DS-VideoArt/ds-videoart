@@ -129,11 +129,11 @@ function initReveals(root) {
 
 function initCountdownIntro() {
   const overlay = qs("#countdownIntro");
-  if (!overlay) return;
+  if (!overlay) return false;
 
   if (sessionStorage.getItem("ds_intro_played") || prefersReducedMotion || typeof gsap === "undefined") {
     overlay.remove();
-    return;
+    return false;
   }
   sessionStorage.setItem("ds_intro_played", "1");
 
@@ -153,6 +153,30 @@ function initCountdownIntro() {
       .to(numberEl, { opacity: 0, duration: 0.18 }, "+=0.32");
   });
   tl.to(overlay, { opacity: 0, duration: 0.4, ease: "power1.out" });
+  return true;
+}
+
+/* ---------- kinetic hero headline ---------- */
+
+function kineticHeroReveal(introIsPlaying) {
+  const h1 = qs(".hero h1");
+  if (!h1 || typeof gsap === "undefined" || prefersReducedMotion) return;
+  const text = h1.textContent;
+  const words = text.split(" ").filter(Boolean);
+  h1.innerHTML = words
+    .map((w) => `<span style="display:inline-block;will-change:transform">${escHtml(w)}</span>`)
+    .join(" ");
+  const spans = qsa("span", h1);
+  gsap.set(spans, { opacity: 0, y: 28, rotate: 3 });
+  gsap.to(spans, {
+    opacity: 1,
+    y: 0,
+    rotate: 0,
+    duration: 0.75,
+    stagger: 0.06,
+    ease: "power3.out",
+    delay: introIsPlaying ? 1.5 : 0.15,
+  });
 }
 
 /* ---------- film-strip portfolio rendering ---------- */
@@ -188,47 +212,115 @@ function frameHtml(item, lang) {
     </article>`;
 }
 
-function renderFilmstrip(viewport, items, activeFilter) {
+let filmstripMarquee = null;
+
+function stopMarquee() {
+  if (filmstripMarquee) {
+    filmstripMarquee.kill();
+    filmstripMarquee = null;
+  }
+}
+
+function startMarquee(viewport, track) {
+  stopMarquee();
+  if (prefersReducedMotion || typeof gsap === "undefined") return;
+  const setWidth = track.scrollWidth / 2;
+  if (!setWidth) return;
+  const dir = document.documentElement.dir === "rtl" ? 1 : -1;
+  gsap.set(track, { x: 0 });
+  filmstripMarquee = gsap.to(track, {
+    x: dir * -setWidth,
+    duration: setWidth / 40,
+    ease: "none",
+    repeat: -1,
+    modifiers: {
+      x: (x) => `${parseFloat(x) % setWidth}px`,
+    },
+  });
+  viewport.addEventListener("pointerenter", () => filmstripMarquee && filmstripMarquee.pause());
+  viewport.addEventListener("pointerleave", () => filmstripMarquee && filmstripMarquee.resume());
+}
+
+function initDragScroll(viewport) {
+  let isDown = false;
+  let startX = 0;
+  let startScroll = 0;
+  viewport.addEventListener("pointerdown", (e) => {
+    isDown = true;
+    viewport.classList.add("dragging");
+    startX = e.clientX;
+    startScroll = viewport.scrollLeft;
+  });
+  window.addEventListener("pointermove", (e) => {
+    if (!isDown) return;
+    viewport.scrollLeft = startScroll - (e.clientX - startX);
+  });
+  window.addEventListener("pointerup", () => {
+    isDown = false;
+    viewport.classList.remove("dragging");
+  });
+}
+
+function initArrows(wrap, viewport) {
+  if (!wrap) return;
+  const prev = qs(".filmstrip-prev", wrap);
+  const next = qs(".filmstrip-next", wrap);
+  if (prev) prev.addEventListener("click", () => viewport.scrollBy({ left: -viewport.clientWidth * 0.85, behavior: "smooth" }));
+  if (next) next.addEventListener("click", () => viewport.scrollBy({ left: viewport.clientWidth * 0.85, behavior: "smooth" }));
+}
+
+function renderFilmstrip(viewport, items, activeFilter, autoplay) {
   const lang = getLang();
   const filtered =
     !activeFilter || activeFilter === "all"
       ? items
       : items.filter((i) => i.category === activeFilter);
   const track = qs(".filmstrip-track", viewport) || viewport;
+  stopMarquee();
   if (filtered.length === 0) {
     track.innerHTML = `<div class="empty-state" data-he="אין עדיין עבודות בקטגוריה הזו." data-en="No works in this category yet."></div>`;
     applyStaticLang(lang);
     return;
   }
-  track.innerHTML = filtered.map((item) => frameHtml(item, lang)).join("");
+  const html = filtered.map((item) => frameHtml(item, lang)).join("");
+  track.innerHTML = autoplay ? html + html : html;
   qsa(".frame", track).forEach((card) => {
     const url = card.dataset.video;
     if (url) qs(".frame-media", card).addEventListener("click", () => openLightbox(url));
   });
   initReveals(track);
+  if (autoplay) {
+    requestAnimationFrame(() => startMarquee(viewport, track));
+  }
 }
 
-function initFilmstrip(viewportSelector, filterRowSelector, limit) {
+function initFilmstrip(viewportSelector, filterRowSelector, limit, options) {
+  const autoplay = !!(options && options.autoplay);
   const viewport = qs(viewportSelector);
   if (!viewport) return Promise.resolve();
+  const wrap = viewport.closest(".filmstrip-wrap");
+  if (!autoplay) {
+    initDragScroll(viewport);
+    initArrows(wrap, viewport);
+  }
   return fetchJSON("portfolio.json")
     .then((data) => {
       DS.portfolio = data;
       const items = limit ? data.slice(0, limit) : data;
-      renderFilmstrip(viewport, items, "all");
+      renderFilmstrip(viewport, items, "all", autoplay);
       const filterRow = filterRowSelector ? qs(filterRowSelector) : null;
       if (filterRow) {
         qsa(".filter-pill", filterRow).forEach((btn) => {
           btn.addEventListener("click", () => {
             qsa(".filter-pill", filterRow).forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
-            renderFilmstrip(viewport, data, btn.dataset.filter);
+            renderFilmstrip(viewport, data, btn.dataset.filter, autoplay);
           });
         });
       }
       document.addEventListener("langchange", () => {
         const active = filterRow ? qs(".filter-pill.active", filterRow) : null;
-        renderFilmstrip(viewport, limit ? data.slice(0, limit) : data, active ? active.dataset.filter : "all");
+        renderFilmstrip(viewport, limit ? data.slice(0, limit) : data, active ? active.dataset.filter : "all", autoplay);
       });
     })
     .catch((err) => {
@@ -448,7 +540,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   initLang();
   initNav();
-  initCountdownIntro();
+  const introIsPlaying = initCountdownIntro();
+  kineticHeroReveal(introIsPlaying);
   initReveals();
   initQuoteForm();
   initPostPage();

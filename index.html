@@ -92,8 +92,10 @@
         <h2 class="section-title" data-he="עבודות נבחרות" data-en="Selected work">עבודות נבחרות</h2>
         <p class="section-subtitle" style="margin-inline:auto" data-he="מבחר מהעבודות שיצרנו. פרסומות, תוכן יצירתי ועוד. חלק מהדוגמאות כאן הן demo עד שיעלו עבודות לקוח אמיתיות." data-en="A selection of what we've created. Ads, creative content, and more. Some examples here are demos until real client work is added.">מבחר מהעבודות שיצרנו. פרסומות, תוכן יצירתי ועוד. חלק מהדוגמאות כאן הן demo עד שיעלו עבודות לקוח אמיתיות.</p>
       </div>
-      <div class="filmstrip-viewport" id="homePortfolioStrip">
-        <div class="filmstrip-track"></div>
+      <div class="filmstrip-wrap">
+        <div class="filmstrip-viewport autoplay" id="homePortfolioStrip">
+          <div class="filmstrip-track"></div>
+        </div>
       </div>
       <div style="text-align:center; margin-top:40px;">
         <a href="portfolio.html" class="btn btn-outline" data-he="לכל העבודות" data-en="View all work">לכל העבודות</a>
@@ -205,7 +207,7 @@
   <script src="script.js"></script>
   <script>
     Promise.all([
-      initFilmstrip('#homePortfolioStrip', null, 6),
+      initFilmstrip('#homePortfolioStrip', null, 6, { autoplay: true }),
       initBlogGrid('#homeBlogGrid', null, 3),
       document.fonts ? document.fonts.ready : Promise.resolve()
     ]).then(scrollToHash);
