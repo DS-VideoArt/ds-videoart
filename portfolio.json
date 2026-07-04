@@ -1,18 +1,18 @@
 [
   {
     "id": 1,
-    "title_he": "פרסומת AI לרשת אופנה",
-    "title_en": "AI Fashion Brand Ad",
-    "desc_he": "סרטון פרסומת קצר שנוצר כולו בבינה מלאכותית עבור קמפיין עונתי של מותג אופנה.",
-    "desc_en": "A short ad film generated entirely with AI for a seasonal fashion brand campaign.",
+    "title_he": "פרסומת AI ללוסו אספרסו",
+    "title_en": "AI Ad for Luso Espresso",
+    "desc_he": "סרטון פרסומת שנוצר כולו בבינה מלאכותית עבור מותג הקפה לוסו אספרסו.",
+    "desc_en": "An ad film generated entirely with AI for the Luso Espresso coffee brand.",
     "category": "ads",
     "category_he": "פרסומות",
     "category_en": "Ads",
     "thumbnail": "",
-    "videoUrl": "",
-    "date": "2026-06",
+    "videoUrl": "videos/luso-espresso.mp4",
+    "date": "2026-05",
     "featured": true,
-    "isPlaceholder": true
+    "isPlaceholder": false
   },
   {
     "id": 2,
@@ -31,33 +31,33 @@
   },
   {
     "id": 3,
-    "title_he": "פרסומת AI להשקת מוצר טק",
-    "title_en": "AI Tech Product Launch Ad",
-    "desc_he": "סרטון השקה קצר ודינמי למוצר טכנולוגי חדש, מותאם לרשתות חברתיות.",
-    "desc_en": "A short, dynamic launch video for a new tech product, tailored for social platforms.",
+    "title_he": "פרסומת AI למרצדס GLE",
+    "title_en": "AI Ad for Mercedes GLE",
+    "desc_he": "סרטון פרסומת דינמי שנוצר בבינה מלאכותית עבור דגם המרצדס GLE.",
+    "desc_en": "A dynamic ad film generated with AI for the Mercedes GLE model.",
     "category": "product",
     "category_he": "מוצר",
     "category_en": "Product",
     "thumbnail": "",
-    "videoUrl": "",
-    "date": "2026-05",
+    "videoUrl": "videos/mercedes-gle.mp4",
+    "date": "2026-06",
     "featured": true,
-    "isPlaceholder": true
+    "isPlaceholder": false
   },
   {
     "id": 4,
-    "title_he": "סרטון הדגמה למסעדה",
-    "title_en": "Restaurant Showcase Video",
-    "desc_he": "סרטון אווירה קצר שמציג מנה חתימה של מסעדה מקומית, כולו בבינה מלאכותית.",
-    "desc_en": "A short mood video showcasing a local restaurant's signature dish, fully AI-generated.",
+    "title_he": "פרסומת AI לפורשה",
+    "title_en": "AI Ad for Porsche",
+    "desc_he": "סרטון פרסומת שנוצר כולו בבינה מלאכותית עבור מותג פורשה.",
+    "desc_en": "An ad film generated entirely with AI for the Porsche brand.",
     "category": "ads",
     "category_he": "פרסומות",
     "category_en": "Ads",
     "thumbnail": "",
-    "videoUrl": "",
-    "date": "2026-04",
+    "videoUrl": "videos/porsche.mp4",
+    "date": "2026-06",
     "featured": false,
-    "isPlaceholder": true
+    "isPlaceholder": false
   },
   {
     "id": 5,

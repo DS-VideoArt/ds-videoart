@@ -1,0 +1,5 @@
+# Local Netlify folder
+.netlify
+
+# Large video files — deployed to Netlify directly, not tracked in git (GitHub blocks files over 100MB)
+videos/

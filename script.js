@@ -233,6 +233,10 @@ function initPortfolioGrid(gridSelector, filterRowSelector, limit) {
 
 /* ---------- lightbox for video embeds ---------- */
 
+function isLocalVideoFile(url) {
+  return /\.(mp4|webm|mov)(\?.*)?$/i.test(url);
+}
+
 function openLightbox(url) {
   let overlay = qs("#dsLightbox");
   if (!overlay) {
@@ -250,7 +254,12 @@ function openLightbox(url) {
     });
     qs("#dsLightboxClose", overlay).addEventListener("click", closeLightbox);
   }
-  qs("#dsLightboxFrame", overlay).innerHTML = `<iframe src="${escHtml(url)}" style="width:100%;height:100%;border:0;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+  const frame = qs("#dsLightboxFrame", overlay);
+  if (isLocalVideoFile(url)) {
+    frame.innerHTML = `<video src="${escHtml(url)}" style="width:100%;height:100%;object-fit:contain;" controls autoplay playsinline></video>`;
+  } else {
+    frame.innerHTML = `<iframe src="${escHtml(url)}" style="width:100%;height:100%;border:0;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+  }
   overlay.style.display = "flex";
 }
 
