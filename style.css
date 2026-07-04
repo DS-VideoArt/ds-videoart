@@ -1,7 +1,7 @@
 /* ============================================================
-   DS VideoArt — Design System
-   "Screening Room": a dark editing-bay palette built around
-   one tally-light red, 35mm grain, and extreme type contrast.
+   DS VideoArt: Design System
+   "Screening Room": a dark editing-bay base lit by warm film
+   light-leaks (amber, magenta, teal) and extreme type contrast.
    No build tooling. Plain CSS, animated by GSAP (see script.js).
    ============================================================ */
 
@@ -18,6 +18,11 @@
   --text-faint: rgba(242, 241, 238, 0.4);
   --border: rgba(242, 241, 238, 0.1);
   --border-strong: rgba(242, 241, 238, 0.2);
+
+  /* Film light-leak accents: used for category identity + ambient glows */
+  --leak-amber: #e8a23d;
+  --leak-teal: #3fb8a8;
+  --leak-magenta: #d1499a;
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -92,6 +97,64 @@ button {
   opacity: 0.05;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   Film light-leaks: warm color washes drifting behind content
+   ============================================================ */
+
+.light-leaks {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.light-leaks span {
+  position: absolute;
+  width: 55vw;
+  height: 55vw;
+  max-width: 620px;
+  max-height: 620px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.28;
+  mix-blend-mode: screen;
+  animation: leak-drift 22s ease-in-out infinite alternate;
+}
+
+.light-leaks span:nth-child(1) {
+  background: var(--leak-amber);
+  top: -10%;
+  inset-inline-start: -12%;
+}
+
+.light-leaks span:nth-child(2) {
+  background: var(--leak-magenta);
+  top: 35%;
+  inset-inline-end: -18%;
+  animation-delay: 6s;
+  animation-duration: 26s;
+}
+
+.light-leaks span:nth-child(3) {
+  background: var(--leak-teal);
+  bottom: -15%;
+  inset-inline-start: 20%;
+  animation-delay: 12s;
+  animation-duration: 30s;
+}
+
+@keyframes leak-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(6%, 8%) scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light-leaks span {
+    animation: none;
+  }
 }
 
 /* ============================================================
@@ -464,6 +527,31 @@ section {
   color: var(--accent);
   margin-bottom: 18px;
   display: block;
+  transition: color 0.2s var(--ease-out);
+}
+
+.value-card {
+  transition: background 0.25s var(--ease-out);
+}
+
+.value-card:hover {
+  background: color-mix(in srgb, var(--accent) 6%, var(--bg-card));
+}
+
+.value-card:nth-child(2):hover {
+  background: color-mix(in srgb, var(--leak-magenta) 6%, var(--bg-card));
+}
+
+.value-card:nth-child(2) .value-index {
+  color: var(--leak-magenta);
+}
+
+.value-card:nth-child(3):hover {
+  background: color-mix(in srgb, var(--leak-teal) 6%, var(--bg-card));
+}
+
+.value-card:nth-child(3) .value-index {
+  color: var(--leak-teal);
 }
 
 /* ============================================================
@@ -496,6 +584,23 @@ section {
   background: var(--accent);
   color: var(--text-primary);
   border-color: var(--accent);
+}
+
+.filter-pill[data-filter="creative"].active,
+.filter-pill[data-filter="insights"].active {
+  background: var(--leak-magenta);
+  border-color: var(--leak-magenta);
+}
+
+.filter-pill[data-filter="product"].active,
+.filter-pill[data-filter="guides"].active {
+  background: var(--leak-teal);
+  border-color: var(--leak-teal);
+}
+
+.filter-pill[data-filter="social"].active {
+  background: var(--leak-amber);
+  border-color: var(--leak-amber);
 }
 
 /* ============================================================
@@ -619,6 +724,22 @@ section {
   overflow: hidden;
 }
 
+.frame[data-category="ads"] .frame-media:not(:has(img)) {
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--accent) 35%, var(--bg-card)) 0%, var(--bg-card) 70%);
+}
+
+.frame[data-category="creative"] .frame-media:not(:has(img)) {
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--leak-magenta) 35%, var(--bg-card)) 0%, var(--bg-card) 70%);
+}
+
+.frame[data-category="product"] .frame-media:not(:has(img)) {
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--leak-teal) 35%, var(--bg-card)) 0%, var(--bg-card) 70%);
+}
+
+.frame[data-category="social"] .frame-media:not(:has(img)) {
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--leak-amber) 35%, var(--bg-card)) 0%, var(--bg-card) 70%);
+}
+
 .frame-media img {
   width: 100%;
   height: 100%;
@@ -709,6 +830,20 @@ section {
   margin-bottom: 8px;
 }
 
+.frame[data-category="creative"] .frame-cat,
+.card[data-category="insights"] .card-cat {
+  color: var(--leak-magenta);
+}
+
+.frame[data-category="product"] .frame-cat,
+.card[data-category="guides"] .card-cat {
+  color: var(--leak-teal);
+}
+
+.frame[data-category="social"] .frame-cat {
+  color: var(--leak-amber);
+}
+
 .frame-body h3 {
   font-size: 18px;
   margin-bottom: 6px;
@@ -765,6 +900,18 @@ section {
   aspect-ratio: 16/10;
   background: #101012;
   overflow: hidden;
+}
+
+.card[data-category="news"] .card-media:not(:has(img)) {
+  background: radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--accent) 30%, var(--bg-card)) 0%, var(--bg-card) 70%);
+}
+
+.card[data-category="insights"] .card-media:not(:has(img)) {
+  background: radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--leak-magenta) 30%, var(--bg-card)) 0%, var(--bg-card) 70%);
+}
+
+.card[data-category="guides"] .card-media:not(:has(img)) {
+  background: radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--leak-teal) 30%, var(--bg-card)) 0%, var(--bg-card) 70%);
 }
 
 .card-media img {
