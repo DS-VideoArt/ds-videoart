@@ -1,12 +1,15 @@
 /* ============================================================
-   DS VideoArt — shared client logic
+   DS VideoArt: shared client logic
    Plain JS, no build step. Bilingual (he/en) via data-he/data-en attrs.
+   Motion is driven by GSAP + ScrollTrigger, loaded via CDN script tags.
    ============================================================ */
 
 const DS = {
   portfolio: [],
   posts: [],
 };
+
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ---------- utilities ---------- */
 
@@ -92,141 +95,144 @@ function initNav() {
   );
 }
 
-/* ---------- scroll-in animations ---------- */
+/* ---------- GSAP scroll reveals ---------- */
 
-function initScrollAnimations() {
-  const targets = qsa(".value-card, .card");
-  if (!("IntersectionObserver" in window) || targets.length === 0) {
-    targets.forEach((t) => t.classList.add("in-view"));
+function initReveals(root) {
+  const items = qsa(".reveal:not([data-revealed])", root);
+  if (items.length === 0) return;
+  items.forEach((el) => el.setAttribute("data-revealed", "1"));
+
+  if (prefersReducedMotion || typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+    items.forEach((el) => {
+      el.style.opacity = "1";
+      el.style.transform = "none";
+    });
     return;
   }
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const delay = (Array.prototype.indexOf.call(targets, el) % 6) * 0.06;
-          el.style.transitionDelay = delay + "s";
-          el.classList.add("in-view");
-          io.unobserve(el);
-        }
-      });
-    },
-    { threshold: 0.15 }
-  );
-  targets.forEach((t) => io.observe(t));
+
+  gsap.set(items, { opacity: 0, y: 24 });
+  ScrollTrigger.batch(items, {
+    start: "top 88%",
+    once: true,
+    onEnter: (batch) =>
+      gsap.to(batch, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.08,
+        ease: "power2.out",
+      }),
+  });
 }
 
-/* ---------- animated counters ---------- */
+/* ---------- film countdown intro (index.html only) ---------- */
 
-function initCounters() {
-  const nums = qsa(".stat-number[data-target]");
-  if (nums.length === 0) return;
-  const animate = (el) => {
-    const target = parseInt(el.dataset.target, 10) || 0;
-    const duration = 1600;
-    const start = performance.now();
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(eased * target).toLocaleString();
-      if (progress < 1) requestAnimationFrame(tick);
-      else el.textContent = target.toLocaleString() + (el.dataset.suffix || "");
-    }
-    requestAnimationFrame(tick);
-  };
-  if (!("IntersectionObserver" in window)) {
-    nums.forEach(animate);
+function initCountdownIntro() {
+  const overlay = qs("#countdownIntro");
+  if (!overlay) return;
+
+  if (sessionStorage.getItem("ds_intro_played") || prefersReducedMotion || typeof gsap === "undefined") {
+    overlay.remove();
     return;
   }
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          animate(entry.target);
-          io.unobserve(entry.target);
-        }
-      });
+  sessionStorage.setItem("ds_intro_played", "1");
+
+  const numberEl = qs(".countdown-number", overlay);
+  document.body.style.overflow = "hidden";
+
+  const tl = gsap.timeline({
+    onComplete: () => {
+      overlay.remove();
+      document.body.style.overflow = "";
     },
-    { threshold: 0.4 }
-  );
-  nums.forEach((n) => io.observe(n));
+  });
+
+  [3, 2, 1].forEach((n) => {
+    tl.set(numberEl, { textContent: n, opacity: 0, scale: 1.4 })
+      .to(numberEl, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" })
+      .to(numberEl, { opacity: 0, duration: 0.18 }, "+=0.32");
+  });
+  tl.to(overlay, { opacity: 0, duration: 0.4, ease: "power1.out" });
 }
 
-/* ---------- portfolio rendering ---------- */
+/* ---------- film-strip portfolio rendering ---------- */
 
-function portfolioCardHtml(item, lang) {
+function frameHtml(item, lang) {
   const title = item["title_" + lang] || item.title_he;
   const desc = item["desc_" + lang] || item.desc_he;
   const cat = item["category_" + lang] || item.category_he;
-  const badgeHe = "דוגמה — ממתין לתוכן אמיתי";
-  const badgeEn = "Sample — awaiting real content";
+  const badgeHe = "דוגמה: ממתין לתוכן אמיתי";
+  const badgeEn = "Sample: awaiting real content";
   const badge = item.isPlaceholder
-    ? `<span class="card-badge">${escHtml(lang === "en" ? badgeEn : badgeHe)}</span>`
+    ? `<span class="frame-badge">${escHtml(lang === "en" ? badgeEn : badgeHe)}</span>`
     : "";
   const media = item.thumbnail
     ? `<img src="${escHtml(item.thumbnail)}" alt="${escHtml(title)}" loading="lazy">`
     : "";
+  const sprockets = Array.from({ length: 8 }).map(() => "<span></span>").join("");
   return `
-    <article class="card portfolio-card" data-category="${escHtml(item.category)}" data-video="${escHtml(item.videoUrl || "")}">
-      <div class="card-media ${item.thumbnail ? "" : "placeholder-media"}">
+    <article class="frame reveal" data-category="${escHtml(item.category)}" data-video="${escHtml(item.videoUrl || "")}">
+      <div class="sprocket-row">${sprockets}</div>
+      <div class="frame-media">
         ${badge}
         ${media}
         <div class="play-icon">▶</div>
       </div>
-      <div class="card-body">
-        <span class="card-cat">${escHtml(cat)}</span>
+      <div class="frame-body">
+        <span class="frame-cat">${escHtml(cat)}</span>
         <h3>${escHtml(title)}</h3>
         <p>${escHtml(desc)}</p>
-        <div class="card-meta"><span>${escHtml(item.date || "")}</span></div>
+        <div class="frame-meta">${escHtml(item.date || "")}</div>
       </div>
+      <div class="sprocket-row">${sprockets}</div>
     </article>`;
 }
 
-function renderPortfolioGrid(container, items, activeFilter) {
+function renderFilmstrip(viewport, items, activeFilter) {
   const lang = getLang();
   const filtered =
     !activeFilter || activeFilter === "all"
       ? items
       : items.filter((i) => i.category === activeFilter);
+  const track = qs(".filmstrip-track", viewport) || viewport;
   if (filtered.length === 0) {
-    container.innerHTML = `<div class="empty-state" data-he="אין עדיין עבודות בקטגוריה הזו." data-en="No works in this category yet."></div>`;
+    track.innerHTML = `<div class="empty-state" data-he="אין עדיין עבודות בקטגוריה הזו." data-en="No works in this category yet."></div>`;
     applyStaticLang(lang);
     return;
   }
-  container.innerHTML = filtered.map((item) => portfolioCardHtml(item, lang)).join("");
-  qsa(".portfolio-card", container).forEach((card) => {
+  track.innerHTML = filtered.map((item) => frameHtml(item, lang)).join("");
+  qsa(".frame", track).forEach((card) => {
     const url = card.dataset.video;
-    if (url) card.addEventListener("click", () => openLightbox(url));
+    if (url) qs(".frame-media", card).addEventListener("click", () => openLightbox(url));
   });
-  initScrollAnimations();
+  initReveals(track);
 }
 
-function initPortfolioGrid(gridSelector, filterRowSelector, limit) {
-  const grid = qs(gridSelector);
-  if (!grid) return Promise.resolve();
+function initFilmstrip(viewportSelector, filterRowSelector, limit) {
+  const viewport = qs(viewportSelector);
+  if (!viewport) return Promise.resolve();
   return fetchJSON("portfolio.json")
     .then((data) => {
       DS.portfolio = data;
       const items = limit ? data.slice(0, limit) : data;
-      renderPortfolioGrid(grid, items, "all");
+      renderFilmstrip(viewport, items, "all");
       const filterRow = filterRowSelector ? qs(filterRowSelector) : null;
       if (filterRow) {
         qsa(".filter-pill", filterRow).forEach((btn) => {
           btn.addEventListener("click", () => {
             qsa(".filter-pill", filterRow).forEach((b) => b.classList.remove("active"));
             btn.classList.add("active");
-            renderPortfolioGrid(grid, data, btn.dataset.filter);
+            renderFilmstrip(viewport, data, btn.dataset.filter);
           });
         });
       }
       document.addEventListener("langchange", () => {
         const active = filterRow ? qs(".filter-pill.active", filterRow) : null;
-        renderPortfolioGrid(grid, limit ? data.slice(0, limit) : data, active ? active.dataset.filter : "all");
+        renderFilmstrip(viewport, limit ? data.slice(0, limit) : data, active ? active.dataset.filter : "all");
       });
     })
     .catch((err) => {
-      grid.innerHTML = `<div class="empty-state">Could not load portfolio.json</div>`;
+      viewport.innerHTML = `<div class="empty-state">Could not load portfolio.json</div>`;
       console.error(err);
     });
 }
@@ -243,10 +249,10 @@ function openLightbox(url) {
     overlay = document.createElement("div");
     overlay.id = "dsLightbox";
     overlay.style.cssText =
-      "position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;";
+      "position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;";
     overlay.innerHTML = `<div style="width:100%;max-width:900px;aspect-ratio:16/9;position:relative;">
-      <button id="dsLightboxClose" style="position:absolute;top:-40px;inset-inline-end:0;color:#fff;font-size:28px;background:none;border:none;cursor:pointer;">×</button>
-      <div id="dsLightboxFrame" style="width:100%;height:100%;border-radius:16px;overflow:hidden;background:#000;"></div>
+      <button id="dsLightboxClose" style="position:absolute;top:-40px;inset-inline-end:0;color:#f2f1ee;font-size:28px;background:none;border:none;cursor:pointer;">×</button>
+      <div id="dsLightboxFrame" style="width:100%;height:100%;border-radius:10px;overflow:hidden;background:#000;"></div>
     </div>`;
     document.body.appendChild(overlay);
     overlay.addEventListener("click", (e) => {
@@ -281,8 +287,8 @@ function blogCardHtml(post, lang) {
     ? `<img src="${escHtml(post.image)}" alt="${escHtml(title)}" loading="lazy">`
     : "";
   return `
-    <a class="card blog-card" href="post.html?id=${post.id}" data-category="${escHtml(post.category)}">
-      <div class="card-media ${post.image ? "" : "placeholder-media"}">${media}</div>
+    <a class="card blog-card reveal" href="post.html?id=${post.id}" data-category="${escHtml(post.category)}">
+      <div class="card-media">${media}</div>
       <div class="card-body">
         <span class="card-cat">${escHtml(cat)}</span>
         <h3>${escHtml(title)}</h3>
@@ -311,7 +317,7 @@ function renderBlogGrid(container, items, activeFilter) {
     .sort((a, b) => (a.date < b.date ? 1 : -1))
     .map((post) => blogCardHtml(post, lang))
     .join("");
-  initScrollAnimations();
+  initReveals(container);
 }
 
 function initBlogGrid(gridSelector, filterRowSelector, limit) {
@@ -354,7 +360,7 @@ function renderPostContent(post) {
       el.innerHTML = post["body_" + lang] || post.body_he;
     } else if (field === "title") {
       el.textContent = post["title_" + lang] || post.title_he;
-      document.title = (post["title_" + lang] || post.title_he) + " · DS VideoArt";
+      document.title = (post["title_" + lang] || post.title_he) + " - DS VideoArt";
     } else if (field === "category") {
       el.textContent = post["category_" + lang] || post.category_he;
     } else if (field === "author") {
@@ -437,10 +443,13 @@ function scrollToHash() {
 /* ---------- boot ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+    gsap.registerPlugin(ScrollTrigger);
+  }
   initLang();
   initNav();
-  initScrollAnimations();
-  initCounters();
+  initCountdownIntro();
+  initReveals();
   initQuoteForm();
   initPostPage();
 });
