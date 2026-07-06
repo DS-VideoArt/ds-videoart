@@ -2,6 +2,9 @@
    DS VideoArt: Showcase engine
    Tier = structure (which sections appear). Style = live skin swap
    ([data-style] on #demoStage, read by showcase.css as --sx-* vars).
+   Picking a tier plays a live build sequence: a build-console HUD
+   scrolls through each section while it "materializes" from a
+   blueprint outline into full content.
    Reuses script.js utilities: escHtml, getLang, qs, qsa, fetchJSON,
    applyStaticLang, initReveals.
    ============================================================ */
@@ -10,7 +13,23 @@ const SX = {
   data: null,
   tierId: null,
   styleId: "bold",
+  buildToken: 0,
+  skipRequested: false,
 };
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function tweenPromise(target, vars) {
+  return new Promise((resolve) => {
+    if (typeof gsap === "undefined") {
+      resolve();
+      return;
+    }
+    gsap.to(target, Object.assign({}, vars, { onComplete: resolve }));
+  });
+}
 
 /* ---------- section template functions ---------- */
 
@@ -42,6 +61,34 @@ function sxHeroVideo(s, lang) {
         <h2>${escHtml(title)}</h2>
         <p>${escHtml(subtitle)}</p>
         <a href="#tierPicker" class="sx-btn dock-quote-trigger">${escHtml(cta)}</a>
+      </div>
+    </section>`;
+}
+
+function sxPricingBreakdown(s, lang, tier) {
+  const price = tier["priceRange_" + lang] || tier.priceRange_he;
+  const rationale = tier["priceRationale_" + lang] || tier.priceRationale_he;
+  const heading = lang === "en" ? "Why this price" : "למה המחיר ככה";
+  const rows = (tier.priceBreakdown || [])
+    .map(
+      (row) => `
+      <div class="sx-pricing-row">
+        <span>${escHtml(row["label_" + lang] || row.label_he)}</span>
+        <span class="amt">${escHtml(row["amount_" + lang] || row.amount_he)}</span>
+      </div>`
+    )
+    .join("");
+  return `
+    <section class="sx-alt">
+      <div class="container">
+        <div class="sx-pricing">
+          <div class="sx-pricing-head">
+            <span class="price">${escHtml(price)}</span>
+            <h3>${escHtml(heading)}</h3>
+          </div>
+          <div class="sx-pricing-rows">${rows}</div>
+          <p class="sx-pricing-note">${escHtml(rationale)}</p>
+        </div>
       </div>
     </section>`;
 }
@@ -157,7 +204,7 @@ function sxVideoBanner(s, lang) {
     </section>`;
 }
 
-function sxContactMini(s, lang) {
+function sxContactMini(s, lang, tier) {
   const title = s["title_" + lang] || s.title_he;
   const subtitle = s["subtitle_" + lang] || s.subtitle_he;
   const button = s["button_" + lang] || s.button_he;
@@ -167,7 +214,7 @@ function sxContactMini(s, lang) {
         <div class="sx-contact-mini">
           <h3>${escHtml(title)}</h3>
           <p>${escHtml(subtitle)}</p>
-          <a href="index.html?tier=${escHtml(SX.tierId)}#contact" class="sx-btn">${escHtml(button)}</a>
+          <a href="index.html?tier=${escHtml(tier.id)}#contact" class="sx-btn">${escHtml(button)}</a>
         </div>
       </div>
     </section>`;
@@ -176,6 +223,7 @@ function sxContactMini(s, lang) {
 const SECTION_RENDERERS = {
   hero: sxHero,
   "hero-video": sxHeroVideo,
+  "pricing-breakdown": sxPricingBreakdown,
   "cta-strip": sxCtaStrip,
   services: sxServices,
   about: sxAbout,
@@ -185,6 +233,25 @@ const SECTION_RENDERERS = {
   "video-banner": sxVideoBanner,
   "contact-mini": sxContactMini,
 };
+
+const SECTION_LABELS = {
+  hero: { he: "הכותרת הראשית", en: "the hero section" },
+  "hero-video": { he: "הכותרת הראשית עם הווידאו", en: "the video hero" },
+  "pricing-breakdown": { he: "פירוט התמחור", en: "the pricing breakdown" },
+  "cta-strip": { he: "פס הקריאה לפעולה", en: "the call-to-action strip" },
+  services: { he: "מקטע השירותים", en: "the services section" },
+  about: { he: "מקטע האודות", en: "the about section" },
+  gallery: { he: "הגלריה", en: "the gallery" },
+  testimonials: { he: "ההמלצות", en: "the testimonials" },
+  "portfolio-embed": { he: "תיק העבודות המוטמע", en: "the embedded portfolio" },
+  "video-banner": { he: "באנר הווידאו", en: "the video banner" },
+  "contact-mini": { he: "טופס יצירת הקשר", en: "the contact section" },
+};
+
+function sectionLabel(type, lang) {
+  const l = SECTION_LABELS[type] || { he: type, en: type };
+  return lang === "en" ? l.en : l.he;
+}
 
 /* ---------- tier picker ---------- */
 
@@ -206,6 +273,8 @@ function tierCardHtml(tier, lang) {
     </div>`;
 }
 
+let pickerIntroPlayed = false;
+
 function renderTierPicker() {
   const grid = document.getElementById("tierGrid");
   const lang = getLang();
@@ -213,6 +282,21 @@ function renderTierPicker() {
   qsa(".tier-select-btn", grid).forEach((btn) => {
     btn.addEventListener("click", () => openTier(btn.dataset.tier, true));
   });
+  playPickerIntro();
+}
+
+function playPickerIntro() {
+  if (prefersReducedMotion || typeof gsap === "undefined") return;
+  const heading = document.getElementById("pickerHeading");
+  const sub = document.getElementById("pickerSubheading");
+  const cards = qsa(".tier-card");
+  if (!pickerIntroPlayed) {
+    pickerIntroPlayed = true;
+    gsap.from([heading, sub], { opacity: 0, y: 24, duration: 0.7, stagger: 0.12, ease: "power2.out" });
+    gsap.from(cards, { opacity: 0, y: 24, scale: 0.97, duration: 0.6, stagger: 0.1, ease: "power2.out", delay: 0.2 });
+  } else {
+    gsap.set(cards, { opacity: 1, y: 0, scale: 1 });
+  }
 }
 
 /* ---------- demo stage ---------- */
@@ -221,47 +305,134 @@ function getTier(id) {
   return SX.data.tiers.find((t) => t.id === id);
 }
 
-function renderDemoStage(showShiftMessage) {
-  const tier = getTier(SX.tierId);
-  const lang = getLang();
+function mountStage(tier, lang) {
   const stage = document.getElementById("demoStage");
-  const prevSectionCount = qsa("section", stage).length;
-
   const html = tier.sections
-    .map((s) => (SECTION_RENDERERS[s.type] ? SECTION_RENDERERS[s.type](s, lang) : ""))
+    .map((s) => (SECTION_RENDERERS[s.type] ? SECTION_RENDERERS[s.type](s, lang, tier) : ""))
     .join("");
   stage.innerHTML = html;
   stage.dataset.style = SX.styleId;
-  initReveals(stage);
   qsa(".dock-quote-trigger", stage).forEach((a) => {
     a.addEventListener("click", (e) => {
       e.preventDefault();
       document.getElementById("dockQuoteBtn").click();
     });
   });
-
-  if (showShiftMessage && prevSectionCount > 0) {
-    const diff = tier.sections.length - prevSectionCount;
-    if (diff !== 0) {
-      const msgHe =
-        diff > 0
-          ? `ברמה הזו נוספו עוד ${diff} מקטעים`
-          : `ברמה הזו יש ${Math.abs(diff)} מקטעים פחות, ממוקד יותר`;
-      const msgEn =
-        diff > 0
-          ? `This tier adds ${diff} more section${diff > 1 ? "s" : ""}`
-          : `This tier has ${Math.abs(diff)} fewer section${Math.abs(diff) > 1 ? "s" : ""}, more focused`;
-      showShiftTag(lang === "en" ? msgEn : msgHe);
-    }
-  }
+  return qsa("section", stage);
 }
 
-function showShiftTag(text) {
-  const tag = document.getElementById("demoShiftTag");
-  tag.textContent = text;
-  tag.classList.add("show");
-  clearTimeout(showShiftTag._t);
-  showShiftTag._t = setTimeout(() => tag.classList.remove("show"), 3200);
+function addLogLine(logEl, text, done) {
+  const line = document.createElement("div");
+  line.className = "build-log-line" + (done ? " done" : "");
+  line.textContent = text;
+  logEl.prepend(line);
+  while (logEl.children.length > 5) logEl.removeChild(logEl.lastChild);
+  return line;
+}
+
+function markLineDone(line) {
+  if (!line) return;
+  line.classList.add("done");
+  const chk = document.createElement("span");
+  chk.className = "chk";
+  chk.textContent = "✓";
+  line.appendChild(chk);
+}
+
+function playMaterializeFlash(sectionEl) {
+  if (prefersReducedMotion || typeof gsap === "undefined") return;
+  const flash = document.createElement("div");
+  flash.className = "sx-materialize-flash";
+  sectionEl.style.position = "relative";
+  sectionEl.appendChild(flash);
+  gsap.fromTo(
+    flash,
+    { y: "-100%" },
+    { y: "100%", duration: 0.6, ease: "power1.inOut", onComplete: () => flash.remove() }
+  );
+}
+
+async function playBuildSequence(tier, lang, sectionEls) {
+  const myToken = ++SX.buildToken;
+  SX.skipRequested = false;
+  const consoleEl = document.getElementById("buildConsole");
+  const bar = document.getElementById("buildProgressBar");
+  const log = document.getElementById("buildLog");
+  const title = document.getElementById("buildConsoleTitle");
+
+  title.textContent =
+    lang === "en"
+      ? `Building: ${tier.name_en}`
+      : `בונים את הרמה: ${tier.name_he}`;
+  log.innerHTML = "";
+  bar.style.width = "0%";
+  consoleEl.classList.remove("hidden");
+
+  if (typeof gsap !== "undefined") {
+    gsap.set(sectionEls, { opacity: 0, scale: 0.95, filter: "blur(6px)" });
+  }
+  sectionEls.forEach((el) => el.classList.add("sx-building-outline"));
+
+  const total = sectionEls.length;
+  for (let i = 0; i < total; i++) {
+    if (SX.buildToken !== myToken) return;
+    const el = sectionEls[i];
+    const label = sectionLabel(tier.sections[i].type, lang);
+    const line = addLogLine(log, lang === "en" ? `Building ${label}...` : `בונה את ${label}...`, false);
+
+    if (!SX.skipRequested && !prefersReducedMotion) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      await sleep(420);
+    }
+    if (SX.buildToken !== myToken) return;
+
+    el.classList.remove("sx-building-outline");
+    await tweenPromise(el, {
+      opacity: 1,
+      scale: 1,
+      filter: "blur(0px)",
+      duration: SX.skipRequested || prefersReducedMotion ? 0.15 : 0.5,
+      ease: "power2.out",
+    });
+    if (!prefersReducedMotion) playMaterializeFlash(el);
+    markLineDone(line);
+    bar.style.width = Math.round(((i + 1) / total) * 100) + "%";
+    if (SX.buildToken !== myToken) return;
+    await sleep(SX.skipRequested ? 40 : 180);
+  }
+
+  addLogLine(log, lang === "en" ? "Site ready" : "האתר מוכן", true);
+  bar.style.width = "100%";
+  await sleep(700);
+  if (SX.buildToken !== myToken) return;
+  consoleEl.classList.add("hidden");
+}
+
+function skipBuild() {
+  SX.buildToken++;
+  SX.skipRequested = true;
+  const stage = document.getElementById("demoStage");
+  const sectionEls = qsa("section", stage);
+  if (typeof gsap !== "undefined") {
+    gsap.set(sectionEls, { opacity: 1, scale: 1, filter: "none" });
+  }
+  sectionEls.forEach((el) => {
+    el.classList.remove("sx-building-outline");
+    const flash = qs(".sx-materialize-flash", el);
+    if (flash) flash.remove();
+  });
+  document.getElementById("buildProgressBar").style.width = "100%";
+  document.getElementById("buildConsole").classList.add("hidden");
+}
+
+async function mountAndBuild(tier, lang, animate) {
+  const sectionEls = mountStage(tier, lang);
+  if (!animate || prefersReducedMotion || typeof gsap === "undefined") {
+    if (typeof gsap !== "undefined") gsap.set(sectionEls, { opacity: 1, scale: 1, filter: "none" });
+    document.getElementById("buildConsole").classList.add("hidden");
+    return;
+  }
+  await playBuildSequence(tier, lang, sectionEls);
 }
 
 function updateDock() {
@@ -274,7 +445,9 @@ function updateDock() {
     )
     .join("");
   qsa(".dock-tier-btn", dockTiers).forEach((btn) => {
-    btn.addEventListener("click", () => openTier(btn.dataset.tier, true));
+    btn.addEventListener("click", () => {
+      if (btn.dataset.tier !== SX.tierId) openTier(btn.dataset.tier, true);
+    });
   });
 
   const dockStyles = document.getElementById("dockStyles");
@@ -315,21 +488,22 @@ function ensureStyleNote() {
   return note;
 }
 
-function openTier(tierId, userInitiated) {
+async function openTier(tierId, userInitiated) {
+  const tier = getTier(tierId);
+  const lang = getLang();
   SX.tierId = tierId;
   document.getElementById("demoStage").classList.remove("hidden");
   document.getElementById("showcaseDock").classList.remove("hidden");
-  renderDemoStage(userInitiated);
   updateDock();
+  await mountAndBuild(tier, lang, userInitiated);
   selectStyle(SX.styleId);
-  if (userInitiated) {
-    document.getElementById("demoStage").scrollIntoView({ behavior: "smooth", block: "start" });
-  }
 }
 
 function backToPicker() {
+  SX.buildToken++;
   document.getElementById("demoStage").classList.add("hidden");
   document.getElementById("showcaseDock").classList.add("hidden");
+  document.getElementById("buildConsole").classList.add("hidden");
 }
 
 /* ---------- boot ---------- */
@@ -347,10 +521,13 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("tierPicker").scrollIntoView({ behavior: "smooth" });
       });
 
+      document.getElementById("buildSkip").addEventListener("click", skipBuild);
+
       document.addEventListener("langchange", () => {
         renderTierPicker();
         if (SX.tierId && !document.getElementById("demoStage").classList.contains("hidden")) {
-          renderDemoStage(false);
+          const tier = getTier(SX.tierId);
+          mountAndBuild(tier, getLang(), false);
           updateDock();
           selectStyle(SX.styleId);
         }

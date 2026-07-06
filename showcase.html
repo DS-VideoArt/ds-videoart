@@ -7,12 +7,12 @@
   <meta name="description" content="עמוד הדגמה חי: בחרו רמת מחיר וצפו באתר לדוגמה נבנה מולכם, ואז החליפו סגנון עיצוב באותה רמה בלחיצת כפתור. ככה DS VideoArt בונה אתרים ודפי נחיתה.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="showcase.css">
 </head>
 <body>
-  <div class="light-leaks"><span></span><span></span><span></span></div>
+  <div class="sx-blueprint-bg"><span></span><span></span></div>
   <div class="film-grain"></div>
 
   <nav class="navbar">
@@ -50,12 +50,23 @@
     <section id="tierPicker" class="picker">
       <div class="container">
         <div class="picker-head">
-          <h1 data-he="בחרו רמת מחיר, וצפו באתר נבנה מולכם" data-en="Pick a price tier, watch a site build itself in front of you">בחרו רמת מחיר, וצפו באתר נבנה מולכם</h1>
-          <p data-he="זה בדיוק העמוד הזה: תבחרו רמה, ייפתח אתר לדוגמה אמיתי באותה רמה, ובתוכו תוכלו להחליף סגנון עיצוב בלחיצת כפתור מבלי לשנות את המחיר." data-en="This very page: pick a tier, a real demo site opens at that tier, and inside it you can switch design style with one click without changing the price.">זה בדיוק העמוד הזה: תבחרו רמה, ייפתח אתר לדוגמה אמיתי באותה רמה, ובתוכו תוכלו להחליף סגנון עיצוב בלחיצת כפתור מבלי לשנות את המחיר.</p>
+          <h1 id="pickerHeading" data-he="בחרו רמת מחיר, וצפו באתר נבנה מולכם" data-en="Pick a price tier, watch a site build itself in front of you">בחרו רמת מחיר, וצפו באתר נבנה מולכם</h1>
+          <p id="pickerSubheading" data-he="זה בדיוק העמוד הזה: תבחרו רמה, ותצפו באתר לדוגמה אמיתי נבנה מקטע אחר מקטע, מול העיניים שלכם. בתוכו תוכלו להחליף סגנון עיצוב בלחיצת כפתור מבלי לשנות את המחיר." data-en="This very page: pick a tier, and watch a real demo site build itself section by section, right in front of you. Inside it you can switch design style with one click without changing the price.">זה בדיוק העמוד הזה: תבחרו רמה, ותצפו באתר לדוגמה אמיתי נבנה מקטע אחר מקטע, מול העיניים שלכם. בתוכו תוכלו להחליף סגנון עיצוב בלחיצת כפתור מבלי לשנות את המחיר.</p>
         </div>
         <div id="tierGrid" class="tier-grid"></div>
       </div>
     </section>
+
+    <div id="buildConsole" class="build-console hidden">
+      <div class="container build-console-inner">
+        <div class="build-console-head">
+          <span class="build-console-title" id="buildConsoleTitle"></span>
+          <button id="buildSkip" class="build-skip" data-he="דלגו לתוצאה" data-en="Skip to result">דלגו לתוצאה</button>
+        </div>
+        <div class="build-progress"><div class="build-progress-bar" id="buildProgressBar"></div></div>
+        <div class="build-log" id="buildLog"></div>
+      </div>
+    </div>
 
     <div id="demoStage" class="demo-stage hidden" data-style="bold"></div>
   </main>

@@ -1,10 +1,77 @@
 /* ============================================================
-   DS VideoArt: Showcase ("choose a tier, watch it rebuild live")
-   Lives on top of style.css. Adds:
-   1) the tier-picker screen (fixed dark theme, matches the rest of the site)
-   2) the demo stage, whose skin is swapped live via [data-style] on
+   DS VideoArt: Showcase ("choose a tier, watch it get built live")
+   Lives on top of style.css. This page gets its own energetic
+   identity instead of the main site's cinema-red: a "blueprint /
+   construction" system, vivid electric-orange on near-black, since
+   this page is a skills demo, not a video-brand page.
+   Adds:
+   1) the tier-picker screen
+   2) the live build sequence (blueprint -> materialized section)
+   3) the demo stage, whose skin is swapped live via [data-style] on
       .demo-stage: every component below reads --sx-* variables only.
    ============================================================ */
+
+:root {
+  --accent: #ff5b2e;
+  --accent-soft: rgba(255, 91, 46, 0.16);
+  --accent-border: rgba(255, 91, 46, 0.5);
+  --shadow-accent: 0 3px 16px rgba(255, 91, 46, 0.32);
+}
+
+.rec-tag,
+.logo-mark,
+.rec-dot {
+  background: var(--accent);
+}
+
+/* ---------- blueprint background (replaces the red/magenta/teal light-leaks) ---------- */
+
+.sx-blueprint-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 91, 46, 0.07) 0px, rgba(255, 91, 46, 0.07) 1px, transparent 1px, transparent 64px),
+    repeating-linear-gradient(90deg, rgba(255, 91, 46, 0.07) 0px, rgba(255, 91, 46, 0.07) 1px, transparent 1px, transparent 64px);
+}
+
+.sx-blueprint-bg span {
+  position: absolute;
+  width: 50vw;
+  height: 50vw;
+  max-width: 560px;
+  max-height: 560px;
+  border-radius: 50%;
+  filter: blur(130px);
+  opacity: 0.22;
+  background: var(--accent);
+  animation: sx-drift 24s ease-in-out infinite alternate;
+}
+
+.sx-blueprint-bg span:nth-child(1) {
+  top: -12%;
+  inset-inline-start: -10%;
+}
+
+.sx-blueprint-bg span:nth-child(2) {
+  bottom: -18%;
+  inset-inline-end: -12%;
+  animation-delay: 8s;
+  animation-duration: 30s;
+}
+
+@keyframes sx-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(5%, 7%) scale(1.18); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sx-blueprint-bg span {
+    animation: none;
+  }
+}
 
 /* ---------- picker screen ---------- */
 
@@ -44,12 +111,13 @@
   padding: 32px 28px;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+  transition: border-color 0.25s var(--ease-out), transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 
 .tier-card:hover {
   border-color: var(--accent-border);
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-accent);
 }
 
 .tier-card h3 {
@@ -109,6 +177,157 @@
   .tier-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ---------- live build console ---------- */
+
+.build-console {
+  position: fixed;
+  top: var(--nav-height);
+  inset-inline: 0;
+  z-index: 800;
+  background: rgba(8, 8, 10, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--accent-border);
+  padding: 14px 0;
+}
+
+.build-console-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.build-console-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.build-console-title {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+.build-skip {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: underline;
+}
+
+.build-skip:hover {
+  color: var(--text-primary);
+}
+
+.build-progress {
+  height: 4px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.build-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.35s var(--ease-out);
+}
+
+.build-log {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  max-height: 44px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+
+.build-log-line {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: sx-log-in 0.35s var(--ease-out) forwards;
+}
+
+.build-log-line.done {
+  color: var(--text-primary);
+}
+
+.build-log-line .chk {
+  color: var(--accent);
+  margin-inline-start: 6px;
+}
+
+@keyframes sx-log-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- section build-state (blueprint -> materialized) ---------- */
+
+.demo-stage section.sx-building-outline {
+  outline: 2px dashed var(--sx-accent);
+  outline-offset: -10px;
+}
+
+.sx-materialize-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, var(--sx-accent-soft) 45%, transparent 55%);
+  transform: translateY(-100%);
+  z-index: 5;
+}
+
+/* ---------- pricing breakdown ---------- */
+
+.sx-pricing {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.sx-pricing-head {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.sx-pricing-head .price {
+  font-family: "JetBrains Mono", monospace;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  color: var(--sx-accent);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.sx-pricing-rows {
+  border-top: 1px solid var(--sx-border);
+}
+
+.sx-pricing-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 2px;
+  border-bottom: 1px solid var(--sx-border);
+  font-size: 15px;
+}
+
+.sx-pricing-row .amt {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--sx-text);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sx-pricing-note {
+  margin-top: 22px;
+  font-size: 14px;
+  color: var(--sx-text-muted);
 }
 
 /* ---------- demo stage shell ---------- */

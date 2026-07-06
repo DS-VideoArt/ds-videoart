@@ -47,6 +47,13 @@
       ],
       "notIncludes_he": "בלי מספר עמודים, בלי בלוג, בלי וידאו מותאם אישית",
       "notIncludes_en": "No multiple pages, no blog, no custom video",
+      "priceRationale_he": "המחיר נגזר מהיקף עבודה קטן ומדויק: עמוד אחד, מטרה אחת, בלי הרחבות. ככל שהיקף התוכן קטן והמטרה חדה יותר, כך זמן העבודה קצר יותר והמחיר יורד.",
+      "priceRationale_en": "The price reflects a small, precise scope: one page, one goal, no extras. The narrower the content and the sharper the goal, the shorter the build time and the lower the price.",
+      "priceBreakdown": [
+        { "label_he": "עיצוב ומבנה העמוד", "label_en": "Design and page structure", "amount_he": "1,200 ₪", "amount_en": "₪1,200" },
+        { "label_he": "כתיבת תוכן ומיקוד המרה", "label_en": "Copywriting and conversion focus", "amount_he": "900 ₪", "amount_en": "₪900" },
+        { "label_he": "פיתוח, טופס ומסירה", "label_en": "Development, form, and handoff", "amount_he": "800 ₪", "amount_en": "₪800" }
+      ],
       "sections": [
         {
           "type": "hero",
@@ -57,6 +64,7 @@
           "primaryCta_he": "בקשו הצעת מחיר",
           "primaryCta_en": "Get a quote"
         },
+        { "type": "pricing-breakdown" },
         {
           "type": "cta-strip",
           "headline_he": "תוך כמה ימים העמוד באוויר ועובד בשבילכם",
@@ -99,6 +107,14 @@
       ],
       "notIncludes_he": "בלי הפקת וידאו מותאם אישית, בלי מערכת ניהול תוכן מתקדמת",
       "notIncludes_en": "No custom video production, no advanced content management system",
+      "priceRationale_he": "המחיר עולה כי היקף העבודה גדל: יותר מקטעים, יותר תוכן, ומבנה שצריך לדבר בעקביות מהכותרת הראשית ועד יצירת הקשר. זו נוכחות דיגיטלית שלמה, לא עמוד בודד.",
+      "priceRationale_en": "The price rises because the scope grows: more sections, more content, and a structure that needs to speak consistently from the hero to the contact form. This is a full digital presence, not a single page.",
+      "priceBreakdown": [
+        { "label_he": "עיצוב ומיתוג חזותי", "label_en": "Design and visual branding", "amount_he": "2,200 ₪", "amount_en": "₪2,200" },
+        { "label_he": "בניית כל המקטעים", "label_en": "Building every section", "amount_he": "2,600 ₪", "amount_en": "₪2,600" },
+        { "label_he": "כתיבת תוכן מלאה", "label_en": "Full copywriting", "amount_he": "1,200 ₪", "amount_en": "₪1,200" },
+        { "label_he": "קידום בסיסי ומסירה", "label_en": "Basic SEO and handoff", "amount_he": "900 ₪", "amount_en": "₪900" }
+      ],
       "sections": [
         {
           "type": "hero",
@@ -109,6 +125,7 @@
           "primaryCta_he": "בקשו הצעת מחיר",
           "primaryCta_en": "Get a quote"
         },
+        { "type": "pricing-breakdown" },
         {
           "type": "services",
           "title_he": "השירותים שלכם, מוצגים נכון",
@@ -212,6 +229,14 @@
       ],
       "notIncludes_he": "מספר סרטונים נוספים ותכנון קמפיין מלא מתומחרים בנפרד",
       "notIncludes_en": "Additional videos and full campaign planning are priced separately",
+      "priceRationale_he": "רוב התוספת במחיר היא הפקת הווידאו עצמו: תסריט, יצירה ב-AI, ועריכה עד שהוא מרגיש קולנועי. השאר זהה בעיקרו לאתר העסקי המלא, עם שכבת אנימציה מותאמת אישית מעליו.",
+      "priceRationale_en": "Most of the extra cost is the video production itself: script, AI generation, and editing until it feels cinematic. The rest is mostly the same as the full business site, with a custom animation layer on top.",
+      "priceBreakdown": [
+        { "label_he": "עיצוב ומיתוג ברמת פרימיום", "label_en": "Premium-tier design and branding", "amount_he": "3,200 ₪", "amount_en": "₪3,200" },
+        { "label_he": "בניית מקטעים ואנימציות", "label_en": "Building sections and animations", "amount_he": "3,800 ₪", "amount_en": "₪3,800" },
+        { "label_he": "הפקת סרטון AI מותאם אישית", "label_en": "Custom AI video production", "amount_he": "4,500 ₪", "amount_en": "₪4,500" },
+        { "label_he": "כתיבת תוכן וליווי מלא", "label_en": "Copywriting and full support", "amount_he": "2,400 ₪", "amount_en": "₪2,400" }
+      ],
       "sections": [
         {
           "type": "hero-video",
@@ -223,6 +248,7 @@
           "primaryCta_en": "Get a quote",
           "videoUrl": "videos/luso-espresso.mp4"
         },
+        { "type": "pricing-breakdown" },
         {
           "type": "services",
           "title_he": "כל מה שבאתר העסקי, ברמה גבוהה יותר",
