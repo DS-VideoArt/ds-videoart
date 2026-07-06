@@ -555,6 +555,65 @@ section {
 }
 
 /* ============================================================
+   Flagship showcase banner (links to showcase.html)
+   ============================================================ */
+
+.flagship-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: linear-gradient(120deg, var(--bg-card) 0%, color-mix(in srgb, var(--accent) 10%, var(--bg-card)) 100%);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-lg);
+  padding: 36px 40px;
+  margin-bottom: 48px;
+  transition: transform 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+}
+
+.flagship-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+
+.flagship-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.flagship-body h3 {
+  font-size: clamp(20px, 2.6vw, 30px);
+  margin-bottom: 10px;
+}
+
+.flagship-body p {
+  color: var(--text-muted);
+  font-size: 15px;
+  max-width: 560px;
+}
+
+.flagship-arrow {
+  font-size: 28px;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  .flagship-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px;
+  }
+  .flagship-arrow {
+    transform: rotate(-90deg);
+  }
+}
+
+/* ============================================================
    Category filter pills
    ============================================================ */
 

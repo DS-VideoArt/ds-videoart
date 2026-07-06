@@ -1,0 +1,294 @@
+{
+  "styles": [
+    {
+      "id": "minimal",
+      "name_he": "מינימלי ונקי",
+      "name_en": "Minimal & Clean",
+      "note_he": "",
+      "note_en": ""
+    },
+    {
+      "id": "bold",
+      "name_he": "נועז וכהה",
+      "name_en": "Bold & Dark",
+      "note_he": "זה בדיוק העיצוב של האתר שאתם גולשים בו עכשיו.",
+      "note_en": "This is literally the design of the site you're browsing right now."
+    },
+    {
+      "id": "organic",
+      "name_he": "חם ואורגני",
+      "name_en": "Warm & Organic",
+      "note_he": "",
+      "note_en": ""
+    }
+  ],
+  "tiers": [
+    {
+      "id": "landing",
+      "name_he": "דף נחיתה ממוקד",
+      "name_en": "Focused Landing Page",
+      "priceRange_he": "1,900–3,900 ₪",
+      "priceRange_en": "₪1,900–3,900",
+      "tagline_he": "עמוד אחד, מטרה אחת, המרה מקסימלית.",
+      "tagline_en": "One page, one goal, maximum conversion.",
+      "includes_he": [
+        "עמוד אחד ממוקד עם מבנה המרה מוכח",
+        "כתיבת תוכן ומיקוד למטרה אחת",
+        "טופס לידים מחובר למייל",
+        "התאמה מלאה למובייל",
+        "עד 3 סבבי תיקונים"
+      ],
+      "includes_en": [
+        "One focused page with a proven conversion structure",
+        "Copywriting focused on a single goal",
+        "Lead form connected to email",
+        "Full mobile adaptation",
+        "Up to 3 revision rounds"
+      ],
+      "notIncludes_he": "בלי מספר עמודים, בלי בלוג, בלי וידאו מותאם אישית",
+      "notIncludes_en": "No multiple pages, no blog, no custom video",
+      "sections": [
+        {
+          "type": "hero",
+          "title_he": "הקמפיין שלכם צריך עמוד אחד שבאמת סוגר עסקה",
+          "title_en": "Your campaign needs one page that actually closes",
+          "subtitle_he": "דף נחיתה בנוי כולו סביב פעולה אחת: השארת פרטים, קביעת פגישה או רכישה. בלי הסחות דעת, בלי תפריט שמוביל החוצה.",
+          "subtitle_en": "A landing page built entirely around one action: leaving details, booking a call, or buying. No distractions, no menu leading you away.",
+          "primaryCta_he": "בקשו הצעת מחיר",
+          "primaryCta_en": "Get a quote"
+        },
+        {
+          "type": "cta-strip",
+          "headline_he": "תוך כמה ימים העמוד באוויר ועובד בשבילכם",
+          "headline_en": "Live in days, working for you from day one",
+          "button_he": "בואו נתחיל",
+          "button_en": "Let's start"
+        },
+        {
+          "type": "contact-mini",
+          "title_he": "מתאים לכם? ספרו לנו על הקמפיין",
+          "title_en": "Sounds right? Tell us about your campaign",
+          "subtitle_he": "נחזור אליכם עם הצעת מחיר מדויקת לרמה הזו.",
+          "subtitle_en": "We'll get back to you with an exact quote for this tier.",
+          "button_he": "בקשו הצעת מחיר לרמה הזו",
+          "button_en": "Request a quote for this tier"
+        }
+      ]
+    },
+    {
+      "id": "business",
+      "name_he": "אתר עסקי מלא",
+      "name_en": "Full Business Site",
+      "priceRange_he": "4,900–8,900 ₪",
+      "priceRange_en": "₪4,900–8,900",
+      "tagline_he": "נוכחות דיגיטלית שלמה, לא רק כרטיס ביקור.",
+      "tagline_en": "A complete digital presence, not just a business card.",
+      "includes_he": [
+        "כל מה שכלול בדף הנחיתה",
+        "מספר מקטעים: שירותים, אודות, גלריה, המלצות",
+        "מבנה מוכן להרחבה לעמודים נוספים",
+        "אופטימיזציה למנועי חיפוש בסיסית",
+        "הדרכת שימוש קצרה בסיום"
+      ],
+      "includes_en": [
+        "Everything in the landing page tier",
+        "Multiple sections: services, about, gallery, testimonials",
+        "Structure ready to expand into more pages",
+        "Basic search engine optimization",
+        "Short usage walkthrough at handoff"
+      ],
+      "notIncludes_he": "בלי הפקת וידאו מותאם אישית, בלי מערכת ניהול תוכן מתקדמת",
+      "notIncludes_en": "No custom video production, no advanced content management system",
+      "sections": [
+        {
+          "type": "hero",
+          "title_he": "אתר שמספר את כל הסיפור של העסק שלכם",
+          "title_en": "A site that tells your business's whole story",
+          "subtitle_he": "לא עוד עמוד יחיד. מבנה שלם שמסביר מי אתם, מה אתם נותנים, ולמה כדאי לבחור דווקא בכם.",
+          "subtitle_en": "Not just a single page. A full structure that explains who you are, what you offer, and why you're the right choice.",
+          "primaryCta_he": "בקשו הצעת מחיר",
+          "primaryCta_en": "Get a quote"
+        },
+        {
+          "type": "services",
+          "title_he": "השירותים שלכם, מוצגים נכון",
+          "title_en": "Your services, presented right",
+          "items": [
+            {
+              "title_he": "שירות ראשון",
+              "title_en": "First service",
+              "desc_he": "כל שירות מקבל כותרת ברורה ותיאור קצר שמסביר את הערך ללקוח.",
+              "desc_en": "Every service gets a clear title and a short description explaining the value to the client."
+            },
+            {
+              "title_he": "שירות שני",
+              "title_en": "Second service",
+              "desc_he": "מבנה חוזר שמקל על הגולש להשוות ולהבין את ההצעה שלכם.",
+              "desc_en": "A repeating structure that makes it easy for visitors to compare and understand your offer."
+            },
+            {
+              "title_he": "שירות שלישי",
+              "title_en": "Third service",
+              "desc_he": "אפשר להוסיף כמה שירותים שצריך, המבנה גדל בלי לשבור את העיצוב.",
+              "desc_en": "Add as many services as needed, the structure grows without breaking the design."
+            }
+          ]
+        },
+        {
+          "type": "about",
+          "title_he": "מי אתם, בכמה משפטים שנשארים בזיכרון",
+          "title_en": "Who you are, in a few memorable sentences",
+          "text_he": "מקטע אודות קצר וממוקד: הרקע שלכם, מה מייחד אתכם, ולמה לקוחות סומכים עליכם. בלי פסקאות ארוכות שאף אחד לא קורא.",
+          "text_en": "A short, focused about section: your background, what sets you apart, and why clients trust you. No long paragraphs nobody reads."
+        },
+        {
+          "type": "gallery",
+          "title_he": "עבודות ותוצרים",
+          "title_en": "Work and results",
+          "subtitle_he": "גלריה שמראה במקום מספרת.",
+          "subtitle_en": "A gallery that shows instead of telling.",
+          "items": [
+            { "label_he": "תוצר 01", "label_en": "Item 01" },
+            { "label_he": "תוצר 02", "label_en": "Item 02" },
+            { "label_he": "תוצר 03", "label_en": "Item 03" },
+            { "label_he": "תוצר 04", "label_en": "Item 04" }
+          ]
+        },
+        {
+          "type": "testimonials",
+          "title_he": "מה לקוחות אומרים",
+          "title_en": "What clients say",
+          "items": [
+            {
+              "quote_he": "האתר עלה תוך שבוע והתחיל להביא פניות כבר בשבוע הראשון.",
+              "quote_en": "The site went live within a week and started bringing in inquiries in the first week.",
+              "author_he": "לקוח לדוגמה",
+              "author_en": "Sample client",
+              "role_he": "בעל עסק",
+              "role_en": "Business owner"
+            },
+            {
+              "quote_he": "סוף סוף אתר שנראה כמו שתמיד רציתי, בלי כאב ראש טכני.",
+              "quote_en": "Finally a site that looks the way I always wanted, without the technical headache.",
+              "author_he": "לקוחה לדוגמה",
+              "author_en": "Sample client",
+              "role_he": "מנהלת שיווק",
+              "role_en": "Marketing manager"
+            }
+          ]
+        },
+        {
+          "type": "contact-mini",
+          "title_he": "מתאים לעסק שלכם? ספרו לנו עליו",
+          "title_en": "Right for your business? Tell us about it",
+          "subtitle_he": "נחזור אליכם עם הצעת מחיר מדויקת לרמה הזו.",
+          "subtitle_en": "We'll get back to you with an exact quote for this tier.",
+          "button_he": "בקשו הצעת מחיר לרמה הזו",
+          "button_en": "Request a quote for this tier"
+        }
+      ]
+    },
+    {
+      "id": "premium",
+      "name_he": "פרימיום עם וידאו AI",
+      "name_en": "Premium with AI Video",
+      "priceRange_he": "9,900–17,900 ₪",
+      "priceRange_en": "₪9,900–17,900",
+      "tagline_he": "אתר מלא, עם הנשק הסודי שלנו: וידאו AI קולנועי.",
+      "tagline_en": "A full site, with our secret weapon: cinematic AI video.",
+      "includes_he": [
+        "כל מה שכלול באתר העסקי המלא",
+        "סרטון AI מותאם אישית למותג שלכם",
+        "כותרת ראשית עם וידאו רקע",
+        "אנימציות מותאמות אישית באתר",
+        "ליווי צמוד עד השקה ואחריה"
+      ],
+      "includes_en": [
+        "Everything in the full business site tier",
+        "A custom AI video made for your brand",
+        "Hero section with background video",
+        "Custom in-site animations",
+        "Close support through launch and after"
+      ],
+      "notIncludes_he": "מספר סרטונים נוספים ותכנון קמפיין מלא מתומחרים בנפרד",
+      "notIncludes_en": "Additional videos and full campaign planning are priced separately",
+      "sections": [
+        {
+          "type": "hero-video",
+          "title_he": "אתר שמדבר, זז ומשכנע כמו סרטון פרסומת",
+          "title_en": "A site that talks, moves, and convinces like a commercial",
+          "subtitle_he": "כותרת ראשית עם סרטון AI ברקע. הגולש רואה תנועה ורגש עוד לפני שקרא מילה אחת.",
+          "subtitle_en": "A hero section with an AI video in the background. Visitors feel motion and emotion before reading a single word.",
+          "primaryCta_he": "בקשו הצעת מחיר",
+          "primaryCta_en": "Get a quote",
+          "videoUrl": "videos/luso-espresso.mp4"
+        },
+        {
+          "type": "services",
+          "title_he": "כל מה שבאתר העסקי, ברמה גבוהה יותר",
+          "title_en": "Everything in the business site, taken further",
+          "items": [
+            {
+              "title_he": "עיצוב ואנימציה מותאמים אישית",
+              "title_en": "Custom design and animation",
+              "desc_he": "כל מקטע מקבל תנועה שמתאימה למותג, לא תבנית גנרית.",
+              "desc_en": "Every section gets motion tailored to the brand, not a generic template."
+            },
+            {
+              "title_he": "וידאו AI מותאם אישית",
+              "title_en": "Custom AI video",
+              "desc_he": "סרטון שנוצר במיוחד עבורכם ומוטמע ישירות בתוך העיצוב.",
+              "desc_en": "A video created specifically for you, embedded directly into the design."
+            },
+            {
+              "title_he": "ליווי מלא עד ואחרי ההשקה",
+              "title_en": "Full support through and after launch",
+              "desc_he": "לא נעלמים אחרי מסירת הקבצים.",
+              "desc_en": "We don't disappear after handing over the files."
+            }
+          ]
+        },
+        {
+          "type": "portfolio-embed",
+          "title_he": "תיק עבודות מוטמע בתוך האתר שלכם",
+          "title_en": "A portfolio embedded right in your site",
+          "subtitle_he": "מקטע שמציג את העבודות שלכם בלי לצאת מהעמוד.",
+          "subtitle_en": "A section that shows your work without leaving the page."
+        },
+        {
+          "type": "testimonials",
+          "title_he": "מה לקוחות אומרים",
+          "title_en": "What clients say",
+          "items": [
+            {
+              "quote_he": "הסרטון בכותרת הראשית לבד הביא יותר פניות מכל קמפיין פרסום שעשינו.",
+              "quote_en": "The hero video alone brought in more inquiries than any ad campaign we ran.",
+              "author_he": "לקוח לדוגמה",
+              "author_en": "Sample client",
+              "role_he": "מנכ״ל",
+              "role_en": "CEO"
+            }
+          ]
+        },
+        {
+          "type": "video-banner",
+          "title_he": "מה שאף סוכנות אתרים אחרת לא נותנת לכם",
+          "title_en": "What no other web agency gives you",
+          "text_he": "אנחנו לא רק בונים אתרים. אנחנו יוצרים תוכן וידאו קולנועי בבינה מלאכותית, ומטמיעים אותו ישירות בתוך העיצוב שלכם. זה ההבדל בין אתר יפה לאתר שזוכרים.",
+          "text_en": "We don't just build websites. We create cinematic AI video content and embed it directly into your design. That's the difference between a nice site and a site people remember.",
+          "cta_he": "גלו את יכולות הווידאו שלנו",
+          "cta_en": "See our video capabilities"
+        },
+        {
+          "type": "contact-mini",
+          "title_he": "מוכנים לרמה הזו? ספרו לנו על המותג שלכם",
+          "title_en": "Ready for this tier? Tell us about your brand",
+          "subtitle_he": "נחזור אליכם עם הצעת מחיר מדויקת לרמה הזו.",
+          "subtitle_en": "We'll get back to you with an exact quote for this tier.",
+          "button_he": "בקשו הצעת מחיר לרמה הזו",
+          "button_en": "Request a quote for this tier"
+        }
+      ]
+    }
+  ]
+}

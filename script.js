@@ -497,9 +497,20 @@ function initPostPage() {
 
 /* ---------- contact / quote form ---------- */
 
+function prefillTierFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const tier = params.get("tier");
+  if (!tier) return;
+  const tierField = qs("#tierField");
+  if (tierField) tierField.value = tier;
+  const projectType = qs("#projectTypeField");
+  if (projectType) projectType.value = "website";
+}
+
 function initQuoteForm() {
   const form = qs("#quoteForm");
   if (!form) return;
+  prefillTierFromQuery();
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const data = new FormData(form);
