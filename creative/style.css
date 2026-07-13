@@ -1,0 +1,118 @@
+/* ============================================================
+   DS Creative: room-specific design system
+   A "coming soon" placeholder. Same dark base as every other
+   room, but its flourish is a slow paint-bleed of the logo's
+   splash colors (magenta, orange, sky) instead of a single
+   accent, since the brand itself isn't fully defined yet.
+   Loaded after ../ds-shared.css.
+   ============================================================ */
+
+:root {
+  --bg: #0c0a10;
+  --bg-elevated: #131019;
+  --bg-card: #17131f;
+  --accent: #ec4899;
+  --accent-soft: rgba(236, 72, 153, 0.14);
+  --accent-border: rgba(236, 72, 153, 0.4);
+  --cream: #f5eef2;
+  --text-primary: #f3eef1;
+  --text-muted: rgba(243, 238, 241, 0.64);
+  --text-faint: rgba(243, 238, 241, 0.4);
+  --border: rgba(243, 238, 241, 0.1);
+  --border-strong: rgba(243, 238, 241, 0.2);
+
+  --splash-orange: #f97316;
+  --splash-sky: #38bdf8;
+
+  --shadow-accent: 0 3px 12px rgba(236, 72, 153, 0.28);
+}
+
+/* ============================================================
+   Paint-bleed: DS Creative's flourish
+   ============================================================ */
+
+.paint-bleed {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.paint-bleed span {
+  position: absolute;
+  width: 50vw;
+  height: 50vw;
+  max-width: 560px;
+  max-height: 560px;
+  border-radius: 50%;
+  filter: blur(130px);
+  opacity: 0.3;
+  mix-blend-mode: screen;
+  animation: bleed-drift 26s ease-in-out infinite alternate;
+}
+
+.paint-bleed span:nth-child(1) {
+  background: var(--accent);
+  top: -12%;
+  inset-inline-start: -10%;
+}
+
+.paint-bleed span:nth-child(2) {
+  background: var(--splash-orange);
+  top: 30%;
+  inset-inline-end: -16%;
+  animation-delay: 7s;
+  animation-duration: 30s;
+}
+
+.paint-bleed span:nth-child(3) {
+  background: var(--splash-sky);
+  bottom: -16%;
+  inset-inline-start: 22%;
+  animation-delay: 13s;
+  animation-duration: 34s;
+}
+
+@keyframes bleed-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(6%, 8%) scale(1.18); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paint-bleed span {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   Coming-soon hero
+   ============================================================ */
+
+.hero {
+  min-height: 100vh;
+}
+
+.rec-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  margin-bottom: 28px;
+}
+
+.rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: rec-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
