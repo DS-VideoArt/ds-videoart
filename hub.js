@@ -29,6 +29,86 @@ const ROOMS = [
 ];
 
 let hubState = null;
+let transitionInFlight = false;
+
+/**
+ * Runs a GSAP timeline and resolves when it completes, or after
+ * timeoutMs, whichever comes first (force-jumping the timeline to
+ * its end in that case). Without this, a throttled tab could leave
+ * the flight timeline never firing onComplete, which would strand
+ * the user on a frozen scene and never navigate.
+ */
+function raceTimeline(tl, timeoutMs) {
+  return new Promise((resolve) => {
+    let done = false;
+    const timer = setTimeout(() => {
+      if (done) return;
+      done = true;
+      tl.progress(1);
+      resolve();
+    }, timeoutMs);
+    tl.eventCallback("onComplete", () => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      resolve();
+    });
+  });
+}
+
+function enterRoom(key, href) {
+  if (transitionInFlight) return;
+  transitionInFlight = true;
+
+  const entry = hubState && hubState.roomsByKey[key];
+  const flash = document.getElementById("hubBrandFlash");
+
+  if (!entry || !flash || typeof gsap === "undefined") {
+    sessionStorage.setItem("ds_hub_transition", key);
+    window.location.href = href;
+    return;
+  }
+
+  hubState.setIdleActive(false);
+  if (entry.idleTween) entry.idleTween.pause();
+
+  flash.style.background = "#" + entry.light.color.getHexString();
+
+  const heroEls = qsa(".hub-tag, .hub-hero h1, .hub-hero p, .lab-room-links");
+  const otherEntries = Object.entries(hubState.roomsByKey)
+    .filter(([k]) => k !== key)
+    .map(([, e]) => e);
+
+  const { camera } = hubState;
+  const startPos = camera.position.clone();
+  const targetPos = entry.group.position;
+  const camProxy = { t: 0 };
+
+  const tl = gsap.timeline({ defaults: { ease: "power2.in" } });
+  tl.to(heroEls, { opacity: 0, duration: 0.35 }, 0)
+    .to(
+      camProxy,
+      {
+        t: 1,
+        duration: 1.3,
+        onUpdate: () => {
+          camera.position.lerpVectors(startPos, targetPos, camProxy.t * 0.85);
+          camera.lookAt(targetPos.x, targetPos.y, targetPos.z);
+        },
+      },
+      0
+    )
+    .to(entry.light, { intensity: 14, duration: 1.3 }, 0)
+    .to(entry.group.scale, { x: 2.2, y: 2.2, z: 2.2, duration: 1.3 }, 0)
+    .to(otherEntries.map((e) => e.material), { opacity: 0, duration: 0.6 }, 0.2)
+    .to(otherEntries.map((e) => e.light), { intensity: 0, duration: 0.6 }, 0.2)
+    .to(flash, { opacity: 1, duration: 0.45 }, 0.95);
+
+  raceTimeline(tl, 2200).then(() => {
+    sessionStorage.setItem("ds_hub_transition", key);
+    window.location.href = href;
+  });
+}
 
 if (canBoot3D) {
   import("three")
@@ -81,7 +161,7 @@ function initHubScene(THREE) {
     group.add(light);
 
     scene.add(group);
-    roomsByKey[room.key] = { group, light, idleTween: null, baseIntensity: 3, peakIntensity: 4.4 };
+    roomsByKey[room.key] = { group, light, material, idleTween: null, baseIntensity: 3, peakIntensity: 4.4 };
   });
 
   function onResize() {
@@ -126,6 +206,12 @@ function initHubScene(THREE) {
         overwrite: true,
         onComplete: () => entry.idleTween && entry.idleTween.resume(),
       });
+    });
+
+    link.addEventListener("click", (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      enterRoom(link.dataset.room, link.getAttribute("href"));
     });
   });
 

@@ -152,6 +152,30 @@ function scrollToHash() {
   document.documentElement.style.scrollBehavior = prevBehavior;
 }
 
+/* ---------- hub arrival: fade out the brand-color overlay left by the
+   hub's camera-flight, if we actually arrived that way. A tiny inline
+   blocking script in <head> (see each room's HTML) sets the
+   "hub-arrival" class on <html> before first paint, based on a
+   sessionStorage flag the hub sets right before navigating, so there's
+   no flash-of-wrong-state on arrival, and no flash at all on a direct/
+   bookmarked load where the class is never set. ---------- */
+
+function clearHubArrival() {
+  if (!document.documentElement.classList.contains("hub-arrival")) return;
+  sessionStorage.removeItem("ds_hub_transition");
+  const overlay = qs("#hubTransitionOverlay");
+  if (!overlay || prefersReducedMotion || typeof gsap === "undefined") {
+    document.documentElement.classList.remove("hub-arrival");
+    return;
+  }
+  gsap.to(overlay, {
+    opacity: 0,
+    duration: 0.4,
+    ease: "power1.out",
+    onComplete: () => document.documentElement.classList.remove("hub-arrival"),
+  });
+}
+
 /* ---------- boot ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -160,5 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   initLang();
   initNav();
+  clearHubArrival();
   if (typeof bootRouter === "function") bootRouter();
 });

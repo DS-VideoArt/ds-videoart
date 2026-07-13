@@ -70,6 +70,28 @@ button {
 }
 
 /* ============================================================
+   Hub-arrival overlay: hidden unless the tiny blocking script in
+   <head> marks <html class="hub-arrival"> before first paint (only
+   happens right after the hub's own camera-flight sets the
+   sessionStorage flag). Never appears on a direct or bookmarked load.
+   ============================================================ */
+
+#hubTransitionOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  background: var(--accent);
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+html.hub-arrival #hubTransitionOverlay {
+  display: block;
+  opacity: 1;
+}
+
+/* ============================================================
    Film grain (replaces AI-glow blobs)
    ============================================================ */
 
