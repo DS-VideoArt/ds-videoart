@@ -1,0 +1,22 @@
+/* ============================================================
+   DS legal pages: shared across every sub-brand, so they use a
+   neutral parent-brand palette rather than any one room's colors.
+   Loaded after ../ds-shared.css.
+   ============================================================ */
+
+:root {
+  --bg: #0c0c0d;
+  --bg-elevated: #141416;
+  --bg-card: #19191b;
+  --accent: #8b93a3;
+  --accent-soft: rgba(139, 147, 163, 0.14);
+  --accent-border: rgba(139, 147, 163, 0.4);
+  --cream: #ede4d3;
+  --text-primary: #f2f1ee;
+  --text-muted: rgba(242, 241, 238, 0.64);
+  --text-faint: rgba(242, 241, 238, 0.4);
+  --border: rgba(242, 241, 238, 0.1);
+  --border-strong: rgba(242, 241, 238, 0.2);
+
+  --shadow-accent: 0 3px 12px rgba(139, 147, 163, 0.25);
+}

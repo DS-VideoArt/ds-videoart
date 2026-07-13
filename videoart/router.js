@@ -59,7 +59,6 @@ const CATEGORY_FLASH = {
   blog: "var(--leak-teal)",
   post: "var(--leak-teal)",
   showcase: "var(--leak-amber)",
-  legal: "var(--accent)",
 };
 
 /* ---------- mount functions: called on cold load AND on every router arrival ---------- */
@@ -99,18 +98,12 @@ function mountShowcase() {
   return typeof initShowcasePage === "function" ? initShowcasePage() : Promise.resolve();
 }
 
-function mountLegal() {
-  initReveals();
-  return Promise.resolve();
-}
-
 const PAGE_INIT = {
   home: mountHome,
   portfolio: mountPortfolio,
   blog: mountBlog,
   post: mountPost,
   showcase: mountShowcase,
-  legal: mountLegal,
 };
 
 /* ---------- nav sync ---------- */
