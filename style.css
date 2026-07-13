@@ -1318,3 +1318,64 @@ footer {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================
+   Room transitions: the film-gate shutter between pages
+   ============================================================ */
+
+#view {
+  display: block;
+}
+
+#roomShutter {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+
+#roomShutter.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.rt-panel {
+  position: absolute;
+  inset-inline: 0;
+  height: 52%;
+  background: var(--bg);
+  transform: translateY(-100%);
+}
+
+.rt-panel-a {
+  top: 0;
+}
+
+.rt-panel-a .sprocket-row {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+}
+
+.rt-panel-b {
+  bottom: 0;
+  transform: translateY(100%);
+}
+
+.rt-panel-b .sprocket-row {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+}
+
+.rt-flash {
+  position: absolute;
+  top: 50%;
+  inset-inline: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  opacity: 0;
+  filter: blur(2px);
+}

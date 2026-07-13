@@ -17,6 +17,8 @@ const SX = {
   skipRequested: false,
 };
 
+let pickerIntroPlayed = false;
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -273,8 +275,6 @@ function tierCardHtml(tier, lang) {
     </div>`;
 }
 
-let pickerIntroPlayed = false;
-
 function renderTierPicker() {
   const grid = document.getElementById("tierGrid");
   const lang = getLang();
@@ -506,10 +506,17 @@ function backToPicker() {
   document.getElementById("buildConsole").classList.add("hidden");
 }
 
-/* ---------- boot ---------- */
+/* ---------- mount (called on cold load and on every router entry) ---------- */
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetchJSON("showcase-data.json")
+function initShowcasePage() {
+  SX.data = null;
+  SX.tierId = null;
+  SX.styleId = "bold";
+  SX.buildToken++;
+  SX.skipRequested = false;
+  pickerIntroPlayed = false;
+
+  return fetchJSON("showcase-data.json")
     .then((data) => {
       SX.data = data;
       SX.tierId = data.tiers[0].id;
@@ -523,7 +530,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.getElementById("buildSkip").addEventListener("click", skipBuild);
 
-      document.addEventListener("langchange", () => {
+      onLangChange(() => {
         renderTierPicker();
         if (SX.tierId && !document.getElementById("demoStage").classList.contains("hidden")) {
           const tier = getTier(SX.tierId);
@@ -534,4 +541,4 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     })
     .catch((err) => console.error(err));
-});
+}

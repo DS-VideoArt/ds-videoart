@@ -42,6 +42,24 @@ function qsa(sel, root) {
   return Array.from((root || document).querySelectorAll(sel));
 }
 
+/* ---------- page-scoped listeners (cleared on each page mount by the router) ---------- */
+
+let pageScopedListeners = [];
+
+function addPageListener(target, event, handler) {
+  target.addEventListener(event, handler);
+  pageScopedListeners.push({ target, event, handler });
+}
+
+function onLangChange(handler) {
+  addPageListener(document, "langchange", handler);
+}
+
+function clearLangChangeHandlers() {
+  pageScopedListeners.forEach(({ target, event, handler }) => target.removeEventListener(event, handler));
+  pageScopedListeners = [];
+}
+
 /* ---------- language toggle ---------- */
 
 function setLang(lang) {
@@ -251,11 +269,11 @@ function initDragScroll(viewport) {
     startX = e.clientX;
     startScroll = viewport.scrollLeft;
   });
-  window.addEventListener("pointermove", (e) => {
+  addPageListener(window, "pointermove", (e) => {
     if (!isDown) return;
     viewport.scrollLeft = startScroll - (e.clientX - startX);
   });
-  window.addEventListener("pointerup", () => {
+  addPageListener(window, "pointerup", () => {
     isDown = false;
     viewport.classList.remove("dragging");
   });
@@ -318,7 +336,7 @@ function initFilmstrip(viewportSelector, filterRowSelector, limit, options) {
           });
         });
       }
-      document.addEventListener("langchange", () => {
+      onLangChange(() => {
         const active = filterRow ? qs(".filter-pill.active", filterRow) : null;
         renderFilmstrip(viewport, limit ? data.slice(0, limit) : data, active ? active.dataset.filter : "all", autoplay);
       });
@@ -431,7 +449,7 @@ function initBlogGrid(gridSelector, filterRowSelector, limit) {
           });
         });
       }
-      document.addEventListener("langchange", () => {
+      onLangChange(() => {
         const active = filterRow ? qs(".filter-pill.active", filterRow) : null;
         renderBlogGrid(grid, limit ? sorted.slice(0, limit) : sorted, active ? active.dataset.filter : "all");
       });
@@ -483,13 +501,13 @@ function initPostPage() {
       const post = data.find((p) => p.id === id) || data[0];
       if (!post) return;
       renderPostContent(post);
-      document.addEventListener("langchange", () => renderPostContent(post));
+      onLangChange(() => renderPostContent(post));
 
       const relatedGrid = qs("#relatedPosts");
       if (relatedGrid) {
         const related = data.filter((p) => p.id !== post.id).slice(0, 3);
         renderBlogGrid(relatedGrid, related, "all");
-        document.addEventListener("langchange", () => renderBlogGrid(relatedGrid, related, "all"));
+        onLangChange(() => renderBlogGrid(relatedGrid, related, "all"));
       }
     })
     .catch((err) => console.error(err));
@@ -551,9 +569,5 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   initLang();
   initNav();
-  const introIsPlaying = initCountdownIntro();
-  kineticHeroReveal(introIsPlaying);
-  initReveals();
-  initQuoteForm();
-  initPostPage();
+  if (typeof bootRouter === "function") bootRouter();
 });
