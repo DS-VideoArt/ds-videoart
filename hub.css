@@ -1,0 +1,199 @@
+/* ============================================================
+   DS hub: the hub itself has no single brand color, it hosts
+   all four. Loaded after ds-shared.css.
+   ============================================================ */
+
+:root {
+  --bg: #08090b;
+  --bg-elevated: #0e1013;
+  --bg-card: #121417;
+  --accent: #e8ecf2;
+  --accent-soft: rgba(232, 236, 242, 0.1);
+  --accent-border: rgba(232, 236, 242, 0.3);
+  --cream: #f2f1ee;
+  --text-primary: #f2f1ee;
+  --text-muted: rgba(242, 241, 238, 0.64);
+  --text-faint: rgba(242, 241, 238, 0.4);
+  --border: rgba(242, 241, 238, 0.1);
+  --border-strong: rgba(242, 241, 238, 0.2);
+
+  --shadow-accent: 0 3px 16px rgba(232, 236, 242, 0.18);
+
+  --room-videoart: #d1414c;
+  --room-web: #3d8ef0;
+  --room-lab: #4ade80;
+  --room-creative: #ec4899;
+}
+
+body.hub {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   Decorative 3D layer (behind everything, purely cosmetic)
+   ============================================================ */
+
+#labCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hub-brand-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  background: var(--room-videoart);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Hub hero
+   ============================================================ */
+
+.hub-hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: calc(var(--nav-height) + 40px) 24px 60px;
+}
+
+.hub-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 22px;
+}
+
+.hub-hero h1 {
+  font-size: clamp(36px, 6vw, 68px);
+  max-width: 900px;
+  margin-bottom: 18px;
+}
+
+.hub-hero p {
+  color: var(--text-muted);
+  font-size: clamp(15px, 1.6vw, 18px);
+  max-width: 560px;
+  margin-bottom: 56px;
+}
+
+/* ============================================================
+   Room links: real navigation, always present. This is the
+   accessible/no-JS/no-WebGL baseline every visitor gets first.
+   The 3D layer, when it loads, sits behind these and the click
+   handler only enhances what these links already do.
+   ============================================================ */
+
+.lab-room-links {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 100%;
+  max-width: 780px;
+}
+
+.lab-room-link {
+  --room-color: var(--room-videoart);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 28px 26px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-align: start;
+  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.lab-room-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--room-color) 20%, transparent) 0%, transparent 70%);
+  opacity: 0.7;
+  transition: opacity 0.3s var(--ease-out);
+}
+
+.lab-room-link:hover,
+.lab-room-link:focus-visible {
+  transform: translateY(-4px);
+  border-color: var(--room-color);
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--room-color) 22%, transparent);
+}
+
+.lab-room-link:hover::before,
+.lab-room-link:focus-visible::before {
+  opacity: 1;
+}
+
+.lab-room-dot {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--room-color);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--room-color) 20%, transparent);
+  margin-bottom: 6px;
+}
+
+.lab-room-link h3 {
+  position: relative;
+  font-size: 21px;
+  margin: 0;
+}
+
+.lab-room-link p {
+  position: relative;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.lab-room-link[data-room="videoart"] { --room-color: var(--room-videoart); }
+.lab-room-link[data-room="web"] { --room-color: var(--room-web); }
+.lab-room-link[data-room="lab"] { --room-color: var(--room-lab); }
+.lab-room-link[data-room="creative"] { --room-color: var(--room-creative); }
+
+/* Screen-projected hover labels, populated by hub.js only when
+   the 3D scene is active. Empty and inert otherwise. */
+.hub-room-label {
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--text-primary);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  transition: opacity 0.2s var(--ease-out);
+}
+
+@media (max-width: 700px) {
+  .lab-room-links {
+    grid-template-columns: 1fr;
+  }
+}
