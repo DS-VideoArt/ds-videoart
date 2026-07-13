@@ -168,6 +168,32 @@ function ensureShutter() {
 }
 
 /**
+ * Runs a GSAP timeline and resolves when it completes, or after `timeoutMs`
+ * ms, whichever comes first (force-jumping the timeline to its end in that
+ * case). Without this, a throttled tab (backgrounded, low power mode, a
+ * stalled frame) could leave onComplete never firing, which would leave
+ * transitionInFlight stuck true and every subsequent link click silently
+ * no-op forever, exactly the "links are broken" symptom.
+ */
+function raceTimeline(tl, timeoutMs) {
+  return new Promise((resolve) => {
+    let done = false;
+    const timer = setTimeout(() => {
+      if (done) return;
+      done = true;
+      tl.progress(1);
+      resolve();
+    }, timeoutMs);
+    tl.eventCallback("onComplete", () => {
+      if (done) return;
+      done = true;
+      clearTimeout(timer);
+      resolve();
+    });
+  });
+}
+
+/**
  * Plays the "lunge forward, gate closes" half of the transition.
  * Resolves once the screen is fully covered, with a function to call
  * once the new DOM is in place to play the "arrive in the room" half.
@@ -192,15 +218,15 @@ function closeGate(view, flashColor) {
 
   flash.style.background = flashColor;
 
-  return new Promise((resolveClosed) => {
-    gsap
-      .timeline({ onComplete: resolveClosed, defaults: { transformPerspective: 1200, transformOrigin: "50% 50%" } })
-      .to(view, { scale: 1.22, z: 140, filter: "brightness(0.55) blur(7px)", duration: 0.35, ease: "power2.in" }, 0)
-      .fromTo(panelA, { yPercent: -100 }, { yPercent: 0, duration: 0.35, ease: "power2.in" }, 0)
-      .fromTo(panelB, { yPercent: 100 }, { yPercent: 0, duration: 0.35, ease: "power2.in" }, 0)
-      .to(flash, { opacity: 1, duration: 0.09 }, 0.28)
-      .to(flash, { opacity: 0, duration: 0.13 }, 0.4);
-  }).then(() => (view) => openGate(view, shutter, panelA, panelB));
+  const tl = gsap
+    .timeline({ defaults: { transformPerspective: 1200, transformOrigin: "50% 50%" } })
+    .to(view, { scale: 1.22, z: 140, filter: "brightness(0.55) blur(7px)", duration: 0.35, ease: "power2.in" }, 0)
+    .fromTo(panelA, { yPercent: -100 }, { yPercent: 0, duration: 0.35, ease: "power2.in" }, 0)
+    .fromTo(panelB, { yPercent: 100 }, { yPercent: 0, duration: 0.35, ease: "power2.in" }, 0)
+    .to(flash, { opacity: 1, duration: 0.09 }, 0.28)
+    .to(flash, { opacity: 0, duration: 0.13 }, 0.4);
+
+  return raceTimeline(tl, 900).then(() => (view) => openGate(view, shutter, panelA, panelB));
 }
 
 function openGate(view, shutter, panelA, panelB) {
@@ -214,18 +240,14 @@ function openGate(view, shutter, panelA, panelB) {
     );
   }
   gsap.set(view, { scale: 0.9, z: -180, opacity: 0, filter: "blur(5px)" });
-  return new Promise((resolveOpen) => {
-    gsap
-      .timeline({
-        defaults: { transformPerspective: 1200, transformOrigin: "50% 50%" },
-        onComplete: () => {
-          shutter.classList.remove("active");
-          resolveOpen();
-        },
-      })
-      .to(panelA, { yPercent: -100, duration: 0.42, ease: "power3.out" }, 0)
-      .to(panelB, { yPercent: 100, duration: 0.42, ease: "power3.out" }, 0)
-      .to(view, { scale: 1, z: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "power3.out" }, 0.05);
+  const tl = gsap
+    .timeline({ defaults: { transformPerspective: 1200, transformOrigin: "50% 50%" } })
+    .to(panelA, { yPercent: -100, duration: 0.42, ease: "power3.out" }, 0)
+    .to(panelB, { yPercent: 100, duration: 0.42, ease: "power3.out" }, 0)
+    .to(view, { scale: 1, z: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "power3.out" }, 0.05);
+
+  return raceTimeline(tl, 900).then(() => {
+    shutter.classList.remove("active");
   });
 }
 
