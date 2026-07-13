@@ -265,7 +265,6 @@ function initHubScene(THREE) {
     basePos,
     setIdleActive: (v) => { idleActive = v; },
   };
-  window.__hubStateDebug = hubState;
 
   /* ---------- reverse flight: arriving back at the hub from a room ---------- */
   const returnKey = sessionStorage.getItem("ds_hub_return");
