@@ -174,25 +174,6 @@ body.hub {
 .lab-room-link[data-room="lab"] { --room-color: var(--room-lab); }
 .lab-room-link[data-room="creative"] { --room-color: var(--room-creative); }
 
-/* Screen-projected hover labels, populated by hub.js only when
-   the 3D scene is active. Empty and inert otherwise. */
-.hub-room-label {
-  position: fixed;
-  z-index: 2;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  color: var(--text-primary);
-  background: rgba(0, 0, 0, 0.55);
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border-strong);
-  transition: opacity 0.2s var(--ease-out);
-}
-
 @media (max-width: 700px) {
   .lab-room-links {
     grid-template-columns: 1fr;

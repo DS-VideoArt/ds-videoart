@@ -28,6 +28,8 @@ const ROOMS = [
   { key: "creative", color: 0xec4899, pos: [5.4, -1.6, -9.5] },
 ];
 
+let hubState = null;
+
 if (canBoot3D) {
   import("three")
     .then((THREE) => initHubScene(THREE))
@@ -55,10 +57,9 @@ function initHubScene(THREE) {
 
   scene.add(new THREE.AmbientLight(0xffffff, 0.12));
 
-  const roomMeshes = [];
-  const roomLights = [];
+  const roomsByKey = {};
 
-  ROOMS.forEach((room) => {
+  ROOMS.forEach((room, i) => {
     const group = new THREE.Group();
     group.position.set(room.pos[0], room.pos[1], room.pos[2]);
 
@@ -80,8 +81,7 @@ function initHubScene(THREE) {
     group.add(light);
 
     scene.add(group);
-    roomMeshes.push(group);
-    roomLights.push(light);
+    roomsByKey[room.key] = { group, light, idleTween: null, baseIntensity: 3, peakIntensity: 4.4 };
   });
 
   function onResize() {
@@ -92,9 +92,9 @@ function initHubScene(THREE) {
   window.addEventListener("resize", onResize);
 
   if (typeof gsap !== "undefined") {
-    roomLights.forEach((light, i) => {
-      gsap.to(light, {
-        intensity: 4.4,
+    Object.values(roomsByKey).forEach((entry, i) => {
+      entry.idleTween = gsap.to(entry.light, {
+        intensity: entry.peakIntensity,
         repeat: -1,
         yoyo: true,
         duration: 2.6 + i * 0.4,
@@ -103,17 +103,57 @@ function initHubScene(THREE) {
     });
   }
 
+  /* ---------- hover: hovering a real room card reacts in the 3D scene ----------
+     The rooms live far back as atmosphere, not aligned to the cards' screen
+     position, so hover is wired by data-room key (DOM -> matching 3D group)
+     rather than a raycast against the mesh itself. */
+  qsa(".lab-room-link").forEach((link) => {
+    const entry = roomsByKey[link.dataset.room];
+    if (!entry || typeof gsap === "undefined") return;
+
+    link.addEventListener("pointerenter", () => {
+      if (entry.idleTween) entry.idleTween.pause();
+      gsap.to(entry.light, { intensity: entry.peakIntensity + 2, duration: 0.4, ease: "power2.out", overwrite: true });
+      gsap.to(entry.group.scale, { x: 1.12, y: 1.12, z: 1.12, duration: 0.4, ease: "power2.out" });
+    });
+
+    link.addEventListener("pointerleave", () => {
+      gsap.to(entry.group.scale, { x: 1, y: 1, z: 1, duration: 0.5, ease: "power2.out" });
+      gsap.to(entry.light, {
+        intensity: entry.baseIntensity,
+        duration: 0.5,
+        ease: "power2.out",
+        overwrite: true,
+        onComplete: () => entry.idleTween && entry.idleTween.resume(),
+      });
+    });
+  });
+
+  let idleActive = true;
   const clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
-    camera.position.x = basePos.x + Math.sin(t * 0.12) * 0.7;
-    camera.position.y = basePos.y + Math.cos(t * 0.09) * 0.3;
-    camera.lookAt(0, -0.6, -10);
-    roomMeshes.forEach((group, i) => {
-      group.rotation.y = t * 0.05 * (i % 2 === 0 ? 1 : -1);
+    if (idleActive) {
+      camera.position.x = basePos.x + Math.sin(t * 0.12) * 0.7;
+      camera.position.y = basePos.y + Math.cos(t * 0.09) * 0.3;
+      camera.lookAt(0, -0.6, -10);
+    }
+    Object.values(roomsByKey).forEach((entry, i) => {
+      entry.group.rotation.y = t * 0.05 * (i % 2 === 0 ? 1 : -1);
     });
     renderer.render(scene, camera);
   }
   animate();
+
+  hubState = {
+    THREE,
+    scene,
+    camera,
+    renderer,
+    roomsByKey,
+    basePos,
+    setIdleActive: (v) => { idleActive = v; },
+  };
+  window.__hubStateDebug = hubState;
 }
