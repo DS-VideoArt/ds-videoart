@@ -1,0 +1,24 @@
+[
+  {
+    "id": "item-1",
+    "title_he": "פרויקט ראשון בדרך",
+    "title_en": "First experiment, on the way",
+    "desc_he": "משהו יוצא דופן נמצא כרגע בבנייה. יעלה לכאן ברגע שיהיה מוכן.",
+    "desc_en": "Something out of the ordinary is currently in the works. Going up here the moment it's ready.",
+    "status": "coming-soon",
+    "type": "placeholder",
+    "href": "",
+    "thumbnail": ""
+  },
+  {
+    "id": "item-2",
+    "title_he": "עוד ניסוי בדרך",
+    "title_en": "Another experiment coming",
+    "desc_he": "המעבדה הזו פתוחה לכל דבר יצירתי שלא נכנס לקטגוריה של אתרים או וידאו.",
+    "desc_en": "This lab is open to anything creative that doesn't fit under websites or video.",
+    "status": "coming-soon",
+    "type": "placeholder",
+    "href": "",
+    "thumbnail": ""
+  }
+]
