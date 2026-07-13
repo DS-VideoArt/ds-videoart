@@ -176,12 +176,56 @@ function clearHubArrival() {
   });
 }
 
+/* ---------- hub exit: leaving a room back to "/" fades to that room's own
+   --accent color first, so the trip back reads as flying out through
+   color rather than a flat page swap. Reuses #hubTransitionOverlay
+   (the same element the arrival fade uses) since it's already styled
+   as background: var(--accent) and only one of the two ever runs on a
+   given page load. Listeners are attached directly on the link (not
+   delegated) and stop propagation so VideoArt's router.js never also
+   tries to handle the same click. ---------- */
+
+let hubExitInFlight = false;
+
+function initHubExitLinks() {
+  qsa('a[href="/"]').forEach((link) => {
+    link.addEventListener("click", (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (hubExitInFlight) return;
+      hubExitInFlight = true;
+
+      const href = link.getAttribute("href");
+      const roomKey = document.body.dataset.room || "";
+      const overlay = qs("#hubTransitionOverlay");
+
+      let navigated = false;
+      function go() {
+        if (navigated) return;
+        navigated = true;
+        sessionStorage.setItem("ds_hub_return", roomKey);
+        window.location.href = href;
+      }
+
+      if (!overlay || prefersReducedMotion || typeof gsap === "undefined") {
+        go();
+        return;
+      }
+      overlay.style.display = "block";
+      gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power1.in", onComplete: go });
+      setTimeout(go, 900);
+    });
+  });
+}
+
 /* ---------- boot ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
   if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
   }
+  initHubExitLinks();
   initLang();
   initNav();
   clearHubArrival();

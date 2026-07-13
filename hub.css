@@ -51,6 +51,15 @@ body.hub {
   pointer-events: none;
 }
 
+/* Set by a tiny blocking script in <head>, before first paint, only when
+   returning from a room's exit link (sessionStorage flag). Keeps the
+   flash opaque in that room's color from frame one, so there's no pop
+   before hub.js finishes loading Three.js and reversing the flight. */
+html.hub-returning .hub-brand-flash {
+  opacity: 1;
+  background: var(--hub-return-color, var(--room-videoart));
+}
+
 /* ============================================================
    Hub hero
    ============================================================ */

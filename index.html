@@ -2,6 +2,15 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function () {
+      var room = sessionStorage.getItem("ds_hub_return");
+      if (!room) return;
+      var colors = { videoart: "#d1414c", web: "#3d8ef0", lab: "#4ade80", creative: "#ec4899" };
+      document.documentElement.classList.add("hub-returning");
+      document.documentElement.style.setProperty("--hub-return-color", colors[room] || "#e8ecf2");
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DS | וידאו AI, אתרים, ניסויים יצירתיים - AI Video, Websites, Creative Experiments</title>
   <meta name="description" content="DS: משפחת מותגים. DS VideoArt לוידאו AI קולנועי, DS Web לאתרים ודפי נחיתה, DS Lab לניסויים יצירתיים. DS: a family of brands. DS VideoArt for cinematic AI video, DS Web for websites, DS Lab for creative experiments.">
