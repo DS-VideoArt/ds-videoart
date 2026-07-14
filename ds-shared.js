@@ -188,6 +188,7 @@ function clearHubArrival() {
 let hubExitInFlight = false;
 
 function initHubExitLinks() {
+  if (!document.body.dataset.room) return;
   qsa('a[href="/"]').forEach((link) => {
     link.addEventListener("click", (e) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
