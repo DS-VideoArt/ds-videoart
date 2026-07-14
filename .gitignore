@@ -10,3 +10,6 @@ videos/
 # Raw source uploads (renamed copies used by the site are tracked instead)
 hub-media/image/WhatsApp*
 hub-media/videos/WhatsApp*
+hub-media/image/[0-9]*.png
+hub-media/image/e12076b8*
+hub-media/image/ds-logo.png

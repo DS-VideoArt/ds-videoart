@@ -181,6 +181,12 @@ p {
   flex-shrink: 0;
 }
 
+.logo-img {
+  height: 34px;
+  width: auto;
+  display: block;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
