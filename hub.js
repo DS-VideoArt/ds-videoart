@@ -71,16 +71,28 @@ function enterRoom(hotspot, key, href) {
     return;
   }
 
-  flash.style.background = ROOM_COLORS[key] || "#e8ecf2";
-  zoom.style.transformOrigin = hotspotOrigin(hotspot, stage);
+  // Safety net: if the animation below throws or stalls for any reason,
+  // still navigate rather than leaving the user stuck on a frozen hub.
+  const forceGo = setTimeout(go, 3000);
 
-  const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
-  const tl = gsap.timeline({ defaults: { ease: "power2.in" } });
-  tl.to(chrome, { opacity: 0, duration: 0.35 }, 0)
-    .to(zoom, { scale: 2.4, duration: 1.1 }, 0)
-    .to(flash, { opacity: 1, duration: 0.5 }, 0.65);
+  try {
+    flash.style.background = ROOM_COLORS[key] || "#e8ecf2";
+    zoom.style.transformOrigin = hotspotOrigin(hotspot, stage);
 
-  raceTimeline(tl, 2000).then(go);
+    const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
+    const tl = gsap.timeline({ defaults: { ease: "power2.in" } });
+    tl.to(chrome, { opacity: 0, duration: 0.35 }, 0)
+      .to(zoom, { scale: 2.4, duration: 1.1 }, 0)
+      .to(flash, { opacity: 1, duration: 0.5 }, 0.65);
+
+    raceTimeline(tl, 2000).then(() => {
+      clearTimeout(forceGo);
+      go();
+    });
+  } catch (err) {
+    clearTimeout(forceGo);
+    go();
+  }
 }
 
 function initHotspots() {
@@ -114,30 +126,45 @@ function handleHubReturn() {
   if (!returnKey) return;
   sessionStorage.removeItem("ds_hub_return");
 
-  const stage = qs(".hub-stage");
-  const zoom = qs("#hubStageZoom");
-  const flash = qs("#hubBrandFlash");
-
-  if (!stage || !zoom || !flash || !canUseMotion()) {
+  // Absolute safety net: whatever happens below (a thrown error, a CDN
+  // script that never finishes loading, a stalled animation), the
+  // full-screen color flash must never stay stuck covering the page.
+  // If the normal path below doesn't clear the class within 3s, force it.
+  const forceClear = setTimeout(() => {
     document.documentElement.classList.remove("hub-returning");
-    return;
+  }, 3000);
+
+  try {
+    const stage = qs(".hub-stage");
+    const zoom = qs("#hubStageZoom");
+    const flash = qs("#hubBrandFlash");
+
+    if (!stage || !zoom || !flash || !canUseMotion()) {
+      clearTimeout(forceClear);
+      document.documentElement.classList.remove("hub-returning");
+      return;
+    }
+
+    const hotspot = qs('.hub-hotspot[data-room="' + returnKey + '"]');
+    if (hotspot) zoom.style.transformOrigin = hotspotOrigin(hotspot, stage);
+
+    const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
+    gsap.set(zoom, { scale: 2.4 });
+    gsap.set(chrome, { opacity: 0 });
+
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+    tl.to(flash, { opacity: 0, duration: 0.6 }, 0)
+      .to(zoom, { scale: 1, duration: 1.1 }, 0)
+      .to(chrome, { opacity: 1, duration: 0.5 }, 0.5);
+
+    raceTimeline(tl, 2000).then(() => {
+      clearTimeout(forceClear);
+      document.documentElement.classList.remove("hub-returning");
+    });
+  } catch (err) {
+    clearTimeout(forceClear);
+    document.documentElement.classList.remove("hub-returning");
   }
-
-  const hotspot = qs('.hub-hotspot[data-room="' + returnKey + '"]');
-  if (hotspot) zoom.style.transformOrigin = hotspotOrigin(hotspot, stage);
-
-  const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
-  gsap.set(zoom, { scale: 2.4 });
-  gsap.set(chrome, { opacity: 0 });
-
-  const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-  tl.to(flash, { opacity: 0, duration: 0.6 }, 0)
-    .to(zoom, { scale: 1, duration: 1.1 }, 0)
-    .to(chrome, { opacity: 1, duration: 0.5 }, 0.5);
-
-  raceTimeline(tl, 2000).then(() => {
-    document.documentElement.classList.remove("hub-returning");
-  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
