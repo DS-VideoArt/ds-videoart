@@ -1,8 +1,8 @@
 /* ============================================================
-   DS hub: click/return choreography over the real lab footage.
-   No 3D engine — the depth is already baked into the looping
-   video (hub-media/videos/hero-loop.mp4) and its poster image.
-   This file only: fades the video in once it can play, zooms the
+   DS hub: click/return choreography over the real lab photo.
+   No 3D engine — the depth is already baked into the image
+   (hub-media/image/hero.jpg). This file: positions the room
+   hotspots against the actual letterboxed image bounds, zooms the
    footage toward whichever room was clicked before navigating,
    and reverses that zoom on arrival back at the hub.
    ============================================================ */
@@ -170,16 +170,6 @@ function initHotspotLayout() {
   });
 }
 
-function initHeroVideo() {
-  const video = qs("#hubBgVideo");
-  if (!video) return;
-  if (video.readyState >= 3) {
-    video.classList.add("is-ready");
-    return;
-  }
-  video.addEventListener("canplay", () => video.classList.add("is-ready"), { once: true });
-}
-
 /**
  * Arriving back at the hub from a room's exit link: reverse the zoom
  * from that room's hotspot back to the overview, revealing the scene
@@ -233,7 +223,6 @@ function handleHubReturn() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  initHeroVideo();
   initHotspots();
   initHotspotLayout();
   handleHubReturn();
