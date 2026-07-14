@@ -43,11 +43,18 @@ function raceTimeline(tl, timeoutMs) {
   });
 }
 
-function hotspotOrigin(hotspot, stage) {
+/**
+ * Computes a transform-origin for `zoom` (the element being scaled)
+ * centered on `hotspot`. Must be measured against `zoom` itself, not
+ * the outer stage - the hotspots live inside `zoom` now, and `zoom`
+ * is a smaller, letterboxed, aspect-locked box centered in the stage
+ * rather than filling it edge to edge.
+ */
+function hotspotOrigin(hotspot, zoom) {
   const hRect = hotspot.getBoundingClientRect();
-  const sRect = stage.getBoundingClientRect();
-  const cx = ((hRect.left + hRect.width / 2 - sRect.left) / sRect.width) * 100;
-  const cy = ((hRect.top + hRect.height / 2 - sRect.top) / sRect.height) * 100;
+  const zRect = zoom.getBoundingClientRect();
+  const cx = ((hRect.left + hRect.width / 2 - zRect.left) / zRect.width) * 100;
+  const cy = ((hRect.top + hRect.height / 2 - zRect.top) / zRect.height) * 100;
   return cx + "% " + cy + "%";
 }
 
@@ -77,7 +84,7 @@ function enterRoom(hotspot, key, href) {
 
   try {
     flash.style.background = ROOM_COLORS[key] || "#e8ecf2";
-    zoom.style.transformOrigin = hotspotOrigin(hotspot, stage);
+    zoom.style.transformOrigin = hotspotOrigin(hotspot, zoom);
 
     const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
     const tl = gsap.timeline({ defaults: { ease: "power2.in" } });
@@ -146,7 +153,7 @@ function handleHubReturn() {
     }
 
     const hotspot = qs('.hub-hotspot[data-room="' + returnKey + '"]');
-    if (hotspot) zoom.style.transformOrigin = hotspotOrigin(hotspot, stage);
+    if (hotspot) zoom.style.transformOrigin = hotspotOrigin(hotspot, zoom);
 
     const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
     gsap.set(zoom, { scale: 2.4 });

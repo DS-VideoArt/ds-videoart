@@ -55,21 +55,43 @@ html.hub-returning .hub-brand-flash {
 }
 
 /* ============================================================
-   The stage: full-bleed footage of the lab, with a zoomable
-   inner wrapper (hub.js animates this wrapper's transform for
-   the "fly into a room" click effect, no 3D engine needed since
-   the depth is already baked into the footage).
+   The stage: footage of the lab, with a zoomable inner wrapper
+   (hub.js animates this wrapper's transform for the "fly into a
+   room" click effect, no 3D engine needed since the depth is
+   already baked into the footage).
+
+   The source image/video is a very wide panorama (~2.3:1). Letting
+   it stretch full-bleed with object-fit:cover across a 100vh stage
+   forces it to crop hard on the sides whenever the browser window
+   isn't nearly as wide as the image itself - which is most normal
+   windows, and gets worse the moment devtools or a sidebar narrows
+   things further. That crop can zoom in tight enough on a single
+   room that it looks exactly like an unwanted "fly into a room"
+   animation firing on its own, even though nothing is animating.
+
+   Fix: lock the inner wrapper to the image's own aspect ratio and
+   center it in the viewport (like object-fit:contain), so the
+   whole panorama is always fully visible, never cropped into a
+   false "zoom." Hotspots live inside this same locked box so their
+   percentage positions always land on the right room regardless of
+   window size.
    ============================================================ */
 
 .hub-stage {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
   overflow: hidden;
 }
 
 .hub-stage-zoom {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1916 / 821;
   transform-origin: 50% 50%;
   will-change: transform;
 }
@@ -161,6 +183,11 @@ html.hub-returning .hub-brand-flash {
   pointer-events: none;
 }
 
+/* Lives inside .hub-stage-zoom (the aspect-ratio-locked image box), not
+   .hub-stage - so these percentages always land on the right room in the
+   footage regardless of window size, instead of drifting with whatever
+   crop object-fit:cover happened to produce. */
+
 .hub-hotspot {
   --room-color: var(--room-videoart);
   position: absolute;
@@ -234,44 +261,46 @@ html.hub-returning .hub-brand-flash {
 /* Physical left/right on purpose, not inset-inline-start/end: the
    background footage is a fixed asset that never mirrors for RTL, so
    the hotspots must stay pinned to their actual visual position
-   regardless of site language direction. Sized to roughly match each
-   glass room's footprint in the footage, not the full quadrant. */
+   regardless of site language direction. Percentages are measured
+   against the actual 1916x821 source image (matched to where each
+   glass room sits in it), not the viewport - safe now that the box
+   they live in is aspect-ratio-locked to that same image. */
 
 .hub-hotspot[data-room="lab"] {
   --room-color: var(--room-lab);
-  left: 4%;
-  top: calc(var(--nav-height) + 14px);
-  width: 30%;
-  height: 26%;
+  left: 2%;
+  top: 3%;
+  width: 32%;
+  height: 38%;
 }
 
 .hub-hotspot[data-room="videoart"] {
   --room-color: var(--room-videoart);
-  right: 4%;
-  top: calc(var(--nav-height) + 14px);
-  width: 30%;
-  height: 26%;
+  right: 2%;
+  top: 3%;
+  width: 32%;
+  height: 38%;
 }
 
 .hub-hotspot[data-room="web"] {
   --room-color: var(--room-web);
-  left: 4%;
-  bottom: 10%;
-  width: 30%;
-  height: 26%;
+  left: 2%;
+  top: 54%;
+  width: 32%;
+  height: 40%;
 }
 
 .hub-hotspot[data-room="creative"] {
   --room-color: var(--room-creative);
-  right: 4%;
-  bottom: 10%;
-  width: 30%;
-  height: 26%;
+  right: 2%;
+  top: 54%;
+  width: 32%;
+  height: 40%;
 }
 
 @media (max-width: 700px) {
   .hub-stage {
-    min-height: 100svh;
+    height: 100svh;
   }
   .hub-caption {
     display: none;
