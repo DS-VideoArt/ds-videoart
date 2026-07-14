@@ -276,11 +276,120 @@ html.hub-returning .hub-brand-flash {
   height: 40%;
 }
 
+/* ============================================================
+   Mobile: the hero photo is an ultra-wide panorama (~2.3:1). On a
+   tall phone screen, fitting the whole thing (object-fit:contain)
+   letterboxes it down to a thin strip - technically correct, but
+   small and unimpressive. Below 700px, swap it out entirely for 4
+   stacked cards, each a tight, tall-friendly crop of one room from
+   the SAME existing image (no new photos/videos needed): background-
+   size/position values are computed from the exact same room
+   boundaries used for the desktop hotspots (see ROOM_BOUNDS in
+   hub.js), just expressed as CSS background-position math instead
+   of JS pixel math.
+   ============================================================ */
+
+.hub-mobile-rooms {
+  display: none;
+}
+
 @media (max-width: 700px) {
   .hub-stage {
-    height: 100svh;
+    display: none;
   }
   .hub-caption {
     display: none;
+  }
+
+  .hub-mobile-rooms {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: calc(var(--nav-height) + 16px) 16px 16px;
+    background: var(--bg);
+  }
+
+  .hub-mobile-room {
+    --room-color: var(--room-videoart);
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    height: 22vh;
+    min-height: 150px;
+    border-radius: 16px;
+    overflow: hidden;
+    background-image: url("hub-media/image/hero.jpg");
+    background-repeat: no-repeat;
+    border: 1px solid color-mix(in srgb, var(--room-color) 35%, transparent);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+  }
+
+  .hub-mobile-room[data-room="lab"] {
+    --room-color: var(--room-lab);
+    background-size: 313% 263%;
+    background-position: 3% 5%;
+  }
+
+  .hub-mobile-room[data-room="videoart"] {
+    --room-color: var(--room-videoart);
+    background-size: 313% 263%;
+    background-position: 97% 5%;
+  }
+
+  .hub-mobile-room[data-room="web"] {
+    --room-color: var(--room-web);
+    background-size: 313% 250%;
+    background-position: 3% 90%;
+  }
+
+  .hub-mobile-room[data-room="creative"] {
+    --room-color: var(--room-creative);
+    background-size: 313% 250%;
+    background-position: 97% 90%;
+  }
+
+  .hub-mobile-room::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(4, 5, 6, 0.85), transparent 60%);
+  }
+
+  .hub-mobile-room:active {
+    border-color: var(--room-color);
+  }
+
+  .hub-mobile-room-name {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  .hub-mobile-room-name::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--room-color);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--room-color) 80%, transparent);
+    flex-shrink: 0;
+  }
+
+  .hub-mobile-room-tag {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 }
