@@ -188,9 +188,14 @@ html.hub-returning .hub-brand-flash {
   border: 0;
 }
 
+/* Physical left/right on purpose, not inset-inline-start/end: the
+   background footage is a fixed asset that never mirrors for RTL, so
+   the hotspots must stay pinned to their actual visual position
+   regardless of site language direction. */
+
 .hub-hotspot[data-room="lab"] {
   --room-color: var(--room-lab);
-  inset-inline-start: 2%;
+  left: 2%;
   top: 4%;
   width: 36%;
   height: 44%;
@@ -198,7 +203,7 @@ html.hub-returning .hub-brand-flash {
 
 .hub-hotspot[data-room="videoart"] {
   --room-color: var(--room-videoart);
-  inset-inline-end: 2%;
+  right: 2%;
   top: 4%;
   width: 36%;
   height: 44%;
@@ -206,7 +211,7 @@ html.hub-returning .hub-brand-flash {
 
 .hub-hotspot[data-room="web"] {
   --room-color: var(--room-web);
-  inset-inline-start: 2%;
+  left: 2%;
   bottom: 5%;
   width: 36%;
   height: 48%;
@@ -214,7 +219,7 @@ html.hub-returning .hub-brand-flash {
 
 .hub-hotspot[data-room="creative"] {
   --room-color: var(--room-creative);
-  inset-inline-end: 2%;
+  right: 2%;
   bottom: 5%;
   width: 36%;
   height: 48%;
