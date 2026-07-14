@@ -338,13 +338,16 @@ html.hub-returning .hub-brand-flash {
 
   .hub-mobile-room[data-room="web"] {
     --room-color: var(--room-web);
-    background-size: 313% 250%;
-    background-position: 3% 90%;
+    background-image: url("hub-media/image/web-mobile.jpg");
+    background-size: cover;
+    background-position: center;
   }
 
   .hub-mobile-room[data-room="creative"] {
     --room-color: var(--room-creative);
-    background-size: 313% 250%;
+    background-image: url("hub-media/image/creative-mobile.jpg");
+    background-size: cover;
+    background-position: center;
     background-position: 97% 90%;
   }
 
