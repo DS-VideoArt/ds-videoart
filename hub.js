@@ -178,4 +178,44 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeroVideo();
   initHotspots();
   handleHubReturn();
+  initDebugTrace();
 });
+
+/**
+ * TEMPORARY diagnostic instrumentation - not part of the normal
+ * hub behavior. Logs a full stack trace the instant anything scales
+ * #hubStageZoom, plus resize/visibility events, so a real trigger can
+ * be identified from live console output instead of guessing from
+ * screen recordings. Safe to remove once the cause is confirmed.
+ */
+function initDebugTrace() {
+  const zoom = qs("#hubStageZoom");
+  if (!zoom) return;
+  console.log("[DS-DEBUG] boot", new Date().toISOString());
+
+  let lastTransform = zoom.style.transform;
+  const poll = setInterval(() => {
+    if (zoom.style.transform !== lastTransform) {
+      lastTransform = zoom.style.transform;
+      console.log("[DS-DEBUG] transform changed ->", lastTransform || "(empty)", new Date().toISOString());
+      console.trace("[DS-DEBUG] stack at transform change");
+    }
+  }, 100);
+
+  window.addEventListener("resize", () => {
+    console.log("[DS-DEBUG] window resize ->", window.innerWidth, "x", window.innerHeight, new Date().toISOString());
+  });
+  document.addEventListener("visibilitychange", () => {
+    console.log("[DS-DEBUG] visibilitychange ->", document.visibilityState, new Date().toISOString());
+  });
+  window.addEventListener("focus", () => console.log("[DS-DEBUG] window focus", new Date().toISOString()));
+  window.addEventListener("blur", () => console.log("[DS-DEBUG] window blur", new Date().toISOString()));
+
+  qsa(".hub-hotspot").forEach((h) => {
+    ["mousedown", "mouseup", "click", "mouseenter"].forEach((evt) => {
+      h.addEventListener(evt, () => console.log("[DS-DEBUG]", evt, "on hotspot", h.dataset.room, new Date().toISOString()));
+    });
+  });
+
+  window.addEventListener("beforeunload", () => clearInterval(poll));
+}
