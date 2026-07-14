@@ -8,7 +8,7 @@
    Depends on globals defined in script.js: qs, qsa, escHtml,
    getLang, onLangChange, addPageListener, clearLangChangeHandlers,
    initReveals, initFilmstrip, initBlogGrid, initPostPage,
-   initQuoteForm, kineticHeroReveal, initCountdownIntro, scrollToHash,
+   initQuoteForm, kineticHeroReveal, scrollToHash,
    prefersReducedMotion. On showcase.html, also depends on
    initShowcasePage (showcase.js).
    ============================================================ */
@@ -63,10 +63,8 @@ const CATEGORY_FLASH = {
 
 /* ---------- mount functions: called on cold load AND on every router arrival ---------- */
 
-function mountHome(opts) {
-  const coldLoad = !!(opts && opts.coldLoad);
-  const introIsPlaying = coldLoad ? initCountdownIntro() : false;
-  kineticHeroReveal(introIsPlaying);
+function mountHome() {
+  kineticHeroReveal(false);
   initQuoteForm();
   initReveals();
   const ready = Promise.all([

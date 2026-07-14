@@ -14,37 +14,6 @@ const DS = {
   posts: [],
 };
 
-/* ---------- film countdown intro (index.html only) ---------- */
-
-function initCountdownIntro() {
-  const overlay = qs("#countdownIntro");
-  if (!overlay) return false;
-
-  if (sessionStorage.getItem("ds_intro_played") || prefersReducedMotion || typeof gsap === "undefined") {
-    overlay.remove();
-    return false;
-  }
-  sessionStorage.setItem("ds_intro_played", "1");
-
-  const numberEl = qs(".countdown-number", overlay);
-  document.body.style.overflow = "hidden";
-
-  const tl = gsap.timeline({
-    onComplete: () => {
-      overlay.remove();
-      document.body.style.overflow = "";
-    },
-  });
-
-  [3, 2, 1].forEach((n) => {
-    tl.set(numberEl, { textContent: n, opacity: 0, scale: 1.4 })
-      .to(numberEl, { opacity: 1, scale: 1, duration: 0.28, ease: "power2.out" })
-      .to(numberEl, { opacity: 0, duration: 0.18 }, "+=0.32");
-  });
-  tl.to(overlay, { opacity: 0, duration: 0.4, ease: "power1.out" });
-  return true;
-}
-
 /* ---------- kinetic hero headline ---------- */
 
 function kineticHeroReveal(introIsPlaying) {
