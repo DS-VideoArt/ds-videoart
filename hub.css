@@ -139,23 +139,19 @@ html.hub-returning .hub-brand-flash {
 
 /* ============================================================
    Room hotspots: real navigation, always present and keyboard
-   reachable. Each hotspot is a large clickable quadrant panel (not
-   a tiny button) covering most of its room's visual area, so any
-   tap anywhere in that quadrant works - no precision required.
+   reachable. Each hotspot is sized to roughly match its room's
+   actual visual footprint in the footage - not the whole quadrant
+   of the viewport. A click target covering half the screen means
+   any incidental click anywhere in that huge area (very easy to
+   trigger by accident with a trackpad) fires real navigation, and
+   landing back on the hub with the cursor still inside another
+   huge zone can trigger it again right away - which reads exactly
+   like an uncontrollable loop. Keeping the zone close to the
+   room's real size leaves most of the screen inert.
 
-   Panels are inset well clear of the physical screen edge (not
-   flush against left:0/right:0). Flush-edge tap targets on mobile
-   sit inside the OS/browser's own edge-swipe-back gesture zone, so
-   a tap intended for the panel can be intercepted as "swipe back"
-   instead, sending the user straight back to the previous page -
-   which reads exactly like an uncontrollable navigation loop. The
-   inset margin keeps taps safely inside normal page content.
-
-   The panel itself carries no visible border or fill at rest - the
-   footage stays clean, no HUD-style boxes drawn over it. Only a
-   small label chip (dot + room name) marks each room, and a soft
-   glow appears on hover/focus as feedback. The clickable area is
-   still the full quadrant, just not visually boxed.
+   Nothing is visible at rest - no border, no fill, no label. The
+   footage stays completely clean. On hover/focus, a soft glow and
+   the room name appear as feedback; nothing is drawn permanently.
    ============================================================ */
 
 .hub-hotspots {
@@ -170,6 +166,7 @@ html.hub-returning .hub-brand-flash {
   position: absolute;
   display: flex;
   align-items: flex-end;
+  justify-content: center;
   border-radius: 18px;
   background: transparent;
   border: 1.5px solid transparent;
@@ -190,7 +187,7 @@ html.hub-returning .hub-brand-flash {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin: 12px;
+  margin-bottom: 14px;
   padding: 8px 16px 8px 12px;
   border-radius: 999px;
   background: rgba(8, 9, 11, 0.6);
@@ -201,6 +198,15 @@ html.hub-returning .hub-brand-flash {
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.25s var(--ease-out), transform 0.25s var(--ease-out);
+}
+
+.hub-hotspot:hover .hub-hotspot-label,
+.hub-hotspot:focus-visible .hub-hotspot-label {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .hub-hotspot-label::before {
@@ -228,42 +234,39 @@ html.hub-returning .hub-brand-flash {
 /* Physical left/right on purpose, not inset-inline-start/end: the
    background footage is a fixed asset that never mirrors for RTL, so
    the hotspots must stay pinned to their actual visual position
-   regardless of site language direction. */
+   regardless of site language direction. Sized to roughly match each
+   glass room's footprint in the footage, not the full quadrant. */
 
 .hub-hotspot[data-room="lab"] {
   --room-color: var(--room-lab);
-  left: 16px;
-  top: calc(var(--nav-height) + 12px);
-  width: calc(50% - 24px);
-  height: 34%;
-  justify-content: flex-start;
+  left: 4%;
+  top: calc(var(--nav-height) + 14px);
+  width: 30%;
+  height: 26%;
 }
 
 .hub-hotspot[data-room="videoart"] {
   --room-color: var(--room-videoart);
-  right: 16px;
-  top: calc(var(--nav-height) + 12px);
-  width: calc(50% - 24px);
-  height: 34%;
-  justify-content: flex-end;
+  right: 4%;
+  top: calc(var(--nav-height) + 14px);
+  width: 30%;
+  height: 26%;
 }
 
 .hub-hotspot[data-room="web"] {
   --room-color: var(--room-web);
-  left: 16px;
-  bottom: 16px;
-  width: calc(50% - 24px);
-  height: 34%;
-  justify-content: flex-start;
+  left: 4%;
+  bottom: 10%;
+  width: 30%;
+  height: 26%;
 }
 
 .hub-hotspot[data-room="creative"] {
   --room-color: var(--room-creative);
-  right: 16px;
-  bottom: 16px;
-  width: calc(50% - 24px);
-  height: 34%;
-  justify-content: flex-end;
+  right: 4%;
+  bottom: 10%;
+  width: 30%;
+  height: 26%;
 }
 
 @media (max-width: 700px) {
