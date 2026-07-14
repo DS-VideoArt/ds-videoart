@@ -112,6 +112,64 @@ function initHotspots() {
   });
 }
 
+/**
+ * The hero media uses object-fit:contain, so the browser letterboxes
+ * it (bars on the sides or top/bottom depending on window shape) and
+ * the actual visible image never fills #hubStageZoom exactly. Plain
+ * CSS percentages on the hotspots would drift out of alignment with
+ * the real image the moment the window's aspect ratio differs from
+ * the source (1916x821). Instead: compute the real letterboxed image
+ * rect in pixels (same math the browser uses for object-fit:contain)
+ * and position each hotspot against that, in pixels, directly.
+ */
+const HERO_ASPECT = 1916 / 821;
+const ROOM_BOUNDS = {
+  lab: { left: 0.02, top: 0.03, width: 0.32, height: 0.38 },
+  videoart: { left: 0.66, top: 0.03, width: 0.32, height: 0.38 },
+  web: { left: 0.02, top: 0.54, width: 0.32, height: 0.4 },
+  creative: { left: 0.66, top: 0.54, width: 0.32, height: 0.4 },
+};
+
+function positionHotspots() {
+  const stage = qs(".hub-stage");
+  if (!stage) return;
+  const stageRect = stage.getBoundingClientRect();
+  if (stageRect.width === 0 || stageRect.height === 0) return;
+
+  const containerRatio = stageRect.width / stageRect.height;
+  let imgWidth, imgHeight, imgLeft, imgTop;
+  if (containerRatio > HERO_ASPECT) {
+    imgHeight = stageRect.height;
+    imgWidth = imgHeight * HERO_ASPECT;
+    imgLeft = (stageRect.width - imgWidth) / 2;
+    imgTop = 0;
+  } else {
+    imgWidth = stageRect.width;
+    imgHeight = imgWidth / HERO_ASPECT;
+    imgLeft = 0;
+    imgTop = (stageRect.height - imgHeight) / 2;
+  }
+
+  qsa(".hub-hotspot").forEach((hotspot) => {
+    const b = ROOM_BOUNDS[hotspot.dataset.room];
+    if (!b) return;
+    hotspot.style.left = imgLeft + b.left * imgWidth + "px";
+    hotspot.style.top = imgTop + b.top * imgHeight + "px";
+    hotspot.style.width = b.width * imgWidth + "px";
+    hotspot.style.height = b.height * imgHeight + "px";
+    hotspot.style.right = "auto";
+  });
+}
+
+function initHotspotLayout() {
+  positionHotspots();
+  let resizeTimer = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(positionHotspots, 100);
+  });
+}
+
 function initHeroVideo() {
   const video = qs("#hubBgVideo");
   if (!video) return;
@@ -177,6 +235,7 @@ function handleHubReturn() {
 document.addEventListener("DOMContentLoaded", () => {
   initHeroVideo();
   initHotspots();
+  initHotspotLayout();
   handleHubReturn();
   initDebugTrace();
 });

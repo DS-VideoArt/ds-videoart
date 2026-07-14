@@ -69,29 +69,24 @@ html.hub-returning .hub-brand-flash {
    room that it looks exactly like an unwanted "fly into a room"
    animation firing on its own, even though nothing is animating.
 
-   Fix: lock the inner wrapper to the image's own aspect ratio and
-   center it in the viewport (like object-fit:contain), so the
-   whole panorama is always fully visible, never cropped into a
-   false "zoom." Hotspots live inside this same locked box so their
-   percentage positions always land on the right room regardless of
-   window size.
+   Fix: object-fit:contain on the media itself (native, universally
+   supported, no custom layout math) so the whole panorama is always
+   fully visible, never cropped into a false "zoom." Hotspots are
+   positioned in pixels by JS (see positionHotspots() in hub.js),
+   computed from the actual letterboxed image bounds, so they always
+   land on the right room regardless of window size or aspect ratio.
    ============================================================ */
 
 .hub-stage {
   position: relative;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: var(--bg);
   overflow: hidden;
 }
 
 .hub-stage-zoom {
-  position: relative;
-  width: 100%;
-  max-height: 100%;
-  aspect-ratio: 1916 / 821;
+  position: absolute;
+  inset: 0;
   transform-origin: 50% 50%;
   will-change: transform;
 }
@@ -102,7 +97,7 @@ html.hub-returning .hub-brand-flash {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .hub-bg-poster {
@@ -183,11 +178,6 @@ html.hub-returning .hub-brand-flash {
   pointer-events: none;
 }
 
-/* Lives inside .hub-stage-zoom (the aspect-ratio-locked image box), not
-   .hub-stage - so these percentages always land on the right room in the
-   footage regardless of window size, instead of drifting with whatever
-   crop object-fit:cover happened to produce. */
-
 .hub-hotspot {
   --room-color: var(--room-videoart);
   position: absolute;
@@ -258,13 +248,13 @@ html.hub-returning .hub-brand-flash {
   border: 0;
 }
 
-/* Physical left/right on purpose, not inset-inline-start/end: the
-   background footage is a fixed asset that never mirrors for RTL, so
-   the hotspots must stay pinned to their actual visual position
-   regardless of site language direction. Percentages are measured
-   against the actual 1916x821 source image (matched to where each
-   glass room sits in it), not the viewport - safe now that the box
-   they live in is aspect-ratio-locked to that same image. */
+/* Fallback positions only, used before JS runs (or if it fails to for
+   any reason) - positionHotspots() in hub.js overrides these with exact
+   pixel values computed from the real letterboxed image bounds, since
+   the media uses object-fit:contain and the visible image position
+   shifts with window size in a way plain CSS percentages can't track
+   reliably. Physical left/right on purpose, not inset-inline-start/end:
+   the footage is a fixed asset that never mirrors for RTL. */
 
 .hub-hotspot[data-room="lab"] {
   --room-color: var(--room-lab);
