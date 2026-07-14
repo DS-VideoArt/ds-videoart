@@ -1,42 +1,29 @@
 /* ============================================================
-   DS hub: the "giant futuristic laboratory" 3D scene.
-   Pure progressive enhancement over the real <a> links in
-   index.html. If this file errors, fails to load Three.js, or
-   canBoot3D is false, the static glowing-card grid underneath
-   is the entire experience and nothing here ever runs.
+   DS hub: click/return choreography over the real lab footage.
+   No 3D engine — the depth is already baked into the looping
+   video (hub-media/videos/hero-loop.mp4) and its poster image.
+   This file only: fades the video in once it can play, zooms the
+   footage toward whichever room was clicked before navigating,
+   and reverses that zoom on arrival back at the hub.
    ============================================================ */
 
-function canUseWebGL() {
-  try {
-    const canvas = document.createElement("canvas");
-    return !!(canvas.getContext("webgl2") || canvas.getContext("webgl"));
-  } catch (e) {
-    return false;
-  }
+const ROOM_COLORS = {
+  videoart: "#d1414c",
+  web: "#3d8ef0",
+  lab: "#4ade80",
+  creative: "#ec4899",
+};
+
+function canUseMotion() {
+  return typeof prefersReducedMotion !== "undefined" && !prefersReducedMotion && typeof gsap !== "undefined";
 }
-
-const canBoot3D =
-  typeof prefersReducedMotion !== "undefined" &&
-  !prefersReducedMotion &&
-  window.matchMedia("(pointer: fine)").matches &&
-  canUseWebGL();
-
-const ROOMS = [
-  { key: "videoart", color: 0xd1414c, pos: [-4.5, -1.8, -10] },
-  { key: "web", color: 0x3d8ef0, pos: [4.8, -1.4, -11] },
-  { key: "lab", color: 0x4ade80, pos: [-5.2, -2.2, -13] },
-  { key: "creative", color: 0xec4899, pos: [5.4, -1.6, -9.5] },
-];
-
-let hubState = null;
-let transitionInFlight = false;
 
 /**
  * Runs a GSAP timeline and resolves when it completes, or after
  * timeoutMs, whichever comes first (force-jumping the timeline to
  * its end in that case). Without this, a throttled tab could leave
- * the flight timeline never firing onComplete, which would strand
- * the user on a frozen scene and never navigate.
+ * the flight timeline never firing onComplete, stranding the user
+ * on a frozen frame instead of navigating.
  */
 function raceTimeline(tl, timeoutMs) {
   return new Promise((resolve) => {
@@ -56,274 +43,105 @@ function raceTimeline(tl, timeoutMs) {
   });
 }
 
-function enterRoom(key, href) {
+function hotspotOrigin(hotspot, stage) {
+  const hRect = hotspot.getBoundingClientRect();
+  const sRect = stage.getBoundingClientRect();
+  const cx = ((hRect.left + hRect.width / 2 - sRect.left) / sRect.width) * 100;
+  const cy = ((hRect.top + hRect.height / 2 - sRect.top) / sRect.height) * 100;
+  return cx + "% " + cy + "%";
+}
+
+let transitionInFlight = false;
+
+function enterRoom(hotspot, key, href) {
   if (transitionInFlight) return;
   transitionInFlight = true;
 
-  const entry = hubState && hubState.roomsByKey[key];
-  const flash = document.getElementById("hubBrandFlash");
+  const stage = qs(".hub-stage");
+  const zoom = qs("#hubStageZoom");
+  const flash = qs("#hubBrandFlash");
 
-  if (!entry || !flash || typeof gsap === "undefined") {
+  function go() {
     sessionStorage.setItem("ds_hub_transition", key);
     window.location.href = href;
+  }
+
+  if (!stage || !zoom || !flash || !canUseMotion()) {
+    go();
     return;
   }
 
-  hubState.setIdleActive(false);
-  Object.values(hubState.roomsByKey).forEach((e) => e.idleTween && e.idleTween.pause());
+  flash.style.background = ROOM_COLORS[key] || "#e8ecf2";
+  zoom.style.transformOrigin = hotspotOrigin(hotspot, stage);
 
-  flash.style.background = "#" + entry.light.color.getHexString();
-
-  const heroEls = qsa(".hub-tag, .hub-hero h1, .hub-hero p, .lab-room-links");
-  const otherEntries = Object.entries(hubState.roomsByKey)
-    .filter(([k]) => k !== key)
-    .map(([, e]) => e);
-
-  const { camera } = hubState;
-  const startPos = camera.position.clone();
-  const targetPos = entry.group.position;
-  const camProxy = { t: 0 };
-
+  const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
   const tl = gsap.timeline({ defaults: { ease: "power2.in" } });
-  tl.to(heroEls, { opacity: 0, duration: 0.35 }, 0)
-    .to(
-      camProxy,
-      {
-        t: 1,
-        duration: 1.3,
-        onUpdate: () => {
-          camera.position.lerpVectors(startPos, targetPos, camProxy.t * 0.85);
-          camera.lookAt(targetPos.x, targetPos.y, targetPos.z);
-        },
-      },
-      0
-    )
-    .to(entry.light, { intensity: 14, duration: 1.3 }, 0)
-    .to(entry.group.scale, { x: 2.2, y: 2.2, z: 2.2, duration: 1.3 }, 0)
-    .to(otherEntries.map((e) => e.material), { opacity: 0, duration: 0.6 }, 0.2)
-    .to(otherEntries.map((e) => e.light), { intensity: 0, duration: 0.6 }, 0.2)
-    .to(flash, { opacity: 1, duration: 0.45 }, 0.95);
+  tl.to(chrome, { opacity: 0, duration: 0.35 }, 0)
+    .to(zoom, { scale: 2.4, duration: 1.1 }, 0)
+    .to(flash, { opacity: 1, duration: 0.5 }, 0.65);
 
-  raceTimeline(tl, 2200).then(() => {
-    sessionStorage.setItem("ds_hub_transition", key);
-    window.location.href = href;
+  raceTimeline(tl, 2000).then(go);
+}
+
+function initHotspots() {
+  qsa(".hub-hotspot").forEach((hotspot) => {
+    hotspot.addEventListener("click", (e) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      e.preventDefault();
+      enterRoom(hotspot, hotspot.dataset.room, hotspot.getAttribute("href"));
+    });
   });
+}
+
+function initHeroVideo() {
+  const video = qs("#hubBgVideo");
+  if (!video) return;
+  if (video.readyState >= 3) {
+    video.classList.add("is-ready");
+    return;
+  }
+  video.addEventListener("canplay", () => video.classList.add("is-ready"), { once: true });
 }
 
 /**
- * Fallback for when the hub returns from a room but never boots the 3D
- * scene at all (no WebGL / touch / reduced motion) — just fades the
- * flat brand-color overlay a room's exit left behind.
+ * Arriving back at the hub from a room's exit link: reverse the zoom
+ * from that room's hotspot back to the overview, revealing the scene
+ * as the brand-color flash (already opaque, set by the blocking
+ * script in <head>) fades out.
  */
-function clearHubReturnFlashStatic() {
-  if (!document.documentElement.classList.contains("hub-returning")) return;
+function handleHubReturn() {
+  const returnKey = sessionStorage.getItem("ds_hub_return");
+  if (!returnKey) return;
   sessionStorage.removeItem("ds_hub_return");
-  const flash = document.getElementById("hubBrandFlash");
-  if (!flash || prefersReducedMotion || typeof gsap === "undefined") {
+
+  const stage = qs(".hub-stage");
+  const zoom = qs("#hubStageZoom");
+  const flash = qs("#hubBrandFlash");
+
+  if (!stage || !zoom || !flash || !canUseMotion()) {
     document.documentElement.classList.remove("hub-returning");
     return;
   }
-  gsap.to(flash, {
-    opacity: 0,
-    duration: 0.4,
-    ease: "power1.out",
-    onComplete: () => document.documentElement.classList.remove("hub-returning"),
-  });
-}
 
-if (canBoot3D) {
-  import("three")
-    .then((THREE) => initHubScene(THREE))
-    .catch((err) => {
-      console.error("DS hub: Three.js failed to load, static grid remains", err);
-      clearHubReturnFlashStatic();
-    });
-} else {
-  clearHubReturnFlashStatic();
-}
+  const hotspot = qs('.hub-hotspot[data-room="' + returnKey + '"]');
+  if (hotspot) zoom.style.transformOrigin = hotspotOrigin(hotspot, stage);
 
-function initHubScene(THREE) {
-  const canvas = document.getElementById("labCanvas");
-  if (!canvas) return;
-
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x08090b, 0.065);
-
-  const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-  const basePos = { x: 0, y: 0.3, z: 4 };
-  camera.position.set(basePos.x, basePos.y, basePos.z);
-  camera.lookAt(0, -0.6, -10);
-
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x08090b, 1);
-
-  scene.add(new THREE.AmbientLight(0xffffff, 0.12));
-
-  const roomsByKey = {};
-
-  ROOMS.forEach((room, i) => {
-    const group = new THREE.Group();
-    group.position.set(room.pos[0], room.pos[1], room.pos[2]);
-
-    const geometry = new THREE.BoxGeometry(3.4, 3.4, 3.4);
-    const material = new THREE.MeshPhysicalMaterial({
-      color: room.color,
-      transparent: true,
-      opacity: 0.14,
-      roughness: 0.3,
-      metalness: 0.05,
-      emissive: room.color,
-      emissiveIntensity: 0.3,
-    });
-    const mesh = new THREE.Mesh(geometry, material);
-    group.add(mesh);
-
-    const light = new THREE.PointLight(room.color, 3, 9, 2);
-    light.position.set(0, 0, 0);
-    group.add(light);
-
-    scene.add(group);
-    roomsByKey[room.key] = { group, light, material, idleTween: null, baseIntensity: 3, peakIntensity: 4.4 };
-  });
-
-  function onResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-  window.addEventListener("resize", onResize);
-
-  if (typeof gsap !== "undefined") {
-    Object.values(roomsByKey).forEach((entry, i) => {
-      entry.idleTween = gsap.to(entry.light, {
-        intensity: entry.peakIntensity,
-        repeat: -1,
-        yoyo: true,
-        duration: 2.6 + i * 0.4,
-        ease: "sine.inOut",
-      });
-    });
-  }
-
-  /* ---------- hover: hovering a real room card reacts in the 3D scene ----------
-     The rooms live far back as atmosphere, not aligned to the cards' screen
-     position, so hover is wired by data-room key (DOM -> matching 3D group)
-     rather than a raycast against the mesh itself. */
-  qsa(".lab-room-link").forEach((link) => {
-    const entry = roomsByKey[link.dataset.room];
-    if (!entry || typeof gsap === "undefined") return;
-
-    link.addEventListener("pointerenter", () => {
-      if (entry.idleTween) entry.idleTween.pause();
-      gsap.to(entry.light, { intensity: entry.peakIntensity + 2, duration: 0.4, ease: "power2.out", overwrite: true });
-      gsap.to(entry.group.scale, { x: 1.12, y: 1.12, z: 1.12, duration: 0.4, ease: "power2.out" });
-    });
-
-    link.addEventListener("pointerleave", () => {
-      gsap.to(entry.group.scale, { x: 1, y: 1, z: 1, duration: 0.5, ease: "power2.out" });
-      gsap.to(entry.light, {
-        intensity: entry.baseIntensity,
-        duration: 0.5,
-        ease: "power2.out",
-        overwrite: true,
-        onComplete: () => entry.idleTween && entry.idleTween.resume(),
-      });
-    });
-
-    link.addEventListener("click", (e) => {
-      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      e.preventDefault();
-      enterRoom(link.dataset.room, link.getAttribute("href"));
-    });
-  });
-
-  let idleActive = true;
-  const clock = new THREE.Clock();
-  function animate() {
-    requestAnimationFrame(animate);
-    const t = clock.getElapsedTime();
-    if (idleActive) {
-      camera.position.x = basePos.x + Math.sin(t * 0.12) * 0.7;
-      camera.position.y = basePos.y + Math.cos(t * 0.09) * 0.3;
-      camera.lookAt(0, -0.6, -10);
-    }
-    Object.values(roomsByKey).forEach((entry, i) => {
-      entry.group.rotation.y = t * 0.05 * (i % 2 === 0 ? 1 : -1);
-    });
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  hubState = {
-    THREE,
-    scene,
-    camera,
-    renderer,
-    roomsByKey,
-    basePos,
-    setIdleActive: (v) => { idleActive = v; },
-  };
-
-  /* ---------- reverse flight: arriving back at the hub from a room ---------- */
-  const returnKey = sessionStorage.getItem("ds_hub_return");
-  const flash = document.getElementById("hubBrandFlash");
-  const entry = returnKey && roomsByKey[returnKey];
-
-  if (!returnKey || !entry || !flash || typeof gsap === "undefined") {
-    clearHubReturnFlashStatic();
-    return;
-  }
-
-  sessionStorage.removeItem("ds_hub_return");
-  idleActive = false;
-  Object.values(roomsByKey).forEach((e) => e.idleTween && e.idleTween.pause());
-
-  const insidePos = entry.group.position.clone().multiplyScalar(0.82);
-  camera.position.copy(insidePos);
-  camera.lookAt(entry.group.position.x, entry.group.position.y, entry.group.position.z);
-  entry.group.scale.set(2.2, 2.2, 2.2);
-  entry.light.intensity = 14;
-  entry.material.opacity = 0.5;
-  const otherEntries = Object.values(roomsByKey).filter((e) => e !== entry);
-  otherEntries.forEach((e) => {
-    e.material.opacity = 0;
-    e.light.intensity = 0;
-  });
-  renderer.render(scene, camera);
-
-  const heroEls = qsa(".hub-tag, .hub-hero h1, .hub-hero p, .lab-room-links");
-  gsap.set(heroEls, { opacity: 0 });
-
-  const camProxy = { t: 0 };
-  const startPos = insidePos.clone();
-  const targetVec = new THREE.Vector3(basePos.x, basePos.y, basePos.z);
+  const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
+  gsap.set(zoom, { scale: 2.4 });
+  gsap.set(chrome, { opacity: 0 });
 
   const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
   tl.to(flash, { opacity: 0, duration: 0.6 }, 0)
-    .to(
-      camProxy,
-      {
-        t: 1,
-        duration: 1.2,
-        onUpdate: () => {
-          camera.position.lerpVectors(startPos, targetVec, camProxy.t);
-          camera.lookAt(0, -0.6, -10);
-        },
-      },
-      0
-    )
-    .to(entry.light, { intensity: entry.baseIntensity, duration: 1.2 }, 0)
-    .to(entry.material, { opacity: 0.14, duration: 1.2 }, 0)
-    .to(entry.group.scale, { x: 1, y: 1, z: 1, duration: 1.2 }, 0)
-    .to(otherEntries.map((e) => e.material), { opacity: 0.14, duration: 0.9 }, 0.3)
-    .to(otherEntries.map((e) => e.light), { intensity: 3, duration: 0.9 }, 0.3)
-    .to(heroEls, { opacity: 1, duration: 0.5 }, 0.6);
+    .to(zoom, { scale: 1, duration: 1.1 }, 0)
+    .to(chrome, { opacity: 1, duration: 0.5 }, 0.5);
 
-  raceTimeline(tl, 2200).then(() => {
+  raceTimeline(tl, 2000).then(() => {
     document.documentElement.classList.remove("hub-returning");
-    idleActive = true;
-    Object.values(roomsByKey).forEach((e) => e.idleTween && e.idleTween.resume());
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  initHeroVideo();
+  initHotspots();
+  handleHubReturn();
+});

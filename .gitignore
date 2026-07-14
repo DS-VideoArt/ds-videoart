@@ -3,3 +3,10 @@
 
 # Large video files — deployed to Netlify directly, not tracked in git (GitHub blocks files over 100MB)
 videos/
+
+# macOS
+.DS_Store
+
+# Raw source uploads (renamed copies used by the site are tracked instead)
+hub-media/image/WhatsApp*
+hub-media/videos/WhatsApp*

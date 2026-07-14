@@ -1,6 +1,12 @@
 /* ============================================================
    DS hub: the hub itself has no single brand color, it hosts
    all four. Loaded after ds-shared.css.
+
+   The hero is a real AI-rendered shot of the "lab" (looping video,
+   static image as poster/fallback), not a procedural 3D scene:
+   four glass-walled rooms are already visible and labeled in the
+   footage itself. This file only adds the invisible clickable
+   hotspots over each room and the hover/flight chrome.
    ============================================================ */
 
 :root {
@@ -30,18 +36,6 @@ body.hub {
   overflow-x: hidden;
 }
 
-/* ============================================================
-   Decorative 3D layer (behind everything, purely cosmetic)
-   ============================================================ */
-
-#labCanvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  filter: blur(2px);
-}
-
 .hub-brand-flash {
   position: fixed;
   inset: 0;
@@ -54,137 +48,183 @@ body.hub {
 /* Set by a tiny blocking script in <head>, before first paint, only when
    returning from a room's exit link (sessionStorage flag). Keeps the
    flash opaque in that room's color from frame one, so there's no pop
-   before hub.js finishes loading Three.js and reversing the flight. */
+   before hub.js reverses the return zoom. */
 html.hub-returning .hub-brand-flash {
   opacity: 1;
   background: var(--hub-return-color, var(--room-videoart));
 }
 
 /* ============================================================
-   Hub hero
+   The stage: full-bleed footage of the lab, with a zoomable
+   inner wrapper (hub.js animates this wrapper's transform for
+   the "fly into a room" click effect, no 3D engine needed since
+   the depth is already baked into the footage).
    ============================================================ */
 
-.hub-hero {
+.hub-stage {
   position: relative;
-  z-index: 1;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: calc(var(--nav-height) + 40px) 24px 60px;
+  overflow: hidden;
 }
 
-.hub-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.hub-stage-zoom {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.hub-bg-video,
+.hub-bg-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hub-bg-poster {
+  z-index: 1;
+}
+
+.hub-bg-video {
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.hub-bg-video.is-ready {
+  opacity: 1;
+}
+
+/* Scrims for text legibility over busy footage */
+
+.hub-scrim-top {
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: 220px;
+  z-index: 3;
+  background: linear-gradient(to bottom, rgba(4, 5, 6, 0.75), transparent);
+  pointer-events: none;
+}
+
+.hub-scrim-bottom {
+  position: absolute;
+  bottom: 0;
+  inset-inline: 0;
+  height: 160px;
+  z-index: 3;
+  background: linear-gradient(to top, rgba(4, 5, 6, 0.7), transparent);
+  pointer-events: none;
+}
+
+.hub-caption {
+  position: absolute;
+  top: calc(var(--nav-height) + 20px);
+  inset-inline: 0;
+  z-index: 4;
+  text-align: center;
+  pointer-events: none;
+  padding: 0 24px;
+}
+
+.hub-caption span {
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin-bottom: 22px;
-}
-
-.hub-hero h1 {
-  font-size: clamp(36px, 6vw, 68px);
-  max-width: 900px;
-  margin-bottom: 18px;
-}
-
-.hub-hero p {
-  color: var(--text-muted);
-  font-size: clamp(15px, 1.6vw, 18px);
-  max-width: 560px;
-  margin-bottom: 56px;
 }
 
 /* ============================================================
-   Room links: real navigation, always present. This is the
-   accessible/no-JS/no-WebGL baseline every visitor gets first.
-   The 3D layer, when it loads, sits behind these and the click
-   handler only enhances what these links already do.
+   Room hotspots: real navigation, always present and keyboard
+   reachable. Positioned over the four glass rooms already
+   visible in the footage. Purely additive glow on hover/focus,
+   the footage itself already carries the room name and tagline.
    ============================================================ */
 
-.lab-room-links {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  width: 100%;
-  max-width: 780px;
+.hub-hotspots {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
 }
 
-.lab-room-link {
+.hub-hotspot {
   --room-color: var(--room-videoart);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  padding: 28px 26px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  text-align: start;
-  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+  position: absolute;
+  display: block;
+  border-radius: 18px;
+  outline-offset: 4px;
 }
 
-.lab-room-link::before {
+.hub-hotspot::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--room-color) 20%, transparent) 0%, transparent 70%);
-  opacity: 0.7;
+  border-radius: inherit;
+  border: 1px solid transparent;
+  box-shadow: inset 0 0 0 1px transparent;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--room-color) 22%, transparent) 0%, transparent 72%);
+  opacity: 0;
   transition: opacity 0.3s var(--ease-out);
 }
 
-.lab-room-link:hover,
-.lab-room-link:focus-visible {
-  transform: translateY(-4px);
-  border-color: var(--room-color);
-  box-shadow: 0 8px 28px color-mix(in srgb, var(--room-color) 22%, transparent);
-}
-
-.lab-room-link:hover::before,
-.lab-room-link:focus-visible::before {
+.hub-hotspot:hover::before,
+.hub-hotspot:focus-visible::before {
   opacity: 1;
+  border-color: color-mix(in srgb, var(--room-color) 55%, transparent);
 }
 
-.lab-room-dot {
-  position: relative;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--room-color);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--room-color) 20%, transparent);
-  margin-bottom: 6px;
+.hub-hotspot-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.lab-room-link h3 {
-  position: relative;
-  font-size: 21px;
-  margin: 0;
+.hub-hotspot[data-room="lab"] {
+  --room-color: var(--room-lab);
+  inset-inline-start: 2%;
+  top: 4%;
+  width: 36%;
+  height: 44%;
 }
 
-.lab-room-link p {
-  position: relative;
-  font-size: 14px;
-  color: var(--text-muted);
-  margin: 0;
+.hub-hotspot[data-room="videoart"] {
+  --room-color: var(--room-videoart);
+  inset-inline-end: 2%;
+  top: 4%;
+  width: 36%;
+  height: 44%;
 }
 
-.lab-room-link[data-room="videoart"] { --room-color: var(--room-videoart); }
-.lab-room-link[data-room="web"] { --room-color: var(--room-web); }
-.lab-room-link[data-room="lab"] { --room-color: var(--room-lab); }
-.lab-room-link[data-room="creative"] { --room-color: var(--room-creative); }
+.hub-hotspot[data-room="web"] {
+  --room-color: var(--room-web);
+  inset-inline-start: 2%;
+  bottom: 5%;
+  width: 36%;
+  height: 48%;
+}
+
+.hub-hotspot[data-room="creative"] {
+  --room-color: var(--room-creative);
+  inset-inline-end: 2%;
+  bottom: 5%;
+  width: 36%;
+  height: 48%;
+}
 
 @media (max-width: 700px) {
-  .lab-room-links {
-    grid-template-columns: 1fr;
+  .hub-stage {
+    min-height: 100svh;
+  }
+  .hub-caption {
+    display: none;
   }
 }
