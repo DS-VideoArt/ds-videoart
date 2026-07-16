@@ -230,6 +230,29 @@ function initHubExitLinks() {
   });
 }
 
+/* ---------- bfcache restore: undo whatever mid-animation state the
+   exit-to-hub transition left behind. Leaving a room fades
+   #hubTransitionOverlay to fully opaque (the room's own accent color)
+   right before navigating away. If the browser restores this exact
+   page from its back-forward cache (pressing Back after arriving on
+   whatever page came next), none of the normal boot code re-runs -
+   the page just reappears exactly as it looked the instant it was
+   left, i.e. covered edge-to-edge in solid color. pageshow with
+   persisted:true is the one event that fires on that kind of
+   restore, so it's the only reliable place to reset it. ---------- */
+
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  hubExitInFlight = false;
+  document.documentElement.classList.remove("hub-arrival", "hub-returning");
+  const overlay = qs("#hubTransitionOverlay");
+  if (overlay) {
+    if (typeof gsap !== "undefined") gsap.set(overlay, { opacity: 0 });
+    else overlay.style.opacity = "0";
+    overlay.style.display = "";
+  }
+});
+
 /* ---------- accessibility widget ----------
    A visible accessibility button + panel (font size, high contrast,
    underlined links, paused motion), injected on every page so it

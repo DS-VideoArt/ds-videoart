@@ -227,3 +227,34 @@ document.addEventListener("DOMContentLoaded", () => {
   initHotspotLayout();
   handleHubReturn();
 });
+
+/**
+ * Restores every transient bit of visual state the enter/return
+ * animations touch back to their resting default. Used whenever the
+ * hub is shown via the browser's back-forward cache (see the
+ * pageshow listener below) - without this, the page can reappear
+ * frozen mid-animation (chrome hidden, image zoomed in, full-screen
+ * color flash opaque) because bfcache restores the exact DOM/inline-
+ * style state the page was in the instant it was left, and none of
+ * the normal boot code runs again on that kind of restore.
+ */
+function resetHubVisualState() {
+  transitionInFlight = false;
+  const zoom = qs("#hubStageZoom");
+  const flash = qs("#hubBrandFlash");
+  const chrome = qsa(".navbar, .hub-caption, .hub-hotspots");
+  if (typeof gsap !== "undefined") {
+    if (zoom) gsap.set(zoom, { scale: 1, clearProps: "transform" });
+    if (flash) gsap.set(flash, { opacity: 0 });
+    if (chrome.length) gsap.set(chrome, { opacity: 1 });
+  } else {
+    if (zoom) zoom.style.transform = "";
+    if (flash) flash.style.opacity = "0";
+    chrome.forEach((el) => (el.style.opacity = "1"));
+  }
+  document.documentElement.classList.remove("hub-returning");
+}
+
+window.addEventListener("pageshow", (e) => {
+  if (e.persisted) resetHubVisualState();
+});
