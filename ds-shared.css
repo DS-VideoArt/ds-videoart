@@ -51,6 +51,171 @@
   top: 12px;
 }
 
+/* ============================================================
+   Accessibility widget: floating button + settings panel.
+   Injected on every page by initA11yWidget() in ds-shared.js.
+   ============================================================ */
+
+.a11y-widget {
+  position: fixed;
+  bottom: 20px;
+  inset-inline-end: 20px;
+  z-index: 9000;
+}
+
+.a11y-toggle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent, #e8ecf2);
+  color: var(--bg, #08090b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.a11y-toggle:hover {
+  transform: scale(1.06);
+}
+
+.a11y-panel {
+  position: absolute;
+  bottom: 64px;
+  inset-inline-end: 0;
+  width: 260px;
+  background: var(--bg-elevated, #0e1013);
+  border: 1px solid var(--border-strong, rgba(242, 241, 238, 0.2));
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.a11y-panel h2 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.a11y-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.a11y-btn-group {
+  display: flex;
+  gap: 6px;
+}
+
+.a11y-btn-group button {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong, rgba(242, 241, 238, 0.2));
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.a11y-btn-group button:hover {
+  border-color: var(--accent, #e8ecf2);
+}
+
+.a11y-option {
+  display: block;
+  width: 100%;
+  text-align: start;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong, rgba(242, 241, 238, 0.2));
+  font-size: 14px;
+  margin-bottom: 8px;
+  transition: border-color 0.2s var(--ease-out), background 0.2s var(--ease-out);
+}
+
+.a11y-option:hover {
+  border-color: var(--accent, #e8ecf2);
+}
+
+.a11y-option[aria-pressed="true"] {
+  background: var(--accent, #e8ecf2);
+  color: var(--bg, #08090b);
+  border-color: var(--accent, #e8ecf2);
+}
+
+.a11y-reset {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 10px 12px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border, rgba(242, 241, 238, 0.1));
+  padding-top: 12px;
+}
+
+.a11y-reset:hover {
+  color: var(--text-primary);
+}
+
+/* Effect: larger text. zoom scales the whole page (layout included),
+   which works correctly across this codebase's px-based font sizes
+   without needing every stylesheet rewritten to rem units. Supported
+   in Chrome/Safari/Edge; degrades to a no-op (not broken) elsewhere. */
+
+html.a11y-font-lg {
+  zoom: 1.15;
+}
+
+html.a11y-font-xl {
+  zoom: 1.3;
+}
+
+/* Effect: high contrast - pure black/white with yellow links, the
+   conventional high-contrast palette, overriding the theme tokens. */
+
+html.a11y-contrast body {
+  background: #000 !important;
+  color: #fff !important;
+}
+
+html.a11y-contrast a {
+  color: #ffe600 !important;
+}
+
+html.a11y-contrast .btn-primary,
+html.a11y-contrast .btn-outline {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #ffe600 !important;
+}
+
+html.a11y-contrast *:focus-visible {
+  outline: 3px solid #ffe600 !important;
+}
+
+/* Effect: underline every link, not just on hover */
+
+html.a11y-underline a {
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+/* Effect: pause all CSS animation/transition, same mechanism the
+   existing prefers-reduced-motion rule already uses. */
+
+html.a11y-pause-motion *,
+html.a11y-pause-motion *::before,
+html.a11y-pause-motion *::after {
+  animation-play-state: paused !important;
+  transition: none !important;
+}
+
 body {
   background: var(--bg);
   color: var(--text-primary);

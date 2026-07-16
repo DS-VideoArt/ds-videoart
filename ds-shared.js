@@ -230,6 +230,131 @@ function initHubExitLinks() {
   });
 }
 
+/* ---------- accessibility widget ----------
+   A visible accessibility button + panel (font size, high contrast,
+   underlined links, paused motion), injected on every page so it
+   doesn't need to be hand-added to 12 HTML files. Settings persist
+   in localStorage (shared across all DS rooms, like language) and
+   are re-applied on every page load before the panel even opens. */
+
+const A11Y_STORAGE_KEY = "ds_a11y";
+const A11Y_FONT_STEPS = ["", "a11y-font-lg", "a11y-font-xl"];
+
+function getA11ySettings() {
+  try {
+    return Object.assign({ font: 0, contrast: false, underline: false, pauseMotion: false }, JSON.parse(localStorage.getItem(A11Y_STORAGE_KEY) || "{}"));
+  } catch (e) {
+    return { font: 0, contrast: false, underline: false, pauseMotion: false };
+  }
+}
+
+function saveA11ySettings(settings) {
+  localStorage.setItem(A11Y_STORAGE_KEY, JSON.stringify(settings));
+}
+
+function applyA11ySettings(settings) {
+  const html = document.documentElement;
+  A11Y_FONT_STEPS.forEach((cls) => cls && html.classList.remove(cls));
+  if (A11Y_FONT_STEPS[settings.font]) html.classList.add(A11Y_FONT_STEPS[settings.font]);
+  html.classList.toggle("a11y-contrast", !!settings.contrast);
+  html.classList.toggle("a11y-underline", !!settings.underline);
+  html.classList.toggle("a11y-pause-motion", !!settings.pauseMotion);
+}
+
+function initA11yWidget() {
+  const settings = getA11ySettings();
+  applyA11ySettings(settings);
+
+  const wrap = document.createElement("div");
+  wrap.className = "a11y-widget";
+  wrap.innerHTML = [
+    '<button type="button" class="a11y-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="a11yPanel" aria-label="תפריט נגישות">',
+    '<svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><circle cx="12" cy="4" r="2"/><path d="M12 7c-3 0-7 1-7 3v1h6v9h2v-9h0v9h2v-9h6V10c0-2-4-3-7-3z"/></svg>',
+    "</button>",
+    '<div class="a11y-panel" id="a11yPanel" role="dialog" aria-label="הגדרות נגישות" hidden>',
+    '<h2 data-he="הגדרות נגישות" data-en="Accessibility settings">הגדרות נגישות</h2>',
+    '<div class="a11y-row">',
+    '<span data-he="גודל טקסט" data-en="Text size">גודל טקסט</span>',
+    '<div class="a11y-btn-group">',
+    '<button type="button" data-a11y="font-dec" aria-label="הקטן טקסט">A-</button>',
+    '<button type="button" data-a11y="font-inc" aria-label="הגדל טקסט">A+</button>',
+    "</div></div>",
+    '<button type="button" class="a11y-option" data-a11y="contrast" aria-pressed="false"><span data-he="ניגודיות גבוהה" data-en="High contrast">ניגודיות גבוהה</span></button>',
+    '<button type="button" class="a11y-option" data-a11y="underline" aria-pressed="false"><span data-he="קו תחתון לקישורים" data-en="Underline links">קו תחתון לקישורים</span></button>',
+    '<button type="button" class="a11y-option" data-a11y="pause-motion" aria-pressed="false"><span data-he="עצירת אנימציות" data-en="Pause animations">עצירת אנימציות</span></button>',
+    '<button type="button" class="a11y-reset" data-a11y="reset" data-he="איפוס הגדרות" data-en="Reset settings">איפוס הגדרות</button>',
+    "</div>",
+  ].join("");
+  document.body.appendChild(wrap);
+
+  const toggle = qs(".a11y-toggle", wrap);
+  const panel = qs(".a11y-panel", wrap);
+
+  function syncPanelUI() {
+    const s = getA11ySettings();
+    qsa(".a11y-option", wrap).forEach((btn) => {
+      const key = btn.dataset.a11y === "pause-motion" ? "pauseMotion" : btn.dataset.a11y;
+      btn.setAttribute("aria-pressed", String(!!s[key]));
+    });
+  }
+  function syncToggleLabel() {
+    toggle.setAttribute("aria-label", getLang() === "he" ? "תפריט נגישות" : "Accessibility menu");
+  }
+  syncPanelUI();
+  syncToggleLabel();
+  applyStaticLang(getLang());
+  document.addEventListener("langchange", syncToggleLabel);
+
+  toggle.addEventListener("click", () => {
+    const isOpen = panel.hasAttribute("hidden") === false;
+    if (isOpen) {
+      panel.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", "false");
+    } else {
+      panel.removeAttribute("hidden");
+      toggle.setAttribute("aria-expanded", "true");
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!wrap.contains(e.target) && !panel.hasAttribute("hidden")) {
+      panel.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  panel.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      panel.setAttribute("hidden", "");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.focus();
+    }
+  });
+
+  panel.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-a11y]");
+    if (!btn) return;
+    const action = btn.dataset.a11y;
+    const s = getA11ySettings();
+
+    if (action === "font-inc") s.font = Math.min(s.font + 1, A11Y_FONT_STEPS.length - 1);
+    else if (action === "font-dec") s.font = Math.max(s.font - 1, 0);
+    else if (action === "contrast") s.contrast = !s.contrast;
+    else if (action === "underline") s.underline = !s.underline;
+    else if (action === "pause-motion") s.pauseMotion = !s.pauseMotion;
+    else if (action === "reset") {
+      s.font = 0;
+      s.contrast = false;
+      s.underline = false;
+      s.pauseMotion = false;
+    }
+
+    saveA11ySettings(s);
+    applyA11ySettings(s);
+    syncPanelUI();
+  });
+}
+
 /* ---------- boot ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -239,6 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initHubExitLinks();
   initLang();
   initNav();
+  initA11yWidget();
   clearHubArrival();
   if (typeof bootRouter === "function") bootRouter();
 });
