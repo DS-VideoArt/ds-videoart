@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#08090b">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DS">
+  <link rel="icon" href="../icons/favicon-32.png" sizes="32x32">
   <title>הצהרת נגישות | Accessibility Statement - DS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,6 +18,7 @@
   <link rel="stylesheet" href="style.css?v=20260714b">
 </head>
 <body>
+  <a href="#main-content" class="skip-link" data-he="דלג לתוכן הראשי" data-en="Skip to main content">דלג לתוכן הראשי</a>
   <div class="film-grain"></div>
 
   <nav class="navbar">
@@ -31,7 +39,7 @@
     </div>
   </nav>
 
-  <div class="container legal-content" style="padding-bottom:80px;">
+  <div class="container legal-content" style="padding-bottom:80px;" id="main-content">
     <div data-lang-block="he">
       <h1 class="section-title">הצהרת נגישות</h1>
       <p>עודכן לאחרונה: יולי 2026</p>
@@ -42,14 +50,17 @@
 
       <h2>מה נעשה</h2>
       <ul>
-        <li>שימוש בניגודיות צבעים קריאה בין טקסט לרקע.</li>
-        <li>תמיכה בניווט מקלדת בתפריטים ובטפסים.</li>
-        <li>מבנה סמנטי של כותרות ואזורי תוכן.</li>
+        <li>ניגודיות צבעים בין טקסט לרקע בהתאם לתקן WCAG AA (4.5:1 לפחות לטקסט רגיל).</li>
+        <li>קישור "דלג לתוכן הראשי" בתחילת כל עמוד, לניווט מקלדת מהיר.</li>
+        <li>סימון מצב ברור (focus) על כל רכיב הניתן ללחיצה בעת ניווט מקלדת.</li>
+        <li>תמיכה בניווט מקלדת מלא בתפריטים, בכפתורי השפה ובטפסים.</li>
+        <li>מבנה סמנטי של כותרות, ניווט (nav) ואזורי תוכן (main).</li>
         <li>תמיכה מלאה בכיווניות RTL/LTR בהתאם לשפה הנבחרת.</li>
+        <li>כיבוד הגדרת "הפחתת תנועה" (prefers-reduced-motion) של מערכת ההפעלה.</li>
       </ul>
 
       <h2>מגבלות ידועות</h2>
-      <p>האתרים בבנייה מתמשכת, וייתכנו רכיבים שטרם עברו התאמת נגישות מלאה, בפרט הסצנה התלת-ממדית בעמוד הבית שמשמשת כשכבת עיטור בלבד מעל ניווט טקסטואלי נגיש. אנחנו עובדים על שיפור מתמיד.</p>
+      <p>האתרים בבנייה מתמשכת, וייתכנו רכיבים שטרם עברו התאמת נגישות מלאה. אנחנו עובדים על שיפור מתמיד.</p>
 
       <h2>פנייה בנוגע לנגישות</h2>
       <p>נתקלתם בבעיית נגישות באחד מאתרי DS? נשמח לשמוע ולתקן, דרך טופס יצירת הקשר באתר <a href="/videoart/#contact">DS VideoArt</a> או <a href="/web/#contact">DS Web</a>.</p>
@@ -65,14 +76,17 @@
 
       <h2>What we do</h2>
       <ul>
-        <li>Readable color contrast between text and background.</li>
-        <li>Keyboard navigation support for menus and forms.</li>
-        <li>Semantic heading and content structure.</li>
+        <li>Text/background color contrast meeting WCAG AA (at least 4.5:1 for normal text).</li>
+        <li>A "skip to main content" link at the start of every page, for fast keyboard navigation.</li>
+        <li>A clearly visible focus state on every clickable element during keyboard navigation.</li>
+        <li>Full keyboard navigation support across menus, language buttons, and forms.</li>
+        <li>Semantic heading structure, navigation (nav), and content (main) landmarks.</li>
         <li>Full RTL/LTR direction support based on the selected language.</li>
+        <li>Respecting the OS-level "reduce motion" (prefers-reduced-motion) setting.</li>
       </ul>
 
       <h2>Known limitations</h2>
-      <p>These sites are a work in progress, and some components may not yet be fully accessibility-adapted, in particular the 3D scene on the home page, which acts purely as a decorative layer above accessible text-based navigation. We are working on continuous improvement.</p>
+      <p>These sites are a work in progress, and some components may not yet be fully accessibility-adapted. We are working on continuous improvement.</p>
 
       <h2>Accessibility feedback</h2>
       <p>Found an accessibility issue on a DS site? We'd love to hear about it and fix it, via the contact form on <a href="/videoart/#contact">DS VideoArt</a> or <a href="/web/#contact">DS Web</a>.</p>

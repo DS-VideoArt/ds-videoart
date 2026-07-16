@@ -19,7 +19,7 @@
   --cream: #f2f1ee;
   --text-primary: #f2f1ee;
   --text-muted: rgba(242, 241, 238, 0.64);
-  --text-faint: rgba(242, 241, 238, 0.4);
+  --text-faint: rgba(242, 241, 238, 0.62);
   --border: rgba(242, 241, 238, 0.1);
   --border-strong: rgba(242, 241, 238, 0.2);
 
@@ -289,6 +289,7 @@ html.hub-returning .hub-brand-flash {
    of JS pixel math.
    ============================================================ */
 
+.hub-mobile-intro,
 .hub-mobile-rooms {
   display: none;
 }
@@ -301,11 +302,32 @@ html.hub-returning .hub-brand-flash {
     display: none;
   }
 
+  .hub-mobile-intro {
+    display: block;
+    padding: calc(var(--nav-height) + 28px) 20px 8px;
+    background: var(--bg);
+    text-align: center;
+  }
+
+  .hub-mobile-intro h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .hub-mobile-intro p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 44ch;
+    margin-inline: auto;
+  }
+
   .hub-mobile-rooms {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: calc(var(--nav-height) + 16px) 16px 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 20px 16px 16px;
     background: var(--bg);
   }
 
@@ -314,9 +336,10 @@ html.hub-returning .hub-brand-flash {
     position: relative;
     display: flex;
     align-items: flex-end;
-    height: 22vh;
-    min-height: 150px;
-    border-radius: 16px;
+    height: 30vw;
+    min-height: 130px;
+    max-height: 170px;
+    border-radius: 14px;
     overflow: hidden;
     background-image: url("hub-media/image/hero.jpg");
     background-repeat: no-repeat;
@@ -348,7 +371,6 @@ html.hub-returning .hub-brand-flash {
     background-image: url("hub-media/image/creative-mobile.jpg");
     background-size: cover;
     background-position: center;
-    background-position: 97% 90%;
   }
 
   .hub-mobile-room::after {
@@ -367,17 +389,17 @@ html.hub-returning .hub-brand-flash {
     z-index: 1;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 14px 16px;
-    font-size: 17px;
+    gap: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
     font-weight: 800;
     color: var(--text-primary);
   }
 
   .hub-mobile-room-name::before {
     content: "";
-    width: 9px;
-    height: 9px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: var(--room-color);
     box-shadow: 0 0 8px color-mix(in srgb, var(--room-color) 80%, transparent);

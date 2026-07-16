@@ -65,7 +65,9 @@ function setLang(lang) {
   localStorage.setItem("ds_lang", lang);
   applyStaticLang(lang);
   qsa(".lang-btn").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.lang === lang);
+    const isActive = btn.dataset.lang === lang;
+    btn.classList.toggle("active", isActive);
+    btn.setAttribute("aria-pressed", String(isActive));
   });
   document.dispatchEvent(new CustomEvent("langchange", { detail: { lang } }));
 }
@@ -102,11 +104,19 @@ function initNav() {
   const toggle = qs(".hamburger");
   const menu = qs(".mobile-menu");
   if (!toggle || !menu) return;
+  toggle.setAttribute("aria-expanded", "false");
+  toggle.setAttribute("aria-haspopup", "true");
+  if (!menu.id) menu.id = "mobileMenu";
+  toggle.setAttribute("aria-controls", menu.id);
   toggle.addEventListener("click", () => {
-    menu.classList.toggle("open");
+    const isOpen = menu.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(isOpen));
   });
   qsa("a", menu).forEach((a) =>
-    a.addEventListener("click", () => menu.classList.remove("open"))
+    a.addEventListener("click", () => {
+      menu.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    })
   );
 }
 

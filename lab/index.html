@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <script>if (sessionStorage.getItem("ds_hub_transition")) document.documentElement.classList.add("hub-arrival");</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#08090b">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DS">
+  <link rel="icon" href="../icons/favicon-32.png" sizes="32x32">
   <title>DS Lab | ניסויים ורעיונות - Experiments & Ideas</title>
   <meta name="description" content="DS Lab: מקום לכל דבר יצירתי שהוא לא אתר ולא וידאו. אפליקציות, ניסויים, ורעיונות. DS Lab: a space for anything creative that isn't a site or a video. Apps, experiments, ideas.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +20,7 @@
   <link rel="stylesheet" href="style.css?v=20260714b">
 </head>
 <body data-room="lab">
+  <a href="#main-content" class="skip-link" data-he="דלג לתוכן הראשי" data-en="Skip to main content">דלג לתוכן הראשי</a>
   <div id="hubTransitionOverlay"></div>
   <div class="bubble-drift">
     <span style="--size:10px; --dur:16s; --delay:0s; inset-inline-start:8%;"></span>
@@ -52,7 +60,7 @@
     <a href="#experiments" data-he="ניסויים" data-en="Experiments">ניסויים</a>
   </div>
 
-  <header class="hero">
+  <header class="hero" id="main-content">
     <div class="container hero-inner">
       <span class="rec-tag"><span class="rec-dot"></span> <span data-he="בבדיקה" data-en="In the works">בבדיקה</span></span>
       <h1 data-he="כאן ניסויים הופכים למשהו אמיתי." data-en="Where experiments become something real.">כאן ניסויים הופכים למשהו אמיתי.</h1>
