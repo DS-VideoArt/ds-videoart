@@ -214,7 +214,7 @@ function openLightbox(url) {
   if (isLocalVideoFile(url)) {
     frame.innerHTML = `<video src="${escHtml(url)}" style="width:100%;height:100%;object-fit:contain;" controls autoplay playsinline></video>`;
   } else {
-    frame.innerHTML = `<iframe src="${escHtml(url)}" style="width:100%;height:100%;border:0;" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+    frame.innerHTML = `<iframe src="${escHtml(url)}" style="width:100%;height:100%;border:0;" allow="autoplay; fullscreen" allowfullscreen sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>`;
   }
   overlay.style.display = "flex";
 }
