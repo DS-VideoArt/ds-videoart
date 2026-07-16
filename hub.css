@@ -289,6 +289,7 @@ html.hub-returning .hub-brand-flash {
    of JS pixel math.
    ============================================================ */
 
+.hub-mobile-hero,
 .hub-mobile-intro,
 .hub-mobile-rooms {
   display: none;
@@ -302,9 +303,34 @@ html.hub-returning .hub-brand-flash {
     display: none;
   }
 
+  /* Full-bleed logo hero at the very top of the page, starting at
+     y:0 so the fixed, translucent navbar overlays on top of it
+     (same "chrome floats over the art" treatment as the desktop
+     panorama), instead of the navbar sitting on flat black. */
+
+  .hub-mobile-hero {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 46vh;
+    min-height: 260px;
+    max-height: 420px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  .hub-mobile-hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
   .hub-mobile-intro {
     display: block;
-    padding: calc(var(--nav-height) + 28px) 20px 8px;
+    padding: 24px 20px 8px;
     background: var(--bg);
     text-align: center;
   }
