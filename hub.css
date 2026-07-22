@@ -220,6 +220,7 @@ html.hub-returning .hub-brand-flash {
   height: 100%;
   object-fit: contain;
   z-index: 1;
+  filter: brightness(1.22) contrast(1.04) saturate(1.1);
 }
 
 /* Scrims for text legibility over busy footage */
@@ -233,29 +234,6 @@ html.hub-returning .hub-brand-flash {
   background: linear-gradient(to top, rgba(4, 5, 6, 0.7), transparent);
   pointer-events: none;
 }
-
-/* HUD-style neon corner brackets: a light, sci-fi "framed screen"
-   accent that reads as deliberate lit-up chrome rather than decoration
-   for its own sake, matching the lab/futuristic-studio premise. */
-.hub-frame {
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  pointer-events: none;
-}
-
-.hub-frame-corner {
-  position: absolute;
-  width: 34px;
-  height: 34px;
-  border: 0 solid rgba(255, 255, 255, 0.65);
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.55));
-}
-
-.hub-frame-corner.tl { top: 18px; left: 18px; border-top-width: 2px; border-inline-start-width: 2px; }
-.hub-frame-corner.tr { top: 18px; right: 18px; border-top-width: 2px; border-inline-end-width: 2px; }
-.hub-frame-corner.bl { bottom: 18px; left: 18px; border-bottom-width: 2px; border-inline-start-width: 2px; }
-.hub-frame-corner.br { bottom: 18px; right: 18px; border-bottom-width: 2px; border-inline-end-width: 2px; }
 
 /* A real bar in normal document flow, not an overlay on the footage,
    so it can never collide with the room graphics beneath it (the
@@ -326,11 +304,13 @@ html.hub-returning .hub-brand-flash {
   justify-content: center;
   pointer-events: auto;
   touch-action: manipulation;
-  -webkit-backdrop-filter: brightness(1) saturate(1);
-  backdrop-filter: brightness(1) saturate(1);
+  -webkit-backdrop-filter: brightness(1.28) saturate(1.2);
+  backdrop-filter: brightness(1.28) saturate(1.2);
   /* Soft-edged spotlight, not a hard rectangle: the brighten/saturate
      effect (applied to the real footage behind via backdrop-filter)
-     fades out toward the edges instead of cutting off sharply. */
+     fades out toward the edges instead of cutting off sharply. Always
+     on (not just on hover/focus) so every room reads as lit by
+     default, not just the one currently being pointed at. */
   -webkit-mask-image: radial-gradient(ellipse at center, #000 55%, transparent 100%);
   mask-image: radial-gradient(ellipse at center, #000 55%, transparent 100%);
   transition: backdrop-filter 0.35s var(--ease-out), -webkit-backdrop-filter 0.35s var(--ease-out);
@@ -338,8 +318,8 @@ html.hub-returning .hub-brand-flash {
 
 .hub-hotspot:hover,
 .hub-hotspot:focus-visible {
-  -webkit-backdrop-filter: brightness(1.35) saturate(1.3);
-  backdrop-filter: brightness(1.35) saturate(1.3);
+  -webkit-backdrop-filter: brightness(1.55) saturate(1.45);
+  backdrop-filter: brightness(1.55) saturate(1.45);
 }
 
 .hub-hotspot-label {
