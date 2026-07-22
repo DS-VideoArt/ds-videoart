@@ -153,6 +153,7 @@ html.hub-returning .hub-brand-flash {
   max-height: 100vh;
   background: var(--bg);
   overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 80px rgba(255, 255, 255, 0.05);
 }
 
 /* Ambient color bloom: the source panorama is letterboxed
@@ -224,29 +225,29 @@ html.hub-returning .hub-brand-flash {
   pointer-events: none;
 }
 
+/* A real bar in normal document flow, not an overlay on the footage,
+   so it can never collide with the room graphics beneath it (the
+   hexagon art reaches almost to the top edge of the image, leaving
+   no quiet zone for text to float over). Sits directly under the
+   fixed navbar, above the stage. */
 .hub-caption {
-  position: absolute;
-  top: calc(var(--nav-height) + 20px);
-  inset-inline: 0;
-  z-index: 4;
+  position: relative;
+  margin-top: var(--nav-height);
+  z-index: 10;
   text-align: center;
-  pointer-events: none;
-  padding: 0 24px;
+  padding: 18px 24px;
+  background: var(--bg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22), 0 1px 24px rgba(255, 255, 255, 0.12);
 }
 
 .hub-caption span {
-  display: inline-block;
-  padding: 8px 18px;
-  border-radius: 999px;
-  background: rgba(8, 9, 11, 0.55);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-primary);
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.55), 0 0 26px rgba(255, 255, 255, 0.25);
 }
 
 /* ============================================================
@@ -306,9 +307,11 @@ html.hub-returning .hub-brand-flash {
   border-radius: 999px;
   background: rgba(8, 9, 11, 0.6);
   border: 1px solid color-mix(in srgb, var(--room-color) 50%, transparent);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.18), 0 0 6px color-mix(in srgb, var(--room-color) 50%, transparent);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  color: var(--text-primary);
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
   font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
@@ -328,8 +331,8 @@ html.hub-returning .hub-brand-flash {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--room-color);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--room-color) 80%, transparent);
+  background: color-mix(in srgb, var(--room-color) 70%, white);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 8px color-mix(in srgb, var(--room-color) 80%, transparent);
   flex-shrink: 0;
 }
 
