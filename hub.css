@@ -186,6 +186,25 @@ html.hub-returning .hub-brand-flash {
   .hub-stage::before { animation: none; opacity: 0.5; }
 }
 
+/* The ambient bloom above sits behind the (opaque, now full-bleed)
+   footage, so it only ever shows in letterboxed bars - useless now
+   that the stage is aspect-locked to the image with none left. This
+   second glow sits ON TOP of the footage instead, using a "screen"
+   blend so it genuinely lights the pixels beneath it rather than
+   covering them. Centered on the top-middle "SYSTEMS" panel, which
+   is the one part of the photo with no room color of its own and no
+   hotspot glow near it, and reads noticeably darker/flatter than the
+   four brand-colored rooms as a result. */
+.hub-stage-zoom::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(ellipse 34% 46% at 50% 24%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.18) 55%, transparent 80%);
+}
+
 .hub-stage-zoom {
   position: absolute;
   inset: 0;
@@ -204,16 +223,6 @@ html.hub-returning .hub-brand-flash {
 }
 
 /* Scrims for text legibility over busy footage */
-
-.hub-scrim-top {
-  position: absolute;
-  top: 0;
-  inset-inline: 0;
-  height: 260px;
-  z-index: 3;
-  background: linear-gradient(to bottom, rgba(4, 5, 6, 0.86), transparent);
-  pointer-events: none;
-}
 
 .hub-scrim-bottom {
   position: absolute;
