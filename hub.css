@@ -10,18 +10,18 @@
    ============================================================ */
 
 :root {
-  --bg: #08090b;
-  --bg-elevated: #0e1013;
-  --bg-card: #121417;
+  --bg: #0b0d11;
+  --bg-elevated: #12151a;
+  --bg-card: #171a20;
   --accent: #e8ecf2;
   --accent-soft: rgba(232, 236, 242, 0.1);
   --accent-border: rgba(232, 236, 242, 0.3);
   --cream: #f2f1ee;
-  --text-primary: #f2f1ee;
-  --text-muted: rgba(242, 241, 238, 0.64);
-  --text-faint: rgba(242, 241, 238, 0.62);
-  --border: rgba(242, 241, 238, 0.1);
-  --border-strong: rgba(242, 241, 238, 0.2);
+  --text-primary: #f8f9fb;
+  --text-muted: rgba(248, 249, 251, 0.82);
+  --text-faint: rgba(248, 249, 251, 0.88);
+  --border: rgba(242, 241, 238, 0.14);
+  --border-strong: rgba(242, 241, 238, 0.26);
 
   --shadow-accent: 0 3px 16px rgba(232, 236, 242, 0.18);
 
@@ -153,9 +153,40 @@ html.hub-returning .hub-brand-flash {
   overflow: hidden;
 }
 
+/* Ambient color bloom: the source panorama is letterboxed
+   (object-fit:contain), which leaves flat black bars on most window
+   shapes. Rather than leave those bars dead, a soft, slowly drifting
+   glow in each room's own color sits behind the footage, reusing the
+   real brand colors already used by the hotspots/labels so it reads
+   as "the lab is lit up" rather than a generic decorative gradient. */
+.hub-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 46% 42% at 14% 16%, color-mix(in srgb, var(--room-lab) 32%, transparent), transparent 72%),
+    radial-gradient(ellipse 46% 42% at 86% 16%, color-mix(in srgb, var(--room-videoart) 30%, transparent), transparent 72%),
+    radial-gradient(ellipse 46% 44% at 14% 86%, color-mix(in srgb, var(--room-web) 30%, transparent), transparent 72%),
+    radial-gradient(ellipse 46% 44% at 86% 86%, color-mix(in srgb, var(--room-creative) 28%, transparent), transparent 72%);
+  filter: blur(70px);
+  opacity: 0.5;
+  animation: hubGlowDrift 16s ease-in-out infinite alternate;
+}
+
+@keyframes hubGlowDrift {
+  from { opacity: 0.38; transform: scale(1); }
+  to { opacity: 0.62; transform: scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-stage::before { animation: none; opacity: 0.5; }
+}
+
 .hub-stage-zoom {
   position: absolute;
   inset: 0;
+  z-index: 1;
   transform-origin: 50% 50%;
   will-change: transform;
 }
@@ -175,9 +206,9 @@ html.hub-returning .hub-brand-flash {
   position: absolute;
   top: 0;
   inset-inline: 0;
-  height: 220px;
+  height: 260px;
   z-index: 3;
-  background: linear-gradient(to bottom, rgba(4, 5, 6, 0.75), transparent);
+  background: linear-gradient(to bottom, rgba(4, 5, 6, 0.86), transparent);
   pointer-events: none;
 }
 
@@ -202,11 +233,18 @@ html.hub-returning .hub-brand-flash {
 }
 
 .hub-caption span {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(8, 9, 11, 0.55);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--text-primary);
 }
 
 /* ============================================================

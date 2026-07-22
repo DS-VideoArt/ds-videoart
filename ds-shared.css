@@ -421,7 +421,7 @@ p {
 
 .lang-btn.active {
   background: var(--accent);
-  color: var(--text-primary);
+  color: #08090b;
 }
 
 .hamburger {
