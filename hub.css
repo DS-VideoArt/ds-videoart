@@ -89,11 +89,11 @@ html.hub-returning .hub-brand-flash {
   margin: 0;
   padding: 0 1.5rem;
   font-weight: 900;
-  font-size: clamp(1.7rem, 6vw, 3.2rem);
-  line-height: 1.35;
-  color: var(--cream);
-  letter-spacing: -0.01em;
-  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.55);
+  font-size: clamp(2.4rem, 9vw, 5.2rem);
+  line-height: 1.28;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 70px rgba(255, 255, 255, 0.25);
   opacity: 0;
   animation: dsSplashTextIn 1s ease-out 0.35s forwards;
 }
@@ -168,12 +168,12 @@ html.hub-returning .hub-brand-flash {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse 46% 42% at 14% 16%, color-mix(in srgb, var(--room-lab) 32%, transparent), transparent 72%),
-    radial-gradient(ellipse 46% 42% at 86% 16%, color-mix(in srgb, var(--room-videoart) 30%, transparent), transparent 72%),
-    radial-gradient(ellipse 46% 44% at 14% 86%, color-mix(in srgb, var(--room-web) 30%, transparent), transparent 72%),
-    radial-gradient(ellipse 46% 44% at 86% 86%, color-mix(in srgb, var(--room-creative) 28%, transparent), transparent 72%);
+    radial-gradient(ellipse 46% 42% at 14% 16%, color-mix(in srgb, var(--room-lab) 42%, transparent), transparent 72%),
+    radial-gradient(ellipse 46% 42% at 86% 16%, color-mix(in srgb, var(--room-videoart) 40%, transparent), transparent 72%),
+    radial-gradient(ellipse 46% 44% at 14% 86%, color-mix(in srgb, var(--room-web) 40%, transparent), transparent 72%),
+    radial-gradient(ellipse 46% 44% at 86% 86%, color-mix(in srgb, var(--room-creative) 38%, transparent), transparent 72%);
   filter: blur(70px);
-  opacity: 0.5;
+  opacity: 0.62;
   animation: hubGlowDrift 16s ease-in-out infinite alternate;
 }
 
@@ -225,6 +225,29 @@ html.hub-returning .hub-brand-flash {
   pointer-events: none;
 }
 
+/* HUD-style neon corner brackets: a light, sci-fi "framed screen"
+   accent that reads as deliberate lit-up chrome rather than decoration
+   for its own sake, matching the lab/futuristic-studio premise. */
+.hub-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.hub-frame-corner {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border: 0 solid rgba(255, 255, 255, 0.65);
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.55));
+}
+
+.hub-frame-corner.tl { top: 18px; left: 18px; border-top-width: 2px; border-inline-start-width: 2px; }
+.hub-frame-corner.tr { top: 18px; right: 18px; border-top-width: 2px; border-inline-end-width: 2px; }
+.hub-frame-corner.bl { bottom: 18px; left: 18px; border-bottom-width: 2px; border-inline-start-width: 2px; }
+.hub-frame-corner.br { bottom: 18px; right: 18px; border-bottom-width: 2px; border-inline-end-width: 2px; }
+
 /* A real bar in normal document flow, not an overlay on the footage,
    so it can never collide with the room graphics beneath it (the
    hexagon art reaches almost to the top edge of the image, leaving
@@ -234,11 +257,23 @@ html.hub-returning .hub-brand-flash {
   position: relative;
   margin-top: var(--nav-height);
   z-index: 10;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
   padding: 18px 24px;
   background: var(--bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.22), 0 1px 24px rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 30px rgba(255, 255, 255, 0.16);
+}
+
+.hub-caption::before,
+.hub-caption::after {
+  content: "";
+  width: clamp(30px, 8vw, 90px);
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.75), transparent);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
 }
 
 .hub-caption span {
@@ -247,7 +282,7 @@ html.hub-returning .hub-brand-flash {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.55), 0 0 26px rgba(255, 255, 255, 0.25);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.3);
 }
 
 /* ============================================================
