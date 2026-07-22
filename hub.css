@@ -148,7 +148,9 @@ html.hub-returning .hub-brand-flash {
 
 .hub-stage {
   position: relative;
-  height: 100vh;
+  width: 100%;
+  aspect-ratio: 1916 / 821;
+  max-height: 100vh;
   background: var(--bg);
   overflow: hidden;
 }
