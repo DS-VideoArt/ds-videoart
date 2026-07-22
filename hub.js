@@ -222,7 +222,35 @@ function handleHubReturn() {
   }
 }
 
+/**
+ * Welcome splash: full-bleed image + Hebrew/English greeting shown on
+ * every fresh load or refresh of the hub root. Skipped when arriving
+ * back from a room (that already has its own color-flash handoff) or
+ * when the user prefers reduced motion, since the point of the splash
+ * is the zoom/fade choreography itself, not the message alone.
+ */
+function initSplash() {
+  const splash = qs("#dsSplash");
+  if (!splash) return;
+
+  if (sessionStorage.getItem("ds_hub_return")) {
+    splash.classList.add("is-gone");
+    return;
+  }
+
+  if (typeof prefersReducedMotion !== "undefined" && prefersReducedMotion) {
+    splash.classList.add("is-gone");
+    return;
+  }
+
+  setTimeout(() => {
+    splash.classList.add("is-hiding");
+    splash.addEventListener("transitionend", () => splash.classList.add("is-gone"), { once: true });
+  }, 2600);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  initSplash();
   initHotspots();
   initHotspotLayout();
   handleHubReturn();
