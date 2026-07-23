@@ -1,35 +1,40 @@
 /* ============================================================
    DS Creative Studio: digital business card
-   Neutral hub palette (silver on charcoal) with each room's
-   own accent color used only as a small identifier per tile.
+   Warm, light neutral palette (cream/white) echoing the QR
+   code's soft brand-tinted backdrop, with each room's own
+   accent color used only as a small identifier per tile.
    Loaded after ds-shared.css, which supplies reset, buttons,
    focus states and the film-grain overlay.
    ============================================================ */
 
 :root {
-  --bg: #0b0d11;
-  --bg-elevated: #12151b;
-  --bg-card: #161a21;
-  --accent: #e8ecf2;
-  --accent-soft: rgba(232, 236, 242, 0.1);
-  --accent-border: rgba(232, 236, 242, 0.3);
-  --cream: #e8ecf2;
-  --text-primary: #eef1f6;
-  --text-muted: rgba(238, 241, 246, 0.66);
-  --text-faint: rgba(238, 241, 246, 0.5);
-  --border: rgba(238, 241, 246, 0.1);
-  --border-strong: rgba(238, 241, 246, 0.2);
+  --bg: #f7f5f2;
+  --bg-elevated: #ffffff;
+  --bg-card: #ffffff;
+  --accent: #15171c;
+  --accent-soft: rgba(21, 23, 28, 0.06);
+  --accent-border: rgba(21, 23, 28, 0.16);
+  --cream: #f7f5f2;
+  --text-primary: #15171c;
+  --text-muted: rgba(21, 23, 28, 0.64);
+  --text-faint: rgba(21, 23, 28, 0.48);
+  --border: rgba(21, 23, 28, 0.1);
+  --border-strong: rgba(21, 23, 28, 0.2);
 
   --room-videoart: #d1414c;
   --room-web: #3d8ef0;
   --room-lab: #4ade80;
   --room-creative: #ec4899;
 
-  --shadow-accent: 0 3px 14px rgba(232, 236, 242, 0.18);
+  --shadow-accent: 0 3px 14px rgba(21, 23, 28, 0.14);
 }
 
 .card-actions .btn-primary {
   color: var(--bg);
+}
+
+.card-actions .btn-outline {
+  border-color: var(--border-strong);
 }
 
 body[data-room="card"] {
@@ -61,6 +66,8 @@ body[data-room="card"] {
   max-width: 380px;
   height: auto;
   object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px -8px rgba(21, 23, 28, 0.28);
 }
 
 .card-about {
@@ -192,7 +199,7 @@ body[data-room="card"] {
   inset: 0;
   z-index: 8000;
   overflow: hidden;
-  background: var(--bg);
+  background: #0b0d11;
 }
 
 .ds-splash-media {
