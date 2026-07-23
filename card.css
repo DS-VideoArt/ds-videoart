@@ -1,0 +1,235 @@
+/* ============================================================
+   DS Creative Studio: digital business card
+   Neutral hub palette (silver on charcoal) with each room's
+   own accent color used only as a small identifier per tile.
+   Loaded after ds-shared.css, which supplies reset, buttons,
+   focus states and the film-grain overlay.
+   ============================================================ */
+
+:root {
+  --bg: #0b0d11;
+  --bg-elevated: #12151b;
+  --bg-card: #161a21;
+  --accent: #e8ecf2;
+  --accent-soft: rgba(232, 236, 242, 0.1);
+  --accent-border: rgba(232, 236, 242, 0.3);
+  --cream: #e8ecf2;
+  --text-primary: #eef1f6;
+  --text-muted: rgba(238, 241, 246, 0.66);
+  --text-faint: rgba(238, 241, 246, 0.5);
+  --border: rgba(238, 241, 246, 0.1);
+  --border-strong: rgba(238, 241, 246, 0.2);
+
+  --room-videoart: #d1414c;
+  --room-web: #3d8ef0;
+  --room-lab: #4ade80;
+  --room-creative: #ec4899;
+
+  --shadow-accent: 0 3px 14px rgba(232, 236, 242, 0.18);
+}
+
+.card-actions .btn-primary {
+  color: var(--bg);
+}
+
+body[data-room="card"] {
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+.card-stage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+.card-panel {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+}
+
+.card-logo {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  object-fit: contain;
+}
+
+.card-about {
+  font-size: 0.98rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  max-width: 380px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.card-actions .btn {
+  flex: 1;
+  justify-content: center;
+}
+
+.card-rooms {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.card-room {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: start;
+  gap: 6px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--room-color, var(--accent));
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.card-room:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+}
+
+.card-room[data-room="videoart"] { --room-color: var(--room-videoart); }
+.card-room[data-room="web"] { --room-color: var(--room-web); }
+.card-room[data-room="lab"] { --room-color: var(--room-lab); }
+.card-room[data-room="creative"] { --room-color: var(--room-creative); }
+
+.card-room-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  margin-bottom: 2px;
+}
+
+.card-room-name {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.card-room-tag {
+  font-size: 0.76rem;
+  font-weight: 300;
+  color: var(--text-faint);
+  line-height: 1.4;
+}
+
+.card-site-link {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border-bottom: 1px solid var(--border-strong);
+  padding-bottom: 4px;
+}
+
+.card-site-url {
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: var(--text-faint);
+}
+
+@media (max-width: 380px) {
+  .card-rooms {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Welcome splash, same choreography as the hub root: plays on
+   every fresh load, hidden after ~2.6s via inline script in
+   card.html (initSplash equivalent, no hub.js dependency).
+   ============================================================ */
+
+.ds-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.ds-splash-media {
+  position: absolute;
+  inset: -4%;
+  background: url("hub-media/image/splash.jpg?v=20260719b") center / cover no-repeat;
+  animation: dsSplashZoom 3.4s ease-out forwards;
+}
+
+.ds-splash-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 9, 11, 0.6) 0%, rgba(8, 9, 11, 0.15) 42%, rgba(8, 9, 11, 0.7) 100%);
+}
+
+.ds-splash-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+  padding: 0 1.5rem;
+  font-weight: 900;
+  font-size: clamp(2.4rem, 9vw, 5.2rem);
+  line-height: 1.28;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 70px rgba(255, 255, 255, 0.25);
+  opacity: 0;
+  animation: dsSplashTextIn 1s ease-out 0.35s forwards;
+}
+
+@keyframes dsSplashZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+
+@keyframes dsSplashTextIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ds-splash.is-hiding {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.ds-splash.is-gone {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-splash-media { animation: none; }
+  .ds-splash-text { animation: none; opacity: 1; transform: none; }
+}
