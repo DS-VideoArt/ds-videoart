@@ -174,85 +174,50 @@ body[data-room="card"] {
 }
 
 /* ============================================================
-   Domain list: an editorial, timeline-style list of DS's
-   creative disciplines. Informational only, not links, so
-   no button chrome, hover lift, or card borders, just a
-   quiet connecting line and a burst of per-domain color to
-   keep four list rows from reading as four gray rows.
+   Domain list: a clean, printed-card style list of DS's
+   creative disciplines, each row marked only by a slim
+   colored rule, the way a real business card uses a thin
+   color bar rather than app-style icon badges. Informational
+   only, not links: no button chrome, no hover lift.
    ============================================================ */
 
 .domain-list {
   width: 100%;
   list-style: none;
   margin: 0;
-  padding: 4px 0 4px 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  position: relative;
-}
-
-.domain-list::before {
-  content: "";
-  position: absolute;
-  top: 22px;
-  bottom: 22px;
-  inset-inline-start: 21px;
-  width: 1.5px;
-  background: linear-gradient(
-    180deg,
-    var(--room-videoart) 0%,
-    var(--room-web) 38%,
-    var(--room-lab) 65%,
-    var(--room-creative) 100%
-  );
-  opacity: 0.35;
 }
 
 .domain-item {
   position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 14px 4px;
+  padding: 13px 0 13px 18px;
+  border-inline-start: 2.5px solid var(--room-color, var(--accent));
   text-align: start;
+  border-bottom: 1px solid var(--border);
 }
 
-.domain-icon {
-  position: relative;
-  z-index: 1;
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: var(--room-color, var(--accent));
-  box-shadow: 0 6px 16px -4px var(--room-color, var(--accent));
+.domain-item:last-child {
+  border-bottom: none;
 }
 
-.domain-icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.domain-item[data-room="videoart"] .domain-icon { --room-color: var(--room-videoart); }
-.domain-item[data-room="web"] .domain-icon { --room-color: var(--room-web); }
-.domain-item[data-room="lab"] .domain-icon { --room-color: var(--room-lab); }
-.domain-item[data-room="creative"] .domain-icon { --room-color: var(--room-creative); }
+.domain-item[data-room="videoart"] { --room-color: var(--room-videoart); }
+.domain-item[data-room="web"] { --room-color: var(--room-web); }
+.domain-item[data-room="lab"] { --room-color: var(--room-lab); }
+.domain-item[data-room="creative"] { --room-color: var(--room-creative); }
 
 .domain-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding-top: 6px;
 }
 
 .domain-name {
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 900;
   color: var(--text-primary);
+  letter-spacing: 0.01em;
 }
 
 .domain-tag {
@@ -263,56 +228,50 @@ body[data-room="card"] {
 }
 
 /* ============================================================
-   Final CTA: the one clickable, celebratory action left on
-   the page, a warm multi-hue gradient pulled from the four
-   domain colors so it reads as "the whole studio," not a
-   generic dark pill.
+   Final CTA: a single, quiet, well-made button, ink-dark like
+   a foil-stamped card edge, with a hairline four-color rule
+   tucked along its top as the only flourish.
    ============================================================ */
 
 .cta-full-site {
-  margin-top: 6px;
+  position: relative;
+  margin-top: 8px;
   width: 100%;
-  max-width: 340px;
+  max-width: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 17px 28px;
-  border-radius: 999px;
-  background: linear-gradient(120deg, var(--room-videoart), var(--room-creative) 45%, var(--room-web) 85%);
-  background-size: 180% 180%;
-  background-position: 0% 50%;
-  color: #fff;
-  font-weight: 900;
-  font-size: 1rem;
+  padding: 16px 28px;
+  border-radius: 14px;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 700;
+  font-size: 0.96rem;
+  letter-spacing: 0.01em;
   text-decoration: none;
-  box-shadow: 0 14px 30px -10px rgba(21, 23, 28, 0.4);
-  transition: background-position 0.5s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+  overflow: hidden;
+  box-shadow: 0 10px 24px -12px rgba(21, 23, 28, 0.5);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
+}
+
+.cta-full-site::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--room-videoart),
+    var(--room-web) 38%,
+    var(--room-lab) 65%,
+    var(--room-creative) 100%
+  );
 }
 
 .cta-full-site:hover {
-  background-position: 100% 50%;
   transform: translateY(-2px);
-  box-shadow: 0 18px 36px -10px rgba(21, 23, 28, 0.48);
-}
-
-.cta-full-site .cta-arrow {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  transition: transform 0.2s var(--ease-out);
-}
-
-.cta-full-site:hover .cta-arrow {
-  transform: translateX(-3px);
-}
-
-html[dir="ltr"] .cta-full-site .cta-arrow {
-  transform: scaleX(-1);
-}
-
-html[dir="ltr"] .cta-full-site:hover .cta-arrow {
-  transform: scaleX(-1) translateX(-3px);
+  box-shadow: 0 14px 30px -12px rgba(21, 23, 28, 0.58);
 }
 
 /* ============================================================
