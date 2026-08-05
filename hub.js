@@ -316,9 +316,21 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!installBtn) return;
   installBtn.addEventListener("click", async () => {
     if (!deferredInstallPrompt) return;
-    installBtn.hidden = true;
-    deferredInstallPrompt.prompt();
-    await deferredInstallPrompt.userChoice;
+    const promptEvent = deferredInstallPrompt;
+    // A used beforeinstallprompt event can't be reused, so clear it
+    // immediately either way - but only hide the button once the
+    // outcome actually confirms the dialog ran, not before. Hiding
+    // it up front meant a silent failure (a stale event, or Chrome
+    // just declining to show anything for its own reasons) looked
+    // exactly like "clicked and nothing happened", with the button
+    // gone and no way to try again.
     deferredInstallPrompt = null;
+    try {
+      promptEvent.prompt();
+      const choice = await promptEvent.userChoice;
+      installBtn.hidden = choice.outcome === "accepted";
+    } catch (err) {
+      console.error("install prompt failed", err);
+    }
   });
 });
