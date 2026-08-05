@@ -21,10 +21,10 @@
   --border: rgba(21, 23, 28, 0.1);
   --border-strong: rgba(21, 23, 28, 0.2);
 
-  --room-videoart: #d1414c;
-  --room-web: #3d8ef0;
-  --room-lab: #4ade80;
-  --room-creative: #ec4899;
+  --room-videoart: #d9765a;
+  --room-web: #4a8fb5;
+  --room-lab: #5fa87a;
+  --room-creative: #b06ba8;
 
   --shadow-accent: 0 3px 14px rgba(21, 23, 28, 0.14);
 }
@@ -162,23 +162,39 @@ body[data-room="card"] {
   text-align: start;
 }
 
-.card-more-label {
+/* ============================================================
+   Section divider: a quiet inline label breaking the card into
+   "who we are / how to reach us" and "what we make," the way a
+   folded card uses a crease rather than a whole new surface.
+   ============================================================ */
+
+.card-divider {
   width: 100%;
-  text-align: start;
-  font-size: 0.78rem;
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0;
   color: var(--text-faint);
+  font-size: 0.74rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin: 6px 0 -6px;
+  letter-spacing: 0.06em;
+}
+
+.card-divider::before,
+.card-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
 }
 
 /* ============================================================
    Domain list: a clean, printed-card style list of DS's
-   creative disciplines, each row marked only by a slim
-   colored rule, the way a real business card uses a thin
-   color bar rather than app-style icon badges. Informational
-   only, not links: no button chrome, no hover lift.
+   creative disciplines, each row marked with a slim colored
+   rule plus the faintest wash of that same color, the way a
+   nice card uses ink and paper stock rather than app icons.
+   Informational only, not links: no button chrome, no hover.
    ============================================================ */
 
 .domain-list {
@@ -188,18 +204,17 @@ body[data-room="card"] {
   padding: 0;
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
 .domain-item {
   position: relative;
-  padding: 13px 0 13px 18px;
-  border-inline-start: 2.5px solid var(--room-color, var(--accent));
+  padding: 12px 14px;
+  border-inline-start: 3px solid var(--room-color, var(--accent));
+  border-start-end-radius: 10px;
+  border-end-end-radius: 10px;
   text-align: start;
-  border-bottom: 1px solid var(--border);
-}
-
-.domain-item:last-child {
-  border-bottom: none;
+  background: color-mix(in srgb, var(--room-color, var(--accent)) 9%, var(--bg-elevated));
 }
 
 .domain-item[data-room="videoart"] { --room-color: var(--room-videoart); }
@@ -214,14 +229,14 @@ body[data-room="card"] {
 }
 
 .domain-name {
-  font-size: 0.98rem;
+  font-size: 0.96rem;
   font-weight: 900;
-  color: var(--text-primary);
+  color: color-mix(in srgb, var(--room-color, var(--text-primary)) 55%, var(--text-primary));
   letter-spacing: 0.01em;
 }
 
 .domain-tag {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 300;
   color: var(--text-muted);
   line-height: 1.5;
