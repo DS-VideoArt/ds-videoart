@@ -10,20 +10,20 @@
    ============================================================ */
 
 :root {
-  --bg: #0b0d11;
-  --bg-elevated: #12151a;
-  --bg-card: #171a20;
-  --accent: #e8ecf2;
-  --accent-soft: rgba(232, 236, 242, 0.1);
-  --accent-border: rgba(232, 236, 242, 0.3);
-  --cream: #f2f1ee;
-  --text-primary: #f8f9fb;
-  --text-muted: rgba(248, 249, 251, 0.82);
-  --text-faint: rgba(248, 249, 251, 0.88);
-  --border: rgba(242, 241, 238, 0.14);
-  --border-strong: rgba(242, 241, 238, 0.26);
+  --bg: #f4f4f6;
+  --bg-elevated: #ffffff;
+  --bg-card: #eaeaee;
+  --accent: #e6e7eb;
+  --accent-soft: rgba(21, 23, 28, 0.05);
+  --accent-border: rgba(21, 23, 28, 0.16);
+  --cream: #15171c;
+  --text-primary: #15171c;
+  --text-muted: rgba(21, 23, 28, 0.68);
+  --text-faint: rgba(21, 23, 28, 0.55);
+  --border: rgba(15, 17, 20, 0.1);
+  --border-strong: rgba(15, 17, 20, 0.18);
 
-  --shadow-accent: 0 3px 16px rgba(232, 236, 242, 0.18);
+  --shadow-accent: 0 8px 24px -8px rgba(15, 17, 20, 0.18);
 
   --room-videoart: #d1414c;
   --room-web: #3d8ef0;
@@ -31,9 +31,38 @@
   --room-creative: #ec4899;
 }
 
+/* White corridor, not a neon dashboard: a real lab reads futuristic
+   through clean architecture and dimensional shadow, not glowing
+   lines on white (that's just the AI-purple-glow cliché in a
+   different color). Color comes from the four room photos, which
+   stay exactly as dark and vivid as before, and now pop hard against
+   a calm, almost-white hallway instead of getting lost in more dark.
+   A faint blueprint dot-grid is the one deliberate "lab" texture. */
 body.hub {
   min-height: 100vh;
   overflow-x: hidden;
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ds-shared.css styles the navbar/footer/a11y toggle for the dark
+   rooms (white glow, dark icon on a light accent circle). Scoped
+   overrides here retune just those three shared components for the
+   hub's light corridor, without touching how they look anywhere
+   else on the site. */
+body.hub .navbar {
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+}
+
+body.hub footer {
+  border-top: 1px solid var(--border);
+  box-shadow: none;
+}
+
+body.hub .a11y-toggle {
+  color: var(--text-primary);
 }
 
 .hub-brand-flash {
@@ -63,7 +92,7 @@ html.hub-returning .hub-brand-flash {
   inset: 0;
   z-index: 8000;
   overflow: hidden;
-  background: var(--bg);
+  background: #08090b;
 }
 
 .ds-splash-media {
@@ -153,46 +182,16 @@ html.hub-returning .hub-brand-flash {
   max-height: 100vh;
   background: var(--bg);
   overflow: hidden;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 0 80px rgba(255, 255, 255, 0.05);
+  /* The panel reads as a real screen set into a white wall: a soft
+     outer shadow gives it depth against the light corridor, instead
+     of the old inset glow that only made sense on a dark page. */
+  box-shadow: 0 30px 60px -24px rgba(15, 17, 20, 0.28);
 }
 
-/* Ambient color bloom: the source panorama is letterboxed
-   (object-fit:contain), which leaves flat black bars on most window
-   shapes. Rather than leave those bars dead, a soft, slowly drifting
-   glow in each room's own color sits behind the footage, reusing the
-   real brand colors already used by the hotspots/labels so it reads
-   as "the lab is lit up" rather than a generic decorative gradient. */
-.hub-stage::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(ellipse 46% 42% at 14% 16%, color-mix(in srgb, var(--room-lab) 42%, transparent), transparent 72%),
-    radial-gradient(ellipse 46% 42% at 86% 16%, color-mix(in srgb, var(--room-videoart) 40%, transparent), transparent 72%),
-    radial-gradient(ellipse 46% 44% at 14% 86%, color-mix(in srgb, var(--room-web) 40%, transparent), transparent 72%),
-    radial-gradient(ellipse 46% 44% at 86% 86%, color-mix(in srgb, var(--room-creative) 38%, transparent), transparent 72%);
-  filter: blur(70px);
-  opacity: 0.62;
-  animation: hubGlowDrift 16s ease-in-out infinite alternate;
-}
-
-@keyframes hubGlowDrift {
-  from { opacity: 0.38; transform: scale(1); }
-  to { opacity: 0.62; transform: scale(1.06); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hub-stage::before { animation: none; opacity: 0.5; }
-}
-
-/* The ambient bloom above sits behind the (opaque, now full-bleed)
-   footage, so it only ever shows in letterboxed bars - useless now
-   that the stage is aspect-locked to the image with none left. This
-   second glow sits ON TOP of the footage instead, using a "screen"
-   blend so it genuinely lights the pixels beneath it rather than
-   covering them. Centered on the top-middle "SYSTEMS" panel, which
-   is the one part of the photo with no room color of its own and no
+/* A light bloom sits ON TOP of the footage, using a "screen" blend
+   so it genuinely lights the pixels beneath it rather than covering
+   them. Centered on the top-middle "SYSTEMS" panel, which is the one
+   part of the photo with no room color of its own and no
    hotspot glow near it, and reads noticeably darker/flatter than the
    four brand-colored rooms as a result. */
 .hub-stage-zoom::after {
@@ -249,9 +248,8 @@ html.hub-returning .hub-brand-flash {
   justify-content: center;
   gap: 18px;
   padding: 18px 24px;
-  background: var(--bg);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 30px rgba(255, 255, 255, 0.16);
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
 }
 
 .hub-caption::before,
@@ -259,8 +257,7 @@ html.hub-returning .hub-brand-flash {
   content: "";
   width: clamp(30px, 8vw, 90px);
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.75), transparent);
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  background: linear-gradient(to right, transparent, var(--text-faint), transparent);
 }
 
 .hub-caption span {
@@ -268,8 +265,7 @@ html.hub-returning .hub-brand-flash {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 255, 255, 0.3);
+  color: var(--text-primary);
 }
 
 /* ============================================================
@@ -555,7 +551,10 @@ html.hub-returning .hub-brand-flash {
     padding: 10px 12px;
     font-size: 14px;
     font-weight: 800;
-    color: var(--text-primary);
+    /* Always sits over the dark photo thumbnail itself, regardless of
+       the surrounding page theme, so this stays hardcoded white
+       rather than following --text-primary. */
+    color: #ffffff;
   }
 
   .hub-mobile-room-name::before {
