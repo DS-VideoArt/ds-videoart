@@ -170,103 +170,149 @@ body[data-room="card"] {
   color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin: 6px 0 -4px;
+  margin: 6px 0 -6px;
 }
 
-.card-rooms {
+/* ============================================================
+   Domain list: an editorial, timeline-style list of DS's
+   creative disciplines. Informational only, not links, so
+   no button chrome, hover lift, or card borders, just a
+   quiet connecting line and a burst of per-domain color to
+   keep four list rows from reading as four gray rows.
+   ============================================================ */
+
+.domain-list {
   width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.card-room {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0 4px 0;
+  display: flex;
+  flex-direction: column;
   position: relative;
-  display: block;
-  aspect-ratio: 1536 / 952;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  border: 1px solid var(--room-color, var(--accent-border));
-  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
 }
 
-.card-room:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 26px -6px var(--room-color, var(--accent));
-}
-
-.card-room[data-room="videoart"] { --room-color: var(--room-videoart); }
-.card-room[data-room="web"] { --room-color: var(--room-web); }
-.card-room[data-room="lab"] { --room-color: var(--room-lab); }
-.card-room[data-room="creative"] { --room-color: var(--room-creative); }
-
-.card-room-media {
+.domain-list::before {
+  content: "";
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s var(--ease-out);
+  top: 22px;
+  bottom: 22px;
+  inset-inline-start: 21px;
+  width: 1.5px;
+  background: linear-gradient(
+    180deg,
+    var(--room-videoart) 0%,
+    var(--room-web) 38%,
+    var(--room-lab) 65%,
+    var(--room-creative) 100%
+  );
+  opacity: 0.35;
 }
 
-.card-room:hover .card-room-media {
-  transform: scale(1.06);
-}
-
-.card-room-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 40%, rgba(4, 5, 7, 0.55) 72%, rgba(4, 5, 7, 0.92) 100%);
-}
-
-.card-room-text {
-  position: absolute;
-  inset-inline: 0;
-  bottom: 0;
+.domain-item {
+  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
+  gap: 16px;
+  padding: 14px 4px;
   text-align: start;
-  gap: 3px;
-  padding: 12px;
 }
 
-.card-room-name {
-  font-size: 0.94rem;
-  font-weight: 900;
+.domain-icon {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  background: var(--room-color, var(--accent));
+  box-shadow: 0 6px 16px -4px var(--room-color, var(--accent));
 }
 
-.card-room-tag {
-  font-size: 0.72rem;
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.78);
-  line-height: 1.35;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+.domain-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
-.card-site-link {
-  margin-top: 18px;
+.domain-item[data-room="videoart"] .domain-icon { --room-color: var(--room-videoart); }
+.domain-item[data-room="web"] .domain-icon { --room-color: var(--room-web); }
+.domain-item[data-room="lab"] .domain-icon { --room-color: var(--room-lab); }
+.domain-item[data-room="creative"] .domain-icon { --room-color: var(--room-creative); }
+
+.domain-text {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 2px;
-  color: var(--text-primary);
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 0.95rem;
-  border-bottom: 1px solid var(--border-strong);
-  padding-bottom: 4px;
+  padding-top: 6px;
 }
 
-.card-site-url {
-  font-size: 0.78rem;
+.domain-name {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--text-primary);
+}
+
+.domain-tag {
+  font-size: 0.82rem;
   font-weight: 300;
-  color: var(--text-faint);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   Final CTA: the one clickable, celebratory action left on
+   the page, a warm multi-hue gradient pulled from the four
+   domain colors so it reads as "the whole studio," not a
+   generic dark pill.
+   ============================================================ */
+
+.cta-full-site {
+  margin-top: 6px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 17px 28px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, var(--room-videoart), var(--room-creative) 45%, var(--room-web) 85%);
+  background-size: 180% 180%;
+  background-position: 0% 50%;
+  color: #fff;
+  font-weight: 900;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0 14px 30px -10px rgba(21, 23, 28, 0.4);
+  transition: background-position 0.5s var(--ease-out), transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.cta-full-site:hover {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -10px rgba(21, 23, 28, 0.48);
+}
+
+.cta-full-site .cta-arrow {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease-out);
+}
+
+.cta-full-site:hover .cta-arrow {
+  transform: translateX(-3px);
+}
+
+html[dir="ltr"] .cta-full-site .cta-arrow {
+  transform: scaleX(-1);
+}
+
+html[dir="ltr"] .cta-full-site:hover .cta-arrow {
+  transform: scaleX(-1) translateX(-3px);
 }
 
 /* ============================================================
