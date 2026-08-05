@@ -65,6 +65,20 @@ body.hub .a11y-toggle {
   color: var(--text-primary);
 }
 
+/* The navbar logo elsewhere on the site is a dramatic full-art image
+   with an opaque dark background baked in - fine on a dark room page,
+   but it read as a stray dark square on the hub's light corridor.
+   The hub uses a plain text mark instead (see index.html), so the
+   otherwise-unused .logo-mark dot needs real contrast here too. */
+body.hub .logo-mark {
+  background: var(--text-primary);
+  box-shadow: 0 0 0 3px var(--border);
+}
+
+body.hub .logo {
+  color: var(--text-primary);
+}
+
 .hub-brand-flash {
   position: fixed;
   inset: 0;
