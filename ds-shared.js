@@ -378,6 +378,14 @@ function initA11yWidget() {
   });
 }
 
+/* ---------- service worker ---------- */
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js").catch(() => {});
+  });
+}
+
 /* ---------- boot ---------- */
 
 document.addEventListener("DOMContentLoaded", () => {

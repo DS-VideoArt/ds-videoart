@@ -79,6 +79,17 @@ body.hub .logo {
   color: var(--text-primary);
 }
 
+/* .btn-outline:hover normally swaps to var(--accent) text, which is a
+   deliberately light neutral here (kept light so the hardcoded dark
+   text on .lang-btn.active still reads) - fine as a fill color, but
+   invisible as hover TEXT on a white navbar. Ink + a soft tint reads
+   correctly instead. */
+body.hub .btn-outline:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  background: var(--accent-soft);
+}
+
 .hub-brand-flash {
   position: fixed;
   inset: 0;

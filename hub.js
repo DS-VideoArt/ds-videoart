@@ -286,3 +286,39 @@ function resetHubVisualState() {
 window.addEventListener("pageshow", (e) => {
   if (e.persisted) resetHubVisualState();
 });
+
+/**
+ * Real "Save to home screen" button in the navbar, instead of asking
+ * people to dig through a browser menu. `beforeinstallprompt` can fire
+ * before DOMContentLoaded, so this listener is registered at the top
+ * level (not inside the boot block) to make sure it's never missed.
+ * Chromium-only (Chrome/Edge on Android, desktop Chrome): iOS Safari
+ * never fires this event, so the button there just stays hidden and
+ * "Add to Home Screen" still works the normal way, via the Share menu.
+ */
+let deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = qs("#installBtn");
+  if (btn) btn.hidden = false;
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  const btn = qs("#installBtn");
+  if (btn) btn.hidden = true;
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const installBtn = qs("#installBtn");
+  if (!installBtn) return;
+  installBtn.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) return;
+    installBtn.hidden = true;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+  });
+});
