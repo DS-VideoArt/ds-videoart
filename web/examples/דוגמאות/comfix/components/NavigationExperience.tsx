@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, CornerDownLeft, Search, X } from "lucide-react";
 import { siteSearchIndex } from "@/lib/site-search";
+import { normalizeRoutePath } from "@/lib/route-path";
 
 type MotionVariant = "home" | "repairs" | "new-computers" | "refurbished" | "accessories" | "contact";
 
@@ -22,6 +23,7 @@ export function openComfixSearch() {
 
 export function NavigationExperience() {
   const pathname = usePathname();
+  const routePath = normalizeRoutePath(pathname);
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -82,7 +84,7 @@ export function NavigationExperience() {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [pathname]);
+  }, [routePath]);
 
   useEffect(() => {
     if (!notice) return;
@@ -96,11 +98,12 @@ export function NavigationExperience() {
       const anchor = (event.target as HTMLElement).closest("a");
       if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
       const url = new URL(anchor.href, window.location.href);
-      if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+      const targetPath = normalizeRoutePath(url.pathname);
+      if (url.origin !== window.location.origin || targetPath === routePath) return;
       event.preventDefault();
       if (transitioning) return;
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const details = routeDetails[url.pathname] || routeDetails["/"];
+      const details = routeDetails[targetPath] || routeDetails["/"];
       setDestination(details.label);
       setMotion(details.motion);
       sessionStorage.setItem("comfix-route-transition", JSON.stringify({ motion: details.motion, at: Date.now() }));
@@ -109,7 +112,7 @@ export function NavigationExperience() {
     };
     document.addEventListener("click", interceptNavigation);
     return () => document.removeEventListener("click", interceptNavigation);
-  }, [transitioning]);
+  }, [routePath, transitioning]);
 
   return (
     <>

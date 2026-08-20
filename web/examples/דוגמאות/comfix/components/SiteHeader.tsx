@@ -5,6 +5,7 @@ import { Home, Menu, MonitorCog, Phone, Search, X } from "lucide-react";
 import { DemoAction } from "@/components/DemoAction";
 import { openComfixSearch } from "@/components/NavigationExperience";
 import { usePathname } from "next/navigation";
+import { normalizeRoutePath } from "@/lib/route-path";
 
 const navigation = [
   { href: "/repairs", label: "תיקונים" },
@@ -17,6 +18,7 @@ const navigation = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const routePath = normalizeRoutePath(pathname);
 
   return (
     <header className="site-header">
@@ -50,11 +52,11 @@ export function SiteHeader() {
         </button>
 
         <nav id="site-navigation" className={open ? "main-nav is-open" : "main-nav"} aria-label="ניווט ראשי">
-          <a className={pathname === "/" ? "home-nav is-active" : "home-nav"} href="/" onClick={() => setOpen(false)} aria-label="דף הבית">
+          <a className={routePath === "/" ? "home-nav is-active" : "home-nav"} href="/" onClick={() => setOpen(false)} aria-label="דף הבית">
             <Home aria-hidden="true" /> <span>דף הבית</span>
           </a>
           {navigation.map((item) => (
-            <a className={pathname === item.href ? "is-active" : ""} aria-current={pathname === item.href ? "page" : undefined} key={item.href} href={item.href} onClick={() => setOpen(false)}>
+            <a className={routePath === item.href ? "is-active" : ""} aria-current={routePath === item.href ? "page" : undefined} key={item.href} href={item.href} onClick={() => setOpen(false)}>
               {item.label}
             </a>
           ))}

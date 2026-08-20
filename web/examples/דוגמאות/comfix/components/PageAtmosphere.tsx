@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { normalizeRoutePath } from "@/lib/route-path";
 
 const atmosphereByPath: Record<string, string> = {
   "/": "home",
@@ -13,7 +14,8 @@ const atmosphereByPath: Record<string, string> = {
 
 export function PageAtmosphere() {
   const pathname = usePathname();
-  const atmosphere = atmosphereByPath[pathname] || "home";
+  const routePath = normalizeRoutePath(pathname);
+  const atmosphere = atmosphereByPath[routePath] || "home";
 
   return (
     <div className="page-atmosphere" data-atmosphere={atmosphere} aria-hidden="true">

@@ -92,6 +92,13 @@ test("every route renders a decorative route-specific atmosphere", async () => {
   }
 });
 
+test("Netlify trailing-slash routes keep their active navigation and atmosphere", async () => {
+  for (const file of ["PageAtmosphere.tsx", "SiteHeader.tsx", "NavigationExperience.tsx"]) {
+    const source = await readFile(new URL(`../components/${file}`, import.meta.url), "utf8");
+    assert.match(source, /normalizeRoutePath\(pathname\)/, `${file} normalizes Netlify paths`);
+  }
+});
+
 test("motion styles include reduced-motion protection", async () => {
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
