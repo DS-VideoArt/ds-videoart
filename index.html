@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=20260907a">
+  <link rel="stylesheet" href="site.css?v=20260907b">
 
   <script type="application/ld+json">
   {
@@ -43,7 +43,7 @@
     "description": "סטודיו לדפי נחיתה ולאתרי תדמית לעסקים. מחיר ברור מראש, תשלום חד-פעמי, תהליך מסודר.",
     "makesOffer": [
       { "@type": "Offer", "name": "דף נחיתה", "price": "440", "priceCurrency": "ILS" },
-      { "@type": "Offer", "name": "אתר תדמית (מחיר כניסה, כולל עד 3 עמודים)", "price": "1290", "priceCurrency": "ILS" }
+      { "@type": "Offer", "name": "אתר תדמית", "price": "1290", "priceCurrency": "ILS" }
     ]
   }
   </script>
@@ -87,6 +87,8 @@
         <div class="shape shape-bloom-2" style="inset-inline-end:-10%; bottom:-30%;" data-depth="0.35"></div>
         <div class="shape shape-ring floaty d2" style="inset-inline-start:46%; top:8%;" data-depth="0.9"></div>
         <div class="shape shape-disc floaty d3" style="inset-inline-start:52%; bottom:6%;" data-depth="1.3"></div>
+        <div class="shape shape-arc floaty d3" style="inset-inline-start:-8%; bottom:-30%;" data-depth="0.5"></div>
+        <div class="shape shape-dots floaty d2" style="inset-inline-start:4%; top:9%;" data-depth="1.1"></div>
       </div>
       <div class="container">
         <div class="hero-copy">
@@ -234,6 +236,8 @@
 
     <!-- ================= PACKAGES ================= -->
     <section id="pricing" class="section surface-stone">
+      <div class="deco deco-ring lg" style="inset-inline-end:-300px; top:-360px;" aria-hidden="true"></div>
+      <div class="deco deco-dots" style="inset-inline-start:-80px; bottom:60px;" aria-hidden="true"></div>
       <div class="container">
         <div class="section-head center rv">
           <h2 class="h2">שתי חבילות. אותה רמת איכות.</h2>
@@ -244,12 +248,12 @@
 
           <article class="package rv">
             <h3 class="package-name">דף נחיתה</h3>
-            <p class="package-scope">עמוד אחד ממוקד</p>
+            <p class="package-scope">מחיר החבילה הבסיסית</p>
             <div class="package-price">
               <span class="amount">440</span><span class="currency">₪</span>
               <span class="once">תשלום חד-פעמי. ללא מנוי חודשי חובה.</span>
             </div>
-            <p class="package-desc">עמוד אחד שמסביר מה אתם מציעים ומוביל לפעולה אחת ברורה: שיחה, וואטסאפ או השארת פרטים.</p>
+            <p class="package-desc">עמוד אחד שמסביר מה אתם מציעים ומוביל לפעולה אחת ברורה: שיחה, וואטסאפ או השארת פרטים. תוספות, אם תרצו, מופיעות עם מחיר ברור ומצטרפות רק באישורכם.</p>
             <div class="package-meta">
               <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>מסירה עד 3 ימי עסקים</span></div>
               <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><span>עד שני סבבי תיקונים מרוכזים</span></div>
@@ -268,7 +272,7 @@
                   <li>חיבור לדומיין קיים והעלאה לאוויר בשלב הפרסום</li>
                   <li>בדיקת קישורים וטפסים, במחשב ובטלפון</li>
                 </ul>
-                <p class="fine">ספירת ימי העבודה מתחילה אחרי אישור ההזמנה, תשלום 50% מקדמה וקבלת כל החומרים הנדרשים מכם. המחיר המוצג הוא המחיר הסופי לתשלום.</p>
+                <p class="fine">ספירת ימי העבודה מתחילה אחרי אישור ההזמנה, תשלום 50% מקדמה וקבלת כל החומרים הנדרשים מכם. זה מחיר החבילה הבסיסית. כל תוספת מופיעה עם מחיר ברור בסיכום, לפני שמאשרים.</p>
               </div>
             </details>
             <a class="btn btn-primary" href="builder/?type=landing">להתחיל עם דף נחיתה</a>
@@ -277,12 +281,12 @@
 
           <article class="package featured rv d1">
             <h3 class="package-name">אתר תדמית</h3>
-            <p class="package-scope">מחיר כניסה</p>
+            <p class="package-scope">מחיר הבסיס, כולל עד 3 עמודים</p>
             <div class="package-price">
               <span class="from">החל מ־</span><span class="amount">1,290</span><span class="currency">₪</span>
               <span class="once">תשלום חד-פעמי. ללא מנוי חודשי חובה.</span>
             </div>
-            <p class="package-desc">המחיר כולל אתר תדמית של עד 3 עמודים. צריכים אתר רחב יותר או מבנה מורכב יותר? נתאים את ההיקף והמחיר לצורך שלכם.</p>
+            <p class="package-desc">המחיר כולל אתר של עד 3 עמודים. צריכים אתר רחב יותר? נתאים את ההיקף והמחיר לצורך שלכם. אנחנו בונים גם אתרים גדולים יותר.</p>
             <div class="package-meta">
               <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>מסירה עד 5 ימי עסקים</span></div>
               <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><span>עד שני סבבי תיקונים מרוכזים</span></div>
@@ -384,7 +388,7 @@
               <dt>סבבי תיקונים</dt><dd>עד 2, כלול</dd>
               <dt>מועד מסירה</dt><dd>עד 3 ימי עסקים מקבלת החומרים</dd>
             </dl>
-            <div class="total"><span>המחיר הסופי לתשלום</span><span>440 ₪</span></div>
+            <div class="total"><span>סה"כ להזמנה</span><span>440 ₪</span></div>
             <div class="split">
               <div>מקדמה 50%<strong>220 ₪</strong><span style="font-size:.85rem;color:var(--ink-55)">לפני תחילת העבודה</span></div>
               <div>יתרה 50%<strong>220 ₪</strong><span style="font-size:.85rem;color:var(--ink-55)">לפני המסירה הסופית</span></div>
@@ -397,6 +401,8 @@
 
     <!-- ================= PROCESS ================= -->
     <section id="process" class="section surface-sand">
+      <div class="deco deco-glow" style="inset-inline-start:-260px; top:10%;" aria-hidden="true"></div>
+      <div class="deco deco-ring md" style="inset-inline-end:-120px; bottom:-140px;" aria-hidden="true"></div>
       <div class="container">
         <div class="section-head center rv">
           <h2 class="h2">איך זה עובד, שלב אחרי שלב</h2>
@@ -451,7 +457,9 @@
     </section>
 
     <!-- ================= ABOUT ================= -->
-    <section id="about" class="section surface-stone about">
+    <section id="about" class="section surface-warm about">
+      <div class="deco deco-lines" aria-hidden="true"></div>
+      <div class="deco deco-plate" style="inset-inline-end:-90px; top:-70px;" aria-hidden="true"></div>
       <div class="container">
         <div class="rv">
           <h2 class="h2">יש עם מי לדבר.<br>ויש מי שמוביל.</h2>
@@ -472,7 +480,9 @@
     </section>
 
     <!-- ================= FAQ ================= -->
-    <section id="faq" class="section surface-sand">
+    <section id="faq" class="section surface-stone">
+      <div class="deco deco-dots" style="inset-inline-end:-60px; top:40px;" aria-hidden="true"></div>
+      <div class="deco deco-ring lg" style="inset-inline-start:-380px; bottom:-420px;" aria-hidden="true"></div>
       <div class="container">
         <div class="section-head center rv">
           <h2 class="h2">שאלות נפוצות</h2>
@@ -483,10 +493,10 @@
           <div>
             <details class="faq"><summary>מה ההבדל בין דף נחיתה לאתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>דף נחיתה הוא עמוד אחד ממוקד למטרה אחת: להסביר מה אתם מציעים ולהוביל לפעולה, למשל השארת פרטים או שיחה. אתר תדמית הוא כמה עמודים עם תפריט, שמציגים את העסק בצורה רחבה יותר. מחיר הכניסה כולל עד שלושה עמודים, ואפשר גם יותר. אם לא בטוחים, זה בדיוק מה שמבררים בשיחה קצרה.</p></div></details>
             <details class="faq"><summary>חייבים לדבר איתכם לפני שמתחילים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אפשר למלא לבד את בונה הפרויקט באתר, בכמה דקות, ולראות סיכום לפי הבחירות. מי שמעדיף לדבר, משאיר שם וטלפון. שני המסלולים שווים, ושניהם מסתיימים באותו סיכום הזמנה כתוב.</p></div></details>
-            <details class="faq"><summary>אני צריך יותר משלושה עמודים. אתם בונים גם את זה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. מחיר הכניסה של אתר תדמית, 1,290 ₪, כולל עד שלושה עמודים. לאתר רחב יותר או מבנה מורכב יותר נתאים את ההיקף והמחיר, ותקבלו מחיר מדויק בסיכום לפני כל התחייבות.</p></div></details>
+            <details class="faq"><summary>אני צריך יותר משלושה עמודים. אתם בונים גם את זה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן, ובשמחה. 1,290 ₪ הוא מחיר הבסיס לאתר של עד שלושה עמודים, לא תקרת השירות. עמוד נוסף מתומחר לפי סוגו במחירון ברור, ובבונה הפרויקט תראו את הסכום מתעדכן תוך כדי. למבנה מורכב במיוחד נכין מחיר מותאם לפני כל התחייבות.</p></div></details>
             <details class="faq"><summary>האם המחיר חד-פעמי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. 440 ₪ לדף נחיתה, ואתר תדמית החל מ־1,290 ₪, משולמים פעם אחת בלבד עבור הבנייה.</p></div></details>
             <details class="faq"><summary>האם יש מנוי חודשי חובה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אחרי המסירה אין חובה לשלם לנו כל חודש. תחזוקה חודשית קיימת כאפשרות בלבד, ובוחרים אותה רק אם רוצים.</p></div></details>
-            <details class="faq"><summary>האם המחיר באתר הוא המחיר הסופי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לדף נחיתה, כן: 440 ₪ הוא המחיר הסופי לתשלום. לאתר תדמית, 1,290 ₪ הוא מחיר הכניסה שכולל עד שלושה עמודים, והמחיר המדויק לאתר רחב יותר נסגר בסיכום שאתם מאשרים. תוספות מופיעות תמיד עם מחיר ברור, ולא מבוצעות בלי אישור שלכם.</p></div></details>
+            <details class="faq"><summary>האם המחיר באתר הוא המחיר הסופי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>440 ₪ הוא מחיר החבילה הבסיסית של דף נחיתה, ו־1,290 ₪ הוא מחיר הבסיס לאתר של עד שלושה עמודים. אם תבחרו תוספות, הן מופיעות תמיד עם מחיר ברור ומצטרפות לסכום רק באישורכם. המחיר הסופי נסגר בסיכום ההזמנה שאתם מאשרים לפני תחילת העבודה.</p></div></details>
             <details class="faq"><summary>מתי משלמים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>50% מקדמה אחרי שאישרתם את סיכום ההזמנה, ורק אז מתחילים לבנות. 50% הנותרים לפני המסירה הסופית.</p></div></details>
             <details class="faq"><summary>האם השיחה הראשונה מחייבת?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. מטרתה רק להבין אם מתאים לכם דף נחיתה או אתר תדמית. אפשר לסיים אותה בלי להמשיך הלאה.</p></div></details>
             <details class="faq"><summary>אין לי דומיין. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נעזור לכם לבחור שם, לבדוק זמינות, לרכוש אותו יחד איתכם ולהגדיר אותו, בלי דמי שירות נוספים מצידנו. אתם משלמים רק את מחיר הדומיין לספק.</p></div></details>
@@ -514,6 +524,7 @@
 
     <!-- ================= CONTACT ================= -->
     <section id="contact" class="section surface-dark on-dark contact">
+      <div class="deco deco-dots" style="inset-inline-start:-40px; top:-40px;" aria-hidden="true"></div>
       <div class="copper-rule" aria-hidden="true"></div>
       <div class="container">
         <div class="contact-side rv">
@@ -547,7 +558,7 @@
           </div>
           <div class="field">
             <label for="f-phone">טלפון <span class="req" aria-hidden="true">*</span></label>
-            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="050 000 0000" dir="ltr" style="text-align:end">
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="מספר טלפון" dir="ltr" style="text-align:end">
             <p class="err" id="f-phone-err">נראה שהמספר לא שלם. בדקו אותו שוב.</p>
           </div>
           <fieldset class="field">
@@ -615,6 +626,6 @@
     </a>
   </div>
 
-  <script src="site.js?v=20260907a"></script>
+  <script src="site.js?v=20260907b"></script>
 </body>
 </html>

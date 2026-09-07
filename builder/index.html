@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>בונה הפרויקט | DS Creative Studio</title>
-  <meta name="description" content="מתחילים לבד, בכמה דקות: בוחרים דף נחיתה או אתר תדמית, עונים על כמה שאלות קצרות, ורואים סיכום לפי הבחירות. שליחה לא מחייבת.">
+  <meta name="description" content="מתחילים לבד, בכמה דקות: בוחרים דף נחיתה או אתר תדמית, עונים על כמה שאלות קצרות, ורואים סיכום ומחיר לפי הבחירות. שליחה לא מחייבת.">
   <link rel="canonical" href="https://dscreative.co.il/builder/">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#2a2230">
@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../site.css?v=20260907a">
-  <link rel="stylesheet" href="builder.css?v=20260907a">
+  <link rel="stylesheet" href="../site.css?v=20260907b">
+  <link rel="stylesheet" href="builder.css?v=20260907b">
 </head>
 <body class="builder-page">
   <a href="#stage" class="skip-link">דלג לתוכן הראשי</a>
@@ -51,15 +51,13 @@
 
     <aside class="builder-side" aria-label="סיכום הפרויקט">
       <div id="summaryPanel" class="summary-panel"></div>
-      <div class="side-help">
-        <strong>איך זה עובד?</strong>
-        <p>עונים על כמה שאלות קצרות, רואים סיכום לפי הבחירות, ושולחים. אנחנו עוברים על הפרטים ושולחים סיכום הזמנה לאישור. רק אחרי שאישרתם, מתחילים.</p>
-      </div>
+      <div id="sideHelp" class="side-help"></div>
     </aside>
   </div>
 
   <!-- Netlify Forms registration: this static form is what Netlify parses at deploy time.
-       The wizard fills these hidden fields and posts the form. Keep every field name here. -->
+       The wizard fills these hidden fields and posts the form. Keep every field name here
+       in sync with payload() in project-builder.js. -->
   <form id="projectRequestForm" name="project-request" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
     <input type="hidden" name="form-name" value="project-request">
     <input name="bot-field" tabindex="-1" autocomplete="off">
@@ -75,7 +73,10 @@
     <input type="hidden" name="target_audience">
     <input type="hidden" name="primary_cta">
     <input type="hidden" name="estimated_pages">
+    <input type="hidden" name="page_breakdown">
     <input type="hidden" name="requested_features">
+    <input type="hidden" name="selected_addons">
+    <input type="hidden" name="content_service">
     <input type="hidden" name="has_logo">
     <input type="hidden" name="has_texts">
     <input type="hidden" name="has_images">
@@ -83,10 +84,12 @@
     <input type="hidden" name="domain_status">
     <input type="hidden" name="hosting_acknowledged">
     <input type="hidden" name="maintenance_plan">
-    <input type="hidden" name="selected_addons">
-    <input type="hidden" name="calculated_base_price">
-    <input type="hidden" name="calculated_addons_price">
-    <input type="hidden" name="calculated_total">
+    <input type="hidden" name="monthly_maintenance">
+    <input type="hidden" name="base_price">
+    <input type="hidden" name="addons_total">
+    <input type="hidden" name="urgent">
+    <input type="hidden" name="urgent_fee">
+    <input type="hidden" name="setup_total">
     <input type="hidden" name="custom_quote_required">
     <input type="hidden" name="custom_quote_reasons">
     <input type="hidden" name="notes">
@@ -94,7 +97,7 @@
     <input type="hidden" name="started_at">
   </form>
 
-  <script src="pricing-config.js?v=20260907a"></script>
-  <script src="project-builder.js?v=20260907a"></script>
+  <script src="pricing-config.js?v=20260907b"></script>
+  <script src="project-builder.js?v=20260907b"></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 /* ============================================================
-   DS Creative Studio — Project Builder (wizard)
+   DS Creative Studio, Project Builder (wizard)
 
    Layers, kept apart on purpose so each can change alone:
      1. state       - what the client filled in (persisted locally)
-     2. rules       - pricing + custom-quote decisions (uses pricing-config.js)
+     2. rules       - pricing decisions live in pricing-config.js (P.calc)
      3. steps       - which screens exist for the chosen route
-     4. ui          - rendering, validation, focus, progress
+     4. ui          - rendering, validation, focus, progress, side help
      5. submission  - payload shaping + Netlify Forms POST
 
    Vanilla JS, no dependencies.
@@ -27,11 +27,15 @@
 
   function defaultState() {
     return {
-      type: null,                 // 'landing' | 'site'
+      type: null,                 // 'landing' | 'site' | 'unsure'
       business: { businessName: "", contactName: "", phone: "", email: "", category: "", categoryOther: "", about: "" },
       goals: [], goalOther: "",
       landing: { offer: "", audience: "", cta: "" },
-      site: { pages: "", features: [], featuresOther: "" },
+      site: { pages: "", extraPages: { normal: 0, long: 0, special: 0, unknown: false }, features: [], featuresOther: "" },
+      addons: {},                 // { catalogId: quantity }
+      addonNotes: {},             // { catalogId: free text }
+      content: { service: "", pages: 0 },     // pages 0 = not set yet, defaults to the site estimate
+      urgent: false,
       materials: { logo: "", texts: "", images: "", style: "", references: "" },
       domain: "",
       hosting: { acknowledged: false },
@@ -47,13 +51,18 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return null;
       const s = JSON.parse(raw);
-      return Object.assign(defaultState(), s, {
-        business: Object.assign(defaultState().business, s.business || {}),
-        landing: Object.assign(defaultState().landing, s.landing || {}),
-        site: Object.assign(defaultState().site, s.site || {}),
-        materials: Object.assign(defaultState().materials, s.materials || {}),
-        hosting: Object.assign(defaultState().hosting, s.hosting || {})
-      });
+      const d = defaultState();
+      const merged = Object.assign(d, s);
+      merged.business = Object.assign(defaultState().business, s.business || {});
+      merged.landing = Object.assign(defaultState().landing, s.landing || {});
+      merged.site = Object.assign(defaultState().site, s.site || {});
+      merged.site.extraPages = Object.assign(defaultState().site.extraPages, (s.site && s.site.extraPages) || {});
+      merged.materials = Object.assign(defaultState().materials, s.materials || {});
+      merged.hosting = Object.assign(defaultState().hosting, s.hosting || {});
+      merged.content = Object.assign(defaultState().content, s.content || {});
+      merged.addons = Object.assign({}, s.addons || {});
+      merged.addonNotes = Object.assign({}, s.addonNotes || {});
+      return merged;
     } catch { return null; }
   }
   function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {} }
@@ -68,46 +77,21 @@
     if (state.type !== presetType) { state = defaultState(); state.type = presetType; }
   }
 
-  /* Demo presets (screenshots / previews only). ?demo=landing | ?demo=site-custom, optional &step=<id> */
+  /* Demo presets (screenshots / previews only). ?demo=landing | site-priced | site-custom, optional &step=<id> */
   if (params.get("demo")) applyDemo(params.get("demo"));
 
-  /* ======================= 2. RULES ======================= */
+  /* ======================= 2. RULES (see pricing-config.js) ======================= */
 
-  function calc(st) {
-    const out = { base: null, baseLabel: "", addonsPrice: 0, total: null, customQuote: false, reasons: [], reviewItems: [], deposit: null, balance: null };
-    if (!st.type || !P.services[st.type]) return out;
-    const svc = P.services[st.type];
-    out.base = svc.basePrice;
-    out.baseLabel = svc.priceMode === "from" ? "החל מ־" + P.formatPrice(svc.basePrice) : P.formatPrice(svc.basePrice);
-
-    if (st.type === "site") {
-      const pg = P.pageOptions.find((o) => o.id === st.site.pages);
-      if (pg && !pg.withinBase) { out.customQuote = true; out.reasons.push(pg.id === "unknown" ? "מספר העמודים עדיין לא ידוע" : "יותר משלושה עמודים"); }
-      st.site.features.forEach((fid) => {
-        const f = P.siteFeatures.find((x) => x.id === fid);
-        if (!f) return;
-        if (f.review) {
-          const addon = P.addons.find((a) => a.id === fid) || { id: fid, name: f.label, price: null, fixed: false, review: true };
-          out.reviewItems.push(addon);
-          if (addon.fixed && typeof addon.price === "number") out.addonsPrice += addon.price;
-          else { out.customQuote = true; if (!out.reasons.includes(f.label)) out.reasons.push(f.label); }
-        }
-      });
-    }
-    if (!out.customQuote) {
-      out.total = out.base + out.addonsPrice;
-      out.deposit = Math.round(out.total / 2);
-      out.balance = out.total - out.deposit;
-    }
-    return out;
-  }
+  const calc = (st) => P.calc(st);
+  const priced = (st) => !!(st.type && P.services[st.type]);
+  const item = (id) => P.byId(P.catalog, id);
 
   /* ======================= 3. STEPS ======================= */
 
   function stepList(st) {
     const common = ["business", "goal"];
     const route = st.type === "site" ? ["site-scope", "site-features"] : ["landing-offer"];
-    const tail = ["materials", "domain", "hosting", "maintenance", "summary"];
+    const tail = ["extras", "materials", "domain", "hosting", "maintenance", "summary"];
     const first = presetType ? [] : ["type"];
     return [...first, ...common, ...route, ...tail];
   }
@@ -117,8 +101,9 @@
     "business": "על העסק",
     "goal": "מה הדבר העיקרי שאתם רוצים שהמבקר יעשה?",
     "landing-offer": "על דף הנחיתה",
-    "site-scope": "היקף האתר",
-    "site-features": "אילו דברים תרצו באתר?",
+    "site-scope": "כמה עמודים יהיו באתר?",
+    "site-features": "מה תרצו באתר?",
+    "extras": "מה עוד תרצו?",
     "materials": "מה כבר יש לכם ביד",
     "domain": "דומיין",
     "hosting": "אחסון וחשבון הפרויקט",
@@ -136,15 +121,17 @@
     next: qs("#btnNext"),
     summary: qs("#summaryPanel"),
     summaryMobile: qs("#summaryMobile"),
+    sideHelp: qs("#sideHelp"),
     restart: qs("#btnRestart"),
     footerNote: qs("#footerNote")
   };
 
-  function cards({ name, options, selected, multi = false, note = null }) {
-    return `<div class="cards" role="${multi ? "group" : "radiogroup"}">` + options.map((o) => {
+  function cards({ name, options, selected, multi = false, note = null, cls = "" }) {
+    return `<div class="cards ${cls}" role="${multi ? "group" : "radiogroup"}">` + options.map((o) => {
       const checked = multi ? selected.includes(o.id) : selected === o.id;
       return `<label class="card-choice${checked ? " on" : ""}">
         <input type="${multi ? "checkbox" : "radio"}" name="${name}" value="${esc(o.id)}" ${checked ? "checked" : ""}>
+        ${o.icon ? `<span class="cc-icon" aria-hidden="true">${o.icon}</span>` : ""}
         <span class="cc-body">
           <span class="cc-title">${esc(o.label)}</span>
           ${o.hint ? `<span class="cc-hint">${esc(o.hint)}</span>` : ""}
@@ -154,6 +141,12 @@
       </label>`;
     }).join("") + `</div>${note ? `<p class="step-note">${note}</p>` : ""}`;
   }
+
+  const ICONS = {
+    landing: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+    site: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 9v11"/></svg>',
+    unsure: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7"/><path d="M12 17h.01"/></svg>'
+  };
 
   function field(id, label, input, hint) {
     return `<div class="bf-field" data-field-wrap="${id}">
@@ -165,22 +158,86 @@
   }
   const req = '<span class="req" aria-hidden="true">*</span>';
 
+  /* Badge text for a catalogue item */
+  function badgeOf(c) {
+    if (c.pricing_type === "fixed") return P.formatPrice(c.price) + (c.unit ? " " + c.unit : "");
+    return P.copy.customShort;
+  }
+
+  /* One add-on card (checkbox) with an optional quantity control and note field */
+  function addonCard(c) {
+    const qty = Number(state.addons[c.id]) || 0;
+    const on = qty > 0;
+    const badgeKind = c.pricing_type === "fixed" ? "price" : "review";
+    return `<div class="addon-item" data-addon="${c.id}">
+      <label class="card-choice addon${on ? " on" : ""}">
+        <input type="checkbox" name="addon" value="${c.id}" ${on ? "checked" : ""}>
+        <span class="cc-body">
+          <span class="cc-title">${esc(c.label)}</span>
+          <span class="cc-hint">${esc(c.description)}</span>
+          <span class="cc-badge ${badgeKind}">${esc(badgeOf(c))}</span>
+        </span>
+        <span class="cc-check" aria-hidden="true"></span>
+      </label>
+      ${c.maxQty ? `<div class="qty" ${on ? "" : "hidden"}>
+        <span>כמה?</span>
+        <button type="button" class="qty-btn" data-qty="-1" aria-label="פחות">−</button>
+        <input type="number" id="qty-${c.id}" min="1" max="${c.maxQty}" value="${Math.max(1, qty)}" aria-label="כמות: ${esc(c.label)}">
+        <button type="button" class="qty-btn" data-qty="1" aria-label="יותר">+</button>
+      </div>` : ""}
+      ${c.hasNote ? `<div class="bf-field addon-note" ${on ? "" : "hidden"}>
+        <label for="note-${c.id}">ספרו לנו בקצרה</label>
+        <input id="note-${c.id}" type="text" data-note="${c.id}" value="${esc(state.addonNotes[c.id] || "")}">
+      </div>` : ""}
+    </div>`;
+  }
+
+  function addonGroup(title, lead, items, extra = "") {
+    if (!items.length) return "";
+    return `<div class="addon-group">
+      <h2 class="group-title">${esc(title)}</h2>
+      ${lead ? `<p class="group-lead">${lead}</p>` : ""}
+      <div class="cards catalog">${items.map(addonCard).join("")}</div>
+      ${extra}
+    </div>`;
+  }
+
+  const inScope = (group) => P.catalog.filter((c) => c.group === group && c.scope.includes(state.type));
+
   const CATEGORIES = ["מסעדה, קפה ואוכל", "יופי וטיפוח", "בריאות ורפואה", "ייעוץ ושירותים מקצועיים", "נדל\"ן", "חינוך והדרכה", "ספורט ופנאי", "חנות וקמעונאות", "בנייה, שיפוצים ובעלי מקצוע", "אחר"];
+  const GOALS = [
+    { id: "whatsapp", label: "לשלוח וואטסאפ" }, { id: "call", label: "להתקשר" }, { id: "lead", label: "להשאיר פרטים" },
+    { id: "read", label: "לקרוא על העסק והשירותים" }, { id: "visit", label: "להגיע לעסק" }, { id: "other", label: "משהו אחר" }
+  ];
+
+  /* pages the client expects, incl. the 3 included ones */
+  function totalPagesEstimate(st) {
+    if (st.type !== "site") return 1;
+    const bp = st.site.extraPages || {};
+    const extra = (Number(bp.normal) || 0) + (Number(bp.long) || 0) + (Number(bp.special) || 0);
+    return Math.max(1, P.services.site.includedPages + extra);
+  }
 
   const render = {
     "type"() {
       const svc = P.services;
       return `<p class="step-lead">שני שירותים, אותה רמת איכות. ההבדל הוא היקף העבודה.</p>
-      ${cards({ name: "type", selected: state.type, options: [
-        { id: "landing", label: svc.landing.name, hint: svc.landing.short, badge: P.formatPrice(svc.landing.basePrice) },
-        { id: "site", label: svc.site.name, hint: svc.site.short, badge: "החל מ־" + P.formatPrice(svc.site.basePrice) },
-        { id: "unsure", label: "אני עדיין לא בטוח", hint: "נעזור לכם להחליט" }
+      ${cards({ name: "type", selected: state.type, cls: "services", options: [
+        { id: "landing", label: svc.landing.name, hint: svc.landing.short, badge: P.formatPrice(svc.landing.basePrice), badgeKind: "price", icon: ICONS.landing },
+        { id: "site", label: svc.site.name, hint: svc.site.short + " המחיר כולל עד 3 עמודים.", badge: "החל מ־" + P.formatPrice(svc.site.basePrice), badgeKind: "price", icon: ICONS.site },
+        { id: "unsure", label: "אני עדיין לא בטוח", hint: "נעזור לכם להחליט", icon: ICONS.unsure }
       ] })}
       <p class="bf-err" id="type-err"></p>
+      <div class="compare" aria-label="השוואה קצרה בין השירותים">
+        <div class="cmp-row head"><span>בקצרה</span><strong>${esc(svc.landing.name)}</strong><strong>${esc(svc.site.name)}</strong></div>
+        <div class="cmp-row"><span>מתאים ל</span><em>שירות אחד, קמפיין, או התחלה בקטן</em><em>עסק שרוצה להציג כמה נושאים ולהופיע בגוגל בכמה חיפושים</em></div>
+        <div class="cmp-row"><span>מה מקבלים</span><em>עמוד אחד ממוקד עם עד 6 עד 7 אזורי תוכן</em><em>עד 3 עמודים עם תפריט. אפשר להוסיף עמודים לפי מחירון ברור</em></div>
+        <div class="cmp-row"><span>מסירה</span><em>עד ${svc.landing.deliveryDays} ימי עסקים</em><em>עד ${svc.site.deliveryDays} ימי עסקים</em></div>
+        <div class="cmp-row"><span>מחיר</span><em>${P.formatPrice(svc.landing.basePrice)}, ${esc(svc.landing.priceNote).toLowerCase()}</em><em>החל מ־${P.formatPrice(svc.site.basePrice)}, כולל עד 3 עמודים</em></div>
+      </div>
       <div class="unsure-box" id="unsureBox" ${state.type === "unsure" ? "" : "hidden"}>
-        <h3>ההבדל, בשתי שורות</h3>
-        <p><strong>דף נחיתה</strong> הוא עמוד אחד ממוקד למטרה אחת: להסביר מה אתם מציעים ולהוביל לפעולה, למשל וואטסאפ או השארת פרטים. מתאים לשירות אחד, לקמפיין, או לעסק שרוצה להתחיל בקטן.</p>
-        <p><strong>אתר תדמית</strong> הוא כמה עמודים עם תפריט: בית, אודות, שירותים, צור קשר וכדומה. מתאים לעסק שרוצה להציג את עצמו בצורה רחבה יותר ולהופיע בגוגל בכמה נושאים.</p>
+        <h3>לא בטוחים? שתי דרכים להתקדם</h3>
+        <p>רוב העסקים שמוכרים שירות אחד מתחילים בדף נחיתה, ואפשר להרחיב אחר כך. עסק עם כמה תחומים או כמה שירותים בדרך כלל מרוויח יותר מאתר תדמית. ואם עדיין לא ברור, שיחה של כמה דקות תפתור את זה.</p>
         <div class="unsure-actions">
           <button type="button" class="btn btn-ghost" data-pick="landing">דף נחיתה מתאים לי</button>
           <button type="button" class="btn btn-ghost" data-pick="site">אתר תדמית מתאים לי</button>
@@ -193,10 +250,10 @@
       const b = state.business;
       return `<p class="step-lead">כמה פרטים כדי שנדע עם מי אנחנו עובדים. בלי ז'רגון.</p>
       <div class="bf-grid">
-        ${field("businessName", "שם העסק " + req, `<input id="businessName" data-path="business.businessName" type="text" value="${esc(b.businessName)}" autocomplete="organization">`)}
-        ${field("contactName", "שם איש הקשר " + req, `<input id="contactName" data-path="business.contactName" type="text" value="${esc(b.contactName)}" autocomplete="name">`)}
-        ${field("phone", "טלפון " + req, `<input id="phone" data-path="business.phone" type="tel" inputmode="tel" dir="ltr" value="${esc(b.phone)}" autocomplete="tel" placeholder="050 000 0000">`)}
-        ${field("email", "אימייל", `<input id="email" data-path="business.email" type="email" inputmode="email" dir="ltr" value="${esc(b.email)}" autocomplete="email">`, "לא חובה. נוח לשליחת הסיכום.")}
+        ${field("businessName", "שם העסק " + req, `<input id="businessName" data-path="business.businessName" type="text" value="${esc(b.businessName)}" autocomplete="organization" placeholder="שם העסק">`)}
+        ${field("contactName", "שם איש הקשר " + req, `<input id="contactName" data-path="business.contactName" type="text" value="${esc(b.contactName)}" autocomplete="name" placeholder="שם מלא">`)}
+        ${field("phone", "טלפון " + req, `<input id="phone" data-path="business.phone" type="tel" inputmode="tel" dir="ltr" value="${esc(b.phone)}" autocomplete="tel" placeholder="מספר טלפון">`)}
+        ${field("email", "אימייל", `<input id="email" data-path="business.email" type="email" inputmode="email" dir="ltr" value="${esc(b.email)}" autocomplete="email" placeholder="כתובת אימייל">`, "לא חובה. נוח לשליחת הסיכום.")}
       </div>
       <div class="bf-field">
         <span class="bf-label">תחום העסק ${req}</span>
@@ -211,16 +268,8 @@
     },
 
     "goal"() {
-      const opts = [
-        { id: "whatsapp", label: "לשלוח וואטסאפ" },
-        { id: "call", label: "להתקשר" },
-        { id: "lead", label: "להשאיר פרטים" },
-        { id: "read", label: "לקרוא על העסק והשירותים" },
-        { id: "visit", label: "להגיע לעסק" },
-        { id: "other", label: "משהו אחר" }
-      ];
       return `<p class="step-lead">אפשר לבחור יותר מאחד. זה עוזר לנו להחליט מה מקבל את המקום הבולט ביותר.</p>
-      ${cards({ name: "goals", selected: state.goals, multi: true, options: opts })}
+      ${cards({ name: "goals", selected: state.goals, multi: true, options: GOALS })}
       <p class="bf-err" id="goals-err"></p>
       <div class="bf-field" id="goalOtherWrap" ${state.goals.includes("other") ? "" : "hidden"}>
         <label for="goalOther">מה למשל?</label>
@@ -232,7 +281,7 @@
       const l = state.landing;
       const svc = P.services.landing;
       return `<div class="included-box">
-        <div class="ib-head"><strong>${esc(svc.name)}</strong><span>${P.formatPrice(svc.basePrice)} · תשלום חד-פעמי</span></div>
+        <div class="ib-head"><strong>${esc(svc.name)}</strong><span>${P.formatPrice(svc.basePrice)} · ${esc(svc.priceNote)}</span></div>
         <details class="ib-details"><summary>מה כלול במחיר</summary><ul>${svc.includes.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></details>
       </div>
       ${field("offer", "מה השירות או המוצר שהדף מקדם? " + req, `<textarea id="offer" data-path="landing.offer" rows="2" placeholder="למשל: סדנת בישול לזוגות, פעם בשבוע">${esc(l.offer)}</textarea>`)}
@@ -249,40 +298,89 @@
     "site-scope"() {
       const svc = P.services.site;
       const s = state.site;
-      const pg = P.pageOptions.find((o) => o.id === s.pages);
+      const pg = P.byId(P.pageOptions, s.pages);
+      const showBreakdown = !!(pg && !pg.custom && pg.extraMax !== 0);
+      const bp = s.extraPages;
       return `<div class="included-box">
         <div class="ib-head"><strong>${esc(svc.name)}</strong><span>החל מ־${P.formatPrice(svc.basePrice)} · תשלום חד-פעמי</span></div>
         <p class="ib-note">${esc(svc.includedNote)}</p>
-        <details class="ib-details"><summary>מה כלול במחיר הכניסה</summary><ul>${svc.includes.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></details>
+        <details class="ib-details"><summary>מה כלול במחיר הבסיס</summary><ul>${svc.includes.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></details>
       </div>
       <div class="bf-field">
         <span class="bf-label">כמה עמודים אתם מעריכים שתצטרכו? ${req}</span>
         ${cards({ name: "pages", selected: s.pages, options: P.pageOptions.map((o) => ({ id: o.id, label: o.label, hint: o.hint })) })}
         <p class="bf-err" id="pages-err"></p>
       </div>
-      <div class="scope-msg" id="scopeMsg" ${pg && !pg.withinBase ? "" : "hidden"}>${esc(P.copy.biggerScope)}</div>`;
+      <div class="breakdown" id="extraPagesBox" ${showBreakdown ? "" : "hidden"}>
+        <h2 class="group-title">אילו עמודים נוספים תצטרכו?</h2>
+        <p class="group-lead" id="breakdownLead">${esc(P.copy.biggerScope)} <span id="rangeHint"></span></p>
+        <div class="page-types" id="pageTypes">${P.pageTypes.map((t) => `
+          <div class="page-type">
+            <div class="pt-body"><strong>${esc(t.label)}</strong><span>${esc(t.description)}</span><em>${P.formatPrice(t.price)} לעמוד</em></div>
+            <div class="qty">
+              <button type="button" class="qty-btn" data-page="${t.id}" data-qty="-1" aria-label="פחות">−</button>
+              <input type="number" id="pages-${t.id}" data-page="${t.id}" min="0" max="20" value="${Number(bp[t.id]) || 0}" aria-label="כמות: ${esc(t.label)}">
+              <button type="button" class="qty-btn" data-page="${t.id}" data-qty="1" aria-label="יותר">+</button>
+            </div>
+          </div>`).join("")}</div>
+        <label class="ack"><input type="checkbox" id="pagesUnknown" ${bp.unknown ? "checked" : ""}><span>עדיין לא יודע אילו סוגי עמודים. נחליט יחד ותקבלו מחיר מותאם.</span></label>
+        <p class="bf-err" id="breakdown-err"></p>
+        <div class="scope-msg" id="over10Msg" ${pg && pg.customByDefault ? "" : "hidden"}>יותר מ־10 עמודים: נכין לכם מחיר מותאם. המשיכו למלא את הפרטים כדי שנוכל לתמחר במדויק.</div>
+      </div>`;
     },
 
     "site-features"() {
       const s = state.site;
-      return `<p class="step-lead">בחירה כאן לא אומרת שהפריט כלול במחיר הכניסה. מה שלא כלול מסומן, ונתמחר אותו לפני כל התחייבות.</p>
-      ${cards({ name: "features", selected: s.features, multi: true, options: P.siteFeatures.map((f) => ({
-        id: f.id, label: f.label, hint: f.hint,
-        badge: f.included ? "כלול" : "לתמחור",
-        badgeKind: f.included ? "ok" : "review"
-      })) })}
-      <div class="bf-field" id="featuresOtherWrap" ${s.features.includes("other") ? "" : "hidden"}>
-        <label for="featuresOther">מה למשל?</label>
-        <input id="featuresOther" data-path="site.featuresOther" type="text" value="${esc(s.featuresOther)}">
+      return `<p class="step-lead">מה שכלול במחיר הבסיס מסומן "כלול". לשאר יש מחיר ברור, והוא מתעדכן בסיכום מיד.</p>
+      <div class="addon-group">
+        <h2 class="group-title">כלול במחיר הבסיס</h2>
+        ${cards({ name: "features", selected: s.features, multi: true, options: P.includedFeatures.map((f) => ({ id: f.id, label: f.label, hint: f.hint, badge: "כלול", badgeKind: "ok" })) })}
+      </div>
+      ${addonGroup("עמודים ואזורים נוספים", "מחירים לפי המחירון. מה שאין לו מחיר קבוע מסומן, ונשלח לכם מחיר מותאם.", inScope("site-pages"))}`;
+    },
+
+    "extras"() {
+      const landing = state.type === "landing";
+      const groups = [];
+      if (landing) groups.push(addonGroup("אזורים ותמונות", "מה שכלול בדף: עד 6 עד 7 אזורי תוכן. כאן מוסיפים מעבר לזה.", inScope("landing-sections")));
+      groups.push(addonGroup("מדידה ופרטיות", "רוצים לדעת כמה אנשים מגיעים ומאיפה? בוחרים את שני כלי המדידה יחד, ומשלמים 150 ₪ במקום 200.", inScope("tracking")));
+      if (landing) groups.push(addonGroup("חיבור למערכות שכבר יש לכם", "מערכת תורים, לינק תשלום או רשימת תפוצה שכבר עובדים אצלכם.", inScope("connect")));
+      groups.push(addonGroup("דברים שדורשים מחיר מותאם", "לאלה אין מחיר קבוע, כי ההיקף משתנה מעסק לעסק. סמנו מה שרלוונטי, ונחזור אליכם עם מחיר לפני כל התחייבות.", inScope("custom")));
+      return `<p class="step-lead">הכול כאן אופציונלי. אפשר לדלג ולהמשיך.</p>
+      ${groups.join("")}
+      <div class="addon-group">
+        <h2 class="group-title">לוח זמנים</h2>
+        ${cards({ name: "urgent", selected: state.urgent ? "urgent" : "regular", cls: "two", options: [
+          { id: "regular", label: "רגיל", hint: `לפי זמני המסירה הרגילים: עד ${P.services[state.type].deliveryDays} ימי עסקים מקבלת החומרים.` },
+          { id: "urgent", label: P.urgency.label, hint: P.urgency.description, badge: "+" + P.urgency.percent + "%", badgeKind: "price" }
+        ] })}
       </div>`;
     },
 
     "materials"() {
       const m = state.materials;
       const yn = (id, label, opts) => `<div class="bf-field"><span class="bf-label">${label} ${req}</span>${cards({ name: id, selected: m[id], options: opts })}<p class="bf-err" id="${id}-err"></p></div>`;
+      const showContent = m.texts === "partial" || m.texts === "no";
+      const edit = item("content-edit"), write = item("content-write");
+      const perPage = state.type === "site";
+      const priceTxt = (c) => P.formatPrice(c.price) + (perPage ? " לעמוד" : "");
       return `<p class="step-lead">אין לכם משהו מהרשימה? זה בסדר גמור. נעזור.</p>
       ${yn("logo", "לוגו", [{ id: "yes", label: "יש לוגו" }, { id: "no", label: "אין לוגו" }])}
       ${yn("texts", "טקסטים", [{ id: "yes", label: "יש טקסטים מוכנים" }, { id: "partial", label: "יש חלק" }, { id: "no", label: "אין, נצטרך עזרה" }])}
+      <div class="content-help" id="contentHelp" ${showContent ? "" : "hidden"}>
+        <span class="bf-label">רוצים שנטפל בתוכן? ${req}</span>
+        ${cards({ name: "contentService", selected: state.content.service, options: [
+          { id: "none", label: "לא, נביא טקסטים בעצמנו", hint: "בלי תוספת" },
+          { id: "edit", label: edit.label, hint: edit.description, badge: priceTxt(edit), badgeKind: "price" },
+          { id: "write", label: write.label, hint: write.description, badge: priceTxt(write), badgeKind: "price" }
+        ] })}
+        <p class="bf-err" id="contentService-err"></p>
+        ${perPage ? `<div class="bf-field inline-qty" id="contentPagesWrap" ${state.content.service === "edit" || state.content.service === "write" ? "" : "hidden"}>
+          <label for="contentPages">לכמה עמודים?</label>
+          <input id="contentPages" type="number" min="1" max="30" value="${Number(state.content.pages) > 0 ? state.content.pages : totalPagesEstimate(state)}">
+          <p class="bf-hint">לפי ההערכה שלכם, האתר יכלול ${totalPagesEstimate(state)} עמודים. אפשר לבחור פחות.</p>
+        </div>` : ""}
+      </div>
       ${yn("images", "תמונות", [{ id: "yes", label: "יש תמונות" }, { id: "partial", label: "יש חלק" }, { id: "no", label: "אין, נצטרך עזרה" }])}
       ${field("style", "צבעים או סגנון שאתם אוהבים", `<input id="style" data-path="materials.style" type="text" value="${esc(m.style)}" placeholder="למשל: נקי ובהיר, צבעי המותג כחול וזהב">`, "לא חובה.")}
       ${field("references", "קישורים לאתרים שאתם אוהבים", `<textarea id="references" data-path="materials.references" rows="2" dir="ltr" placeholder="https://...">${esc(m.references)}</textarea>`, "לא חובה. עוזר לנו להבין טעם.")}`;
@@ -307,7 +405,7 @@
     },
 
     "maintenance"() {
-      return `<p class="step-lead">אפשרות בלבד. שום מסלול לא מסומן מראש, ואפשר להחליט גם אחר כך.</p>
+      return `<p class="step-lead">אפשרות בלבד. תשלום חודשי נפרד, לא חלק ממחיר ההקמה. שום מסלול לא מסומן מראש, ואפשר להחליט גם אחר כך.</p>
       <div class="cards plans" role="radiogroup">${P.maintenance.map((p) => `
         <label class="card-choice plan${state.maintenance === p.id ? " on" : ""}">
           <input type="radio" name="maintenance" value="${p.id}" ${state.maintenance === p.id ? "checked" : ""}>
@@ -331,43 +429,84 @@
     }
   };
 
+  /* -------- side help: relevant to the step, not the same card everywhere -------- */
+
+  function chosenSoFar() {
+    const b = state.business; const out = [];
+    if (b.businessName) out.push(["העסק", b.businessName]);
+    if (b.category) out.push(["תחום", b.category === "אחר" ? b.categoryOther || "אחר" : b.category]);
+    if (state.goals.length) out.push(["המטרה", state.goals.map((g) => (P.byId(GOALS, g) || {}).label || g).join(", ")]);
+    if (state.type === "site" && state.site.pages) out.push(["עמודים", (P.byId(P.pageOptions, state.site.pages) || {}).label]);
+    return out;
+  }
+
+  function sideHelpFor(id) {
+    const how = { title: "איך זה עובד?", html: "עונים על כמה שאלות קצרות, רואים סיכום לפי הבחירות, ושולחים. אנחנו עוברים על הפרטים ושולחים סיכום הזמנה לאישור. רק אחרי שאישרתם, מתחילים." };
+    const list = (rows) => rows.length ? `<ul class="help-list">${rows.map(([k, v]) => `<li><span>${esc(k)}</span><strong>${esc(v)}</strong></li>`).join("")}</ul>` : "<p>עדיין לא נבחר כלום. זה בסדר, מתחילים.</p>";
+    switch (id) {
+      case "type": case "business": case "goal": return how;
+      case "landing-offer": return { title: "טיפ קטן", html: "הצעה אחת ברורה עובדת טוב יותר משלוש. אם יש כמה שירותים, בחרו את זה שהכי כדאי להתחיל ממנו, ואת השאר אפשר להזכיר בקצרה." };
+      case "site-scope": case "site-features": return { title: "מה כבר בחרתם", html: list(chosenSoFar()) };
+      case "extras": return { title: "מה חשוב לדעת", html: "לכל מה שיש לו מחיר במחירון, הסכום מתעדכן מיד בסיכום. מה שאין לו מחיר קבוע מסומן, ואתם מקבלים מחיר מותאם לפני כל התחייבות. שום דבר לא מחויב בלי אישורכם." };
+      case "materials": return { title: "טיפ קטן", html: "אין טקסטים מוכנים? זה קורה לרוב העסקים. אפשר לבחור כאן עריכה או כתיבה, והמחיר מופיע בסיכום. תמונות טובות מהטלפון עדיפות על תמונות גנריות." };
+      case "domain": return { title: "מה חשוב לדעת", html: "הדומיין נרשם על שמכם ונשאר שלכם. אם אין לכם, נעזור לבחור ולרכוש, בלי דמי שירות מצידנו. משלמים רק לספק הדומיין." };
+      case "hosting": return { title: "מה חשוב לדעת", html: "החשבונות של הפרויקט נרשמים עליכם, ואתם מקבלים את פרטי הגישה בסיום. אין תלות בנו כדי להחזיק את האתר באוויר." };
+      case "maintenance": return { title: "אפשר לשנות אחר כך", html: "תחזוקה היא תשלום חודשי נפרד, לא חלק ממחיר ההקמה. אפשר להצטרף חודשיים אחרי המסירה, או להפסיק בכל שלב." };
+      default: return null;
+    }
+  }
+
   /* -------- summary block (used in side panel, mobile bar, and final step) -------- */
 
   function summaryHTML(st, compact = false) {
-    if (!st.type || !P.services[st.type]) {
+    if (!priced(st)) {
       return `<p class="sum-empty">${st.type === "unsure" ? "עוד לא בטוחים? זה בסדר. בחרו שירות כשתרצו, או דברו איתנו." : "בחרו שירות כדי לראות סיכום."}</p>`;
     }
     const c = calc(st);
-    const svc = P.services[st.type];
+    const svc = c.service;
     const rows = [];
-    rows.push({ k: svc.name, v: c.baseLabel });
+    rows.push({ k: svc.name, v: c.baseLabel, strong: true });
     if (st.type === "site" && st.site.pages) {
-      const pg = P.pageOptions.find((o) => o.id === st.site.pages);
+      const pg = P.byId(P.pageOptions, st.site.pages);
       rows.push({ k: "מספר עמודים", v: pg ? pg.label : "" });
     }
-    c.reviewItems.forEach((a) => rows.push({ k: a.name, v: a.fixed && typeof a.price === "number" ? P.formatPrice(a.price) : P.copy.reviewPrice, review: !(a.fixed && typeof a.price === "number") }));
-    const mp = P.maintenance.find((m) => m.id === st.maintenance);
-    const totals = c.customQuote
-      ? `<div class="sum-quote">${esc(P.copy.customQuote)}</div>`
-      : `<div class="sum-total"><span>סה"כ לפי הבחירות שלכם</span><strong>${P.formatPrice(c.total)}</strong></div>
-         <div class="sum-split"><div><small>50% מקדמה</small><strong>${P.formatPrice(c.deposit)}</strong></div><div><small>יתרה לפני מסירה</small><strong>${P.formatPrice(c.balance)}</strong></div></div>`;
-    return `<dl class="sum-rows">${rows.map((r) => `<div class="sum-row${r.review ? " review" : ""}"><dt>${esc(r.k)}</dt><dd>${esc(r.v)}</dd></div>`).join("")}</dl>
+    c.lines.forEach((l) => rows.push({ k: l.label, v: l.pricing_type === "fixed" ? P.formatPrice(l.total) : P.copy.customShort, review: l.pricing_type !== "fixed" }));
+    if (c.urgent) rows.push({ k: "דחוף, +" + P.urgency.percent + "%", v: c.custom_quote_required ? "ייכלל במחיר המותאם" : P.formatPrice(c.urgent_fee), review: c.custom_quote_required });
+
+    const totals = c.custom_quote_required
+      ? `<div class="sum-quote">${esc(P.copy.customQuote)}${c.urgent ? " " + esc(P.urgency.customNote) : ""}</div>`
+      : `<div class="sum-total"><span>${esc(P.copy.setupLabel)}</span><strong>${P.formatPrice(c.setup_total)}</strong></div>
+         <div class="sum-split"><div><small>${esc(P.copy.depositLabel)}</small><strong>${P.formatPrice(c.deposit)}</strong></div><div><small>${esc(P.copy.balanceLabel)}</small><strong>${P.formatPrice(c.balance)}</strong></div></div>`;
+
+    const mp = c.maintenance;
+    const maint = mp
+      ? `<div class="sum-maint"><div><span>תחזוקה חודשית</span><small>${esc(mp.name)} · ${esc(P.copy.maintenanceSeparate)}</small></div><strong>${P.formatPrice(mp.price)} ${esc(mp.per)}</strong></div>`
+      : "";
+
+    return `<dl class="sum-rows">${rows.map((r) => `<div class="sum-row${r.review ? " review" : ""}${r.strong ? " strong" : ""}"><dt>${esc(r.k)}</dt><dd>${esc(r.v)}</dd></div>`).join("")}</dl>
       ${totals}
-      ${mp ? `<div class="sum-maint"><span>${esc(mp.name)}</span><strong>${P.formatPrice(mp.price)} ${esc(mp.per)}</strong></div>` : ""}
-      ${compact ? "" : `<p class="sum-fine">תשלום חד-פעמי לבנייה. תחזוקה, אם נבחרה, נפרדת וחודשית. המחיר הסופי נסגר בסיכום הזמנה שאתם מאשרים לפני תחילת העבודה.</p>`}`;
+      ${maint}
+      ${compact ? "" : `<p class="sum-fine">${esc(P.copy.fine)}</p>`}`;
   }
 
   function refreshSummary() {
     if (els.summary) els.summary.innerHTML = `<h2>הפרויקט שלכם</h2>${summaryHTML(state)}`;
     if (els.summaryMobile) {
       const c = calc(state);
-      els.summaryMobile.innerHTML = (!state.type || !P.services[state.type]) ? "" :
-        `<button type="button" class="sm-toggle" aria-expanded="false" aria-controls="smBody"><span>${c.customQuote ? "כולל רכיב לתמחור אישי" : "סה\"כ לפי הבחירות: " + P.formatPrice(c.total)}</span><i></i></button><div class="sm-body" id="smBody" hidden>${summaryHTML(state, true)}</div>`;
+      els.summaryMobile.innerHTML = !priced(state) ? "" :
+        `<button type="button" class="sm-toggle" aria-expanded="false" aria-controls="smBody"><span>${c.custom_quote_required ? P.copy.customShort : esc(P.copy.setupLabel) + ": " + P.formatPrice(c.setup_total)}</span><i></i></button><div class="sm-body" id="smBody" hidden>${summaryHTML(state, true)}</div>`;
       const t = qs(".sm-toggle", els.summaryMobile);
       if (t) t.addEventListener("click", () => { const b = qs("#smBody"); b.hidden = !b.hidden; t.setAttribute("aria-expanded", String(!b.hidden)); });
     }
     const inline = qs("#summaryInline");
     if (inline) inline.innerHTML = `<div class="sum-card">${summaryHTML(state)}</div>`;
+  }
+
+  function refreshSideHelp(id) {
+    if (!els.sideHelp) return;
+    const h = sideHelpFor(id);
+    els.sideHelp.hidden = !h;
+    if (h) els.sideHelp.innerHTML = `<strong>${esc(h.title)}</strong>${h.html.startsWith("<") ? h.html : `<p>${h.html}</p>`}`;
   }
 
   /* -------- validation -------- */
@@ -383,6 +522,8 @@
     const input = qs("#" + id);
     if (input) input.setAttribute("aria-invalid", msg ? "true" : "false");
   }
+
+  function extraPagesTotal() { const bp = state.site.extraPages; return (Number(bp.normal) || 0) + (Number(bp.long) || 0) + (Number(bp.special) || 0); }
 
   const validate = {
     "type"() { if (!state.type || state.type === "unsure") return { ok: false, msg: state.type === "unsure" ? "בחרו אחת מהאפשרויות למטה, או דברו איתנו." : "בחרו מה תרצו לבנות." }; return { ok: true }; },
@@ -405,11 +546,30 @@
       check("cta", !!state.landing.cta, "בחרו פעולה מרכזית.");
       return first ? { ok: false, focus: first } : { ok: true };
     },
-    "site-scope"() { const ok = !!state.site.pages; setErr("pages", ok ? "" : "בחרו הערכה. אפשר לשנות אחר כך."); return { ok }; },
+    "site-scope"() {
+      const pg = P.byId(P.pageOptions, state.site.pages);
+      if (!pg) { setErr("pages", "בחרו הערכה. אפשר לשנות אחר כך."); return { ok: false }; }
+      setErr("pages", "");
+      if (!pg.custom && pg.extraMax !== 0 && !state.site.extraPages.unknown) {
+        const n = extraPagesTotal();
+        const inRange = n >= pg.extraMin && (pg.extraMax === null || n <= pg.extraMax);
+        if (!inRange) {
+          const range = pg.extraMax === null ? `לפחות ${pg.extraMin}` : `בין ${pg.extraMin} ל־${pg.extraMax}`;
+          setErr("breakdown", `לפי ההערכה "${pg.label}", מספר העמודים הנוספים מעבר לשלושה צריך להיות ${range}. אפשר גם לסמן "עדיין לא יודע".`);
+          return { ok: false, focus: "pages-normal" };
+        }
+      }
+      setErr("breakdown", "");
+      return { ok: true };
+    },
     "site-features"() { return { ok: true }; },
+    "extras"() { return { ok: true }; },
     "materials"() {
       let first = null;
       ["logo", "texts", "images"].forEach((id) => { const ok = !!state.materials[id]; setErr(id, ok ? "" : "בחרו אפשרות."); if (!ok && !first) first = id; });
+      const needContent = state.materials.texts === "partial" || state.materials.texts === "no";
+      if (needContent) { const ok = !!state.content.service; setErr("contentService", ok ? "" : "בחרו איך נטפל בתוכן. גם 'נביא בעצמנו' זו בחירה."); if (!ok && !first) first = "contentService"; }
+      else setErr("contentService", "");
       return first ? { ok: false } : { ok: true };
     },
     "domain"() { const ok = !!state.domain; setErr("domain", ok ? "" : "בחרו אפשרות."); return { ok }; },
@@ -445,8 +605,18 @@
     els.footerNote.textContent = id === "summary" ? P.copy.notBinding : "";
     bindStep(id);
     refreshSummary();
+    refreshSideHelp(id);
     save();
     if (focusHeading) { const h = qs("#stepTitle"); if (h) h.focus({ preventScroll: false }); window.scrollTo({ top: 0, behavior: "auto" }); }
+  }
+
+  function updateRangeHint() {
+    const pg = P.byId(P.pageOptions, state.site.pages);
+    const hint = qs("#rangeHint");
+    if (!hint || !pg || pg.custom || pg.extraMax === 0) return;
+    const n = extraPagesTotal();
+    const range = pg.extraMax === null ? `לפחות ${pg.extraMin}` : `${pg.extraMin} עד ${pg.extraMax}`;
+    hint.textContent = `לפי ההערכה שבחרתם: ${range} עמודים נוספים מעבר לשלושה הכלולים. סימנתם ${n}.`;
   }
 
   function bindStep(id) {
@@ -461,22 +631,50 @@
         const group = qsa(`.card-choice input[name="${name}"]`, els.stage);
         group.forEach((g) => g.closest(".card-choice").classList.toggle("on", g.checked));
         const values = group.filter((g) => g.checked).map((g) => g.value);
-        applyChoice(name, inp.type === "checkbox" ? values : values[0] || "");
+        applyChoice(name, inp.type === "checkbox" ? values : values[0] || "", inp);
         save(); refreshSummary();
+        if (id === "site-scope" || id === "site-features") refreshSideHelp(id);
       });
     });
+    /* add-on quantity controls and notes */
+    qsa(".addon-item .qty-btn", els.stage).forEach((b) => b.addEventListener("click", () => {
+      const id2 = b.closest(".addon-item").dataset.addon; const c = item(id2);
+      const inp = qs("#qty-" + id2);
+      const v = Math.max(1, Math.min(c.maxQty, (Number(inp.value) || 1) + Number(b.dataset.qty)));
+      inp.value = v; state.addons[id2] = v; save(); refreshSummary();
+    }));
+    qsa(".addon-item input[type=number]", els.stage).forEach((inp) => inp.addEventListener("input", () => {
+      const id2 = inp.closest(".addon-item").dataset.addon; const c = item(id2);
+      const v = Math.max(1, Math.min(c.maxQty, Number(inp.value) || 1));
+      state.addons[id2] = v; save(); refreshSummary();
+    }));
+    qsa("[data-note]", els.stage).forEach((inp) => inp.addEventListener("input", () => { state.addonNotes[inp.dataset.note] = inp.value; save(); }));
+
     if (id === "type") {
       qsa("[data-pick]", els.stage).forEach((b) => b.addEventListener("click", () => {
         state.type = b.dataset.pick; save(); renderStep(false);
         qs(`.card-choice input[value="${state.type}"]`)?.focus();
       }));
     }
+    if (id === "site-scope") {
+      const setPage = (t, v) => { state.site.extraPages[t] = Math.max(0, Math.min(20, v)); const inp = qs("#pages-" + t); if (inp) inp.value = state.site.extraPages[t]; setErr("breakdown", ""); save(); refreshSummary(); updateRangeHint(); };
+      qsa("#pageTypes .qty-btn", els.stage).forEach((b) => b.addEventListener("click", () => setPage(b.dataset.page, (Number(state.site.extraPages[b.dataset.page]) || 0) + Number(b.dataset.qty))));
+      qsa("#pageTypes input[type=number]", els.stage).forEach((inp) => inp.addEventListener("input", () => setPage(inp.dataset.page, Number(inp.value) || 0)));
+      const unk = qs("#pagesUnknown");
+      if (unk) unk.addEventListener("change", () => { state.site.extraPages.unknown = unk.checked; qs("#pageTypes").classList.toggle("muted", unk.checked); setErr("breakdown", ""); save(); refreshSummary(); });
+      if (unk && unk.checked) qs("#pageTypes").classList.add("muted");
+      updateRangeHint();
+    }
+    if (id === "materials") {
+      const cp = qs("#contentPages");
+      if (cp) cp.addEventListener("input", () => { state.content.pages = Math.max(1, Math.min(30, Number(cp.value) || 1)); save(); refreshSummary(); });
+    }
     if (id === "hosting") {
       qs("#hostingAck").addEventListener("change", (e) => { state.hosting.acknowledged = e.target.checked; setErr("hostingAck", ""); save(); });
     }
   }
 
-  function applyChoice(name, value) {
+  function applyChoice(name, value, inp) {
     switch (name) {
       case "type":
         state.type = value;
@@ -497,17 +695,39 @@
       case "cta": state.landing.cta = value; setErr("cta", ""); break;
       case "pages": {
         state.site.pages = value;
-        const pg = P.pageOptions.find((o) => o.id === value);
-        qs("#scopeMsg").hidden = !(pg && !pg.withinBase);
-        setErr("pages", "");
+        const pg = P.byId(P.pageOptions, value);
+        qs("#extraPagesBox").hidden = !(pg && !pg.custom && pg.extraMax !== 0);
+        qs("#over10Msg").hidden = !(pg && pg.customByDefault);
+        setErr("pages", ""); setErr("breakdown", "");
+        updateRangeHint();
         break;
       }
-      case "features":
-        state.site.features = value;
-        qs("#featuresOtherWrap").hidden = !value.includes("other");
+      case "features": state.site.features = value; break;
+      case "addon": {
+        const id = inp.value; const c = item(id);
+        if (inp.checked) { const q = qs("#qty-" + id); state.addons[id] = c && c.maxQty ? Math.max(1, Number(q && q.value) || 1) : 1; }
+        else delete state.addons[id];
+        const wrap = inp.closest(".addon-item");
+        const q = qs(".qty", wrap); if (q) q.hidden = !inp.checked;
+        const n = qs(".addon-note", wrap); if (n) n.hidden = !inp.checked;
         break;
-      case "logo": case "texts": case "images":
+      }
+      case "urgent": state.urgent = value === "urgent"; break;
+      case "contentService": {
+        state.content.service = value; setErr("contentService", "");
+        const w = qs("#contentPagesWrap"); if (w) w.hidden = !(value === "edit" || value === "write");
+        if (!(Number(state.content.pages) > 0)) { state.content.pages = totalPagesEstimate(state); const cp = qs("#contentPages"); if (cp) cp.value = state.content.pages; }
+        break;
+      }
+      case "logo": case "images":
         state.materials[name] = value; setErr(name, ""); break;
+      case "texts": {
+        state.materials.texts = value; setErr("texts", "");
+        const need = value === "partial" || value === "no";
+        qs("#contentHelp").hidden = !need;
+        if (!need) { state.content.service = ""; setErr("contentService", ""); }
+        break;
+      }
       case "domain":
         state.domain = value;
         qs("#domainHelp").hidden = !(value === "no" || value === "unsure");
@@ -551,8 +771,15 @@
   function payload(st) {
     const c = calc(st);
     const b = st.business;
-    const labelOf = (list, id) => (list.find((x) => x.id === id) || {}).label || id;
-    const goalLabels = { whatsapp: "לשלוח וואטסאפ", call: "להתקשר", lead: "להשאיר פרטים", read: "לקרוא על העסק והשירותים", visit: "להגיע לעסק", other: "משהו אחר" };
+    const labelOf = (list, id) => (P.byId(list, id) || {}).label || id;
+    const bp = st.site.extraPages;
+    const breakdown = st.type === "site" && st.site.pages && st.site.pages !== "upto3" && st.site.pages !== "unknown"
+      ? (bp.unknown ? "סוגי העמודים עדיין לא ידועים" : P.pageTypes.map((t) => (Number(bp[t.id]) || 0) > 0 ? `${t.label}: ${bp[t.id]}` : "").filter(Boolean).join(", "))
+      : "";
+    const addonList = c.lines.map((l) => l.label + (l.pricing_type === "fixed" ? ` (${P.formatPrice(l.total)})` : " (מחיר מותאם)") + (st.addonNotes[l.id] ? ` [${st.addonNotes[l.id].trim()}]` : "")).join("; ");
+    const contentLabel = st.content.service === "edit" || st.content.service === "write"
+      ? (item(st.content.service === "edit" ? "content-edit" : "content-write").label + (st.type === "site" ? ` × ${st.content.pages} עמודים` : ""))
+      : (st.content.service === "none" ? "הלקוח מביא טקסטים" : "");
     return {
       project_type: st.type === "site" ? "אתר תדמית" : "דף נחיתה",
       contact_name: b.contactName.trim(),
@@ -561,23 +788,28 @@
       email: b.email.trim(),
       business_category: b.category === "אחר" ? "אחר: " + b.categoryOther.trim() : b.category,
       business_about: b.about.trim(),
-      primary_goal: st.goals.map((g) => g === "other" ? "אחר: " + st.goalOther.trim() : goalLabels[g]).join(", "),
+      primary_goal: st.goals.map((g) => g === "other" ? "אחר: " + st.goalOther.trim() : labelOf(GOALS, g)).join(", "),
       landing_offer: st.type === "landing" ? st.landing.offer.trim() : "",
       target_audience: st.type === "landing" ? st.landing.audience.trim() : "",
       primary_cta: st.type === "landing" ? st.landing.cta : "",
       estimated_pages: st.type === "site" ? labelOf(P.pageOptions, st.site.pages) : "1 (דף נחיתה)",
-      requested_features: st.type === "site" ? st.site.features.map((f) => f === "other" ? "אחר: " + st.site.featuresOther.trim() : labelOf(P.siteFeatures, f)).join(", ") : "",
+      page_breakdown: breakdown,
+      requested_features: st.type === "site" ? st.site.features.map((f) => labelOf(P.includedFeatures, f)).join(", ") : "",
+      selected_addons: addonList,
+      content_service: contentLabel,
       has_logo: st.materials.logo, has_texts: st.materials.texts, has_images: st.materials.images,
       design_preferences: [st.materials.style.trim(), st.materials.references.trim()].filter(Boolean).join(" | "),
       domain_status: st.domain,
       hosting_acknowledged: st.hosting.acknowledged ? "yes" : "no",
       maintenance_plan: st.maintenance,
-      selected_addons: c.reviewItems.map((a) => a.name).join(", "),
-      calculated_base_price: c.base ?? "",
-      calculated_addons_price: c.addonsPrice,
-      calculated_total: c.customQuote ? "" : c.total,
-      custom_quote_required: c.customQuote ? "true" : "false",
-      custom_quote_reasons: c.reasons.join(", "),
+      monthly_maintenance: c.monthly_maintenance,
+      base_price: c.base_price ?? "",
+      addons_total: c.addons_total,
+      urgent: c.urgent ? "true" : "false",
+      urgent_fee: c.custom_quote_required ? "" : c.urgent_fee,
+      setup_total: c.custom_quote_required ? "" : c.setup_total,
+      custom_quote_required: c.custom_quote_required ? "true" : "false",
+      custom_quote_reasons: c.custom_reasons.join(", "),
       notes: st.notes.trim(),
       timestamp: new Date().toISOString(),
       started_at: st.startedAt
@@ -618,9 +850,10 @@
       <h1 id="doneTitle" tabindex="-1">הבקשה התקבלה</h1>
       <p class="step-lead">נעבור על הפרטים וניצור איתכם קשר או נשלח סיכום מסודר להמשך.</p>
       <div class="sum-card">${summaryHTML(Object.assign({}, state), false)}</div>
-      <p class="done-fine">${esc(data.project_type)} עבור ${esc(data.business_name)}. ${data.custom_quote_required === "true" ? "הבקשה כוללת רכיב לתמחור אישי, ולכן המחיר המלא יגיע בסיכום." : "המחיר הסופי נסגר בסיכום הזמנה שתאשרו לפני תחילת העבודה."}</p>
+      <p class="done-fine">${esc(data.project_type)} עבור ${esc(data.business_name)}. ${data.custom_quote_required === "true" ? "הבקשה כוללת פריט שדורש מחיר מותאם, ולכן המחיר המלא יגיע בסיכום." : "המחיר הסופי נסגר בסיכום הזמנה שתאשרו לפני תחילת העבודה."}</p>
       <div class="done-actions"><a class="btn btn-primary" href="/">חזרה לאתר</a><a class="btn btn-ghost" href="${WA}" target="_blank" rel="noopener">לכתוב לנו בוואטסאפ</a></div>
     </section>`;
+    if (els.sideHelp) els.sideHelp.hidden = true;
     qs("#doneTitle").focus();
     window.scrollTo({ top: 0, behavior: "auto" });
   }
@@ -629,12 +862,22 @@
 
   function applyDemo(kind) {
     const d = defaultState();
-    d.business = { businessName: "קפה הרצל", contactName: "מאיה לוי", phone: "050-000-0000", email: "", category: "מסעדה, קפה ואוכל", categoryOther: "", about: "בית קפה שכונתי בחיפה עם מאפים של הבוקר" };
+    d.business = { businessName: "קפה הרצל", contactName: "מאיה לוי", phone: "0500000000", email: "", category: "מסעדה, קפה ואוכל", categoryOther: "", about: "בית קפה שכונתי בחיפה עם מאפים של הבוקר" };
     d.goals = ["whatsapp", "visit"];
     d.materials = { logo: "yes", texts: "partial", images: "yes", style: "חם ונעים", references: "" };
+    d.content = { service: "none", pages: 1 };
     d.domain = "no"; d.hosting.acknowledged = true; d.maintenance = "basic";
-    if (kind === "site-custom") { d.type = "site"; d.site = { pages: "7to10", features: ["about", "services", "gallery", "contact-form"], featuresOther: "" }; }
-    else { d.type = "landing"; d.landing = { offer: "ארוחת בוקר זוגית בסופי שבוע", audience: "זוגות מהאזור", cta: "whatsapp" }; }
+    if (kind === "site-custom") {
+      d.type = "site"; d.site = { pages: "7to10", extraPages: { normal: 0, long: 0, special: 0, unknown: true }, features: ["about", "services", "contact-form"], featuresOther: "" };
+      d.addons = { "gallery-site": 1, "extra-lang-site": 1 };
+    } else if (kind === "site-priced") {
+      d.type = "site"; d.site = { pages: "4to6", extraPages: { normal: 1, long: 0, special: 0, unknown: false }, features: ["about", "services", "contact-form", "map"], featuresOther: "" };
+      d.addons = { "gallery-site": 1, blog: 1, ga: 1, "meta-pixel": 1 }; d.maintenance = "extended";
+      d.content = { service: "edit", pages: 4 };
+    } else {
+      d.type = "landing"; d.landing = { offer: "ארוחת בוקר זוגית בסופי שבוע", audience: "זוגות מהאזור", cta: "whatsapp" };
+      d.addons = { "gallery-landing": 1, ga: 1 };
+    }
     const steps = stepList(d);
     const step = params.get("step");
     d.stepIndex = step && steps.includes(step) ? steps.indexOf(step) : steps.length - 1;
@@ -647,7 +890,7 @@
   els.back.addEventListener("click", back);
   els.restart.addEventListener("click", restart);
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && e.target.matches("input:not([type=checkbox]):not([type=radio])")) { e.preventDefault(); next(); }
+    if (e.key === "Enter" && e.target.matches("input:not([type=checkbox]):not([type=radio]):not([type=number])")) { e.preventDefault(); next(); }
   });
   renderStep(false);
 })();
