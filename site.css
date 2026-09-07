@@ -1131,6 +1131,7 @@ html.a11y-still .rv { opacity: 1; transform: none; }
 @keyframes consentIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 @media (max-width: 860px) {
   .consent { inset-inline: 12px; bottom: 84px; width: auto; padding: 14px 14px; }   /* above the sticky bottom bars */
+  .builder-page .consent { bottom: 132px; }   /* the builder's sticky back/next bar is taller */
   .consent .btn { flex: 1; }
 }
 @media (prefers-reduced-motion: reduce) { .consent { animation: none; } }
