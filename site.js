@@ -153,6 +153,29 @@
 
   /* ---------- Contact form ---------- */
 
+
+  /* ---- attribution: remember the UTM set the visitor arrived with ----
+     Stored in localStorage (30 days) so it survives steps, refresh, back, and the
+     switch to the "prefer to talk" route. A new explicit UTM set replaces the old one.
+     Nothing is invented when there is no UTM: the fields are simply empty. */
+  const UTM_KEY = "dsc_utm_v1";
+  const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+  function captureUtm() {
+    try {
+      const p = new URLSearchParams(location.search);
+      const found = {}; let any = false;
+      UTM_KEYS.forEach((k) => { const v = (p.get(k) || "").trim().slice(0, 200); found[k] = v; if (v) any = true; });
+      if (any) { found.captured_at = new Date().toISOString(); localStorage.setItem(UTM_KEY, JSON.stringify(found)); return found; }
+      const raw = localStorage.getItem(UTM_KEY);
+      if (!raw) return null;
+      const s = JSON.parse(raw);
+      if (!s.captured_at || Date.now() - Date.parse(s.captured_at) > 30 * 86400000) { localStorage.removeItem(UTM_KEY); return null; }
+      return s;
+    } catch { return null; }
+  }
+  const UTM = captureUtm();
+  const utmValue = (k) => (UTM && UTM[k]) || "";
+
   function initForm() {
     const form = qs("#contactForm");
     if (!form) return;
@@ -203,6 +226,7 @@
       if (!validate()) return;
       const ctx = qs("#builderContext", form);
       if (ctx) ctx.value = builderContext();
+      UTM_KEYS.forEach((k) => { const inp = form.elements[k]; if (inp) inp.value = utmValue(k); });
       submit.disabled = true;
       const original = submit.textContent;
       submit.textContent = "שולחים…";
