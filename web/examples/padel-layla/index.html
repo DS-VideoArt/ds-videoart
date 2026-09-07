@@ -2,6 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
 <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>פאדל לילה — פאדל תחת האורות</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -385,6 +386,7 @@
 </style>
 </head>
 <body>
+<a class="ds-demo-badge" href="/#work" style="position:fixed;bottom:16px;inset-inline-start:16px;z-index:9999;display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;background:#2A2230;color:#F3EDE4;font:600 13px/1 Heebo,Arial,sans-serif;text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.28)"><span>דוגמת עיצוב · עסק בדיוני</span><span style="opacity:.7">חזרה לסטודיו</span></a>
 <div class="noise"></div>
 
 <div class="night-progress" id="nightProgress"></div>
@@ -520,7 +522,7 @@
       <a href="#" class="btn-primary">הזמינו מגרש בוואטסאפ</a>
     </div>
     <div class="foot-meta wrap">
-      <div><b>פאדל לילה</b> · רחוב התאורה 9, תל אביב</div>
+      <div><b>פאדל לילה</b> · כתובת לדוגמה, תל אביב</div>
       <div>פתוח כל ימות השבוע · 16:00–02:00</div>
       <div>052-000-0000</div>
     </div>
@@ -538,6 +540,33 @@
   };
   document.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+</script>
+<script>
+  // Demo page: every placeholder button is marked as inactive, and clicking one explains why instead of doing nothing.
+  (function () {
+    var note = document.createElement('div');
+    note.setAttribute('role', 'status');
+    note.setAttribute('aria-live', 'polite');
+    note.style.cssText = 'position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(8px);z-index:9999;padding:12px 18px;border-radius:12px;background:#2A2230;color:#F3EDE4;font:500 14px/1.4 Heebo,Arial,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.3);opacity:0;transition:opacity .25s,transform .25s;pointer-events:none;max-width:calc(100% - 32px);text-align:center';
+    note.textContent = 'זהו דף לדוגמה. הכפתור הזה לא פעיל בדמו.';
+    document.body.appendChild(note);
+    var timer;
+    document.querySelectorAll('a[href="#"]').forEach(function (a) {
+      a.setAttribute('role', 'button');
+      a.setAttribute('title', 'כפתור לדוגמה, לא פעיל');
+      a.setAttribute('aria-label', a.textContent.trim() + ' (כפתור לדוגמה, לא פעיל)');
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        note.style.opacity = '1';
+        note.style.transform = 'translateX(-50%) translateY(0)';
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          note.style.opacity = '0';
+          note.style.transform = 'translateX(-50%) translateY(8px)';
+        }, 2600);
+      });
+    });
+  })();
 </script>
 </body>
 </html>

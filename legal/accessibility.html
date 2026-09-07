@@ -3,128 +3,87 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="../manifest.json?v=20260805c">
-  <meta name="theme-color" content="#f4f4f6">
-  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png?v=20260805c">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="DS">
-  <link rel="icon" href="../icons/favicon-32.png?v=20260805c" sizes="32x32">
-  <title>הצהרת נגישות | Accessibility Statement - DS</title>
+  <title>הצהרת נגישות | DS Creative Studio</title>
+  <meta name="description" content="הצהרת הנגישות של אתר DS Creative Studio: מה נעשה כדי להנגיש את האתר, מגבלות ידועות, ואיך לפנות אלינו בנושא נגישות.">
+  <link rel="canonical" href="https://dscreative.co.il/legal/accessibility.html">
+  <meta name="theme-color" content="#2a2230">
+  <link rel="icon" href="../icons/favicon-32.png?v=20260821a" sizes="32x32">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png?v=20260821a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;300;400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../ds-shared.css?v=20260719b">
-  <link rel="stylesheet" href="style.css?v=20260719b">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site.css?v=20260821a">
+  <link rel="stylesheet" href="style.css?v=20260821a">
 </head>
 <body>
-  <a href="#main-content" class="skip-link" data-he="דלג לתוכן הראשי" data-en="Skip to main content">דלג לתוכן הראשי</a>
-  <div class="film-grain"></div>
+  <a href="#main" class="skip-link">דלג לתוכן הראשי</a>
+  <div class="grain" aria-hidden="true"></div>
 
-  <nav class="navbar">
+  <nav class="nav scrolled" aria-label="ניווט ראשי">
     <div class="container">
-      <a href="/" class="logo">
-        <span class="logo-mark"></span>
-        <span>DS</span>
-      </a>
+      <a class="brand" href="/">DS <span>Creative Studio</span></a>
       <div class="nav-links">
-        <a href="/" data-he="בית" data-en="Home">בית</a>
+        <a href="/#work">עבודות</a>
+        <a href="/#pricing">מחירים</a>
+        <a href="/#process">איך זה עובד</a>
+        <a href="/#faq">שאלות</a>
+        <a href="/#contact">יצירת קשר</a>
       </div>
-      <div class="nav-right">
-        <div class="lang-switch">
-          <button class="lang-btn" data-lang="he">עב</button>
-          <button class="lang-btn" data-lang="en">EN</button>
-        </div>
-      </div>
+      <a class="btn btn-primary nav-cta" href="/#contact">נתחיל בשיחה קצרה</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="תפריט"><span></span></button>
     </div>
   </nav>
-
-  <div class="container legal-content" style="padding-bottom:80px;" id="main-content">
-    <div data-lang-block="he">
-      <h1 class="section-title">הצהרת נגישות</h1>
-      <p>עודכן לאחרונה: יולי 2026</p>
-      <p>הצהרה זו חלה על כל אתרי משפחת המותגים DS.</p>
-
-      <h2>המחויבות שלנו</h2>
-      <p>DS שואפת להנגיש את אתריה לכלל הגולשים, כולל אנשים עם מוגבלויות, בהתאם לעקרונות הנחיות הנגישות לתוכן אינטרנט (WCAG).</p>
-
-      <h2>מה נעשה</h2>
-      <ul>
-        <li>ניגודיות צבעים בין טקסט לרקע בהתאם לתקן WCAG AA (4.5:1 לפחות לטקסט רגיל).</li>
-        <li>קישור "דלג לתוכן הראשי" בתחילת כל עמוד, לניווט מקלדת מהיר.</li>
-        <li>סימון מצב ברור (focus) על כל רכיב הניתן ללחיצה בעת ניווט מקלדת.</li>
-        <li>תמיכה בניווט מקלדת מלא בתפריטים, בכפתורי השפה ובטפסים.</li>
-        <li>מבנה סמנטי של כותרות, ניווט (nav) ואזורי תוכן (main).</li>
-        <li>תמיכה מלאה בכיווניות RTL/LTR בהתאם לשפה הנבחרת.</li>
-        <li>כיבוד הגדרת "הפחתת תנועה" (prefers-reduced-motion) של מערכת ההפעלה.</li>
-      </ul>
-
-      <h2>מגבלות ידועות</h2>
-      <p>האתרים בבנייה מתמשכת, וייתכנו רכיבים שטרם עברו התאמת נגישות מלאה. אנחנו עובדים על שיפור מתמיד.</p>
-
-      <h2>פנייה בנוגע לנגישות</h2>
-      <p>נתקלתם בבעיית נגישות באחד מאתרי DS? נשמח לשמוע ולתקן, דרך טופס יצירת הקשר באתר <a href="/videoart/#contact">DS VideoArt</a> או <a href="/web/#contact">DS Web</a>.</p>
-    </div>
-
-    <div data-lang-block="en" class="hidden">
-      <h1 class="section-title">Accessibility Statement</h1>
-      <p>Last updated: July 2026</p>
-      <p>This statement applies to every site in the DS brand family.</p>
-
-      <h2>Our commitment</h2>
-      <p>DS strives to make its sites accessible to all visitors, including people with disabilities, in line with the Web Content Accessibility Guidelines (WCAG).</p>
-
-      <h2>What we do</h2>
-      <ul>
-        <li>Text/background color contrast meeting WCAG AA (at least 4.5:1 for normal text).</li>
-        <li>A "skip to main content" link at the start of every page, for fast keyboard navigation.</li>
-        <li>A clearly visible focus state on every clickable element during keyboard navigation.</li>
-        <li>Full keyboard navigation support across menus, language buttons, and forms.</li>
-        <li>Semantic heading structure, navigation (nav), and content (main) landmarks.</li>
-        <li>Full RTL/LTR direction support based on the selected language.</li>
-        <li>Respecting the OS-level "reduce motion" (prefers-reduced-motion) setting.</li>
-      </ul>
-
-      <h2>Known limitations</h2>
-      <p>These sites are a work in progress, and some components may not yet be fully accessibility-adapted. We are working on continuous improvement.</p>
-
-      <h2>Accessibility feedback</h2>
-      <p>Found an accessibility issue on a DS site? We'd love to hear about it and fix it, via the contact form on <a href="/videoart/#contact">DS VideoArt</a> or <a href="/web/#contact">DS Web</a>.</p>
-    </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/#work">עבודות</a>
+    <a href="/#pricing">מחירים</a>
+    <a href="/#process">איך זה עובד</a>
+    <a href="/#faq">שאלות נפוצות</a>
+    <a href="/#contact">יצירת קשר</a>
+    <a class="btn btn-primary" href="/#contact">נתחיל בשיחה קצרה</a>
   </div>
 
-  <footer>
+  <main id="main" class="legal-page surface-stone">
     <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="logo">
-            <span class="logo-mark"></span>
-            <span>DS</span>
-          </div>
-          <p data-he="משפחת מותגים: וידאו AI, אתרים, ניסויים יצירתיים." data-en="A family of brands: AI video, websites, creative experiments.">משפחת מותגים: וידאו AI, אתרים, ניסויים יצירתיים.</p>
-        </div>
-        <div class="footer-col">
-          <h4 data-he="ניווט" data-en="Navigation">ניווט</h4>
-          <a href="/" data-he="בית" data-en="Home">בית</a>
-          <a href="/videoart/">DS VideoArt</a>
-          <a href="/web/">DS Web</a>
-          <a href="/lab/">DS Lab</a>
-        </div>
-        <div class="footer-col">
-          <h4 data-he="משפטי" data-en="Legal">משפטי</h4>
-          <a href="privacy.html" data-he="פרטיות" data-en="Privacy">פרטיות</a>
-          <a href="terms.html" data-he="תנאי שימוש" data-en="Terms">תנאי שימוש</a>
-          <a href="accessibility.html" class="active" data-he="נגישות" data-en="Accessibility">נגישות</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; 2026 DS</span>
+      <article class="legal">
+        <h1>הצהרת נגישות</h1>
+        <p class="updated">עודכן לאחרונה: אוגוסט 2026</p>
+        <p class="intro">הצהרה זו חלה על האתר dscreative.co.il של DS Creative Studio.</p>
+
+        <h2>המחויבות שלנו</h2>
+        <p>DS Creative Studio שואפת להנגיש את האתר לכלל הגולשים, כולל אנשים עם מוגבלויות, בהתאם לעקרונות הנחיות הנגישות לתוכן אינטרנט (WCAG) ברמה AA.</p>
+
+        <h2>מה נעשה באתר</h2>
+        <ul>
+          <li>ניגודיות צבעים בין טקסט לרקע בהתאם לתקן WCAG AA.</li>
+          <li>קישור "דלג לתוכן הראשי" בתחילת כל עמוד, לניווט מקלדת מהיר.</li>
+          <li>סימון מצב ברור על כל רכיב שניתן ללחיצה בעת ניווט מקלדת.</li>
+          <li>ניווט מקלדת מלא בתפריט, בכפתורים, בשאלות הנפוצות ובטופס יצירת הקשר.</li>
+          <li>מבנה סמנטי של כותרות, אזורי ניווט ותוכן, ותוויות לכל שדה בטופס.</li>
+          <li>תפריט נגישות קבוע בפינת המסך: הגדלת טקסט, ניגודיות גבוהה, קו תחתון לקישורים ועצירת אנימציות. הבחירה נשמרת בדפדפן.</li>
+          <li>כיבוד הגדרת "הפחתת תנועה" של מערכת ההפעלה.</li>
+          <li>כל המידע החשוב, כולל המחירים, מופיע כטקסט רגיל ולא רק בתמונות או באנימציה.</li>
+        </ul>
+
+        <h2>מגבלות ידועות</h2>
+        <p>דוגמאות העיצוב המקושרות מדף העבודות הן דפי הדגמה לעסקים בדיוניים, וייתכן שלא כל רכיב בהן עבר התאמת נגישות מלאה. אנחנו ממשיכים לשפר את האתר באופן שוטף.</p>
+
+        <h2>פנייה בנוגע לנגישות</h2>
+        <p>נתקלתם בבעיית נגישות באתר? נשמח לשמוע ולתקן. אפשר לפנות דרך <a href="/#contact">טופס יצירת הקשר</a>, במייל <a href="mailto:videoartds@gmail.com" dir="ltr">videoartds@gmail.com</a> או בטלפון <a href="tel:+972548203022" dir="ltr">054-820-3022</a>.</p>
+
+        <a class="btn btn-ghost back" href="/">חזרה לדף הבית</a>
+      </article>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="bottom">
+        <span>© 2026 DS Creative Studio</span>
+        <span><a href="privacy.html">פרטיות</a> · <a href="terms.html">תנאי שימוש</a> · <a href="accessibility.html">נגישות</a></span>
       </div>
     </div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-  <script src="../ds-shared.js?v=20260719b"></script>
+  <script src="../site.js?v=20260821a"></script>
 </body>
 </html>

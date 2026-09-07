@@ -2,141 +2,601 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <script>
-    (function () {
-      var room = sessionStorage.getItem("ds_hub_return");
-      if (!room) return;
-      var colors = { videoart: "#d1414c", web: "#3d8ef0", lab: "#4ade80", creative: "#ec4899" };
-      document.documentElement.classList.add("hub-returning");
-      document.documentElement.style.setProperty("--hub-return-color", colors[room] || "#e8ecf2");
-    })();
-  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="manifest" href="manifest.json?v=20260805c">
-  <meta name="theme-color" content="#f4f4f6">
-  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=20260805c">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="DS">
-  <link rel="icon" href="icons/favicon-32.png?v=20260805c" sizes="32x32">
-  <title>DS | וידאו AI, אתרים, ניסויים יצירתיים - AI Video, Websites, Creative Experiments</title>
-  <meta name="description" content="DS: משפחת מותגים. DS VideoArt לוידאו AI קולנועי, DS Web לאתרים ודפי נחיתה, DS Lab לניסויים יצירתיים. DS: a family of brands. DS VideoArt for cinematic AI video, DS Web for websites, DS Lab for creative experiments.">
+  <title>דפי נחיתה ואתרי תדמית לעסקים | DS Creative Studio</title>
+  <meta name="description" content="DS Creative Studio בונה דפי נחיתה ואתרי תדמית לעסקים. דף נחיתה 440 ₪, אתר תדמית עד 3 עמודים 1,290 ₪. תשלום חד-פעמי, מחיר סופי מראש, תהליך מסודר ובלי הפתעות.">
+  <link rel="canonical" href="https://dscreative.co.il/">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#2a2230">
+
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ds-videoart.netlify.app/">
-  <meta property="og:title" content="DS | משפחת מותגים - וידאו AI, אתרים, ניסויים יצירתיים">
-  <meta property="og:description" content="DS VideoArt לוידאו AI קולנועי, DS Web לאתרים ודפי נחיתה, DS Lab לניסויים יצירתיים.">
-  <meta property="og:image" content="https://ds-videoart.netlify.app/hub-media/image/og-image.jpg">
+  <meta property="og:locale" content="he_IL">
+  <meta property="og:site_name" content="DS Creative Studio">
+  <meta property="og:url" content="https://dscreative.co.il/">
+  <meta property="og:title" content="דפי נחיתה ואתרי תדמית לעסקים | DS Creative Studio">
+  <meta property="og:description" content="אתר לעסק שלכם, בלי פרויקט על הראש. דף נחיתה 440 ₪, אתר תדמית עד 3 עמודים 1,290 ₪. תשלום חד-פעמי, ללא מנוי חודשי חובה.">
+  <meta property="og:image" content="https://dscreative.co.il/assets/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:locale" content="he_IL">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="DS | משפחת מותגים - וידאו AI, אתרים, ניסויים יצירתיים">
-  <meta name="twitter:description" content="DS VideoArt לוידאו AI קולנועי, DS Web לאתרים ודפי נחיתה, DS Lab לניסויים יצירתיים.">
-  <meta name="twitter:image" content="https://ds-videoart.netlify.app/hub-media/image/og-image.jpg">
+  <meta name="twitter:title" content="דפי נחיתה ואתרי תדמית לעסקים | DS Creative Studio">
+  <meta name="twitter:description" content="אתר לעסק שלכם, בלי פרויקט על הראש. מחיר ברור מראש, תהליך מסודר, בלי הפתעות.">
+  <meta name="twitter:image" content="https://dscreative.co.il/assets/og.jpg">
+
+  <link rel="icon" href="icons/favicon-32.png?v=20260821a" sizes="32x32">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=20260821a">
+  <link rel="manifest" href="manifest.json?v=20260821a">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;300;400;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="ds-shared.css?v=20260719b">
-  <link rel="stylesheet" href="hub.css?v=20260805c">
-</head>
-<body class="hub">
-  <a href="#main-content" class="skip-link" data-he="דלג לתוכן הראשי" data-en="Skip to main content">דלג לתוכן הראשי</a>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css?v=20260821a">
 
-  <div id="dsSplash" class="ds-splash" aria-hidden="true">
-    <div class="ds-splash-media"></div>
-    <div class="ds-splash-scrim"></div>
-    <p class="ds-splash-text" data-he-html="ברוכים הבאים<br>לעולם של יצירה" data-en-html="Welcome to<br>a world of creation">ברוכים הבאים<br>לעולם של יצירה</p>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "DS Creative Studio",
+    "url": "https://dscreative.co.il/",
+    "telephone": "+972548203022",
+    "email": "videoartds@gmail.com",
+    "areaServed": "IL",
+    "description": "סטודיו לדפי נחיתה ולאתרי תדמית לעסקים. מחיר סופי מראש, תשלום חד-פעמי, תהליך מסודר.",
+    "makesOffer": [
+      { "@type": "Offer", "name": "דף נחיתה", "price": "440", "priceCurrency": "ILS" },
+      { "@type": "Offer", "name": "אתר תדמית עד 3 עמודים", "price": "1290", "priceCurrency": "ILS" }
+    ]
+  }
+  </script>
+</head>
+<body id="top">
+  <a href="#main" class="skip-link">דלג לתוכן הראשי</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" aria-label="ניווט ראשי">
+    <div class="container">
+      <a class="brand" href="#top" aria-label="DS Creative Studio, לראש העמוד">DS <span>Creative Studio</span></a>
+      <div class="nav-links">
+        <a href="#work">עבודות</a>
+        <a href="#pricing">מחירים</a>
+        <a href="#process">איך זה עובד</a>
+        <a href="#faq">שאלות</a>
+        <a href="#contact">יצירת קשר</a>
+      </div>
+      <a class="btn btn-primary nav-cta" href="#contact">נתחיל בשיחה קצרה</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="תפריט"><span></span></button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#work">עבודות</a>
+    <a href="#pricing">מחירים</a>
+    <a href="#process">איך זה עובד</a>
+    <a href="#faq">שאלות נפוצות</a>
+    <a href="#contact">יצירת קשר</a>
+    <a class="btn btn-primary" href="#contact">נתחיל בשיחה קצרה</a>
+    <p class="menu-note">דף נחיתה 440 ₪ · אתר תדמית עד 3 עמודים 1,290 ₪<br>תשלום חד-פעמי. ללא מנוי חודשי חובה.</p>
   </div>
 
-  <div class="film-grain"></div>
-  <div id="hubBrandFlash" class="hub-brand-flash" aria-hidden="true"></div>
+  <main id="main">
 
-  <nav class="navbar">
-    <div class="container">
-      <a href="/" class="logo">
-        <span class="logo-mark"></span>
-        DS
-      </a>
-      <div class="nav-right">
-        <button id="installBtn" class="btn btn-outline btn-sm install-btn" type="button" hidden data-he="שמירה למסך הבית" data-en="Save to home screen">שמירה למסך הבית</button>
-        <div class="lang-switch">
-          <button class="lang-btn" data-lang="he">עב</button>
-          <button class="lang-btn" data-lang="en">EN</button>
+    <!-- ================= HERO ================= -->
+    <header class="hero" data-parallax-zone>
+      <div class="shapes" aria-hidden="true">
+        <div class="shape shape-bloom" style="inset-inline-start:-14%; top:-20%;" data-depth="-0.4"></div>
+        <div class="shape shape-bloom-2" style="inset-inline-end:-10%; bottom:-30%;" data-depth="0.35"></div>
+        <div class="shape shape-ring floaty d2" style="inset-inline-start:46%; top:8%;" data-depth="0.9"></div>
+        <div class="shape shape-disc floaty d3" style="inset-inline-start:52%; bottom:6%;" data-depth="1.3"></div>
+      </div>
+      <div class="container">
+        <div class="hero-copy">
+          <p class="kicker">סטודיו לדפי נחיתה ולאתרי תדמית</p>
+          <h1 class="display">אתר לעסק שלכם.<br>בלי פרויקט על הראש.</h1>
+          <p class="lead">עיצוב שמותאם לעסק, תהליך מסודר, ומחיר שמאשרים מראש. אנחנו לוקחים על עצמנו כמה שיותר מהדרך, ואתם יודעים בכל שלב מה קורה.</p>
+
+          <div class="price-strip" aria-label="מחירים">
+            <div class="price-cell">
+              <span class="label">דף נחיתה</span>
+              <span class="amount">440 <small>₪</small></span>
+            </div>
+            <div class="price-cell">
+              <span class="label">אתר תדמית עד 3 עמודים</span>
+              <span class="amount">1,290 <small>₪</small></span>
+            </div>
+            <div class="price-foot">תשלום חד-פעמי. ללא מנוי חודשי חובה.</div>
+          </div>
+
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#contact">נתחיל בשיחה קצרה</a>
+            <a class="btn btn-ghost" href="#work">לראות את העבודות</a>
+          </div>
+          <p class="hero-note">השיחה הראשונה לא מחייבת. המחיר המוצג הוא המחיר הסופי לתשלום.</p>
+        </div>
+
+        <div class="hero-visual" aria-label="דוגמה לעבודה: אתר תדמית למאפייה, בתצוגת מחשב וטלפון">
+          <div class="shape shape-plate floaty" data-depth="0.6" aria-hidden="true"></div>
+          <div class="shape shape-ring floaty d3" data-depth="0.8" aria-hidden="true"></div>
+          <div class="mock mock-desktop floaty d2" data-depth="0.25">
+            <img src="assets/work/bakery-desktop.jpg" width="1440" height="900" alt="דף הבית של אתר התדמית קמח ומים בתצוגת מחשב" loading="eager" fetchpriority="high">
+          </div>
+          <div class="mock mock-phone floaty" data-depth="0.7">
+            <img src="assets/work/bakery-mobile.jpg" width="390" height="844" alt="אותו אתר בתצוגת טלפון">
+          </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </header>
 
-  <div class="hub-caption">
-    <span data-he="משפחת מותגים DS. בחרו חדר." data-en="The DS brand family. Pick a room.">משפחת מותגים DS. בחרו חדר.</span>
-  </div>
+    <!-- ================= WORK ================= -->
+    <section id="work" class="section surface-dark on-dark work-section">
+      <div class="copper-rule" aria-hidden="true"></div>
+      <div class="container">
+        <div class="section-head rv">
+          <h2 class="h2">עבודות שאפשר להיכנס אליהן</h2>
+          <p class="lead">לא רק צילומי מסך. כל דוגמה כאן היא דף חי שאפשר לפתוח, לגלול ולבדוק בטלפון.</p>
+        </div>
 
-  <main class="hub-stage" id="main-content">
-    <div class="hub-stage-zoom" id="hubStageZoom">
-      <img class="hub-bg-poster" src="hub-media/image/hero.jpg" alt="" aria-hidden="true">
+        <div class="work-list">
 
-      <nav class="hub-hotspots" aria-label="DS brands">
-        <a class="hub-hotspot" data-room="lab" href="lab/index.html">
-          <span class="hub-hotspot-label">DS Lab</span>
-          <span class="hub-hotspot-sr" data-he="אפליקציות וניסויים יצירתיים" data-en="Apps and creative experiments">אפליקציות וניסויים יצירתיים</span>
-        </a>
-        <a class="hub-hotspot" data-room="videoart" href="videoart/index.html">
-          <span class="hub-hotspot-label">DS VideoArt</span>
-          <span class="hub-hotspot-sr" data-he="פרסומות ויצירה בוידאו AI קולנועי" data-en="Ads and cinematic AI video work">פרסומות ויצירה בוידאו AI קולנועי</span>
-        </a>
-        <a class="hub-hotspot" data-room="web" href="web/index.html">
-          <span class="hub-hotspot-label">DS Web</span>
-          <span class="hub-hotspot-sr" data-he="אתרים ודפי נחיתה בעיצוב עתידני" data-en="Websites and landing pages with a futuristic edge">אתרים ודפי נחיתה בעיצוב עתידני</span>
-        </a>
-        <a class="hub-hotspot" data-room="creative" href="creative/index.html">
-          <span class="hub-hotspot-label">DS Creative</span>
-          <span class="hub-hotspot-sr" data-he="עיצוב, ויז'ואלים ותוכן. בקרוב" data-en="Design, visuals, and content. Coming soon">עיצוב, ויז'ואלים ותוכן. בקרוב</span>
-        </a>
-      </nav>
-    </div>
-    <div class="hub-scrim-bottom"></div>
+          <article class="work rv">
+            <div class="work-visual">
+              <div class="work-frame" data-view="desktop">
+                <img class="img-desktop" src="assets/work/bakery-desktop.jpg" width="1440" height="900" alt="קמח ומים, אתר תדמית למאפיית בוטיק, תצוגת מחשב" loading="lazy">
+                <img class="img-mobile" src="assets/work/bakery-mobile.jpg" width="390" height="844" alt="קמח ומים בתצוגת טלפון" loading="lazy">
+              </div>
+              <div class="view-switch" role="group" aria-label="בחירת תצוגה">
+                <button type="button" data-view="desktop" aria-pressed="true">מחשב</button>
+                <button type="button" data-view="mobile" aria-pressed="false">טלפון</button>
+              </div>
+            </div>
+            <div class="work-body">
+              <div class="work-tags">
+                <span class="tag demo">דוגמת עיצוב · עסק בדיוני</span>
+                <span class="tag">אתר תדמית</span>
+              </div>
+              <h3 class="work-title">קמח ומים</h3>
+              <p class="work-kind">מאפיית בוטיק בתל אביב</p>
+              <p class="work-desc">אתר חם ומזמין למאפייה שאופה בבוקר. תפריט, סיפור המקום, המוצרים, שאלות נפוצות וטופס הזמנה, הכול בעמוד אחד ארוך ונעים לגלילה.</p>
+              <div class="detail-note">
+                <strong>פרט שכדאי לראות</strong>
+                <p>האיורים הקוויים שצפים ברקע נעים לאט, כל אחד בכיוון ובקצב אחר. הדף מרגיש חי, אבל שום דבר לא מתחרה בתמונות המוצר על תשומת הלב.</p>
+              </div>
+              <div class="work-actions">
+                <a class="btn btn-ghost" href="web/examples/bakery/index.html" target="_blank" rel="noopener">לפתוח את הדף</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="work rv">
+            <div class="work-visual">
+              <div class="work-frame" data-view="desktop">
+                <img class="img-desktop" src="assets/work/padel-desktop.jpg" width="1440" height="900" alt="פאדל לילה, דף נחיתה למגרשי פאדל, תצוגת מחשב" loading="lazy">
+                <img class="img-mobile" src="assets/work/padel-mobile.jpg" width="390" height="844" alt="פאדל לילה בתצוגת טלפון" loading="lazy">
+              </div>
+              <div class="view-switch" role="group" aria-label="בחירת תצוגה">
+                <button type="button" data-view="desktop" aria-pressed="true">מחשב</button>
+                <button type="button" data-view="mobile" aria-pressed="false">טלפון</button>
+              </div>
+            </div>
+            <div class="work-body">
+              <div class="work-tags">
+                <span class="tag demo">דוגמת עיצוב · עסק בדיוני</span>
+                <span class="tag">דף נחיתה</span>
+              </div>
+              <h3 class="work-title">פאדל לילה</h3>
+              <p class="work-kind">מגרשי פאדל שפועלים בלילה</p>
+              <p class="work-desc">דף נחיתה אחד עם מטרה אחת: להזמין מגרש. תמונות אמיתיות של מגרש, לוח שעות ומסלול חברות, בלי שום דבר מיותר בדרך לכפתור.</p>
+              <div class="detail-note">
+                <strong>פרט שכדאי לראות</strong>
+                <p>כל התמונות עברו את אותו טיפול צבע חם. שלוש תמונות שצולמו בזמנים שונים מרגישות כמו מותג אחד, במקום תמונות מאגר שהודבקו.</p>
+              </div>
+              <div class="work-actions">
+                <a class="btn btn-ghost" href="web/examples/padel-layla/index.html" target="_blank" rel="noopener">לפתוח את הדף</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="work rv">
+            <div class="work-visual">
+              <div class="work-frame" data-view="desktop">
+                <img class="img-desktop" src="assets/work/golondon-desktop.jpg" width="1440" height="900" alt="GoLondon, אתר קהילה למטיילים, תצוגת מחשב" loading="lazy">
+                <img class="img-mobile" src="assets/work/golondon-mobile.jpg" width="390" height="844" alt="GoLondon בתצוגת טלפון" loading="lazy">
+              </div>
+              <div class="view-switch" role="group" aria-label="בחירת תצוגה">
+                <button type="button" data-view="desktop" aria-pressed="true">מחשב</button>
+                <button type="button" data-view="mobile" aria-pressed="false">טלפון</button>
+              </div>
+            </div>
+            <div class="work-body">
+              <div class="work-tags">
+                <span class="tag live">פרויקט עצמאי · אתר חי</span>
+                <span class="tag">אתר תוכן וקהילה</span>
+              </div>
+              <h3 class="work-title">GoLondon</h3>
+              <p class="work-kind">קהילת ישראלים שמתכננים טיול ללונדון</p>
+              <p class="work-desc">פרויקט עצמאי שלנו, בהיקף גדול בהרבה מהחבילות שבאתר הזה: מדריכים, פוסטים שוטפים וכלים למתכננים. מוצג כאן כדי להראות מה קורה כשנותנים לעיצוב ולתוכן מקום לנשום.</p>
+              <div class="detail-note">
+                <strong>פרט שכדאי לראות</strong>
+                <p>אתר עם המון תוכן, ובכל זאת יש בו פעולה אחת ברורה מעל הכול: כפתור "בנו לי מסלול" שמוביל ישר לכלי המרכזי. כשיודעים מה הדבר החשוב, כל השאר מסתדר מסביבו.</p>
+              </div>
+              <div class="work-actions">
+                <a class="btn btn-ghost" href="https://golondon.co.il" target="_blank" rel="noopener">לאתר החי</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="work-footnote rv">קמח ומים ופאדל לילה הם עסקים בדיוניים שנבנו כדי להראות רמת עיצוב וגימור, והטפסים בהם לא שולחים פניות אמיתיות. GoLondon הוא פרויקט עצמאי, לא עבודת לקוח, ובהיקף שונה מהחבילות המוצעות כאן.</p>
+      </div>
+    </section>
+
+    <!-- ================= PACKAGES ================= -->
+    <section id="pricing" class="section surface-stone">
+      <div class="container">
+        <div class="section-head center rv">
+          <h2 class="h2">שתי חבילות. אותה רמת איכות.</h2>
+          <p class="lead">ההבדל ביניהן הוא היקף העבודה בלבד. המחיר המוצג הוא המחיר הסופי לתשלום.</p>
+        </div>
+
+        <div class="packages">
+
+          <article class="package rv">
+            <h3 class="package-name">דף נחיתה</h3>
+            <p class="package-scope">עמוד אחד ממוקד</p>
+            <div class="package-price">
+              <span class="amount">440</span><span class="currency">₪</span>
+              <span class="once">תשלום חד-פעמי. ללא מנוי חודשי חובה.</span>
+            </div>
+            <p class="package-desc">עמוד אחד שמסביר מה אתם מציעים ומוביל לפעולה אחת ברורה: שיחה, וואטסאפ או השארת פרטים.</p>
+            <div class="package-meta">
+              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>מסירה עד 3 ימי עסקים</span></div>
+              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><span>עד שני סבבי תיקונים מרוכזים</span></div>
+            </div>
+            <details class="disclosure">
+              <summary>מה כלול בחבילה <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+              <div class="body">
+                <ul>
+                  <li>דף נחיתה אחד, בעיצוב שמותאם לעסק</li>
+                  <li>התאמה מלאה לטלפון</li>
+                  <li>עד 6 עד 7 אזורי תוכן</li>
+                  <li>כפתורי פעולה, וואטסאפ וטלפון לפי הצורך</li>
+                  <li>טופס יצירת קשר בסיסי</li>
+                  <li>קישורים לרשתות חברתיות אם קיימים ורלוונטיים</li>
+                  <li>הכנה בסיסית למנועי חיפוש</li>
+                  <li>חיבור לדומיין קיים והעלאה לאוויר בשלב הפרסום</li>
+                  <li>בדיקת קישורים וטפסים, במחשב ובטלפון</li>
+                </ul>
+                <p class="fine">ספירת ימי העבודה מתחילה אחרי אישור ההזמנה, תשלום 50% מקדמה וקבלת כל החומרים הנדרשים מכם.</p>
+              </div>
+            </details>
+            <a class="btn btn-primary" href="#contact">נתחיל בשיחה קצרה</a>
+          </article>
+
+          <article class="package featured rv d1">
+            <h3 class="package-name">אתר תדמית</h3>
+            <p class="package-scope">עד 3 עמודים</p>
+            <div class="package-price">
+              <span class="amount">1,290</span><span class="currency">₪</span>
+              <span class="once">תשלום חד-פעמי. ללא מנוי חודשי חובה.</span>
+            </div>
+            <p class="package-desc">למשל בית, אודות וצור קשר. או כל שילוב אחר של עד שלושה עמודים, עם תפריט ניווט שמחבר ביניהם.</p>
+            <div class="package-meta">
+              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>מסירה עד 5 ימי עסקים</span></div>
+              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><span>עד שני סבבי תיקונים מרוכזים</span></div>
+            </div>
+            <details class="disclosure">
+              <summary>מה כלול בחבילה <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+              <div class="body">
+                <ul>
+                  <li>עד 3 עמודים, בעיצוב מותאם אישית</li>
+                  <li>התאמה מלאה לטלפון</li>
+                  <li>תפריט ניווט, כותרת עליונה ותחתית לכל עמוד</li>
+                  <li>כפתורי פעולה, וואטסאפ וטלפון לפי הצורך</li>
+                  <li>טופס יצירת קשר בסיסי, ומפה בסיסית אם נדרשת</li>
+                  <li>קישורים לרשתות חברתיות אם קיימים</li>
+                  <li>הכנה בסיסית למנועי חיפוש לכל עמוד</li>
+                  <li>חיבור לדומיין קיים והעלאה לאוויר בשלב הפרסום</li>
+                  <li>בדיקת קישורים וטפסים, במחשב ובטלפון</li>
+                </ul>
+                <p class="fine">ספירת ימי העבודה מתחילה אחרי אישור ההזמנה, תשלום 50% מקדמה וקבלת כל החומרים הנדרשים מכם.</p>
+              </div>
+            </details>
+            <a class="btn btn-primary" href="#contact">נתחיל בשיחה קצרה</a>
+          </article>
+
+        </div>
+
+        <div class="addons rv">
+          <div>
+            <h3>צריכים משהו מעבר לחבילה?</h3>
+            <p>יש תוספות אפשריות, למשל עמוד נוסף או גלריית תמונות. את הרשימה המלאה, עם המחיר של כל תוספת, תראו בטופס שנשלח אחרי השיחה הראשונה. ככה מחליטים בנחת, עם כל המספרים מולכם.</p>
+          </div>
+          <div class="pledge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+            <span>שום תוספת לא מבוצעת ולא נגבית בלי אישור שלכם מראש.</span>
+          </div>
+        </div>
+
+        <div class="maintenance rv">
+          <h3 class="h3">ואחרי המסירה?</h3>
+          <p class="lead" style="max-width:60ch">אין חובה לשלם לנו כל חודש. תחזוקה היא אפשרות בלבד, ובוחרים אותה רק אם רוצים. שום דבר לא מסומן מראש.</p>
+          <div class="maintenance-grid">
+            <div class="maint zero">
+              <div class="m-name">בלי תחזוקה</div>
+              <div class="m-price">0 <small>₪ לחודש</small></div>
+              <ul>
+                <li>האתר שלכם, בלי תשלום חודשי</li>
+                <li>שינוי נקודתי בעתיד מתומחר בנפרד ומראש</li>
+              </ul>
+            </div>
+            <div class="maint">
+              <div class="m-name">תחזוקה בסיסית</div>
+              <div class="m-price">149 <small>₪ לחודש</small></div>
+              <ul>
+                <li>עד 30 דקות עבודה בחודש</li>
+                <li>שינויי טקסט קטנים והחלפת תמונות</li>
+                <li>בדיקת קישורים וטפסים, תיקונים קטנים</li>
+                <li>מענה בתוך שני ימי עסקים</li>
+              </ul>
+            </div>
+            <div class="maint">
+              <div class="m-name">תחזוקה מורחבת</div>
+              <div class="m-price">349 <small>₪ לחודש</small></div>
+              <ul>
+                <li>עד 90 דקות עבודה בחודש</li>
+                <li>שינויים שוטפים ובדיקה טכנית</li>
+                <li>טיפול בעדיפות</li>
+                <li>מענה בתוך יום עסקים</li>
+              </ul>
+            </div>
+          </div>
+          <p class="fine">זמן שלא נוצל בחודש לא עובר לחודש הבא. אפשר להצטרף או להפסיק בכל שלב.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TRANSPARENCY ================= -->
+    <section id="transparency" class="section surface-dark on-dark transparency">
+      <div class="copper-rule" aria-hidden="true"></div>
+      <div class="container">
+        <div class="rv">
+          <h2 class="h2">לפני שמתחילים, מסכמים.</h2>
+          <p class="lead">לפני שנבנה משהו, אתם מקבלים סיכום הזמנה כתוב: מה בדיוק נבנה, מה נבחר, כמה זה עולה ומתי זה נמסר. רק אחרי שאישרתם, מתחילים.</p>
+          <div class="principles">
+            <div class="principle"><span class="num">1</span><p>המחיר שרואים הוא המחיר שמשלמים. בלי אותיות קטנות.</p></div>
+            <div class="principle"><span class="num">2</span><p>שום תוספת לא מבוצעת ולא נגבית בלי אישור שלכם מראש.</p></div>
+            <div class="principle"><span class="num">3</span><p>הכול כתוב במילים פשוטות. לא צריך להבין במונחים טכניים.</p></div>
+            <div class="principle"><span class="num">4</span><p>יודעים מה קורה בכל שלב, ומה השלב הבא.</p></div>
+          </div>
+        </div>
+
+        <div class="rv d1">
+          <div class="summary-doc" aria-label="דוגמה לסיכום הזמנה">
+            <span class="stamp">דוגמה להמחשה</span>
+            <div class="doc-head"><strong>סיכום הזמנה</strong><span>לפני תחילת עבודה</span></div>
+            <dl>
+              <dt>השירות</dt><dd>דף נחיתה</dd>
+              <dt>תוספות שנבחרו</dt><dd>ללא</dd>
+              <dt>סבבי תיקונים</dt><dd>עד 2, כלול</dd>
+              <dt>מועד מסירה</dt><dd>עד 3 ימי עסקים מקבלת החומרים</dd>
+            </dl>
+            <div class="total"><span>המחיר הסופי לתשלום</span><span>440 ₪</span></div>
+            <div class="split">
+              <div>מקדמה 50%<strong>220 ₪</strong><span style="font-size:.85rem;color:var(--ink-55)">לפני תחילת העבודה</span></div>
+              <div>יתרה 50%<strong>220 ₪</strong><span style="font-size:.85rem;color:var(--ink-55)">לפני המסירה הסופית</span></div>
+            </div>
+            <div class="approve"><i aria-hidden="true"></i><span>אושר על ידי הלקוח. רק אז מתחילים.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PROCESS ================= -->
+    <section id="process" class="section surface-sand">
+      <div class="container">
+        <div class="section-head center rv">
+          <h2 class="h2">איך זה עובד, שלב אחרי שלב</h2>
+          <p class="lead">בלי שאלון ארוך בכניסה, בלי תשלום באתר ובלי הפתעות. שיחה קצרה, טופס ברור, סיכום כתוב, ואז בונים.</p>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-progress" aria-hidden="true"></div>
+
+          <div class="step rv"><span class="dot" aria-hidden="true">1</span>
+            <h3>פונים אלינו</h3>
+            <p>טופס קצר עם שם וטלפון, או הודעה בוואטסאפ. זה הכול בשלב הזה.</p>
+          </div>
+          <div class="step rv"><span class="dot" aria-hidden="true">2</span>
+            <h3>שיחה קצרה</h3>
+            <p>מטרה אחת: להבין אם מתאים לכם דף נחיתה או אתר תדמית. אם לא בטוחים, נסביר את ההבדל.</p>
+            <span class="pill">לא מחייב</span>
+          </div>
+          <div class="step rv"><span class="dot" aria-hidden="true">3</span>
+            <h3>מקבלים טופס ברור</h3>
+            <p>מה כלול, מה לא, אילו תוספות אפשר לבחור וכמה כל אחת עולה, אפשרויות תחזוקה, וכמה דברים חשובים על דומיין ואחסון. ממלאים בנחת ומחזירים.</p>
+          </div>
+          <div class="step rv"><span class="dot" aria-hidden="true">4</span>
+            <h3>עוברים על הטופס יחד</h3>
+            <p>אנחנו קוראים את מה שמילאתם, ואז שיחת סיכום קצרה כדי לוודא שהבנו אתכם נכון.</p>
+          </div>
+          <div class="step rv"><span class="dot" aria-hidden="true">5</span>
+            <h3>סיכום הזמנה כתוב</h3>
+            <p>השירות, התוספות שנבחרו, המחיר הסופי, 50% מקדמה, 50% יתרה ומועד המסירה. אתם קוראים ומאשרים.</p>
+          </div>
+          <div class="step rv"><span class="dot" aria-hidden="true">6</span>
+            <h3>מקדמה, ומתחילים לבנות</h3>
+            <p>50% מקדמה, ורק אז העבודה מתחילה. עד 3 ימי עסקים לדף נחיתה, עד 5 לאתר תדמית, מרגע שכל החומרים אצלנו.</p>
+          </div>
+          <div class="step rv"><span class="dot" aria-hidden="true">7</span>
+            <h3>תיקונים ומסירה</h3>
+            <p>עד שני סבבי תיקונים מרוכזים. לפני המסירה הסופית משולמים 50% הנותרים, ואתם מקבלים אתר חי עם כל פרטי הגישה.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="section surface-stone about">
+      <div class="container">
+        <div class="rv">
+          <h2 class="h2">יש עם מי לדבר.<br>ויש מי שמוביל.</h2>
+        </div>
+        <div class="about-body rv d1">
+          <p>ב<strong>DS Creative Studio</strong> מתמקדים בדבר אחד: דפי נחיתה ואתרי תדמית לעסקים. חשוב לנו לא רק שהתוצאה תיראה טוב, אלא שגם הדרך אליה תהיה ברורה.</p>
+          <p>אנחנו מתחילים בהקשבה, מסדרים את מה שצריך, מסכמים את העבודה לפני שבונים, ומסבירים החלטות במילים פשוטות. אתם לא צריכים להפוך למנהלי פרויקט ולא צריכים ללמוד מונחים טכניים.</p>
+          <p>המטרה: תוצאה שנעים להציג, ותהליך שנעים לעבור.</p>
+          <div class="about-marks" aria-label="עקרונות">
+            <span>מחיר ברור מראש</span>
+            <span>בלי אותיות קטנות</span>
+            <span>אותה איכות בכל מסלול</span>
+            <span>הסברים בשפה פשוטה</span>
+            <span>מובייל קודם כול</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section id="faq" class="section surface-sand">
+      <div class="container">
+        <div class="section-head center rv">
+          <h2 class="h2">שאלות נפוצות</h2>
+          <p class="lead">תשובות קצרות, בשפה פשוטה. אם משהו לא ברור, שואלים אותנו בשיחה.</p>
+        </div>
+
+        <div class="faq-grid rv">
+          <div>
+            <details class="faq"><summary>מה ההבדל בין דף נחיתה לאתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>דף נחיתה הוא עמוד אחד ממוקד למטרה אחת: להסביר מה אתם מציעים ולהוביל לפעולה, למשל השארת פרטים או שיחה. אתר תדמית הוא כמה עמודים עם תפריט, עד שלושה בחבילה, שמציגים את העסק בצורה רחבה יותר. אם לא בטוחים, זה בדיוק מה שמבררים בשיחה הראשונה.</p></div></details>
+            <details class="faq"><summary>האם המחיר חד-פעמי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. 440 ₪ לדף נחיתה ו-1,290 ₪ לאתר תדמית משולמים פעם אחת בלבד.</p></div></details>
+            <details class="faq"><summary>האם יש מנוי חודשי חובה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אחרי המסירה אין חובה לשלם לנו כל חודש. תחזוקה חודשית קיימת כאפשרות בלבד, ובוחרים אותה רק אם רוצים.</p></div></details>
+            <details class="faq"><summary>האם המחיר באתר הוא המחיר הסופי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. המחיר המוצג הוא המחיר הסופי לתשלום. תוספות, אם תבחרו בהן, מופיעות עם מחיר ברור בטופס, ולא מבוצעות בלי אישור שלכם.</p></div></details>
+            <details class="faq"><summary>מתי משלמים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>50% מקדמה אחרי שאישרתם את סיכום ההזמנה, ורק אז מתחילים לבנות. 50% הנותרים לפני המסירה הסופית.</p></div></details>
+            <details class="faq"><summary>האם השיחה הראשונה מחייבת?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. מטרתה רק להבין אם מתאים לכם דף נחיתה או אתר תדמית. אפשר לסיים אותה בלי להמשיך הלאה.</p></div></details>
+            <details class="faq"><summary>אין לי דומיין. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נעזור לכם לבחור שם, לבדוק זמינות, לרכוש אותו יחד איתכם ולהגדיר אותו, בלי דמי שירות נוספים מצידנו. אתם משלמים רק את מחיר הדומיין לספק.</p></div></details>
+            <details class="faq"><summary>למי שייך הדומיין?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לכם. הוא נרשם על שמכם, שייך לכם ונמצא בשליטתכם. החידוש השנתי מול הספק באחריותכם, ונסביר בדיוק מה צריך לדעת.</p></div></details>
+            <details class="faq"><summary>מה לגבי אחסון?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אחסון האתר מוגדר במסלול חינמי שמתאים לרוב דפי הנחיתה ואתרי התדמית הקטנים. כל עוד האתר במסגרת המכסה החינמית של הספק, אין עלות אחסון חודשית. החשבון מוקם על שמכם, ואתם מקבלים את כל פרטי הגישה במסירה.</p></div></details>
+            <details class="faq"><summary>מה קורה אם המסלול החינמי כבר לא מספיק?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>זה קורה בעיקר באתרים עם תנועה גדולה מאוד. אם יידרש שדרוג, נעדכן אתכם מראש עם האפשרויות והעלויות, ולא יתבצע שום חיוב בלי אישור שלכם.</p></div></details>
+            <details class="faq"><summary>אין לי טקסטים. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>זה בסדר גמור. בשיחה ובטופס נאסוף את המידע החשוב, ונעזור לנסח את הטקסטים לפי מה שתספרו לנו. אתם מאשרים כל טקסט לפני שהוא עולה.</p></div></details>
+          </div>
+          <div>
+            <details class="faq"><summary>אין לי תמונות. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נשתמש בתמונות שיש לכם. אם אין, נעזור לבחור תמונות מתאימות ממאגרים, או נציע איך לצלם כמה תמונות פשוטות בעצמכם.</p></div></details>
+            <details class="faq"><summary>אפשר לבקש תיקונים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. כל חבילה כוללת עד שני סבבי תיקונים מרוכזים.</p></div></details>
+            <details class="faq"><summary>מהו סבב תיקונים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>רשימה מרוכזת אחת של כל ההערות שלכם, שנשלחת פעם אחת ומטופלת יחד. ככה מתקדמים מהר ולא מפספסים דברים. שני סבבים כאלה כלולים במחיר.</p></div></details>
+            <details class="faq"><summary>כמה זמן לוקח לקבל דף נחיתה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עד 3 ימי עסקים. הספירה מתחילה אחרי אישור ההזמנה, תשלום המקדמה וקבלת כל החומרים.</p></div></details>
+            <details class="faq"><summary>כמה זמן לוקח לקבל אתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עד 5 ימי עסקים, באותם תנאים: אחרי אישור ההזמנה, המקדמה וקבלת החומרים.</p></div></details>
+            <details class="faq"><summary>מה קורה אם אני רוצה תוספת באמצע?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אומרים לנו. נסביר מה זה כולל, כמה זה עולה וכמה זמן זה מוסיף, ורק אחרי שתאשרו נמשיך. בלי אישור, כלום לא משתנה במחיר.</p></div></details>
+            <details class="faq"><summary>מה קורה אחרי המסירה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>האתר שלכם, בחשבון על שמכם, עם כל פרטי הגישה. אין חובה להמשיך איתנו. אם תרצו שינוי נקודתי בעתיד, נתמחר אותו בנפרד ומראש.</p></div></details>
+            <details class="faq"><summary>אפשר תחזוקה חודשית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן, כאפשרות בלבד. מסלול בסיסי ב-149 ₪ לחודש עם עד 30 דקות עבודה, או מסלול מורחב ב-349 ₪ לחודש עם עד 90 דקות. לא נבחר אוטומטית, ואפשר להפסיק.</p></div></details>
+            <details class="faq"><summary>מי מטפל במסמכים המשפטיים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אנחנו לא משרד עורכי דין ולא נותנים ייעוץ משפטי. אם יש לכם מדיניות פרטיות, תנאי שימוש או הצהרת נגישות, נטמיע אותם באתר. אם אין, נסביר איך אפשר להשיג אותם דרך גורם משפטי חיצוני. ההתקשרות, התשלום והאחריות המקצועית הם ביניכם לבין אותו גורם.</p></div></details>
+            <details class="faq"><summary>האם האתר מוכן בצורה בסיסית לגוגל?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. כל עמוד מקבל כותרת, תיאור ומבנה נכון, כדי שגוגל יוכל להבין ולסרוק אותו.</p></div></details>
+            <details class="faq"><summary>האם אתם מבטיחים מיקום בגוגל?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אף אחד לא יכול להבטיח את זה באמת. אנחנו דואגים שהאתר יהיה בנוי נכון, וזה הבסיס שממנו מתחילים.</p></div></details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact" class="section surface-dark on-dark contact">
+      <div class="copper-rule" aria-hidden="true"></div>
+      <div class="container">
+        <div class="contact-side rv">
+          <h2 class="h2">נתחיל בשיחה קצרה</h2>
+          <p class="lead">השאירו שם וטלפון, ונחזור אליכם לשיחה קצרה ולא מחייבת. המטרה היחידה שלה: להבין אם מתאים לכם דף נחיתה או אתר תדמית.</p>
+          <div class="contact-alt">
+            <a class="wa" href="https://wa.me/972548203022?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%99%D7%97%D7%94%20%D7%A7%D7%A6%D7%A8%D7%94%20%D7%A2%D7%9C%20%D7%90%D7%AA%D7%A8%20%D7%9C%D7%A2%D7%A1%D7%A7" target="_blank" rel="noopener">
+              <span class="ico" aria-hidden="true"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.34.66 4.52 1.8 6.38L4 29l7.9-1.74A11.9 11.9 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 21.6c-1.9 0-3.68-.53-5.2-1.44l-.37-.22-4.4.97.94-4.3-.24-.38A9.55 9.55 0 0 1 6.4 15c0-5.3 4.3-9.6 9.6-9.6s9.6 4.3 9.6 9.6-4.3 9.6-9.6 9.6zm5.24-7.19c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.14-1.2-.44-2.29-1.4-.85-.76-1.42-1.7-1.59-1.99-.17-.29-.02-.44.12-.58.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.43 0 1.43 1.03 2.81 1.18 3 .14.19 2.03 3.1 4.92 4.35.69.3 1.22.48 1.64.61.69.22 1.32.19 1.81.12.55-.08 1.7-.7 1.94-1.37.24-.67.24-1.24.17-1.37-.07-.12-.26-.19-.55-.33z"/></svg></span>
+              <span class="txt"><small>הכי מהיר</small><span>לכתוב לנו בוואטסאפ</span></span>
+            </a>
+            <a href="tel:+972548203022">
+              <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01l-2.2 2.2z"/></svg></span>
+              <span class="txt"><small>טלפון</small><span dir="ltr">054-820-3022</span></span>
+            </a>
+            <a href="mailto:videoartds@gmail.com">
+              <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm0 2v.01L12 12l8-5.99V6H4zm16 2.24-7.42 5.56a1 1 0 0 1-1.16 0L4 8.24V18h16V8.24z"/></svg></span>
+              <span class="txt"><small>אימייל</small><span dir="ltr">videoartds@gmail.com</span></span>
+            </a>
+          </div>
+        </div>
+
+        <form id="contactForm" class="form rv d1" name="contact-request" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" data-wa="https://wa.me/972548203022" novalidate>
+          <input type="hidden" name="form-name" value="contact-request">
+          <p class="sr-only" aria-hidden="true"><label>אל תמלאו את השדה הזה: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+          <h3>בקשו שיחה קצרה</h3>
+          <p class="form-sub">שני פרטים, וזהו. בלי שאלונים.</p>
+
+          <div class="field">
+            <label for="f-name">שם <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="איך קוראים לכם">
+            <p class="err" id="f-name-err">נשמח לדעת איך לפנות אליכם.</p>
+          </div>
+          <div class="field">
+            <label for="f-phone">טלפון <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="050 000 0000" dir="ltr" style="text-align:end">
+            <p class="err" id="f-phone-err">נראה שהמספר לא שלם. בדקו אותו שוב.</p>
+          </div>
+          <fieldset class="field">
+            <legend style="font-weight:700;font-size:.95rem;margin-bottom:8px">מה מעניין אתכם? <span style="font-weight:400;color:var(--ink-55)">(לא חובה)</span></legend>
+            <div class="choice-grid">
+              <label class="choice"><input type="radio" name="service" value="דף נחיתה"><span>דף נחיתה</span></label>
+              <label class="choice"><input type="radio" name="service" value="אתר תדמית"><span>אתר תדמית</span></label>
+              <label class="choice"><input type="radio" name="service" value="עוד לא בטוחים"><span>עוד לא בטוחים</span></label>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="btn btn-primary">בקשו שיחה קצרה</button>
+          <p class="consent">נשתמש בפרטים רק כדי לחזור אליכם. השיחה לא מחייבת.</p>
+          <div class="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
   </main>
 
-  <div class="hub-mobile-hero">
-    <img src="hub-media/image/ds-logo-hero.jpg" alt="DS Creative Studio" class="hub-mobile-hero-img">
-  </div>
-
-  <div class="hub-mobile-intro">
-    <h1 data-he="משפחת מותגים DS" data-en="The DS brand family">משפחת מותגים DS</h1>
-    <p data-he="ארבעה חדרים, כל אחד עולם בפני עצמו: וידאו AI קולנועי, בניית אתרים, ניסויים יצירתיים, ועיצוב. בחרו חדר כדי להתחיל." data-en="Four rooms, each its own world: cinematic AI video, website building, creative experiments, and design. Pick a room to begin.">ארבעה חדרים, כל אחד עולם בפני עצמו: וידאו AI קולנועי, בניית אתרים, ניסויים יצירתיים, ועיצוב. בחרו חדר כדי להתחיל.</p>
-  </div>
-
-  <nav class="hub-mobile-rooms" aria-label="DS brands">
-    <a class="hub-mobile-room" data-room="lab" href="lab/index.html">
-      <span class="hub-mobile-room-name">DS Lab</span>
-      <span class="hub-mobile-room-tag" data-he="אפליקציות וניסויים יצירתיים" data-en="Apps and creative experiments">אפליקציות וניסויים יצירתיים</span>
-    </a>
-    <a class="hub-mobile-room" data-room="videoart" href="videoart/index.html">
-      <span class="hub-mobile-room-name">DS VideoArt</span>
-      <span class="hub-mobile-room-tag" data-he="פרסומות ויצירה בוידאו AI קולנועי" data-en="Ads and cinematic AI video work">פרסומות ויצירה בוידאו AI קולנועי</span>
-    </a>
-    <a class="hub-mobile-room" data-room="web" href="web/index.html">
-      <span class="hub-mobile-room-name">DS Web</span>
-      <span class="hub-mobile-room-tag" data-he="אתרים ודפי נחיתה בעיצוב עתידני" data-en="Websites and landing pages with a futuristic edge">אתרים ודפי נחיתה בעיצוב עתידני</span>
-    </a>
-    <a class="hub-mobile-room" data-room="creative" href="creative/index.html">
-      <span class="hub-mobile-room-name">DS Creative</span>
-      <span class="hub-mobile-room-tag" data-he="עיצוב, ויז'ואלים ותוכן. בקרוב" data-en="Design, visuals, and content. Coming soon">עיצוב, ויז'ואלים ותוכן. בקרוב</span>
-    </a>
-  </nav>
-
-  <footer>
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer">
     <div class="container">
-      <div class="footer-bottom" style="border-top:none; padding-top:0;">
-        <span>© 2026 DS</span>
-        <a href="/legal/privacy.html" data-he="פרטיות" data-en="Privacy">פרטיות</a>
+      <div class="top">
+        <div>
+          <a class="brand" href="#top">DS <span>Creative Studio</span></a>
+          <p>סטודיו לדפי נחיתה ולאתרי תדמית לעסקים. מחיר ברור מראש, תהליך מסודר, בלי הפתעות.</p>
+          <p>המחיר המוצג הוא המחיר הסופי לתשלום. תשלום חד-פעמי. ללא מנוי חודשי חובה.</p>
+        </div>
+        <div>
+          <h4>באתר</h4>
+          <ul>
+            <li><a href="#work">עבודות</a></li>
+            <li><a href="#pricing">מחירים</a></li>
+            <li><a href="#process">איך זה עובד</a></li>
+            <li><a href="#faq">שאלות נפוצות</a></li>
+            <li><a href="#contact">יצירת קשר</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>יצירת קשר ומידע</h4>
+          <ul>
+            <li><a href="tel:+972548203022" dir="ltr">054-820-3022</a></li>
+            <li><a href="mailto:videoartds@gmail.com" dir="ltr">videoartds@gmail.com</a></li>
+            <li><a href="legal/privacy.html">מדיניות פרטיות</a></li>
+            <li><a href="legal/terms.html">תנאי שימוש</a></li>
+            <li><a href="legal/accessibility.html">הצהרת נגישות</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="bottom">
+        <span>© 2026 DS Creative Studio</span>
+        <span>dscreative.co.il</span>
       </div>
     </div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
-  <script src="ds-shared.js?v=20260719b"></script>
-  <script src="hub.js?v=20260719b"></script>
+  <!-- Sticky CTA (mobile only, appears after the hero leaves the screen) -->
+  <div class="sticky-cta" aria-hidden="false">
+    <a class="btn btn-primary" href="#contact">נתחיל בשיחה קצרה</a>
+    <a class="btn btn-wa" href="https://wa.me/972548203022" target="_blank" rel="noopener" aria-label="וואטסאפ">
+      <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.34.66 4.52 1.8 6.38L4 29l7.9-1.74A11.9 11.9 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 21.6c-1.9 0-3.68-.53-5.2-1.44l-.37-.22-4.4.97.94-4.3-.24-.38A9.55 9.55 0 0 1 6.4 15c0-5.3 4.3-9.6 9.6-9.6s9.6 4.3 9.6 9.6-4.3 9.6-9.6 9.6zm5.24-7.19c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.29-.74.93-.9 1.12-.17.19-.33.21-.62.07-.29-.14-1.2-.44-2.29-1.4-.85-.76-1.42-1.7-1.59-1.99-.17-.29-.02-.44.12-.58.13-.13.29-.33.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.43 0 1.43 1.03 2.81 1.18 3 .14.19 2.03 3.1 4.92 4.35.69.3 1.22.48 1.64.61.69.22 1.32.19 1.81.12.55-.08 1.7-.7 1.94-1.37.24-.67.24-1.24.17-1.37-.07-.12-.26-.19-.55-.33z"/></svg>
+    </a>
+  </div>
+
+  <script src="site.js?v=20260821a"></script>
 </body>
 </html>
