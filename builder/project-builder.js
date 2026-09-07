@@ -228,6 +228,8 @@
         { id: "unsure", label: "אני עדיין לא בטוח", hint: "נעזור לכם להחליט", icon: ICONS.unsure }
       ] })}
       <p class="bf-err" id="type-err"></p>
+      <details class="compare-details" ${window.matchMedia("(max-width: 720px)").matches ? "" : "open"}>
+      <summary>מה ההבדל?</summary>
       <div class="compare" aria-label="השוואה קצרה בין השירותים">
         <div class="cmp-row head"><span>בקצרה</span><strong>${esc(svc.landing.name)}</strong><strong>${esc(svc.site.name)}</strong></div>
         <div class="cmp-row"><span>מתאים ל</span><em>שירות אחד, קמפיין, או התחלה בקטן</em><em>עסק שרוצה להציג כמה נושאים ולהופיע בגוגל בכמה חיפושים</em></div>
@@ -235,6 +237,7 @@
         <div class="cmp-row"><span>מסירה</span><em>עד ${svc.landing.deliveryDays} ימי עסקים</em><em>עד ${svc.site.deliveryDays} ימי עסקים</em></div>
         <div class="cmp-row"><span>מחיר</span><em>${P.formatPrice(svc.landing.basePrice)}, ${esc(svc.landing.priceNote).toLowerCase()}</em><em>החל מ־${P.formatPrice(svc.site.basePrice)}, כולל עד 3 עמודים</em></div>
       </div>
+      </details>
       <div class="unsure-box" id="unsureBox" ${state.type === "unsure" ? "" : "hidden"}>
         <h3>לא בטוחים? שתי דרכים להתקדם</h3>
         <p>רוב העסקים שמוכרים שירות אחד מתחילים בדף נחיתה, ואפשר להרחיב אחר כך. עסק עם כמה תחומים או כמה שירותים בדרך כלל מרוויח יותר מאתר תדמית. ואם עדיין לא ברור, שיחה של כמה דקות תפתור את זה.</p>
@@ -343,7 +346,7 @@
       const landing = state.type === "landing";
       const groups = [];
       if (landing) groups.push(addonGroup("אזורים ותמונות", "מה שכלול בדף: עד 6 עד 7 אזורי תוכן. כאן מוסיפים מעבר לזה.", inScope("landing-sections")));
-      groups.push(addonGroup("מדידה ופרטיות", "רוצים לדעת כמה אנשים מגיעים ומאיפה? בוחרים את שני כלי המדידה יחד, ומשלמים 150 ₪ במקום 200.", inScope("tracking")));
+      groups.push(addonGroup("מדידה ופרטיות", "רוצים לדעת כמה אנשים מגיעים ומאיפה? בוחרים את שני כלי המדידה יחד, ומשלמים 150 ₪ במקום 200. " + esc(P.copy.consentHint), inScope("tracking")));
       if (landing) groups.push(addonGroup("חיבור למערכות שכבר יש לכם", "מערכת תורים, לינק תשלום או רשימת תפוצה שכבר עובדים אצלכם.", inScope("connect")));
       groups.push(addonGroup("דברים שדורשים מחיר מותאם", "לאלה אין מחיר קבוע, כי ההיקף משתנה מעסק לעסק. סמנו מה שרלוונטי, ונחזור אליכם עם מחיר לפני כל התחייבות.", inScope("custom")));
       return `<p class="step-lead">הכול כאן אופציונלי. אפשר לדלג ולהמשיך.</p>
@@ -466,16 +469,14 @@
     const svc = c.service;
     const rows = [];
     rows.push({ k: svc.name, v: c.baseLabel, strong: true });
-    if (st.type === "site" && st.site.pages) {
-      const pg = P.byId(P.pageOptions, st.site.pages);
-      rows.push({ k: "מספר עמודים", v: pg ? pg.label : "" });
-    }
+    if (st.type === "site" && st.site.pages) rows.push({ k: "מספר עמודים", v: c.page_label });
     c.lines.forEach((l) => rows.push({ k: l.label, v: l.pricing_type === "fixed" ? P.formatPrice(l.total) : P.copy.customShort, review: l.pricing_type !== "fixed" }));
     if (c.urgent) rows.push({ k: "דחוף, +" + P.urgency.percent + "%", v: c.custom_quote_required ? "ייכלל במחיר המותאם" : P.formatPrice(c.urgent_fee), review: c.custom_quote_required });
 
     const totals = c.custom_quote_required
-      ? `<div class="sum-quote">${esc(P.copy.customQuote)}${c.urgent ? " " + esc(P.urgency.customNote) : ""}</div>`
-      : `<div class="sum-total"><span>${esc(P.copy.setupLabel)}</span><strong>${P.formatPrice(c.setup_total)}</strong></div>
+      ? `<div class="sum-total custom"><span>מחיר</span><strong>${esc(P.copy.customShort)}</strong></div>
+         <div class="sum-quote">${esc(P.copy.customQuote)}${c.urgent ? " " + esc(P.urgency.customNote) : ""}</div>`
+      : `<div class="sum-total"><span>${esc(P.copy.totalLabel)}<small>${esc(P.copy.setupLabel)}</small></span><strong>${P.formatPrice(c.setup_total)}</strong></div>
          <div class="sum-split"><div><small>${esc(P.copy.depositLabel)}</small><strong>${P.formatPrice(c.deposit)}</strong></div><div><small>${esc(P.copy.balanceLabel)}</small><strong>${P.formatPrice(c.balance)}</strong></div></div>`;
 
     const mp = c.maintenance;
@@ -494,7 +495,7 @@
     if (els.summaryMobile) {
       const c = calc(state);
       els.summaryMobile.innerHTML = !priced(state) ? "" :
-        `<button type="button" class="sm-toggle" aria-expanded="false" aria-controls="smBody"><span>${c.custom_quote_required ? P.copy.customShort : esc(P.copy.setupLabel) + ": " + P.formatPrice(c.setup_total)}</span><i></i></button><div class="sm-body" id="smBody" hidden>${summaryHTML(state, true)}</div>`;
+        `<button type="button" class="sm-toggle" aria-expanded="false" aria-controls="smBody"><span>${c.custom_quote_required ? esc(P.copy.customShort) : esc(P.copy.totalLabel) + ": " + P.formatPrice(c.setup_total)}</span><i></i></button><div class="sm-body" id="smBody" hidden>${summaryHTML(state, true)}</div>`;
       const t = qs(".sm-toggle", els.summaryMobile);
       if (t) t.addEventListener("click", () => { const b = qs("#smBody"); b.hidden = !b.hidden; t.setAttribute("aria-expanded", String(!b.hidden)); });
     }
@@ -646,8 +647,9 @@
     qsa(".addon-item input[type=number]", els.stage).forEach((inp) => inp.addEventListener("input", () => {
       const id2 = inp.closest(".addon-item").dataset.addon; const c = item(id2);
       const v = Math.max(1, Math.min(c.maxQty, Number(inp.value) || 1));
-      state.addons[id2] = v; save(); refreshSummary();
+      state.addons[id2] = v; if (inp.value !== "" && Number(inp.value) !== v) inp.value = v; save(); refreshSummary();
     }));
+    qsa(".addon-item input[type=number]", els.stage).forEach((inp) => inp.addEventListener("change", () => { const id2 = inp.closest(".addon-item").dataset.addon; inp.value = state.addons[id2] || 1; }));
     qsa("[data-note]", els.stage).forEach((inp) => inp.addEventListener("input", () => { state.addonNotes[inp.dataset.note] = inp.value; save(); }));
 
     if (id === "type") {
@@ -793,6 +795,7 @@
       target_audience: st.type === "landing" ? st.landing.audience.trim() : "",
       primary_cta: st.type === "landing" ? st.landing.cta : "",
       estimated_pages: st.type === "site" ? labelOf(P.pageOptions, st.site.pages) : "1 (דף נחיתה)",
+      exact_page_count: st.type === "site" ? (c.page_count ?? "") : 1,
       page_breakdown: breakdown,
       requested_features: st.type === "site" ? st.site.features.map((f) => labelOf(P.includedFeatures, f)).join(", ") : "",
       selected_addons: addonList,
@@ -803,6 +806,7 @@
       hosting_acknowledged: st.hosting.acknowledged ? "yes" : "no",
       maintenance_plan: st.maintenance,
       monthly_maintenance: c.monthly_maintenance,
+      cookie_consent_option: st.addons["cookie-banner"] ? "yes" : "no",
       base_price: c.base_price ?? "",
       addons_total: c.addons_total,
       urgent: c.urgent ? "true" : "false",

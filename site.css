@@ -1002,8 +1002,18 @@ html.a11y-still .rv { opacity: 1; transform: none; }
 @media (max-width: 560px) {
   body { font-size: 16px; }
   .container { width: min(100% - 32px, var(--container)); }
-  .price-strip { grid-template-columns: 1fr; }
-  .price-cell + .price-cell { border-inline-start: 0; border-top: 1px solid var(--line); }
+  /* keep the two prices side by side on phones (stack only on very narrow screens), tighter rhythm
+     so the mockups arrive sooner under the copy */
+  .hero { padding-top: calc(var(--nav-h) + 8px); }
+  .hero .container { gap: 22px; }
+  .hero .kicker { margin-bottom: 12px; }
+  .hero .lead { margin-top: 12px; font-size: 1rem; }
+  .price-strip { margin-top: 16px; }
+  .price-cell { padding: 10px 14px; }
+  .hero-helper { margin-top: 12px; }
+  .hero-ctas { margin-top: 10px; gap: 10px; }
+  .hero-note { margin-top: 10px; font-size: 0.85rem; }
+  .hero-visual { margin-top: 0; }
   .hero-ctas .btn { width: 100%; }
   .footer .top { grid-template-columns: 1fr; }
   .work-actions .btn { width: 100%; }
@@ -1094,4 +1104,9 @@ html.a11y-still .rv { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-visual::before { animation: none; }
+}
+
+@media (max-width: 359px) {
+  .price-strip { grid-template-columns: 1fr; }
+  .price-cell + .price-cell { border-inline-start: 0; border-top: 1px solid var(--line); }
 }

@@ -117,9 +117,13 @@
     { id: "content-write", label: "כתיבת תוכן כמעט מאפס",       description: "כותבים את התוכן יחד איתכם, מכמה נקודות שתיתנו.",         price: 250, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "content", unit: "לעמוד" },
 
     /* measurement and privacy */
-    { id: "ga",            label: "Google Analytics",           description: "מדידת מבקרים ומקורות תנועה.",                            price: 100, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "tracking" },
-    { id: "meta-pixel",    label: "Meta Pixel",                 description: "מדידה לקמפיינים בפייסבוק ובאינסטגרם.",                   price: 100, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "tracking" },
-    { id: "cookie-banner", label: "הודעת עוגיות",               description: "הודעה והסכמה לעוגיות, לפי הדרישות המקובלות.",            price: 100, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "tracking" },
+    /* Tracking tools are consent-gated by design: in a client site they must load only after
+       the visitor agreed, whenever the site requires consent. The DS site itself runs no tracking.
+       TODO (technical, before enabling analytics/pixel on a real client site): wire the tag loader
+       to the consent mechanism (cookie-consent add-on or the client's own), never fire on page load. */
+    { id: "ga",            label: "Google Analytics",           description: "מדידת מבקרים ומקורות תנועה. מופעל רק אחרי הסכמת הגולש, כשהאתר דורש זאת.",   price: 100, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "tracking", consentGated: true },
+    { id: "meta-pixel",    label: "Meta Pixel",                 description: "מדידה לקמפיינים בפייסבוק ובאינסטגרם. מופעל רק אחרי הסכמת הגולש, כשהאתר דורש זאת.", price: 100, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "tracking", consentGated: true },
+    { id: "cookie-banner", label: "מנגנון הודעה והסכמה לעוגיות", description: "הוספת ממשק הודעה/הסכמה לעוגיות לפי הצורך הטכני של האתר.",  price: 100, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "tracking" },
 
     /* connections to systems the client already has */
     { id: "crm-simple",    label: "חיבור לרשימת תפוצה או CRM פשוט", description: "חיבור בסיסי של הטופס למערכת קיימת, כשהחיבור פשוט ומוגדר מראש.", price: 150, pricing_type: "fixed", requires_review: false, scope: ["landing"], group: "connect" },
@@ -152,7 +156,7 @@
     pricing_type: "percentage",
     requires_review: false,
     description: "מסירה מהירה יותר, בתיאום. תוספת של 25% על עבודת DS בלבד, לא על תחזוקה ולא על עלויות של ספקים חיצוניים.",
-    customNote: "המחיר המותאם שנשלח לכם יכלול גם את תוספת הדחיפות."
+    customNote: "תוספת הדחיפות תחושב במסגרת המחיר המותאם."
   };
 
   const maintenance = [
@@ -169,13 +173,15 @@
     hosting: "ברוב דפי הנחיתה ואתרי התדמית הקטנים ניתן להתחיל עם אחסון ללא עלות חודשית במסגרת המסלול החינמי של הספק. אם בעתיד יהיה צורך בשדרוג, תדעו על כך מראש ולא יתבצע חיוב ללא אישורכם.",
     infra: "לפרויקט ניתן להקים חשבון תשתית ייעודי ששייך לכם. בסיום העבודה תקבלו את פרטי הגישה ותוכלו להחליף את הסיסמה.",
     domainHelp: "נעזור לכם לבחור, לרכוש, להגדיר ולחבר את הדומיין ללא דמי שירות נוספים. אתם משלמים רק את עלות הדומיין לספק, והדומיין נרשם על שמכם.",
-    customQuote: "הבקשה כוללת רכיב שדורש התאמת מחיר. נעבור על הפרטים ונשלח לכם סיכום ומחיר מלא לפני כל התחייבות.",
+    customQuote: "הבקשה כוללת רכיב שדורש בדיקה. נעבור על הפרטים ונשלח לכם סיכום ומחיר מלא לפני כל התחייבות.",
     customShort: "נדרש מחיר מותאם",
     biggerScope: "האתר שלכם רחב יותר משלושה עמודים. סמנו למטה אילו עמודים נוספים תצטרכו, והמחיר יתעדכן לפי המחירון.",
-    notBinding: "שליחת הטופס אינה מחייבת בתשלום. נעבור על הפרטים ונשלח לכם סיכום לאישור.",
+    notBinding: "שליחת הבקשה אינה מחייבת בתשלום. נעבור על הפרטים ונשלח לכם סיכום לאישור. שום עבודה או חיוב לא מתחילים לפני אישורכם.",
     reviewPrice: "מחיר ייקבע לאחר בדיקת הבקשה",
     totalLabel: "סה\"כ לפי הבחירות שלכם",
     setupLabel: "סה\"כ הקמה",
+    pagesUnknown: "טרם נקבע",
+    consentHint: "כלי המדידה מופעלים רק אחרי הסכמת הגולש, כשהאתר דורש זאת.",
     depositLabel: "50% מקדמה",
     balanceLabel: "יתרה לפני מסירה",
     maintenanceSeparate: "אופציונלי ונפרד. תשלום חודשי, לא חלק ממחיר ההקמה.",
@@ -207,6 +213,7 @@
       urgent: false, urgent_fee: 0,
       setup_total: null, deposit: null, balance: null,
       monthly_maintenance: 0, maintenance: null,
+      page_count: null, page_label: "",   // exact page count when it is known, else a range / "not set"
       custom_quote_required: false, custom_reasons: []
     };
     if (!st || !st.type || !services[st.type]) return out;
@@ -221,14 +228,21 @@
     /* extra pages for a site */
     if (st.type === "site") {
       const pg = byId(pageOptions, (st.site || {}).pages);
-      if (pg && pg.custom) custom("מספר העמודים עדיין לא ידוע");
+      if (pg && pg.custom) { custom("מספר העמודים עדיין לא ידוע"); out.page_label = copy.pagesUnknown; }
+      if (pg && !pg.custom && pg.extraMax === 0) out.page_label = pg.label;
       if (pg && !pg.custom && pg.extraMax !== 0) {
         const bp = (st.site && st.site.extraPages) || {};
-        if (bp.unknown) custom("סוגי העמודים הנוספים עדיין לא ידועים");
+        let extra = 0;
+        if (bp.unknown) { custom("סוגי העמודים הנוספים עדיין לא ידועים"); out.page_label = pg.label + ", סוגי העמודים טרם נקבעו"; }
         else pageTypes.forEach((t) => {
           const qty = Number(bp[t.id]) || 0;
+          extra += qty;
           if (qty > 0) addLine({ id: "page-" + t.id, label: t.label + (qty > 1 ? " × " + qty : ""), qty, unit: "לעמוד", price: t.price, total: qty * t.price, pricing_type: "fixed", requires_review: false });
         });
+        if (!bp.unknown) {
+          if (extra > 0) { out.page_count = svc.includedPages + extra; out.page_label = String(out.page_count); }
+          else out.page_label = pg.label;
+        }
         if (pg.customByDefault) custom("יותר מ־10 עמודים");
       }
     }
