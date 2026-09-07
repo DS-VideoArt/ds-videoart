@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>OG template (screenshot source, not a public page)</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;900&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; font-family: Heebo, Arial, sans-serif; color: #f1eadf;
+    background:
+      radial-gradient(700px 420px at 92% 0%, rgba(214,164,108,.28), transparent 60%),
+      radial-gradient(600px 400px at 0% 100%, rgba(184,88,47,.35), transparent 60%),
+      linear-gradient(180deg, #2a2230, #1c1620); }
+  .wrap { position: relative; width: 1200px; height: 630px; }
+  .brand { direction: ltr; unicode-bidi: isolate; position: absolute; top: 56px; inset-inline-start: 72px; font-weight: 900; font-size: 34px; letter-spacing: -.02em; }
+  .brand span { font-weight: 400; color: rgba(241,234,223,.75); }
+  .kicker { position: absolute; top: 170px; inset-inline-start: 72px; font-size: 24px; font-weight: 600; color: rgba(241,234,223,.75); display: flex; align-items: center; gap: 14px; }
+  .kicker::before { content: ""; width: 36px; height: 3px; background: #b8582f; border-radius: 3px; }
+  h1 { position: absolute; top: 214px; inset-inline-start: 72px; margin: 0; font-size: 72px; font-weight: 900; line-height: 1.08; letter-spacing: -.03em; white-space: nowrap; }
+  .prices { position: absolute; bottom: 70px; inset-inline-start: 72px; display: flex; gap: 18px; }
+  .ring { inset-inline-end: 40px; top: 60px; width: 300px; height: 300px; }
+  .disc { inset-inline-end: 90px; top: 120px; width: 170px; height: 170px; }
+  .plate { inset-inline-end: 30px; top: 300px; width: 280px; height: 130px; }
+  .price { padding: 20px 26px; border-radius: 18px; background: rgba(241,234,223,.08); border: 1px solid rgba(241,234,223,.18); }
+  .price small { display: block; font-size: 20px; color: rgba(241,234,223,.75); font-weight: 600; }
+  .price b { display: block; font-size: 44px; font-weight: 900; letter-spacing: -.02em; margin-top: 2px; }
+  .once { position: absolute; bottom: 30px; inset-inline-start: 72px; font-size: 18px; color: rgba(241,234,223,.7); font-weight: 600; }
+  .ring { position: absolute; inset-inline-end: 90px; top: 130px; width: 360px; height: 360px; border-radius: 50%; border: 2px solid rgba(214,164,108,.55); }
+  .disc { position: absolute; inset-inline-end: 150px; top: 210px; width: 200px; height: 200px; border-radius: 50%;
+    background: linear-gradient(135deg, #b8582f, #d6a46c); box-shadow: 0 40px 80px -30px rgba(0,0,0,.6); }
+  .plate { position: absolute; inset-inline-end: 60px; top: 380px; width: 320px; height: 150px; border-radius: 28px;
+    background: rgba(241,234,223,.08); border: 1px solid rgba(241,234,223,.2); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">DS <span>Creative Studio</span></div>
+  <div class="kicker">סטודיו לדפי נחיתה ולאתרי תדמית</div>
+  <h1>אתר לעסק שלכם.<br>בלי פרויקט על הראש.</h1>
+  <div class="ring"></div><div class="disc"></div><div class="plate"></div>
+  <div class="prices">
+    <div class="price"><small>דף נחיתה</small><b>440 ₪</b></div>
+    <div class="price"><small>אתר תדמית</small><b><span style="font-size:22px;font-weight:600;color:rgba(241,234,223,.75)">החל מ־</span>1,290 ₪</b></div>
+  </div>
+  <div class="once">תשלום חד-פעמי. ללא מנוי חודשי חובה.</div>
+</div>
+</body>
+</html>

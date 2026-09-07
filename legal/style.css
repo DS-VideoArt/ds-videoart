@@ -1,22 +1,58 @@
-/* ============================================================
-   DS legal pages: shared across every sub-brand, so they use a
-   neutral parent-brand palette rather than any one room's colors.
-   Loaded after ../ds-shared.css.
-   ============================================================ */
+/* DS Creative Studio: legal document pages. Loaded after ../site.css. */
 
-:root {
-  --bg: #0c0c0d;
-  --bg-elevated: #141416;
-  --bg-card: #19191b;
-  --accent: #8b93a3;
-  --accent-soft: rgba(139, 147, 163, 0.14);
-  --accent-border: rgba(139, 147, 163, 0.4);
-  --cream: #ede4d3;
-  --text-primary: #f2f1ee;
-  --text-muted: rgba(242, 241, 238, 0.64);
-  --text-faint: rgba(242, 241, 238, 0.62);
-  --border: rgba(242, 241, 238, 0.1);
-  --border-strong: rgba(242, 241, 238, 0.2);
-
-  --shadow-accent: 0 3px 12px rgba(139, 147, 163, 0.25);
+.legal-page {
+  padding: calc(var(--nav-h) + clamp(40px, 7vw, 80px)) 0 clamp(72px, 10vw, 120px);
+}
+.legal {
+  max-width: 760px;
+}
+.legal h1 {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.legal .updated {
+  margin-top: 10px;
+  color: var(--ink-55);
+  font-size: 0.95rem;
+}
+.legal .intro {
+  margin-top: 22px;
+  font-size: 1.1rem;
+  color: var(--ink-70);
+}
+.legal h2 {
+  margin-top: 40px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.legal p, .legal li {
+  margin-top: 12px;
+  color: var(--ink-70);
+}
+.legal ul {
+  margin-top: 4px;
+}
+.legal li {
+  position: relative;
+  padding-inline-start: 20px;
+}
+.legal li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.65em;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--terracotta);
+}
+.legal a {
+  color: var(--terracotta-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal .back {
+  display: inline-flex;
+  margin-top: 48px;
 }
