@@ -19,7 +19,7 @@
 
   /* Set the GA4 Measurement ID of dscreative.co.il here (format G-XXXXXXXXXX).
      Never a placeholder: while this is empty, measurement stays completely off. */
-  const MEASUREMENT_ID = "";
+  const MEASUREMENT_ID = "G-7VK30G4GVC";
 
   const CONSENT_KEY = "dsc_consent_v1";
   const PRIVACY_URL = "/legal/privacy.html";
