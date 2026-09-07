@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בונה הפרויקט | DS Creative Studio</title>
+  <meta name="description" content="מתחילים לבד, בכמה דקות: בוחרים דף נחיתה או אתר תדמית, עונים על כמה שאלות קצרות, ורואים סיכום לפי הבחירות. שליחה לא מחייבת.">
+  <link rel="canonical" href="https://dscreative.co.il/builder/">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#2a2230">
+  <link rel="icon" href="../icons/favicon-32.png?v=20260821a" sizes="32x32">
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png?v=20260821a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../site.css?v=20260907a">
+  <link rel="stylesheet" href="builder.css?v=20260907a">
+</head>
+<body class="builder-page">
+  <a href="#stage" class="skip-link">דלג לתוכן הראשי</a>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="builder-top">
+    <div class="container">
+      <a class="brand" href="/">DS <span>Creative Studio</span></a>
+      <div class="top-actions">
+        <button type="button" class="link-btn" id="btnRestart">להתחיל מחדש</button>
+        <a class="link-btn" href="/">חזרה לאתר</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container builder-layout">
+    <main class="builder-main" id="main">
+      <div class="builder-progress" aria-live="polite">
+        <span id="progressText">שלב 1</span>
+        <div class="bar" aria-hidden="true"><i id="progressBar"></i></div>
+      </div>
+
+      <div id="summaryMobile" class="summary-mobile"></div>
+
+      <div id="stage" class="stage" tabindex="-1"></div>
+
+      <div class="builder-nav">
+        <button type="button" class="btn btn-ghost" id="btnBack" hidden>חזרה</button>
+        <button type="button" class="btn btn-primary" id="btnNext">המשך</button>
+      </div>
+      <p class="builder-foot" id="footerNote"></p>
+      <p class="builder-help">לא בטוחים באמצע? <a href="/#contact">דברו איתנו</a>. מה שכבר מילאתם נשמר בדפדפן שלכם, ותוכלו להמשיך מאותה נקודה.</p>
+    </main>
+
+    <aside class="builder-side" aria-label="סיכום הפרויקט">
+      <div id="summaryPanel" class="summary-panel"></div>
+      <div class="side-help">
+        <strong>איך זה עובד?</strong>
+        <p>עונים על כמה שאלות קצרות, רואים סיכום לפי הבחירות, ושולחים. אנחנו עוברים על הפרטים ושולחים סיכום הזמנה לאישור. רק אחרי שאישרתם, מתחילים.</p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Netlify Forms registration: this static form is what Netlify parses at deploy time.
+       The wizard fills these hidden fields and posts the form. Keep every field name here. -->
+  <form id="projectRequestForm" name="project-request" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field" hidden aria-hidden="true">
+    <input type="hidden" name="form-name" value="project-request">
+    <input name="bot-field" tabindex="-1" autocomplete="off">
+    <input type="hidden" name="project_type">
+    <input type="hidden" name="contact_name">
+    <input type="hidden" name="business_name">
+    <input type="hidden" name="phone">
+    <input type="hidden" name="email">
+    <input type="hidden" name="business_category">
+    <input type="hidden" name="business_about">
+    <input type="hidden" name="primary_goal">
+    <input type="hidden" name="landing_offer">
+    <input type="hidden" name="target_audience">
+    <input type="hidden" name="primary_cta">
+    <input type="hidden" name="estimated_pages">
+    <input type="hidden" name="requested_features">
+    <input type="hidden" name="has_logo">
+    <input type="hidden" name="has_texts">
+    <input type="hidden" name="has_images">
+    <input type="hidden" name="design_preferences">
+    <input type="hidden" name="domain_status">
+    <input type="hidden" name="hosting_acknowledged">
+    <input type="hidden" name="maintenance_plan">
+    <input type="hidden" name="selected_addons">
+    <input type="hidden" name="calculated_base_price">
+    <input type="hidden" name="calculated_addons_price">
+    <input type="hidden" name="calculated_total">
+    <input type="hidden" name="custom_quote_required">
+    <input type="hidden" name="custom_quote_reasons">
+    <input type="hidden" name="notes">
+    <input type="hidden" name="timestamp">
+    <input type="hidden" name="started_at">
+  </form>
+
+  <script src="pricing-config.js?v=20260907a"></script>
+  <script src="project-builder.js?v=20260907a"></script>
+</body>
+</html>

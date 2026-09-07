@@ -181,10 +181,28 @@
     name.addEventListener("blur", () => setInvalid(name, name.value.trim().length < 2 && name.value !== ""));
     phone.addEventListener("blur", () => setInvalid(phone, !validPhone(phone.value.trim()) && phone.value !== ""));
 
+    // If the visitor started the project builder and then chose to talk instead,
+    // pass a short summary of what they already filled in, so the call has context.
+    const builderContext = () => {
+      try {
+        const s = JSON.parse(localStorage.getItem("dsc_builder_v1") || "null");
+        if (!s || !s.type) return "";
+        const parts = [s.type === "site" ? "אתר תדמית" : "דף נחיתה"];
+        if (s.business?.businessName) parts.push("עסק: " + s.business.businessName);
+        if (s.business?.category) parts.push("תחום: " + s.business.category);
+        if (s.site?.pages) parts.push("עמודים: " + s.site.pages);
+        if (s.site?.features?.length) parts.push("רכיבים: " + s.site.features.join(","));
+        if (s.maintenance) parts.push("תחזוקה: " + s.maintenance);
+        return parts.join(" | ").slice(0, 500);
+      } catch { return ""; }
+    };
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       status.className = "form-status";
       if (!validate()) return;
+      const ctx = qs("#builderContext", form);
+      if (ctx) ctx.value = builderContext();
       submit.disabled = true;
       const original = submit.textContent;
       submit.textContent = "שולחים…";
