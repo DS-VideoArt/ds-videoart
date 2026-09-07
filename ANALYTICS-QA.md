@@ -1,102 +1,88 @@
 # ANALYTICS-QA — DS Creative Studio (dscreative.co.il)
 
-עודכן: 7.9.2026. מסמך זה מתאר את שכבת המדידה של האתר, מה נבדק, ומה עדיין חסר.
+עודכן: 7.9.2026, אחרי פרסום לפרודקשן.
 
 ## 1. GA4 Measurement ID בפועל
 
-**עדיין לא הוגדר.** בסריקה של כל הפרויקט, הסביבה והתיעוד לא נמצא מזהה מדידה של DS Creative Studio, ולא הומצא אחד.
-המקום היחיד שבו המזהה מוגדר: הקבוע `MEASUREMENT_ID` בראש הקובץ `analytics.js`. כל עוד הוא ריק, שכבת המדידה כבויה לחלוטין: אין הודעת הסכמה, לא נטען קוד של Google, ולא נשלחת שום בקשה.
+`G-7VK30G4GVC`, מוגדר במקום אחד בלבד: הקבוע `MEASUREMENT_ID` בראש `analytics.js`. ללא Google Tag Manager. אין כלי מדידה נוסף.
 
 ## 2. איך ההסכמה עובדת
 
-- ברירת מחדל: אין מדידה. הקוד של Google לא נטען עד להחלטה מפורשת של המבקר.
-- בביקור הראשון (רק כשיש מזהה) מופיע כרטיס קטן בתחתית המסך: "כדי להבין איך משתמשים באתר ולשפר אותו, אנחנו משתמשים ב-Google Analytics. אפשר לאשר או להמשיך בלי מדידה." עם "אישור מדידה", "להמשיך בלי" וקישור למדיניות הפרטיות.
-- "אישור מדידה": הבחירה נשמרת בדפדפן (`localStorage`, מפתח `dsc_consent_v1`), הקוד של Google נטען, `page_view` נשלח, ואירועים שקרו באותו עמוד לפני האישור נשלחים גם הם.
-- "להמשיך בלי": הבחירה נשמרת, שום דבר לא נטען, אירועים נזרקים. בביקור הבא הבחירה מכובדת ואין הודעה.
-- שינוי הבחירה: הקישור "הגדרות מדידה" בתחתית העמוד פותח את ההודעה מחדש.
-- אין פלטפורמת עוגיות חיצונית. לא נטענים Meta Pixel, Google Ads, GTM או כל כלי אחר.
+- ברירת מחדל: אין מדידה. הקוד של Google לא נטען עד להחלטה מפורשת.
+- בביקור הראשון מופיע כרטיס קטן בתחתית המסך: "כדי להבין איך משתמשים באתר ולשפר אותו, אנחנו משתמשים ב-Google Analytics. אפשר לאשר או להמשיך בלי מדידה." עם "אישור מדידה", "להמשיך בלי" וקישור למדיניות הפרטיות.
+- "אישור מדידה": נשמר בדפדפן (`localStorage`, מפתח `dsc_consent_v1`), `gtag.js` נטען מ-googletagmanager.com, `page_view` נשלח, ואירועים שקרו באותו עמוד לפני האישור נשלחים.
+- "להמשיך בלי": נשמר, שום דבר לא נטען, אירועים נזרקים, אין הודעה בביקור הבא.
+- שינוי הבחירה: הקישור "הגדרות מדידה" בתחתית העמוד.
+- בנייד ההודעה יושבת מעל פס הכפתורים הדביק (בבית ובבונה).
 
 ## 3. רשימת האירועים
 
-| אירוע | מתי | היכן בקוד |
+| אירוע | מתי | היכן |
 |---|---|---|
 | `page_view` | בטעינת עמוד, אחרי אישור | `analytics.js` |
 | `builder_view` | בכניסה ל-`/builder/` | `builder/project-builder.js` |
-| `builder_start` | פעם אחת בכל סשן בונה, באינטראקציה אמיתית ראשונה (בחירה או הקלדה), לא בטעינה | `builder/project-builder.js` |
+| `builder_start` | פעם אחת בכל סשן בונה, באינטראקציה אמיתית ראשונה | `builder/project-builder.js` |
 | `service_selected` | בבחירת דף נחיתה או אתר תדמית | `builder/project-builder.js` |
-| `builder_step_view` | במעבר לשלב חדש. רענון של אותו שלב לא שולח שוב | `builder/project-builder.js` |
+| `builder_step_view` | במעבר לשלב חדש, לא ברענון של אותו שלב | `builder/project-builder.js` |
 | `builder_summary_view` | בהגעה למסך הסיכום | `builder/project-builder.js` |
 | `project_request_submitted` | רק אחרי תשובת הצלחה מהשרת לטופס `project-request` | `builder/project-builder.js` |
 | `contact_request_submitted` | רק אחרי תשובת הצלחה מהשרת לטופס `contact-request` | `site.js` |
-| `builder_reset` | ב"להתחיל מחדש" אחרי אישור | `builder/project-builder.js` |
+| `builder_reset` | ב"להתחיל מחדש" | `builder/project-builder.js` |
 
-## 4. פרמטרים
-
-רק פרמטרים מהרשימה הסגורה הבאה עוברים, וכל ערך אחר מסונן ב-`analytics.js`. אין טקסט חופשי, אין שם, טלפון, אימייל, שם עסק או תוכן טופס.
+## 4. פרמטרים (רשימה סגורה, מסוננת ב-`analytics.js`)
 
 - `service_type`: `landing_page` / `website` / `unsure`
-- `step_number`: מספר
-- `step_name`: מזהה השלב (למשל `business`, `site-scope`, `summary`)
-- `custom_quote`: true / false
-- `maintenance_plan`: `none` / `basic` / `extended` / `not_selected`
-- `setup_total`: מספר בלבד, ורק כשאין מחיר מותאם. כשנדרש מחיר מותאם הפרמטר לא נשלח.
+- `step_number`: מספר. `step_name`: מזהה השלב.
+- `custom_quote`: true / false. `maintenance_plan`: `none` / `basic` / `extended` / `not_selected`.
+- `setup_total`: מספר בלבד, ורק כשאין מחיר מותאם.
+- אין טקסט חופשי, שם, טלפון, אימייל, שם עסק או תוכן טופס. אומת בפרודקשן על גוף הבקשות ל-Google.
 
 ## 5. Key Events
 
-מיועדים לסימון כ-Key Events ב-GA4: `project_request_submitted`, `contact_request_submitted`.
-לא לסמן: `page_view`, `builder_view`, `builder_start`, `service_selected`.
-**סטטוס: דורש סימון ידני** ב-GA4 (Admin → Events → Mark as key event) אחרי שהאירועים יתחילו להגיע. אין לי גישה להגדרות ה-property.
+לסמן ב-GA4 (Admin → Events): `project_request_submitted`, `contact_request_submitted`. לא לסמן: `page_view`, `builder_view`, `builder_start`, `service_selected`. **דורש פעולה ידנית** בממשק GA4, אין לי גישה ל-property.
 
 ## 6. Search Console
 
-**סטטוס: VERIFICATION REQUIRED.** אין בסביבה credentials של Google, ולכן לא ניתן ליצור או לאמת property. לא הומצא token.
-מומלץ: Domain property עבור `dscreative.co.il`. האימות דורש רשומת TXT אצל ספק ה-DNS. אם תעדיפו URL-prefix עם תג HTML, שלחו את ה-content של `google-site-verification` ואוסיף אותו ל-`index.html`.
+**לא בוצע, לפי ההנחיה.** האתר מוכן: Domain property עם TXT ב-DNS (פעולה שלכם), או URL-prefix עם תג HTML שאוסיף כשיימסר token אמיתי.
 
-## 7. שיטת האימות (מוכן לקליטה)
+## 7. שיטת האימות
 
-- Domain property: הוסיפו את רשומת ה-TXT שגוגל תיתן לכם ב-DNS. אני לא נוגע ב-DNS.
-- URL-prefix: תג `<meta name="google-site-verification" content="...">` ב-`index.html`, יתווסף רק עם token אמיתי שתמסרו.
-- robots.txt ו-sitemap.xml כבר מוכנים (ראו למטה), כך שאחרי האימות אפשר להגיש את ה-sitemap מיד.
+ממתין להחלטה. robots.txt ו-sitemap.xml כבר באוויר, כך שאחרי האימות אפשר להגיש את ה-sitemap מיד.
 
 ## 8. Sitemap
 
-`sitemap.xml` חדש בשורש האתר, חמישה עמודים בלבד: הבית, הבונה, פרטיות, תנאים, נגישות. עמודי הדוגמה והמסלולים הישנים (`web`, `videoart`, `lab`, `creative`) לא בסיטמאפ ומסומנים `noindex` בעצמם. אין הפניות ל-netlify.app. **סטטוס לפני deploy: קיים בקוד, עדיין מחזיר 404 בפרודקשן** (הקובץ לא הועלה עד לקבלת המזהה).
+`https://dscreative.co.il/sitemap.xml` מחזיר 200 ומכיל עמוד אחד: `https://dscreative.co.il/`. הבונה הוא מסלול המרה ולא תוכן SEO, והעמודים המשפטיים לא נכללו רק כי הם קיימים. מדיניות האינדוקס של העמודים עצמם לא השתנתה (הבונה נשאר `index, follow` כפי שהיה). אין הפניות ל-netlify.app.
 
 ## 9. robots.txt
 
-`robots.txt` חדש: מאפשר הכול ומצביע על ה-sitemap. מסלולים ישנים נשארים זחילים כדי שה-`noindex` שלהם ייקרא. **סטטוס לפני deploy: קיים בקוד, עדיין 404 בפרודקשן.**
+`https://dscreative.co.il/robots.txt` מחזיר 200: מאפשר הכול ומצביע על ה-sitemap. המסלולים הישנים נשארים זחילים כדי שה-`noindex` שלהם ייקרא.
 
 ## 10. UTM
 
-מערכת ה-UTM הקיימת לא נגעה: חמשת השדות עדיין נשמרים ב-`dsc_utm_v1` ונשלחים ל-Netlify בשני הטפסים. GA4 יקרא את ה-UTM מהכתובת בעצמו (attribution רגיל של Google). שני הקישורים `/ig-a1` ו-`/fb-a1` מפנים ב-302 עם ה-UTM המלאים, ואומתו בפרודקשן ב-7.9.2026 (לפני שינוי זה). אין לוגיקת attribution כפולה: `analytics.js` לא נוגע ב-UTM בכלל.
+לא נגעה. חמשת השדות נשלחים ל-Netlify בשני הטפסים. `/ig-a1` ו-`/fb-a1` מפנים ב-302 עם ה-UTM המלאים. GA4 מקבל את ה-UTM דרך `page_location` (אומת בבקשה ל-Google: הכתובת המלאה עם utm_source=instagram). אין לוגיקת attribution כפולה.
 
-## 11. בדיקות
+## 11. בדיקות בפרודקשן (7.9.2026, deploy 6a9f241f ואחריו 6a9f24eb)
 
-**מקומי (עם מזהה בדיקה זמני שהוסר לפני ה-commit):**
-
-- A. הסכמה נדחתה → מעבר לבונה: אין הודעה, לא נטען קוד של Google, אפס אירועים, אפס בקשות. PASS
-- B. הסכמה אושרה על הבונה: הקוד נטען מ-googletagmanager.com רק אחרי הלחיצה, `builder_view` שהמתין נשלח. PASS
-- C. `builder_start` פעם אחת בלבד לאורך כל המילוי. PASS
-- D. בחירת דף נחיתה → `service_selected` עם `landing_page`. PASS
-- E. בחירת אתר תדמית → `service_selected` עם `website`. PASS
-- F. `builder_step_view` לכל 11 השלבים עם מספר ושם. PASS
-- G. `builder_summary_view` עם `website`, `custom_quote=false`, `maintenance_plan=basic`, `setup_total=1540`. PASS
-- H. שליחה שנכשלת (השרת המקומי מחזיר 501): `project_request_submitted` לא נשלח. PASS. הצלחה אמיתית: **ממתין לפרודקשן.**
-- I. טופס קשר שנכשל מקומית: `contact_request_submitted` לא נשלח. PASS. הצלחה אמיתית: **ממתין לפרודקשן.**
-- J. רענון על מסך הסיכום: רק `builder_view`, בלי `builder_step_view` או `builder_summary_view` כפולים. PASS
-- K. התחלה מחדש: `builder_reset` נשלח, מצב הבונה מתאפס, UTM נשמר, ההסכמה נשמרת. PASS
-- ביצועים: הקוד של Google נטען `async` ורק אחרי הסכמה, אין כפילות, אפס שגיאות קונסול (מלבד 501 מקומי צפוי).
-- נייד 390: ההודעה יושבת מעל פס הכפתורים הדביק, בלי חפיפה ובלי גלילה אופקית.
-- מחירים: 33 מקרי הבדיקה האוטומטיים עוברים.
-
-**פרודקשן: לא בוצע.** אין deploy בלי מזהה אמיתי.
+- לפני החלטה: הודעה מוצגת, אין סקריפט של Google, אפס בקשות ל-Google. PASS
+- דחייה: ההודעה נעלמת, מעבר לבונה דרך `/ig-a1` בלי סקריפט, בלי בקשות, בלי אירועים, הבחירה נשמרת. PASS
+- אישור: סקריפט `gtag.js` יחיד, בקשה ראשונה ל-www.google-analytics.com עם `tid=G-7VK30G4GVC` ו-`en=page_view`. PASS
+- שמירת הבחירה: ביקור חוזר בבית ובבונה בלי הודעה, סקריפט יחיד. PASS
+- CSP: אפס שגיאות קונסול, הבקשות ל-googletagmanager.com ול-google-analytics.com עוברות. PASS
+- אירועים שנשלחו בפועל ל-Google (נלכדו מגוף ה-beacons): `page_view`, `builder_view`, `builder_reset`, `builder_step_view`, `service_selected`, `builder_start`, עם `ep.service_type` ו-`ep.step_name`. PASS
+- `builder_summary_view` בפרודקשן: `{service_type: landing_page, custom_quote: false, maintenance_plan: none, setup_total: 540}`. PASS
+- `project_request_submitted`: לא נשלח לפני הלחיצה, נשלח רק אחרי "הבקשה התקבלה", עם אותם פרמטרים. הבקשה הגיעה ל-Netlify עם UTM. PASS
+- `contact_request_submitted`: נשלח רק אחרי "קיבלנו", עם `service_type: website`. הבקשה הגיעה ל-Netlify עם UTM. PASS
+- `builder_start` פעם אחת; `builder_step_view` בלי כפילות ברענון. PASS
+- נייד 390: בית ובונה בלי גלילה אופקית, ההודעה מעל הפסים הדביקים. PASS
+- מחירים: 33 מקרי בדיקה אוטומטיים עוברים; טפסים עובדים כמו קודם. PASS
 
 ## 12. מגבלות ידועות
 
-- CSP: `_headers` עודכן כדי לאפשר `googletagmanager.com`, `google-analytics.com` ו-`analytics.google.com`. ייכנס לתוקף רק ב-deploy הבא, ואז יש לאמת בפרודקשן שאין חסימת CSP.
-- מבקר שדחה מדידה ואחר כך אישר באותו עמוד: האירועים שקרו לפני האישור באותה טעינה לא נשלחים (נזרקו בזמן הדחייה).
-- ללא מזהה, הקישור "הגדרות מדידה" וההודעה לא מופיעים בכלל.
+- ה-Realtime של GA4 עצמו לא נבדק מתוך ממשק Google (אין גישה). אומתו הבקשות היוצאות עצמן.
+- מבקר שדחה ואחר כך אישר באותו עמוד מאבד את האירועים שקרו לפני האישור באותה טעינה.
+- Key Events וSearch Console דורשים פעולות ידניות שלכם.
+- רשומות בדיקה "DS Production Test / PRODUCTION QA — DELETE" נשארו ב-Netlify.
 
 ## 13. Final verdict
 
-**ANALYTICS BLOCKED — MEASUREMENT ID REQUIRED.** הקוד מוכן, נבדק מקומית, ולא פורסם. נדרש מ-DS: מזהה GA4 של dscreative.co.il (G-XXXXXXXXXX), ולבחירתכם רשומת TXT או token של Search Console.
+**ANALYTICS READY.** נדרש מכם: סימון שני ה-Key Events ב-GA4, ובחירת שיטת אימות ל-Search Console.
