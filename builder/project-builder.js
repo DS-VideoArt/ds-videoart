@@ -42,7 +42,8 @@
       maintenance: "",
       notes: "",
       stepIndex: 0,
-      startedAt: new Date().toISOString()
+      startedAt: new Date().toISOString(),
+      tracking: { started: false, lastStep: "" }   // funnel bookkeeping only, never sent as content
     };
   }
 
@@ -62,6 +63,7 @@
       merged.content = Object.assign(defaultState().content, s.content || {});
       merged.addons = Object.assign({}, s.addons || {});
       merged.addonNotes = Object.assign({}, s.addonNotes || {});
+      merged.tracking = Object.assign(defaultState().tracking, s.tracking || {});
       return merged;
     } catch { return null; }
   }
@@ -107,6 +109,21 @@
   const calc = (st) => P.calc(st);
   const priced = (st) => !!(st.type && P.services[st.type]);
   const item = (id) => P.byId(P.catalog, id);
+
+  /* ---- measurement hooks (analytics.js decides whether anything is actually sent) ---- */
+  const track = (name, params) => { try { return !!(window.DS_ANALYTICS && window.DS_ANALYTICS.trackEvent(name, params)); } catch { return false; } };
+  const serviceType = (st) => (st.type === "site" ? "website" : st.type === "landing" ? "landing_page" : "unsure");
+  function funnelParams(st) {
+    const c = calc(st);
+    const p = { service_type: serviceType(st), custom_quote: !!c.custom_quote_required, maintenance_plan: st.maintenance || "not_selected" };
+    if (!c.custom_quote_required && typeof c.setup_total === "number") p.setup_total = c.setup_total;
+    return p;
+  }
+  function markStarted() {
+    if (state.tracking.started) return;
+    state.tracking.started = true; save();
+    track("builder_start", { service_type: serviceType(state) });
+  }
 
   /* ======================= 3. STEPS ======================= */
 
@@ -629,6 +646,11 @@
     bindStep(id);
     refreshSummary();
     refreshSideHelp(id);
+    if (state.tracking.lastStep !== id) {           // a refresh of the same step is not a new view
+      state.tracking.lastStep = id;
+      track("builder_step_view", { step_number: idx + 1, step_name: id });
+      if (id === "summary") track("builder_summary_view", funnelParams(state));
+    }
     save();
     if (focusHeading) { const h = qs("#stepTitle"); if (h) h.focus({ preventScroll: false }); window.scrollTo({ top: 0, behavior: "auto" }); }
   }
@@ -676,7 +698,7 @@
 
     if (id === "type") {
       qsa("[data-pick]", els.stage).forEach((b) => b.addEventListener("click", () => {
-        state.type = b.dataset.pick; save(); renderStep(false);
+        state.type = b.dataset.pick; track("service_selected", { service_type: serviceType(state) }); save(); renderStep(false);
         qs(`.card-choice input[value="${state.type}"]`)?.focus();
       }));
     }
@@ -703,7 +725,7 @@
       case "type":
         state.type = value;
         qs("#unsureBox").hidden = value !== "unsure";
-        if (value !== "unsure") state.stepIndex = 0;
+        if (value !== "unsure") { state.stepIndex = 0; track("service_selected", { service_type: serviceType(state) }); }
         setErr("type", "");
         break;
       case "category":
@@ -784,6 +806,7 @@
   }
   function restart() {
     if (!confirm("להתחיל מחדש? כל מה שמילאתם בטופס יימחק.")) return;
+    track("builder_reset", { service_type: serviceType(state) });
     clearSaved();
     state = defaultState();
     if (presetType) state.type = presetType;
@@ -860,6 +883,7 @@
       const body = new URLSearchParams(new FormData(form)).toString();
       const res = await fetch(form.getAttribute("action") || "/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body });
       if (!res.ok) throw new Error("status " + res.status);
+      track("project_request_submitted", funnelParams(state));   // only after the server accepted
       clearSaved();
       showSuccess(data);
     } catch (err) {
@@ -920,6 +944,9 @@
   els.next.addEventListener("click", next);
   els.back.addEventListener("click", back);
   els.restart.addEventListener("click", restart);
+  els.stage.addEventListener("change", markStarted);
+  els.stage.addEventListener("input", markStarted);
+  track("builder_view");
   document.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && e.target.matches("input:not([type=checkbox]):not([type=radio]):not([type=number])")) { e.preventDefault(); next(); }
   });

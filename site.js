@@ -238,6 +238,11 @@
           body,
         });
         if (!res.ok) throw new Error("bad status " + res.status);
+        try {
+          const svc = (form.querySelector("input[name=service]:checked") || {}).value || "";
+          const serviceType = svc === "דף נחיתה" ? "landing_page" : svc === "אתר תדמית" ? "website" : "unsure";
+          if (window.DS_ANALYTICS) window.DS_ANALYTICS.trackEvent("contact_request_submitted", { service_type: serviceType });
+        } catch {}
         status.className = "form-status ok";
         status.textContent = "קיבלנו. נחזור אליכם לשיחה קצרה בהקדם.";
         form.reset();

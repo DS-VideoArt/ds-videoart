@@ -1110,3 +1110,28 @@ html.a11y-still .rv { opacity: 1; transform: none; }
   .price-strip { grid-template-columns: 1fr; }
   .price-cell + .price-cell { border-inline-start: 0; border-top: 1px solid var(--line); }
 }
+
+/* ============================================================
+   Measurement consent (analytics.js): small, quiet, one decision
+   ============================================================ */
+.consent {
+  position: fixed; z-index: 90; inset-inline-start: 20px; bottom: 20px;
+  width: min(420px, calc(100% - 40px)); padding: 16px 18px; border-radius: 16px;
+  background: var(--plum-800); color: var(--on-dark);
+  box-shadow: 0 24px 50px -24px rgba(42, 34, 48, 0.7), 0 0 0 1px rgba(241, 234, 223, 0.08);
+  font-size: 0.92rem; line-height: 1.55;
+  animation: consentIn 0.4s var(--ease-out);
+}
+.consent p { margin: 0; color: var(--on-dark-70); }
+.consent p a { color: var(--copper-light); text-decoration: underline; text-underline-offset: 3px; }
+.consent-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.consent .btn { min-height: 40px; padding: 8px 16px; font-size: 0.9rem; }
+.consent .btn-ghost { border-color: var(--on-dark-line-strong); color: var(--on-dark); }
+.consent .btn-ghost:hover { border-color: var(--on-dark); background: rgba(241, 234, 223, 0.06); }
+@keyframes consentIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (max-width: 860px) {
+  .consent { inset-inline: 12px; bottom: 84px; width: auto; padding: 14px 14px; }   /* above the sticky bottom bars */
+  .consent .btn { flex: 1; }
+}
+@media (prefers-reduced-motion: reduce) { .consent { animation: none; } }
+html.a11y-still .consent { animation: none; }
