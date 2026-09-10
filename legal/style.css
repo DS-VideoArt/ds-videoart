@@ -56,3 +56,22 @@
   display: inline-flex;
   margin-top: 48px;
 }
+
+/* Short summary box at the top of a legal document. */
+.legal .legal-summary {
+  margin-top: 28px;
+  padding: 22px 24px 24px;
+  border-radius: var(--radius-lg);
+  background: var(--stone-50);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-soft);
+}
+.legal .legal-summary h2 {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  font-size: 1.05rem;
+}
+.legal .legal-summary li {
+  color: var(--ink);
+}

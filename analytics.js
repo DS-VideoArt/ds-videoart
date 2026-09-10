@@ -22,7 +22,7 @@
   const MEASUREMENT_ID = "G-7VK30G4GVC";
 
   const CONSENT_KEY = "dsc_consent_v1";
-  const PRIVACY_URL = "/legal/privacy.html";
+  const PRIVACY_URL = "/privacy";
   const ALLOWED_PARAMS = ["service_type", "step_number", "step_name", "custom_quote", "maintenance_plan", "setup_total"];
   const MAX_QUEUE = 30;
 

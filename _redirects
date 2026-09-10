@@ -7,3 +7,8 @@
 /fb-a1-h1  /builder/?utm_source=facebook&utm_medium=organic_social&utm_campaign=architects_interior_designers&utm_content=ad01_h1  302
 /ig-440a1-h2  /builder/?utm_source=instagram&utm_medium=organic_social&utm_campaign=landing_page_440&utm_content=ad01_h2  302
 /fb-440a1-h2  /builder/?utm_source=facebook&utm_medium=organic_social&utm_campaign=landing_page_440&utm_content=ad01_h2  302
+
+# Privacy policy: one canonical URL. The old path and the .html form redirect permanently.
+/legal/privacy.html  /privacy  301
+/privacy.html        /privacy  301!
+/privacy/            /privacy  301
