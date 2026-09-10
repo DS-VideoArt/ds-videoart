@@ -12,3 +12,5 @@
 /legal/privacy.html  /privacy  301
 /privacy.html        /privacy  301!
 /privacy/            /privacy  301
+/legal/privacy       /privacy  301
+/legal/privacy/      /privacy  301
