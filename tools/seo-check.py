@@ -15,6 +15,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "qr.html": ("noindex, follow", None, False),
     "hub/index.html": ("index, follow", True, False),
     "hub/do-you-need-a-website.html": ("index, follow", True, False),
+    "hub/landing-page-or-business-website.html": ("index, follow", True, False),
 }
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging."]
 CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
@@ -61,7 +62,7 @@ for page, (robots, h1, jsonld) in PAGES.items():
 # card.html is a noindex digital business card whose visible copy still lists the old DS VideoArt areas (documented, not an SEO surface).
 EXEMPT = {"card.html": {"DS VideoArt"}}
 # Content Hub schema checks
-for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
+for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/landing-page-or-business-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
     s = read(page); blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
     if len(blocks) != 1: fails.append(f"{page}: JSON-LD blocks {len(blocks)}")
     else:
@@ -88,12 +89,19 @@ def exists(path):
     p = path.lstrip("/")
     cands = [p, p + ".html", os.path.join(p, "index.html")] if p else ["index.html"]
     return any(os.path.exists(os.path.join(root, c)) for c in cands)
-for page in ("index.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html"):
+for page in ("index.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html"):
     base = os.path.dirname(page)
     for href in re.findall(r'href="([^"]+)"', read(page)):
         if href.startswith("#") or href.startswith(("http", "mailto:", "tel:")): continue
         target = href if href.startswith("/") else "/" + os.path.normpath(os.path.join(base, href)).lstrip("./")
         if not exists(target): fails.append(f"{page}: broken internal link {href} -> {target}")
+# Content Hub cross-links between the two live articles
+a1 = read("hub/do-you-need-a-website.html"); a2 = read("hub/landing-page-or-business-website.html")
+if 'href="/hub/landing-page-or-business-website"' not in a1: fails.append("article 01 does not link to article 02")
+if 'href="/hub/do-you-need-a-website"' not in a2: fails.append("article 02 does not link to article 01")
+home = read("index.html")
+if home.count('golondon-desktop.jpg') != 1 or 'id="complex"' not in home: fails.append("homepage: GoLondon must appear once, inside #complex")
+if 'פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית' not in home: fails.append("homepage: complex-project disclaimer missing")
 # sitemap
 sm = read("sitemap.xml"); locs = re.findall(r"<loc>(.*?)</loc>", sm)
 for u in locs:

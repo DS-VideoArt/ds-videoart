@@ -26,3 +26,5 @@ http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
 # Content Hub: one canonical form per article (no .html, no trailing slash).
 /hub/do-you-need-a-website.html  /hub/do-you-need-a-website  301!
 /hub/do-you-need-a-website/      /hub/do-you-need-a-website  301
+/hub/landing-page-or-business-website.html  /hub/landing-page-or-business-website  301!
+/hub/landing-page-or-business-website/      /hub/landing-page-or-business-website  301

@@ -14,6 +14,7 @@
 | / | INDEX | index, follow, max-image-preview:large | https://dscreative.co.il/ | ב-sitemap |
 | /hub/ | INDEX | index, follow, max-image-preview:large | https://dscreative.co.il/hub/ | מרכז התוכן, ב-sitemap |
 | /hub/do-you-need-a-website | INDEX | index, follow, max-image-preview:large | self | מאמר 01, ב-sitemap. ראו CONTENT-HUB.md |
+| /hub/landing-page-or-business-website | INDEX | index, follow, max-image-preview:large | self | מאמר 02, ב-sitemap |
 | /builder/ | NOINDEX | noindex, follow | https://dscreative.co.il/builder/ | אשף; התוכן נטען ב-JavaScript, ואינו תוצאת חיפוש עצמאית טובה. דף הבית הוא נקודת הכניסה |
 | /privacy | LEGAL | index, follow | https://dscreative.co.il/privacy | כתובת פרטיות קבועה (גם ל-Meta ול-LinkedIn) |
 | /legal/terms | LEGAL | index, follow | https://dscreative.co.il/legal/terms | הצורה עם .html מפנה 301 |
