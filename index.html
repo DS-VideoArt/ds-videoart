@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>דפי נחיתה ואתרי תדמית לעסקים | DS Creative Studio</title>
-  <meta name="description" content="DS Creative Studio בונה דפי נחיתה ואתרי תדמית לעסקים. דף נחיתה 440 ₪, אתר תדמית החל מ־1,290 ₪. תשלום חד-פעמי, מחיר ברור מראש, ואפשר להתחיל לבד באתר בכמה דקות.">
+  <title>DS Creative Studio | דפי נחיתה ואתרי תדמית לעסקים</title>
+  <meta name="description" content="DS Creative Studio, סטודיו לדפי נחיתה ולאתרי תדמית לעסקים. יודעים מראש מה מקבלים וכמה משלמים: דף נחיתה 440 ₪, אתר תדמית החל מ־1,290 ₪, תשלום חד-פעמי, ואפשר להתחיל לבד באתר בכמה דקות.">
   <link rel="canonical" href="https://dscreative.co.il/">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#2a2230">
 
   <meta property="og:type" content="website">
   <meta property="og:locale" content="he_IL">
   <meta property="og:site_name" content="DS Creative Studio">
   <meta property="og:url" content="https://dscreative.co.il/">
-  <meta property="og:title" content="דפי נחיתה ואתרי תדמית לעסקים | DS Creative Studio">
+  <meta property="og:title" content="DS Creative Studio | דפי נחיתה ואתרי תדמית לעסקים">
   <meta property="og:description" content="אתר לעסק שלכם, בלי פרויקט על הראש. דף נחיתה 440 ₪, אתר תדמית החל מ־1,290 ₪. תשלום חד-פעמי, ללא מנוי חודשי חובה.">
   <meta property="og:image" content="https://dscreative.co.il/assets/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="DS Creative Studio: אתר לעסק שלכם, בלי פרויקט על הראש. דף נחיתה 440 ₪, אתר תדמית החל מ־1,290 ₪">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="דפי נחיתה ואתרי תדמית לעסקים | DS Creative Studio">
+  <meta name="twitter:title" content="DS Creative Studio | דפי נחיתה ואתרי תדמית לעסקים">
   <meta name="twitter:description" content="אתר לעסק שלכם, בלי פרויקט על הראש. מחיר ברור מראש, תהליך מסודר, בלי הפתעות.">
   <meta name="twitter:image" content="https://dscreative.co.il/assets/og.jpg">
 
@@ -35,15 +36,46 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "DS Creative Studio",
-    "url": "https://dscreative.co.il/",
-    "telephone": "+972548203022",
-    "areaServed": "IL",
-    "description": "סטודיו לדפי נחיתה ולאתרי תדמית לעסקים. מחיר ברור מראש, תשלום חד-פעמי, תהליך מסודר.",
-    "makesOffer": [
-      { "@type": "Offer", "name": "דף נחיתה", "price": "440", "priceCurrency": "ILS" },
-      { "@type": "Offer", "name": "אתר תדמית", "price": "1290", "priceCurrency": "ILS" }
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://dscreative.co.il/#organization",
+        "name": "DS Creative Studio",
+        "url": "https://dscreative.co.il/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://dscreative.co.il/icons/icon-512.png",
+          "width": 512,
+          "height": 512
+        },
+        "image": "https://dscreative.co.il/assets/og.jpg",
+        "description": "סטודיו לדפי נחיתה ולאתרי תדמית לעסקים. יודעים מראש מה מקבלים, יודעים מראש כמה משלמים, ואנחנו דואגים לכל השאר.",
+        "telephone": "+972548203022",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+972548203022",
+          "contactType": "customer service",
+          "availableLanguage": ["he"]
+        },
+        "areaServed": "IL",
+        "sameAs": [
+          "https://www.facebook.com/p/DS-Creative-Studio-61593417119660/",
+          "https://www.instagram.com/dscreative_studio/",
+          "https://www.linkedin.com/company/ds-creative-studio/"
+        ],
+        "makesOffer": [
+          { "@type": "Offer", "name": "דף נחיתה, החבילה הבסיסית", "price": "440", "priceCurrency": "ILS", "url": "https://dscreative.co.il/#pricing" },
+          { "@type": "Offer", "name": "אתר תדמית, החבילה הבסיסית (עד 3 עמודים)", "price": "1290", "priceCurrency": "ILS", "url": "https://dscreative.co.il/#pricing" }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://dscreative.co.il/#website",
+        "name": "DS Creative Studio",
+        "url": "https://dscreative.co.il/",
+        "inLanguage": "he-IL",
+        "publisher": { "@id": "https://dscreative.co.il/#organization" }
+      }
     ]
   }
   </script>

@@ -14,3 +14,11 @@
 /privacy/            /privacy  301
 /legal/privacy       /privacy  301
 /legal/privacy/      /privacy  301
+
+# One public host only: the Netlify default subdomain redirects to the custom domain.
+https://ds-videoart.netlify.app/*  https://dscreative.co.il/:splat  301!
+http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
+
+# Legal pages: extensionless canonical URLs (the site links to them this way).
+/legal/terms.html          /legal/terms          301!
+/legal/accessibility.html  /legal/accessibility  301!
