@@ -1,3 +1,7 @@
+# One public host only: the Netlify default subdomain redirects to the custom domain.
+https://ds-videoart.netlify.app/*  https://dscreative.co.il/:splat  301!
+http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
+
 # Short campaign links (302 so the target can change later without permanent caching)
 /ig-a1  /builder/?utm_source=instagram&utm_medium=organic_social&utm_campaign=architects_interior_designers&utm_content=ad01_h2  302
 /fb-a1  /builder/?utm_source=facebook&utm_medium=organic_social&utm_campaign=architects_interior_designers&utm_content=ad01_h2  302
@@ -14,10 +18,6 @@
 /privacy/            /privacy  301
 /legal/privacy       /privacy  301
 /legal/privacy/      /privacy  301
-
-# One public host only: the Netlify default subdomain redirects to the custom domain.
-https://ds-videoart.netlify.app/*  https://dscreative.co.il/:splat  301!
-http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
 
 # Legal pages: extensionless canonical URLs (the site links to them this way).
 /legal/terms.html          /legal/terms          301!
