@@ -21,11 +21,8 @@
   --border: rgba(21, 23, 28, 0.1);
   --border-strong: rgba(21, 23, 28, 0.2);
 
-  /* pulled straight from the live site's own palette (site.css),
-     so the card's two service colors match the real brand instead
-     of a leftover multi-brand rainbow */
-  --service-landing: #b8582f;  /* --terracotta */
-  --service-site: #d6a46c;     /* --copper */
+  /* pulled straight from the live site's own copper (site.css) */
+  --service-site: #d6a46c;
 
   --shadow-accent: 0 3px 14px rgba(21, 23, 28, 0.14);
 }
@@ -75,11 +72,10 @@ body[data-room="card"] {
 }
 
 .card-logo {
-  width: 100%;
-  max-width: 340px;
-  height: auto;
+  width: 168px;
+  height: 168px;
   object-fit: contain;
-  border-radius: var(--radius-lg);
+  border-radius: 28px;
   box-shadow: 0 10px 30px -8px rgba(21, 23, 28, 0.28);
 }
 
@@ -188,57 +184,6 @@ body[data-room="card"] {
   flex: 1;
   height: 1px;
   background: var(--border);
-}
-
-/* ============================================================
-   Domain list: a clean, printed-card style list of DS's
-   creative disciplines, each row marked with a slim colored
-   rule plus the faintest wash of that same color, the way a
-   nice card uses ink and paper stock rather than app icons.
-   Informational only, not links: no button chrome, no hover.
-   ============================================================ */
-
-.domain-list {
-  width: 100%;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.domain-item {
-  position: relative;
-  padding: 12px 14px;
-  border-inline-start: 3px solid var(--room-color, var(--accent));
-  border-start-end-radius: 10px;
-  border-end-end-radius: 10px;
-  text-align: start;
-  background: color-mix(in srgb, var(--room-color, var(--accent)) 9%, var(--bg-elevated));
-}
-
-.domain-item[data-room="landing"] { --room-color: var(--service-landing); }
-.domain-item[data-room="site"] { --room-color: var(--service-site); }
-
-.domain-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.domain-name {
-  font-size: 0.96rem;
-  font-weight: 900;
-  color: color-mix(in srgb, var(--room-color, var(--text-primary)) 55%, var(--text-primary));
-  letter-spacing: 0.01em;
-}
-
-.domain-tag {
-  font-size: 0.8rem;
-  font-weight: 300;
-  color: var(--text-muted);
-  line-height: 1.5;
 }
 
 /* ============================================================
