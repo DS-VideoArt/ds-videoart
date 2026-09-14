@@ -21,10 +21,11 @@
   --border: rgba(21, 23, 28, 0.1);
   --border-strong: rgba(21, 23, 28, 0.2);
 
-  --room-videoart: #d9765a;
-  --room-web: #4a8fb5;
-  --room-lab: #5fa87a;
-  --room-creative: #b06ba8;
+  /* pulled straight from the live site's own palette (site.css),
+     so the card's two service colors match the real brand instead
+     of a leftover multi-brand rainbow */
+  --service-landing: #b8582f;  /* --terracotta */
+  --service-site: #d6a46c;     /* --copper */
 
   --shadow-accent: 0 3px 14px rgba(21, 23, 28, 0.14);
 }
@@ -217,10 +218,8 @@ body[data-room="card"] {
   background: color-mix(in srgb, var(--room-color, var(--accent)) 9%, var(--bg-elevated));
 }
 
-.domain-item[data-room="videoart"] { --room-color: var(--room-videoart); }
-.domain-item[data-room="web"] { --room-color: var(--room-web); }
-.domain-item[data-room="lab"] { --room-color: var(--room-lab); }
-.domain-item[data-room="creative"] { --room-color: var(--room-creative); }
+.domain-item[data-room="landing"] { --room-color: var(--service-landing); }
+.domain-item[data-room="site"] { --room-color: var(--service-site); }
 
 .domain-text {
   display: flex;
@@ -244,8 +243,9 @@ body[data-room="card"] {
 
 /* ============================================================
    Final CTA: a single, quiet, well-made button, ink-dark like
-   a foil-stamped card edge, with a hairline four-color rule
-   tucked along its top as the only flourish.
+   a foil-stamped card edge, with the site's own copper hairline
+   (see .copper-rule in site.css) tucked along its top as the
+   only flourish.
    ============================================================ */
 
 .cta-full-site {
@@ -274,14 +274,9 @@ body[data-room="card"] {
   position: absolute;
   top: 0;
   inset-inline: 0;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    var(--room-videoart),
-    var(--room-web) 38%,
-    var(--room-lab) 65%,
-    var(--room-creative) 100%
-  );
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--service-site) 30%, var(--service-site) 70%, transparent);
+  opacity: 0.8;
 }
 
 .cta-full-site:hover {
@@ -336,7 +331,7 @@ body[data-room="card"] {
 .ds-splash-media {
   position: absolute;
   inset: -4%;
-  background: url("hub-media/image/splash.jpg?v=20260719b") center / cover no-repeat;
+  background: url("assets/card-splash.jpg?v=20260914a") center / cover no-repeat;
   animation: dsSplashZoom 3.4s ease-out forwards;
 }
 
