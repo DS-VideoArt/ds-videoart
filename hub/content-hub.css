@@ -74,33 +74,28 @@
 .article-body ol li::before { content: counter(item); position: absolute; inset-inline-start: 0; top: 0.2em; width: 26px; height: 26px; border-radius: 50%; background: var(--terracotta); color: #fff; font-size: 0.85rem; font-weight: 800; display: grid; place-items: center; }
 .article-body ul li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.72em; width: 8px; height: 8px; border-radius: 50%; background: var(--terracotta); }
 .article-body .pull {
-  margin: clamp(28px, 4vw, 40px) 0; padding: 18px 24px;
+  margin: clamp(26px, 4vw, 40px) 0; padding: 4px 22px;
   border-inline-start: 3px solid var(--terracotta);
-  background: linear-gradient(90deg, rgba(184, 88, 47, 0.06), transparent 70%);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
-[dir="rtl"] .article-body .pull { border-radius: var(--radius-md) 0 0 var(--radius-md); background: linear-gradient(270deg, rgba(184, 88, 47, 0.06), transparent 70%); }
-.article-body .pull p { margin: 0; font-size: clamp(1.15rem, 1.6vw, 1.35rem); font-weight: 700; line-height: 1.5; }
+.article-body .pull p { margin: 0; font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 700; line-height: 1.5; color: var(--ink); }
 .article-body .pull p + p { margin-top: 10px; }
 .article-body a { color: var(--terracotta-deep); text-decoration: underline; text-underline-offset: 3px; }
 .article-body a:hover, .article-body a:focus-visible { color: var(--ink); }
 
-/* restrained closing call to action */
+/* closing call to action: a quiet conclusion on a sand surface, not a dark sales block */
 .article-cta {
-  margin-top: clamp(48px, 7vw, 72px);
-  padding: clamp(26px, 4vw, 40px);
+  margin-top: clamp(44px, 7vw, 72px);
+  padding: clamp(22px, 4vw, 40px);
   border-radius: var(--radius-lg);
   background:
-    radial-gradient(700px 320px at 100% 0%, rgba(214, 164, 108, 0.22), transparent 60%),
-    radial-gradient(500px 300px at 0% 100%, rgba(184, 88, 47, 0.2), transparent 60%),
-    var(--plum-800);
-  color: var(--on-dark-70);
-  box-shadow: var(--shadow-lift);
+    radial-gradient(600px 300px at 100% 0%, rgba(214, 164, 108, 0.28), transparent 60%),
+    linear-gradient(180deg, var(--stone-200), var(--stone-100));
+  border: 1px solid var(--line);
+  color: var(--ink-70);
 }
-.article-cta h2 { color: var(--on-dark); font-size: clamp(1.4rem, 2.4vw, 1.9rem); font-weight: 800; letter-spacing: -0.015em; }
-.article-cta p { margin-top: 12px; max-width: 58ch; line-height: 1.7; }
-.article-cta .btn { margin-top: 22px; }
-.article-cta .btn-primary:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+.article-cta h2 { color: var(--ink); font-size: clamp(1.3rem, 2.2vw, 1.75rem); font-weight: 800; letter-spacing: -0.015em; line-height: 1.2; }
+.article-cta p { margin-top: 10px; max-width: 58ch; line-height: 1.65; }
+.article-cta .btn { margin-top: 20px; }
 
 /* future related-articles area: stays empty until a second article exists */
 .related { margin-top: clamp(48px, 7vw, 72px); }
@@ -112,8 +107,31 @@
   .hub-card figure { aspect-ratio: 16 / 9; }
 }
 @media (max-width: 560px) {
-  .article-cta .btn { width: 100%; }
-  .article-body .pull { padding: 14px 18px; }
+  /* less vertical UI before the first sentence, calmer reading rhythm */
+  .hub-page, .article-page { padding-top: calc(var(--nav-h) + 18px); padding-bottom: 64px; }
+  .crumbs { font-size: 0.82rem; margin-bottom: 16px; }
+  .crumbs [aria-current="page"] { display: none; }   /* the H1 right below repeats it */
+  .article-head .kicker { font-size: 0.85rem; margin-bottom: 12px; }
+  .article-head h1 { font-size: 1.95rem; line-height: 1.12; }
+  .article-meta { margin-top: 12px; font-size: 0.85rem; }
+  .article-hero { margin-top: 22px; border: 0; box-shadow: 0 14px 34px -22px rgba(42, 34, 48, 0.35); border-radius: var(--radius-md); }
+  .article-body { margin-top: 28px; }
+  .article-body p, .article-body li { font-size: 1.0625rem; line-height: 1.7; }
+  .article-body p { margin-top: 14px; }
+  .article-body p.opening { font-size: 1.15rem; line-height: 1.6; }
+  .article-body h2 { margin-top: 34px; padding-top: 10px; font-size: 1.35rem; }
+  .article-body ol li { padding-inline-start: 34px; }
+  .article-body ol li::before { width: 22px; height: 22px; font-size: 0.78rem; }
+  .article-body .pull { margin: 22px 0; padding: 2px 16px; }
+  .article-body .pull p { font-size: 1.08rem; }
+  .article-cta { margin-top: 40px; padding: 22px 20px 24px; }
+  .article-cta .btn { width: 100%; min-height: 50px; }
+  .hub-head { margin-bottom: 32px; }
+  .hub-head h1 { font-size: 2rem; }
+  .hub-head .lead { margin-top: 12px; font-size: 1.02rem; }
+  .hub-card { padding: 14px 14px 20px; gap: 16px; }
+  .hub-card p { margin-top: 10px; }
+  .hub-card .meta { margin-top: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hub-card, .hub-card .more::after { transition: none; }
