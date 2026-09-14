@@ -13,9 +13,11 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "404.html": ("noindex, follow", True, False),
     "card.html": ("noindex, follow", None, False),
     "qr.html": ("noindex, follow", None, False),
+    "hub/index.html": ("index, follow", True, False),
+    "hub/do-you-need-a-website.html": ("index, follow", True, False),
 }
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging."]
-CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers"]
+CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
 def count(pat, s): return len(re.findall(pat, s))
@@ -58,6 +60,21 @@ for page, (robots, h1, jsonld) in PAGES.items():
         if "DS Creative Studio" not in re.search(r"<title>(.*?)</title>", head).group(1): fails.append("index: brand not in title")
 # card.html is a noindex digital business card whose visible copy still lists the old DS VideoArt areas (documented, not an SEO surface).
 EXEMPT = {"card.html": {"DS VideoArt"}}
+# Content Hub schema checks
+for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
+    s = read(page); blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
+    if len(blocks) != 1: fails.append(f"{page}: JSON-LD blocks {len(blocks)}")
+    else:
+        d = json.loads(blocks[0]); types = {g.get("@type") for g in d.get("@graph", [])}
+        if not want <= types: fails.append(f"{page}: JSON-LD types {types} missing {want - types}")
+        for g in d.get("@graph", []):
+            if g.get("@type") == "Article":
+                for k in ("headline", "description", "url", "mainEntityOfPage", "inLanguage", "datePublished", "dateModified", "image", "publisher"):
+                    if k not in g: fails.append(f"{page}: Article missing {k}")
+                if g.get("url") != re.search(r'<link rel="canonical" href="([^"]*)"', s).group(1): fails.append(f"{page}: Article url != canonical")
+    for img in re.findall(r'<img[^>]+>', s):
+        if 'alt=' not in img: fails.append(f"{page}: img without alt")
+        if ('width=' not in img or 'height=' not in img): fails.append(f"{page}: img without dimensions")
 for f in CORE_TEXT:
     s = read(f)
     for bad in FORBIDDEN:
@@ -71,7 +88,7 @@ def exists(path):
     p = path.lstrip("/")
     cands = [p, p + ".html", os.path.join(p, "index.html")] if p else ["index.html"]
     return any(os.path.exists(os.path.join(root, c)) for c in cands)
-for page in ("index.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html"):
+for page in ("index.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html"):
     base = os.path.dirname(page)
     for href in re.findall(r'href="([^"]+)"', read(page)):
         if href.startswith("#") or href.startswith(("http", "mailto:", "tel:")): continue
@@ -82,6 +99,10 @@ sm = read("sitemap.xml"); locs = re.findall(r"<loc>(.*?)</loc>", sm)
 for u in locs:
     if not u.startswith("https://dscreative.co.il/"): fails.append(f"sitemap: non canonical {u}")
     if u.endswith(".html"): fails.append(f"sitemap: .html url {u}")
+    path = u.replace("https://dscreative.co.il", "")
+    p = path.lstrip("/")
+    if not any(os.path.exists(os.path.join(root, c)) for c in ([p, p + ".html", os.path.join(p, "index.html")] if p else ["index.html"])): fails.append(f"sitemap: file missing for {u}")
+    if p in redirect_sources: fails.append(f"sitemap: redirected url {u}")
 if len(locs) != len(set(locs)): fails.append("sitemap: duplicates")
 rb = read("robots.txt")
 if "Sitemap: https://dscreative.co.il/sitemap.xml" not in rb or "Disallow" in rb: fails.append("robots.txt unexpected")

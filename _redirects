@@ -22,3 +22,7 @@ http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
 # Legal pages: extensionless canonical URLs (the site links to them this way).
 /legal/terms.html          /legal/terms          301!
 /legal/accessibility.html  /legal/accessibility  301!
+
+# Content Hub: one canonical form per article (no .html, no trailing slash).
+/hub/do-you-need-a-website.html  /hub/do-you-need-a-website  301!
+/hub/do-you-need-a-website/      /hub/do-you-need-a-website  301

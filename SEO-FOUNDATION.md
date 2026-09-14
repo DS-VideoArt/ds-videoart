@@ -11,7 +11,9 @@
 ## מלאי כתובות ומדיניות אינדוקס
 | כתובת | סיווג | robots | canonical | הערה |
 |---|---|---|---|---|
-| / | INDEX | index, follow, max-image-preview:large | https://dscreative.co.il/ | העמוד היחיד ב-sitemap |
+| / | INDEX | index, follow, max-image-preview:large | https://dscreative.co.il/ | ב-sitemap |
+| /hub/ | INDEX | index, follow, max-image-preview:large | https://dscreative.co.il/hub/ | מרכז התוכן, ב-sitemap |
+| /hub/do-you-need-a-website | INDEX | index, follow, max-image-preview:large | self | מאמר 01, ב-sitemap. ראו CONTENT-HUB.md |
 | /builder/ | NOINDEX | noindex, follow | https://dscreative.co.il/builder/ | אשף; התוכן נטען ב-JavaScript, ואינו תוצאת חיפוש עצמאית טובה. דף הבית הוא נקודת הכניסה |
 | /privacy | LEGAL | index, follow | https://dscreative.co.il/privacy | כתובת פרטיות קבועה (גם ל-Meta ול-LinkedIn) |
 | /legal/terms | LEGAL | index, follow | https://dscreative.co.il/legal/terms | הצורה עם .html מפנה 301 |
@@ -27,7 +29,7 @@
 נשארים index, follow (אין נזק, ומדיניות הפרטיות חייבת להיות נגישה כ-URL רשמי). אינם ב-sitemap ואינם חלק מאשכולות תוכן.
 
 ## sitemap.xml
-מכיל רק כתובות שרוצים באינדקס, כרגע דף הבית בלבד. כל כתובת חייבת להיות קנונית, ציבורית, 200, ללא הפניה וללא noindex.
+מכיל רק כתובות שרוצים באינדקס: דף הבית, /hub/ והמאמרים. כל כתובת חייבת להיות קנונית, ציבורית, 200, ללא הפניה וללא noindex.
 הרחבה עתידית ל-Content Hub: כל מאמר מתפרסם ככתובת קבועה `/hub/<slug>` (קובץ `hub/<slug>.html` או `hub/<slug>/index.html`), עם title ו-description ייחודיים, canonical עצמי, robots index, JSON-LD מסוג Article (headline, datePublished, dateModified, author, publisher ← Organization @id, image) ו-BreadcrumbList, קישורים פנימיים לדף הבית ולמאמרים קרובים, והוספת `<url>` ל-sitemap עם lastmod. עמוד אינדקס `/hub/` ייכנס ל-sitemap רק כשיש בו לפחות מאמר אחד. אין ליצור קטגוריות ריקות. מומלץ סקריפט קטן שמייצר את ה-sitemap מרשימת המאמרים כדי למנוע טעויות ידניות.
 
 ## סכמות
