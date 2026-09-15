@@ -31,7 +31,7 @@
       business: { businessName: "", contactName: "", phone: "", email: "", category: "", categoryOther: "", about: "" },
       goals: [], goalOther: "",
       landing: { offer: "", audience: "", cta: "" },
-      site: { pages: "", extraPages: { normal: 0, long: 0, special: 0, unknown: false }, features: [], featuresOther: "" },
+      site: { pages: "", pageKinds: [], pageOther: "", features: [] },
       addons: {},                 // { catalogId: quantity }
       addonNotes: {},             // { catalogId: free text }
       content: { service: "", pages: 0 },     // pages 0 = not set yet, defaults to the site estimate
@@ -57,7 +57,12 @@
       merged.business = Object.assign(defaultState().business, s.business || {});
       merged.landing = Object.assign(defaultState().landing, s.landing || {});
       merged.site = Object.assign(defaultState().site, s.site || {});
-      merged.site.extraPages = Object.assign(defaultState().site.extraPages, (s.site && s.site.extraPages) || {});
+      /* saved states from the old 3-page model are reset to the current options */
+      if (!P.byId(P.pageOptions, merged.site.pages)) merged.site.pages = "";
+      merged.site.pageKinds = (Array.isArray(merged.site.pageKinds) ? merged.site.pageKinds : []).filter((k) => P.byId(P.pageKinds, k));
+      merged.site.features = (Array.isArray(merged.site.features) ? merged.site.features : []).filter((f) => P.byId(P.includedFeatures, f));
+      merged.site.pageOther = typeof merged.site.pageOther === "string" ? merged.site.pageOther : "";
+      delete merged.site.extraPages; delete merged.site.featuresOther;
       merged.materials = Object.assign(defaultState().materials, s.materials || {});
       merged.hosting = Object.assign(defaultState().hosting, s.hosting || {});
       merged.content = Object.assign(defaultState().content, s.content || {});
@@ -140,7 +145,7 @@
     "business": "על העסק",
     "goal": "מה הדבר העיקרי שאתם רוצים שהמבקר יעשה?",
     "landing-offer": "על דף הנחיתה",
-    "site-scope": "כמה עמודים יהיו באתר?",
+    "site-scope": "אילו עמודים יהיו באתר?",
     "site-features": "מה תרצו באתר?",
     "extras": "מה עוד תרצו?",
     "materials": "מה כבר יש לכם ביד",
@@ -249,12 +254,12 @@
     { id: "read", label: "לקרוא על העסק והשירותים" }, { id: "visit", label: "להגיע לעסק" }, { id: "other", label: "משהו אחר" }
   ];
 
-  /* pages the client expects, incl. the 3 included ones */
+  /* pages the client expects: the pages they picked, else a sensible figure for the size they chose */
   function totalPagesEstimate(st) {
     if (st.type !== "site") return 1;
-    const bp = st.site.extraPages || {};
-    const extra = (Number(bp.normal) || 0) + (Number(bp.long) || 0) + (Number(bp.special) || 0);
-    return Math.max(1, P.services.site.includedPages + extra);
+    const picked = (st.site.pageKinds || []).length;
+    if (picked > 0) return picked;
+    return { upto6: P.services.site.includedPages, "7to10": 7, over10: 10 }[st.site.pages] || 1;
   }
 
   const render = {
@@ -263,7 +268,7 @@
       return `<p class="step-lead">שני שירותים, אותה רמת איכות. ההבדל הוא היקף העבודה.</p>
       ${cards({ name: "type", selected: state.type, cls: "services", options: [
         { id: "landing", label: svc.landing.name, hint: svc.landing.short, badge: P.formatPrice(svc.landing.basePrice), badgeKind: "price", icon: ICONS.landing },
-        { id: "site", label: svc.site.name, hint: svc.site.short + " המחיר כולל עד 3 עמודים.", badge: "החל מ־" + P.formatPrice(svc.site.basePrice), badgeKind: "price", icon: ICONS.site },
+        { id: "site", label: svc.site.name, hint: svc.site.short + " המחיר כולל עד 6 עמודי תוכן סטנדרטיים.", badge: "החל מ־" + P.formatPrice(svc.site.basePrice), badgeKind: "price", icon: ICONS.site },
         { id: "unsure", label: "אני עדיין לא בטוח", hint: "נעזור לכם להחליט", icon: ICONS.unsure }
       ] })}
       <p class="bf-err" id="type-err"></p>
@@ -272,9 +277,9 @@
       <div class="compare" aria-label="השוואה קצרה בין השירותים">
         <div class="cmp-row head"><span>בקצרה</span><strong>${esc(svc.landing.name)}</strong><strong>${esc(svc.site.name)}</strong></div>
         <div class="cmp-row"><span>מתאים ל</span><em>שירות אחד, קמפיין, או התחלה בקטן</em><em>עסק שרוצה להציג כמה נושאים ולהופיע בגוגל בכמה חיפושים</em></div>
-        <div class="cmp-row"><span>מה מקבלים</span><em>עמוד אחד ממוקד עם עד 6 עד 7 אזורי תוכן</em><em>עד 3 עמודים עם תפריט. אפשר להוסיף עמודים לפי מחירון ברור</em></div>
+        <div class="cmp-row"><span>מה מקבלים</span><em>עמוד אחד ממוקד עם עד 6 עד 7 אזורי תוכן</em><em>עד 6 עמודי תוכן סטנדרטיים עם תפריט. 7 ומעלה מתומחרים לאחר אפיון</em></div>
         <div class="cmp-row"><span>מסירה</span><em>עד ${svc.landing.deliveryDays} ימי עסקים</em><em>עד ${svc.site.deliveryDays} ימי עסקים</em></div>
-        <div class="cmp-row"><span>מחיר</span><em>${P.formatPrice(svc.landing.basePrice)}, ${esc(svc.landing.priceNote).toLowerCase()}</em><em>החל מ־${P.formatPrice(svc.site.basePrice)}, כולל עד 3 עמודים</em></div>
+        <div class="cmp-row"><span>מחיר</span><em>${P.formatPrice(svc.landing.basePrice)}, ${esc(svc.landing.priceNote).toLowerCase()}</em><em>החל מ־${P.formatPrice(svc.site.basePrice)}, כולל עד 6 עמודי תוכן סטנדרטיים</em></div>
       </div>
       </details>
       <div class="unsure-box" id="unsureBox" ${state.type === "unsure" ? "" : "hidden"}>
@@ -341,33 +346,28 @@
       const svc = P.services.site;
       const s = state.site;
       const pg = P.byId(P.pageOptions, s.pages);
-      const showBreakdown = !!(pg && !pg.custom && pg.extraMax !== 0);
-      const bp = s.extraPages;
       return `<div class="included-box">
-        <div class="ib-head"><strong>${esc(svc.name)}</strong><span>החל מ־${P.formatPrice(svc.basePrice)} · תשלום חד-פעמי</span></div>
+        <div class="ib-head"><strong>${esc(svc.name)}</strong><span>החל מ־${P.formatPrice(svc.basePrice)} · תשלום חד פעמי</span></div>
         <p class="ib-note">${esc(svc.includedNote)}</p>
         <details class="ib-details"><summary>מה כלול במחיר הבסיס</summary><ul>${svc.includes.map((i) => `<li>${esc(i)}</li>`).join("")}</ul></details>
+        <details class="ib-details"><summary>מה נחשב עמוד תוכן סטנדרטי?</summary><p>${esc(P.copy.standardPage)}</p></details>
       </div>
       <div class="bf-field">
-        <span class="bf-label">כמה עמודים אתם מעריכים שתצטרכו? ${req}</span>
-        ${cards({ name: "pages", selected: s.pages, options: P.pageOptions.map((o) => ({ id: o.id, label: o.label, hint: o.hint })) })}
+        <span class="bf-label">כמה עמודי תוכן אתם מעריכים שתצטרכו? ${req}</span>
+        ${cards({ name: "pages", selected: s.pages, options: P.pageOptions.map((o) => ({ id: o.id, label: o.label, hint: o.hint, badge: o.included ? "כלול" : (o.custom ? "לאחר אפיון" : ""), badgeKind: o.included ? "ok" : "review" })) })}
         <p class="bf-err" id="pages-err"></p>
+        <div class="scope-msg" id="overSixMsg" ${pg && pg.custom ? "" : "hidden"}>${esc(P.copy.overSix)}</div>
+        <div class="scope-msg soft" id="unknownMsg" ${pg && pg.unknown ? "" : "hidden"}>${esc(P.copy.pagesUnknownNote)}</div>
       </div>
-      <div class="breakdown" id="extraPagesBox" ${showBreakdown ? "" : "hidden"}>
-        <h2 class="group-title">אילו עמודים נוספים תצטרכו?</h2>
-        <p class="group-lead" id="breakdownLead">${esc(P.copy.biggerScope)} <span id="rangeHint"></span></p>
-        <div class="page-types" id="pageTypes">${P.pageTypes.map((t) => `
-          <div class="page-type">
-            <div class="pt-body"><strong>${esc(t.label)}</strong><span>${esc(t.description)}</span><em>${P.formatPrice(t.price)} לעמוד</em></div>
-            <div class="qty">
-              <button type="button" class="qty-btn" data-page="${t.id}" data-qty="-1" aria-label="פחות">−</button>
-              <input type="number" id="pages-${t.id}" data-page="${t.id}" min="0" max="20" value="${Number(bp[t.id]) || 0}" aria-label="כמות: ${esc(t.label)}">
-              <button type="button" class="qty-btn" data-page="${t.id}" data-qty="1" aria-label="יותר">+</button>
-            </div>
-          </div>`).join("")}</div>
-        <label class="ack"><input type="checkbox" id="pagesUnknown" ${bp.unknown ? "checked" : ""}><span>עדיין לא יודע אילו סוגי עמודים. נחליט יחד ותקבלו מחיר מותאם.</span></label>
-        <p class="bf-err" id="breakdown-err"></p>
-        <div class="scope-msg" id="over10Msg" ${pg && pg.customByDefault ? "" : "hidden"}>יותר מ־10 עמודים: נכין לכם מחיר מותאם. המשיכו למלא את הפרטים כדי שנוכל לתמחר במדויק.</div>
+      <div class="bf-field">
+        <span class="bf-label">אילו עמודים תרצו?</span>
+        <p class="bf-hint">לא חובה, אפשר להחליט יחד. בחרו את סוגי העמודים שמתאימים לעסק שלכם: עד 6 עמודי תוכן סטנדרטיים כלולים במחיר הבסיס, בלי תוספת.</p>
+        ${cards({ name: "pageKinds", selected: s.pageKinds, multi: true, options: P.pageKinds.map((k) => ({ id: k.id, label: k.label })) })}
+        <p class="step-note" id="kindCount"></p>
+        <div id="pageOtherWrap" ${s.pageKinds.includes("other") ? "" : "hidden"}>
+          ${field("pageOther", "איזה עמוד?", `<input id="pageOther" data-path="site.pageOther" type="text" value="${esc(s.pageOther)}" placeholder="למשל: עמוד מאמרים, עמוד צוות, עמוד מחירון">`)}
+        </div>
+        <p class="bf-err" id="pageKinds-err"></p>
       </div>`;
     },
 
@@ -378,7 +378,7 @@
         <h2 class="group-title">כלול במחיר הבסיס</h2>
         ${cards({ name: "features", selected: s.features, multi: true, options: P.includedFeatures.map((f) => ({ id: f.id, label: f.label, hint: f.hint, badge: "כלול", badgeKind: "ok" })) })}
       </div>
-      ${addonGroup("עמודים ואזורים נוספים", "מחירים לפי המחירון. מה שאין לו מחיר קבוע מסומן, ונשלח לכם מחיר מותאם.", inScope("site-pages"))}`;
+      ${addonGroup("תוספות לאתר", "מחירים לפי המחירון. מה שאין לו מחיר קבוע מסומן, ונשלח לכם מחיר מותאם.", inScope("site-pages"))}`;
     },
 
     "extras"() {
@@ -479,6 +479,7 @@
     if (b.category) out.push(["תחום", b.category === "אחר" ? b.categoryOther || "אחר" : b.category]);
     if (state.goals.length) out.push(["המטרה", state.goals.map((g) => (P.byId(GOALS, g) || {}).label || g).join(", ")]);
     if (state.type === "site" && state.site.pages) out.push(["עמודים", (P.byId(P.pageOptions, state.site.pages) || {}).label]);
+    if (state.type === "site" && state.site.pageKinds.length) out.push(["נבחרו", state.site.pageKinds.map((k) => (P.byId(P.pageKinds, k) || {}).label || k).join(", ")]);
     return out;
   }
 
@@ -563,8 +564,6 @@
     if (input) input.setAttribute("aria-invalid", msg ? "true" : "false");
   }
 
-  function extraPagesTotal() { const bp = state.site.extraPages; return (Number(bp.normal) || 0) + (Number(bp.long) || 0) + (Number(bp.special) || 0); }
-
   const validate = {
     "type"() { if (!state.type || state.type === "unsure") return { ok: false, msg: state.type === "unsure" ? "בחרו אחת מהאפשרויות למטה, או דברו איתנו." : "בחרו מה תרצו לבנות." }; return { ok: true }; },
     "business"() {
@@ -590,16 +589,15 @@
       const pg = P.byId(P.pageOptions, state.site.pages);
       if (!pg) { setErr("pages", "בחרו הערכה. אפשר לשנות אחר כך."); return { ok: false }; }
       setErr("pages", "");
-      if (!pg.custom && pg.extraMax !== 0 && !state.site.extraPages.unknown) {
-        const n = extraPagesTotal();
-        const inRange = n >= pg.extraMin && (pg.extraMax === null || n <= pg.extraMax);
-        if (!inRange) {
-          const range = pg.extraMax === null ? `לפחות ${pg.extraMin}` : `בין ${pg.extraMin} ל־${pg.extraMax}`;
-          setErr("breakdown", `לפי ההערכה "${pg.label}", מספר העמודים הנוספים מעבר לשלושה צריך להיות ${range}. אפשר גם לסמן "עדיין לא יודע".`);
-          return { ok: false, focus: "pages-normal" };
-        }
+      const n = state.site.pageKinds.length;
+      const max = P.services.site.includedPages;
+      if (pg.included && n > max) {
+        setErr("pageKinds", `סימנתם ${n} עמודים, ועד ${max} כלולים במחיר הבסיס. הסירו עמודים, או בחרו למעלה "7 עד 10 עמודים" ונכין מחיר לאחר אפיון.`);
+        return { ok: false };
       }
-      setErr("breakdown", "");
+      setErr("pageKinds", "");
+      if (state.site.pageKinds.includes("other") && state.site.pageOther.trim().length < 2) { setErr("pageOther", "כמה מילים על העמוד הנוסף."); return { ok: false, focus: "pageOther" }; }
+      setErr("pageOther", "");
       return { ok: true };
     },
     "site-features"() { return { ok: true }; },
@@ -655,13 +653,11 @@
     if (focusHeading) { const h = qs("#stepTitle"); if (h) h.focus({ preventScroll: false }); window.scrollTo({ top: 0, behavior: "auto" }); }
   }
 
-  function updateRangeHint() {
-    const pg = P.byId(P.pageOptions, state.site.pages);
-    const hint = qs("#rangeHint");
-    if (!hint || !pg || pg.custom || pg.extraMax === 0) return;
-    const n = extraPagesTotal();
-    const range = pg.extraMax === null ? `לפחות ${pg.extraMin}` : `${pg.extraMin} עד ${pg.extraMax}`;
-    hint.textContent = `לפי ההערכה שבחרתם: ${range} עמודים נוספים מעבר לשלושה הכלולים. סימנתם ${n}.`;
+  function updateKindCount() {
+    const el = qs("#kindCount");
+    if (!el) return;
+    const n = state.site.pageKinds.length, max = P.services.site.includedPages;
+    el.textContent = n === 0 ? "" : n <= max ? `נבחרו ${n} מתוך ${max} עמודי התוכן הכלולים במחיר הבסיס.` : `נבחרו ${n} עמודים. מעל ${max} עמודי תוכן המחיר נקבע לאחר אפיון.`;
   }
 
   function bindStep(id) {
@@ -702,15 +698,7 @@
         qs(`.card-choice input[value="${state.type}"]`)?.focus();
       }));
     }
-    if (id === "site-scope") {
-      const setPage = (t, v) => { state.site.extraPages[t] = Math.max(0, Math.min(20, v)); const inp = qs("#pages-" + t); if (inp) inp.value = state.site.extraPages[t]; setErr("breakdown", ""); save(); refreshSummary(); updateRangeHint(); };
-      qsa("#pageTypes .qty-btn", els.stage).forEach((b) => b.addEventListener("click", () => setPage(b.dataset.page, (Number(state.site.extraPages[b.dataset.page]) || 0) + Number(b.dataset.qty))));
-      qsa("#pageTypes input[type=number]", els.stage).forEach((inp) => inp.addEventListener("input", () => setPage(inp.dataset.page, Number(inp.value) || 0)));
-      const unk = qs("#pagesUnknown");
-      if (unk) unk.addEventListener("change", () => { state.site.extraPages.unknown = unk.checked; qs("#pageTypes").classList.toggle("muted", unk.checked); setErr("breakdown", ""); save(); refreshSummary(); });
-      if (unk && unk.checked) qs("#pageTypes").classList.add("muted");
-      updateRangeHint();
-    }
+    if (id === "site-scope") updateKindCount();
     if (id === "materials") {
       const cp = qs("#contentPages");
       if (cp) cp.addEventListener("input", () => { state.content.pages = Math.max(1, Math.min(30, Number(cp.value) || 1)); save(); refreshSummary(); });
@@ -742,10 +730,17 @@
       case "pages": {
         state.site.pages = value;
         const pg = P.byId(P.pageOptions, value);
-        qs("#extraPagesBox").hidden = !(pg && !pg.custom && pg.extraMax !== 0);
-        qs("#over10Msg").hidden = !(pg && pg.customByDefault);
-        setErr("pages", ""); setErr("breakdown", "");
-        updateRangeHint();
+        qs("#overSixMsg").hidden = !(pg && pg.custom);
+        qs("#unknownMsg").hidden = !(pg && pg.unknown);
+        setErr("pages", ""); setErr("pageKinds", "");
+        updateKindCount();
+        break;
+      }
+      case "pageKinds": {
+        state.site.pageKinds = value;
+        qs("#pageOtherWrap").hidden = !value.includes("other");
+        setErr("pageKinds", "");
+        updateKindCount();
         break;
       }
       case "features": state.site.features = value; break;
@@ -819,9 +814,8 @@
     const c = calc(st);
     const b = st.business;
     const labelOf = (list, id) => (P.byId(list, id) || {}).label || id;
-    const bp = st.site.extraPages;
-    const breakdown = st.type === "site" && st.site.pages && st.site.pages !== "upto3" && st.site.pages !== "unknown"
-      ? (bp.unknown ? "סוגי העמודים עדיין לא ידועים" : P.pageTypes.map((t) => (Number(bp[t.id]) || 0) > 0 ? `${t.label}: ${bp[t.id]}` : "").filter(Boolean).join(", "))
+    const breakdown = st.type === "site"
+      ? st.site.pageKinds.map((k) => k === "other" ? "עמוד אחר: " + st.site.pageOther.trim() : labelOf(P.pageKinds, k)).join(", ")
       : "";
     const addonList = c.lines.map((l) => l.label + (l.pricing_type === "fixed" ? ` (${P.formatPrice(l.total)})` : " (מחיר מותאם)") + (st.addonNotes[l.id] ? ` [${st.addonNotes[l.id].trim()}]` : "")).join("; ");
     const contentLabel = st.content.service === "edit" || st.content.service === "write"
@@ -923,12 +917,12 @@
     d.content = { service: "none", pages: 1 };
     d.domain = "no"; d.hosting.acknowledged = true; d.maintenance = "basic";
     if (kind === "site-custom") {
-      d.type = "site"; d.site = { pages: "7to10", extraPages: { normal: 0, long: 0, special: 0, unknown: true }, features: ["about", "services", "contact-form"], featuresOther: "" };
-      d.addons = { "gallery-site": 1, "extra-lang-site": 1 };
+      d.type = "site"; d.site = { pages: "7to10", pageKinds: ["home", "about", "services", "projects", "faq", "contact", "other"], pageOther: "עמוד מאמרים", features: ["contact-form", "map"] };
+      d.addons = { "extra-lang-site": 1 };
     } else if (kind === "site-priced") {
-      d.type = "site"; d.site = { pages: "4to6", extraPages: { normal: 1, long: 0, special: 0, unknown: false }, features: ["about", "services", "contact-form", "map"], featuresOther: "" };
-      d.addons = { "gallery-site": 1, blog: 1, ga: 1, "meta-pixel": 1 }; d.maintenance = "extended";
-      d.content = { service: "edit", pages: 4 };
+      d.type = "site"; d.site = { pages: "upto6", pageKinds: ["home", "about", "services", "projects", "faq", "contact"], pageOther: "", features: ["contact-form", "whatsapp", "map", "social"] };
+      d.addons = { blog: 1, ga: 1, "meta-pixel": 1 }; d.maintenance = "extended";
+      d.content = { service: "edit", pages: 6 };
     } else {
       d.type = "landing"; d.landing = { offer: "ארוחת בוקר זוגית בסופי שבוע", audience: "זוגות מהאזור", cta: "whatsapp" };
       d.addons = { "gallery-landing": 1, ga: 1 };

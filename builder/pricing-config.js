@@ -47,13 +47,13 @@
       name: "אתר תדמית",
       basePrice: 1290,
       priceMode: "from",
-      priceNote: "המחיר כולל אתר של עד 3 עמודים",
-      includedPages: 3,
+      priceNote: "המחיר כולל עד 6 עמודי תוכן סטנדרטיים",
+      includedPages: 6,
       deliveryDays: 5,
       short: "כמה עמודים עם תפריט, שמציגים את העסק בצורה רחבה יותר.",
-      includedNote: "המחיר כולל אתר של עד 3 עמודים. צריכים אתר רחב יותר? נתאים את ההיקף והמחיר לצורך שלכם.",
+      includedNote: "המחיר כולל עד 6 עמודי תוכן סטנדרטיים: עמודים שמשתמשים בשפה העיצובית, במערכת הרכיבים ובתשתית של האתר, למשל בית, אודות, שירותים, פרויקטים, שאלות נפוצות וצור קשר, או כל מבנה אחר שמתאים לעסק. 7 עמודים ומעלה, או מערכות מיוחדות, מתומחרים בנפרד לאחר אפיון.",
       includes: [
-        "עד 3 עמודים, בעיצוב מותאם אישית",
+        "עד 6 עמודי תוכן סטנדרטיים, בעיצוב מותאם לעסק",
         "התאמה מלאה לטלפון",
         "תפריט ניווט, כותרת עליונה ותחתית",
         "כפתורי פעולה, וואטסאפ וטלפון לפי הצורך",
@@ -62,36 +62,45 @@
         "הכנה בסיסית למנועי חיפוש לכל עמוד",
         "חיבור לדומיין קיים והעלאה לאוויר",
         "בדיקות במחשב ובטלפון",
-        "עד שני סבבי תיקונים מרוכזים"
+        "עד שני סבבי תיקונים מרוכזים",
+        "עמודי תשתית לפי הצורך (מדיניות פרטיות, הצהרת נגישות, תנאי שימוש, 404), מעבר למכסת עמודי התוכן"
       ]
     }
   };
 
   /* ---------------- site size ----------------
-     extraMin / extraMax: how many pages beyond the 3 included ones
-     the estimate implies. customByDefault: still priced per page for
-     the client's information, but the request goes to a personal quote. */
+     Up to 6 standard content pages are included in the base price.
+     7 pages and more: no automatic calculation, the price is set after a
+     scoping conversation. "unknown": the client may continue; nothing is
+     added automatically.
+     The legacy per-page price list (250 / 350 / 500) was retired on
+     2026-09-15: it is not a current business decision and must not be
+     used on the active path. History lives in git. */
   const pageOptions = [
-    { id: "upto3",   label: "עד 3",             hint: "כלול במחיר הבסיס",           extraMin: 0, extraMax: 0 },
-    { id: "4to6",    label: "4 עד 6",           hint: "נחשב לפי סוג העמודים",       extraMin: 1, extraMax: 3 },
-    { id: "7to10",   label: "7 עד 10",          hint: "נחשב לפי סוג העמודים",       extraMin: 4, extraMax: 7 },
-    { id: "over10",  label: "יותר מ־10",        hint: "מחיר מותאם",                  extraMin: 8, extraMax: null, customByDefault: true },
-    { id: "unknown", label: "עדיין לא יודעים",  hint: "נעזור להחליט",                custom: true }
+    { id: "upto6",   label: "עד 6 עמודים",        hint: "כלול במחיר הבסיס",                      included: true },
+    { id: "7to10",   label: "7 עד 10 עמודים",     hint: "מחיר ייקבע לאחר אפיון",                 custom: true },
+    { id: "over10",  label: "יותר מ־10 עמודים",   hint: "מחיר ייקבע לאחר אפיון",                 custom: true },
+    { id: "unknown", label: "עדיין לא יודעים",     hint: "אפשר להמשיך, בלי תוספת מחיר אוטומטית",  unknown: true }
   ];
 
-  /* Price per extra page, by page type. */
-  const pageTypes = [
-    { id: "normal",  label: "עמוד רגיל",  description: "עמוד תוכן רגיל נוסף.",                         price: 250, pricing_type: "fixed", requires_review: false },
-    { id: "long",    label: "עמוד ארוך",  description: "עמוד עם 7 עד 10 אזורי תוכן.",                   price: 350, pricing_type: "fixed", requires_review: false },
-    { id: "special", label: "עמוד מיוחד", description: "עמוד שכולל טאבים, סינון או מחשבון פשוט.",       price: 500, pricing_type: "fixed", requires_review: false }
+  /* Standard content pages the client can pick. Informational: up to 6 are
+     included, nothing here changes the price. */
+  const pageKinds = [
+    { id: "home",     label: "בית" },
+    { id: "about",    label: "אודות" },
+    { id: "services", label: "שירותים" },
+    { id: "projects", label: "פרויקטים / גלריה" },
+    { id: "faq",      label: "שאלות נפוצות" },
+    { id: "contact",  label: "צור קשר" },
+    { id: "other",    label: "עמוד אחר" }
   ];
 
   /* Things that are part of the site base package, shown for information only. */
   const includedFeatures = [
-    { id: "about",        label: "אודות",           hint: "עמוד שמספר על העסק" },
-    { id: "services",     label: "שירותים",         hint: "מה אתם מציעים" },
-    { id: "contact-form", label: "טופס יצירת קשר",  hint: "טופס בסיסי" },
-    { id: "map",          label: "מפה",             hint: "מפה בסיסית עם המיקום" }
+    { id: "contact-form", label: "טופס יצירת קשר",         hint: "טופס בסיסי" },
+    { id: "whatsapp",     label: "כפתור וואטסאפ או טלפון",  hint: "לפי הצורך" },
+    { id: "map",          label: "מפה בסיסית",              hint: "עם המיקום של העסק" },
+    { id: "social",       label: "קישורים לרשתות חברתיות", hint: "אם קיימים" }
   ];
 
   /* ---------------- add-on catalogue ----------------
@@ -100,8 +109,6 @@
      unit / maxQty for quantity items. */
   const catalog = [
     /* site pages and areas */
-    { id: "faq-page",      label: "עמוד שאלות נפוצות",          description: "עמוד עם התשובות לשאלות שחוזרות.",                     price: 150, pricing_type: "fixed",  requires_review: false, scope: ["site"],    group: "site-pages" },
-    { id: "gallery-site",  label: "גלריה / תיק עבודות",         description: "עמוד או אזור עם תמונות ופרויקטים.",                    price: 150, pricing_type: "fixed",  requires_review: false, scope: ["site"],    group: "site-pages" },
     { id: "blog",          label: "בלוג בסיסי + תבנית כתבה",    description: "עמוד כתבות ותבנית לכתבה חדשה.",                        price: 300, pricing_type: "fixed",  requires_review: false, scope: ["site"],    group: "site-pages" },
     { id: "extra-lang-site", label: "שפה נוספת",                description: "גרסה של האתר בשפה נוספת. המחיר תלוי במספר העמודים.", price: null, pricing_type: "custom", requires_review: true,  scope: ["site"],    group: "site-pages" },
     { id: "site-other",    label: "משהו אחר",                   description: "ספרו לנו בקצרה, ונתמחר לפני כל התחייבות.",             price: null, pricing_type: "custom", requires_review: true,  scope: ["site"],    group: "site-pages", hasNote: true },
@@ -175,7 +182,9 @@
     domainHelp: "נעזור לכם לבחור, לרכוש, להגדיר ולחבר את הדומיין ללא דמי שירות נוספים. אתם משלמים רק את עלות הדומיין לספק, והדומיין נרשם על שמכם.",
     customQuote: "הבקשה כוללת רכיב שדורש בדיקה. נעבור על הפרטים ונשלח לכם סיכום ומחיר מלא לפני כל התחייבות.",
     customShort: "נדרש מחיר מותאם",
-    biggerScope: "האתר שלכם רחב יותר משלושה עמודים. סמנו למטה אילו עמודים נוספים תצטרכו, והמחיר יתעדכן לפי המחירון.",
+    overSix: "מעל 6 עמודי תוכן סטנדרטיים המחיר נקבע לאחר אפיון, לפי היקף. אין חישוב אוטומטי. המשיכו למלא, ונחזור אליכם עם מחיר מדויק לפני כל התחייבות.",
+    pagesUnknownNote: "עוד לא יודעים כמה עמודים? אפשר להמשיך. שום מחיר לא מתווסף אוטומטית, ואם יידרשו יותר מ־6 עמודי תוכן, המחיר ייקבע לאחר אפיון.",
+    standardPage: "עמוד תוכן סטנדרטי הוא עמוד שמשתמש בשפה העיצובית, במערכת הרכיבים ובתשתית של האתר. חנות, אזור אישי, מערכות הזמנה או סליקה, לוח ניהול, כלים אינטראקטיביים מורכבים ופיתוח ייחודי אינם נחשבים עמוד תוכן ומתומחרים בנפרד. עמודי תשתית כמו מדיניות פרטיות, הצהרת נגישות ותנאי שימוש אינם נספרים במכסה.",
     notBinding: "שליחת הבקשה אינה מחייבת בתשלום. נעבור על הפרטים ונשלח לכם סיכום לאישור. שום עבודה או חיוב לא מתחילים לפני אישורכם.",
     reviewPrice: "מחיר ייקבע לאחר בדיקת הבקשה",
     totalLabel: "סה\"כ לפי הבחירות שלכם",
@@ -185,7 +194,7 @@
     depositLabel: "50% מקדמה",
     balanceLabel: "יתרה לפני מסירה",
     maintenanceSeparate: "אופציונלי ונפרד. תשלום חודשי, לא חלק ממחיר ההקמה.",
-    fine: "תשלום חד-פעמי לבנייה. תחזוקה, אם נבחרה, נפרדת וחודשית. המחיר הסופי נסגר בסיכום הזמנה שאתם מאשרים לפני תחילת העבודה."
+    fine: "תשלום חד פעמי לבנייה. תחזוקה, אם נבחרה, נפרדת וחודשית. המחיר הסופי נסגר בסיכום הזמנה שאתם מאשרים לפני תחילת העבודה."
   };
 
   function formatPrice(n) {
@@ -200,7 +209,7 @@
      state shape (from project-builder.js):
        type: "landing" | "site"
        site.pages: pageOptions id
-       site.extraPages: { normal, long, special: numbers, unknown: bool }
+       site.pageKinds: pageKinds ids (informational), site.pageOther: text
        addons: { [catalog id]: quantity (number) }
        content: { service: "" | "none" | "edit" | "write", pages: number }
        urgent: bool
@@ -225,25 +234,19 @@
     const custom = (reason) => { out.custom_quote_required = true; if (reason && !out.custom_reasons.includes(reason)) out.custom_reasons.push(reason); };
     const addLine = (l) => { out.lines.push(l); if (l.pricing_type === "fixed" && typeof l.total === "number") out.addons_total += l.total; };
 
-    /* extra pages for a site */
+    /* site size: up to 6 standard content pages are included; nothing is
+       added automatically. 7+ pages (or more than 6 picked) mean a custom quote. */
     if (st.type === "site") {
-      const pg = byId(pageOptions, (st.site || {}).pages);
-      if (pg && pg.custom) { custom("מספר העמודים עדיין לא ידוע"); out.page_label = copy.pagesUnknown; }
-      if (pg && !pg.custom && pg.extraMax === 0) out.page_label = pg.label;
-      if (pg && !pg.custom && pg.extraMax !== 0) {
-        const bp = (st.site && st.site.extraPages) || {};
-        let extra = 0;
-        if (bp.unknown) { custom("סוגי העמודים הנוספים עדיין לא ידועים"); out.page_label = pg.label + ", סוגי העמודים טרם נקבעו"; }
-        else pageTypes.forEach((t) => {
-          const qty = Number(bp[t.id]) || 0;
-          extra += qty;
-          if (qty > 0) addLine({ id: "page-" + t.id, label: t.label + (qty > 1 ? " × " + qty : ""), qty, unit: "לעמוד", price: t.price, total: qty * t.price, pricing_type: "fixed", requires_review: false });
-        });
-        if (!bp.unknown) {
-          if (extra > 0) { out.page_count = svc.includedPages + extra; out.page_label = String(out.page_count); }
-          else out.page_label = pg.label;
-        }
-        if (pg.customByDefault) custom("יותר מ־10 עמודים");
+      const site = st.site || {};
+      const pg = byId(pageOptions, site.pages);
+      const kinds = Array.isArray(site.pageKinds) ? site.pageKinds.filter((k) => byId(pageKinds, k)) : [];
+      if (pg && pg.custom) { custom(pg.label + ", מחיר ייקבע לאחר אפיון"); out.page_label = pg.label; }
+      else if (pg && pg.unknown) out.page_label = copy.pagesUnknown;
+      else if (pg) out.page_label = pg.label;
+      if (kinds.length > 0) {
+        out.page_count = kinds.length;
+        if (pg && pg.included) out.page_label = kinds.length + " מתוך " + svc.includedPages + " הכלולים";
+        if (pg && pg.included && kinds.length > svc.includedPages) custom("נבחרו יותר מ־" + svc.includedPages + " עמודי תוכן, מחיר ייקבע לאחר אפיון");
       }
     }
 
@@ -284,7 +287,7 @@
     return out;
   }
 
-  const api = { currency, services, pageOptions, pageTypes, includedFeatures, catalog, bundles, urgency, maintenance, maintenanceNote, copy, formatPrice, calc, byId };
+  const api = { currency, services, pageOptions, pageKinds, includedFeatures, catalog, bundles, urgency, maintenance, maintenanceNote, copy, formatPrice, calc, byId };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (root) root.DS_PRICING = api;
 })(typeof window !== "undefined" ? window : null);

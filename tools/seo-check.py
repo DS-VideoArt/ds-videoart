@@ -17,7 +17,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "hub/do-you-need-a-website.html": ("index, follow", True, False),
     "hub/landing-page-or-business-website.html": ("index, follow", True, False),
 }
-FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging."]
+FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3"]
 CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
