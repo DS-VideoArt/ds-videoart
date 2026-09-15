@@ -403,24 +403,24 @@
       const m = state.materials;
       const yn = (id, label, opts) => `<div class="bf-field"><span class="bf-label">${label} ${req}</span>${cards({ name: id, selected: m[id], options: opts })}<p class="bf-err" id="${id}-err"></p></div>`;
       const showContent = m.texts === "partial" || m.texts === "no";
-      const edit = item("content-edit"), write = item("content-write");
+      const write = item("content-write");
       const perPage = state.type === "site";
-      const priceTxt = (c) => P.formatPrice(c.price) + (perPage ? " לעמוד" : "");
       return `<p class="step-lead">אין לכם משהו מהרשימה? זה בסדר גמור. נעזור.</p>
       ${yn("logo", "לוגו", [{ id: "yes", label: "יש לוגו" }, { id: "no", label: "אין לוגו" }])}
       ${yn("texts", "טקסטים", [{ id: "yes", label: "יש טקסטים מוכנים" }, { id: "partial", label: "יש חלק" }, { id: "no", label: "אין, נצטרך עזרה" }])}
       <div class="content-help" id="contentHelp" ${showContent ? "" : "hidden"}>
         <span class="bf-label">רוצים שנטפל בתוכן? ${req}</span>
         ${cards({ name: "contentService", selected: state.content.service, options: [
-          { id: "none", label: "לא, נביא טקסטים בעצמנו", hint: "בלי תוספת" },
-          { id: "edit", label: edit.label, hint: edit.description, badge: priceTxt(edit), badgeKind: "price" },
-          { id: "write", label: write.label, hint: write.description, badge: priceTxt(write), badgeKind: "price" }
+          { id: "none", label: "נביא טקסטים בעצמנו", hint: "בלי תוספת" },
+          { id: "edit", label: "יש לנו חומרים, תסדרו ותערכו", hint: "סידור, עריכה והתאמה בסיסית של החומרים שלכם למבנה האתר", badge: "כלול", badgeKind: "ok" },
+          { id: "write", label: write.label, hint: write.description, badge: P.copy.customShort, badgeKind: "review" }
         ] })}
+        <p class="bf-hint">${esc(P.copy.contentIncluded)}</p>
         <p class="bf-err" id="contentService-err"></p>
-        ${perPage ? `<div class="bf-field inline-qty" id="contentPagesWrap" ${state.content.service === "edit" || state.content.service === "write" ? "" : "hidden"}>
-          <label for="contentPages">לכמה עמודים?</label>
+        ${perPage ? `<div class="bf-field inline-qty" id="contentPagesWrap" ${state.content.service === "write" ? "" : "hidden"}>
+          <label for="contentPages">לכמה עמודים בערך?</label>
           <input id="contentPages" type="number" min="1" max="30" value="${Number(state.content.pages) > 0 ? state.content.pages : totalPagesEstimate(state)}">
-          <p class="bf-hint">לפי ההערכה שלכם, האתר יכלול ${totalPagesEstimate(state)} עמודים. אפשר לבחור פחות.</p>
+          <p class="bf-hint">עוזר לנו להעריך היקף לפני שנחזור אליכם עם מחיר. אפשר לשנות אחר כך.</p>
         </div>` : ""}
       </div>
       ${yn("images", "תמונות", [{ id: "yes", label: "יש תמונות" }, { id: "partial", label: "יש חלק" }, { id: "no", label: "אין, נצטרך עזרה" }])}
@@ -491,7 +491,7 @@
       case "landing-offer": return { title: "טיפ קטן", html: "הצעה אחת ברורה עובדת טוב יותר משלוש. אם יש כמה שירותים, בחרו את זה שהכי כדאי להתחיל ממנו, ואת השאר אפשר להזכיר בקצרה." };
       case "site-scope": case "site-features": return { title: "מה כבר בחרתם", html: list(chosenSoFar()) };
       case "extras": return { title: "מה חשוב לדעת", html: "לכל מה שיש לו מחיר במחירון, הסכום מתעדכן מיד בסיכום. מה שאין לו מחיר קבוע מסומן, ואתם מקבלים מחיר מותאם לפני כל התחייבות. שום דבר לא מחויב בלי אישורכם." };
-      case "materials": return { title: "טיפ קטן", html: "אין טקסטים מוכנים? זה קורה לרוב העסקים. אפשר לבחור כאן עריכה או כתיבה, והמחיר מופיע בסיכום. תמונות טובות מהטלפון עדיפות על תמונות גנריות." };
+      case "materials": return { title: "טיפ קטן", html: "אין טקסטים מוכנים? זה קורה לרוב העסקים. חומרים שתביאו, גם חלקיים, אנחנו מסדרים ועורכים במסגרת הפרויקט. כתיבה מקצועית מאפס מקבלת מחיר לפי היקף. תמונות טובות מהטלפון עדיפות על תמונות גנריות." };
       case "domain": return { title: "מה חשוב לדעת", html: "הדומיין נרשם על שמכם ונשאר שלכם. אם אין לכם, נעזור לבחור ולרכוש, בלי דמי שירות מצידנו. משלמים רק לספק הדומיין." };
       case "hosting": return { title: "מה חשוב לדעת", html: "החשבונות של הפרויקט נרשמים עליכם, ואתם מקבלים את פרטי הגישה בסיום. אין תלות בנו כדי להחזיק את האתר באוויר." };
       case "maintenance": return { title: "אפשר לשנות אחר כך", html: "תחזוקה היא תשלום חודשי נפרד, לא חלק ממחיר ההקמה. אפשר להצטרף חודשיים אחרי המסירה, או להפסיק בכל שלב." };
@@ -756,7 +756,7 @@
       case "urgent": state.urgent = value === "urgent"; break;
       case "contentService": {
         state.content.service = value; setErr("contentService", "");
-        const w = qs("#contentPagesWrap"); if (w) w.hidden = !(value === "edit" || value === "write");
+        const w = qs("#contentPagesWrap"); if (w) w.hidden = value !== "write";
         if (!(Number(state.content.pages) > 0)) { state.content.pages = totalPagesEstimate(state); const cp = qs("#contentPages"); if (cp) cp.value = state.content.pages; }
         break;
       }
@@ -818,8 +818,9 @@
       ? st.site.pageKinds.map((k) => k === "other" ? "עמוד אחר: " + st.site.pageOther.trim() : labelOf(P.pageKinds, k)).join(", ")
       : "";
     const addonList = c.lines.map((l) => l.label + (l.pricing_type === "fixed" ? ` (${P.formatPrice(l.total)})` : " (מחיר מותאם)") + (st.addonNotes[l.id] ? ` [${st.addonNotes[l.id].trim()}]` : "")).join("; ");
-    const contentLabel = st.content.service === "edit" || st.content.service === "write"
-      ? (item(st.content.service === "edit" ? "content-edit" : "content-write").label + (st.type === "site" ? ` × ${st.content.pages} עמודים` : ""))
+    const contentLabel = st.content.service === "write"
+      ? (item("content-write").label + ", מחיר לפי היקף" + (st.type === "site" ? ` (כ־${st.content.pages} עמודים)` : ""))
+      : st.content.service === "edit" ? "סידור ועריכה בסיסית של חומרי הלקוח (כלול)"
       : (st.content.service === "none" ? "הלקוח מביא טקסטים" : "");
     return {
       project_type: st.type === "site" ? "אתר תדמית" : "דף נחיתה",

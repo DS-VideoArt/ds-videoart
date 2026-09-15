@@ -120,8 +120,9 @@
     { id: "images-5",              label: "הכנת עד 5 תמונות מותאמות", description: "יצירה או התאמה של עד 5 תמונות לדף.",                       price: 100, pricing_type: "fixed",  requires_review: false, scope: ["landing"], group: "landing-sections" },
 
     /* content help (per page for a site, flat for a landing page) */
-    { id: "content-edit",  label: "עריכה וליטוש תוכן",          description: "אתם מביאים חומרים, אנחנו מסדרים ומלטשים.",              price: 150, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "content", unit: "לעמוד" },
-    { id: "content-write", label: "כתיבת תוכן כמעט מאפס",       description: "כותבים את התוכן יחד איתכם, מכמה נקודות שתיתנו.",         price: 250, pricing_type: "fixed", requires_review: false, scope: ["landing", "site"], group: "content", unit: "לעמוד" },
+    /* Arranging, editing and fitting the client's own materials is part of the project (no add-on).
+       Professional writing from scratch has no fixed price: quoted by scope. */
+    { id: "content-write", label: "כתיבת תוכן מקצועית מאפס",   description: "כתיבה רחבה של תוכן חדש לאתר, לפי היקף.",                price: null, pricing_type: "custom", requires_review: true, scope: ["landing", "site"], group: "content" },
 
     /* measurement and privacy */
     /* Tracking tools are consent-gated by design: in a client site they must load only after
@@ -170,11 +171,11 @@
     { id: "none",     name: "ללא תחזוקה",     price: 0,   per: "לחודש",
       includes: ["האתר שלכם, בלי תשלום חודשי", "שינוי נקודתי בעתיד מתומחר בנפרד ומראש"] },
     { id: "basic",    name: "תחזוקה בסיסית",  price: 149, per: "לחודש",
-      includes: ["עד 30 דקות עבודה בחודש", "שינויי טקסט קטנים והחלפת תמונות", "בדיקת קישורים וטפסים, תיקונים קטנים", "מענה בתוך שני ימי עסקים"] },
+      includes: ["עדכוני תוכן ושינויים קטנים באתר, לפי הצורך ובהתאם להיקף המסלול", "שינויי טקסט והחלפת תמונות", "בדיקת קישורים וטפסים, תיקונים קטנים", "מענה בתוך שני ימי עסקים"] },
     { id: "extended", name: "תחזוקה מורחבת",  price: 349, per: "לחודש",
-      includes: ["עד 90 דקות עבודה בחודש", "שינויים שוטפים ובדיקה טכנית", "טיפול בעדיפות", "מענה בתוך יום עסקים"] }
+      includes: ["תחזוקה שוטפת והיקף רחב יותר של עדכונים ושינויים באתר", "בדיקה טכנית שוטפת", "טיפול בעדיפות", "מענה בתוך יום עסקים"] }
   ];
-  const maintenanceNote = "זמן שלא נוצל בחודש לא עובר לחודש הבא. אפשר להצטרף או להפסיק בכל שלב. שום מסלול לא נבחר מראש.";
+  const maintenanceNote = "מסלולי התחזוקה אופציונליים לחלוטין ואין חובה להצטרף אליהם. אפשר להצטרף או להפסיק בכל שלב. שום מסלול לא נבחר מראש.";
 
   const copy = {
     hosting: "ברוב דפי הנחיתה ואתרי התדמית הקטנים ניתן להתחיל עם אחסון ללא עלות חודשית במסגרת המסלול החינמי של הספק. אם בעתיד יהיה צורך בשדרוג, תדעו על כך מראש ולא יתבצע חיוב ללא אישורכם.",
@@ -184,6 +185,7 @@
     customShort: "נדרש מחיר מותאם",
     overSix: "מעל 6 עמודי תוכן סטנדרטיים המחיר נקבע לאחר אפיון, לפי היקף. אין חישוב אוטומטי. המשיכו למלא, ונחזור אליכם עם מחיר מדויק לפני כל התחייבות.",
     pagesUnknownNote: "עוד לא יודעים כמה עמודים? אפשר להמשיך. שום מחיר לא מתווסף אוטומטית, ואם יידרשו יותר מ־6 עמודי תוכן, המחיר ייקבע לאחר אפיון.",
+    contentIncluded: "סידור, עריכה והתאמה בסיסית של חומרים שאתם מספקים למבנה האתר כלולים בפרויקט. כתיבת תוכן מקצועית רחבה מאפס מתומחרת בנפרד לפי היקף.",
     standardPage: "עמוד תוכן סטנדרטי הוא עמוד שמשתמש בשפה העיצובית, במערכת הרכיבים ובתשתית של האתר. חנות, אזור אישי, מערכות הזמנה או סליקה, לוח ניהול, כלים אינטראקטיביים מורכבים ופיתוח ייחודי אינם נחשבים עמוד תוכן ומתומחרים בנפרד. עמודי תשתית כמו מדיניות פרטיות, הצהרת נגישות ותנאי שימוש אינם נספרים במכסה.",
     notBinding: "שליחת הבקשה אינה מחייבת בתשלום. נעבור על הפרטים ונשלח לכם סיכום לאישור. שום עבודה או חיוב לא מתחילים לפני אישורכם.",
     reviewPrice: "מחיר ייקבע לאחר בדיקת הבקשה",
@@ -262,12 +264,13 @@
     });
     if (bundle) addLine({ id: bundle.id, label: bundle.label, qty: 1, price: bundle.price, total: bundle.price, pricing_type: "fixed", requires_review: false });
 
-    /* content help */
+    /* content help: editing the client's materials is included; professional writing is quoted by scope */
     const ct = st.content || {};
-    if (ct.service === "edit" || ct.service === "write") {
-      const item = byId(catalog, ct.service === "edit" ? "content-edit" : "content-write");
+    if (ct.service === "write") {
+      const item = byId(catalog, "content-write");
       const pages = st.type === "site" ? Math.max(1, Number(ct.pages) || 1) : 1;
-      addLine({ id: item.id, label: item.label + (pages > 1 ? " × " + pages + " עמודים" : ""), qty: pages, unit: item.unit, price: item.price, total: pages * item.price, pricing_type: "fixed", requires_review: false });
+      addLine({ id: item.id, label: item.label + (st.type === "site" ? ", כ־" + pages + " עמודים" : ""), qty: pages, unit: "", price: null, total: null, pricing_type: "custom", requires_review: true });
+      custom("כתיבת תוכן מקצועית, מחיר לפי היקף");
     }
 
     /* urgency: percentage of DS work (base + fixed add-ons) */
