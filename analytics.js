@@ -80,6 +80,9 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
+    /* No automatic configuration: no automatic button-click events, no automatic advanced matching.
+       Only the events this file sends (PageView, Contact, Lead) ever reach Meta. */
+    window.fbq('set', 'autoConfig', false, META_PIXEL_ID);
     window.fbq('init', META_PIXEL_ID);
     window.fbq('track', 'PageView');
     /* End Meta Pixel Code */
