@@ -6,10 +6,13 @@
    - Consent not decided   -> quiet banner; nothing is loaded; events wait in memory.
    - Consent denied        -> nothing is loaded, events are dropped, choice remembered.
    - Consent granted       -> gtag.js loads, page_view fires, waiting events flush;
-                              the Meta Pixel base code loads once and sends PageView only.
+                              the Meta Pixel base code loads once and sends PageView, plus
+                              Contact (whatsapp / phone click) and Lead (form accepted by the server).
+                              Meta never receives form values or any personal data.
 
    Public API (window.DS_ANALYTICS):
-     trackEvent(name, params)  send a whitelisted, non-personal event
+     trackEvent(name, params)  send a whitelisted, non-personal GA4 event
+     metaTrack(name, params)   send one of the allowed Meta standard events (consent granted only)
      consent("granted"|"denied")
      getConsent()              "granted" | "denied" | null
      reset()                   forget the choice (QA / "measurement settings" link)
@@ -83,6 +86,38 @@
   }
   function loadMeasurement() { loadTag(); loadPixel(); }
 
+  /* ---------- Meta standard events: Contact + Lead, consent gated, no PII ----------
+     Only these events, only these parameters, only constant values. Nothing is queued:
+     without a stored "granted" the call is dropped. */
+  const META_EVENTS = { Contact: ["contact_method"], Lead: ["form_type"] };
+  function metaTrack(name, params) {
+    if (!META_PIXEL_ID || !META_EVENTS[name]) return false;
+    if (getConsent() !== "granted") return false;
+    if (!pixelLoaded) loadPixel();
+    if (typeof window.fbq !== "function") return false;
+    const out = {};
+    META_EVENTS[name].forEach((k) => { const v = params && params[k]; if (typeof v === "string" && /^[a-z_]{1,30}$/.test(v)) out[k] = v; });
+    window.fbq("track", name, out);
+    return true;
+  }
+  /* Contact: one delegated listener for the whole document (covers links rendered later, e.g. the
+     builder's success screen), registered once per page load, one event per click. */
+  function contactMethodOf(href) {
+    if (/^tel:/i.test(href)) return "phone";
+    if (/^(https?:)?\/\/(wa\.me|api\.whatsapp\.com|(www\.)?whatsapp\.com)\//i.test(href)) return "whatsapp";
+    return null;
+  }
+  function watchContactClicks() {
+    if (window.__dscMetaContactClicks) return;
+    window.__dscMetaContactClicks = true;
+    document.addEventListener("click", (e) => {
+      const a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+      if (!a) return;
+      const method = contactMethodOf(a.getAttribute("href") || "");
+      if (method) metaTrack("Contact", { contact_method: method });
+    }, true);
+  }
+
   /* ---------- events: whitelisted names and params, never free text ---------- */
   function clean(params) {
     const out = {};
@@ -150,6 +185,7 @@
     if (c === "granted") loadMeasurement();
     else if (c === null) showBanner();
     addSettingsLink();
+    watchContactClicks();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
@@ -157,6 +193,7 @@
   window.DS_ANALYTICS = {
     id: MEASUREMENT_ID,
     pixelId: META_PIXEL_ID,
+    metaTrack,
     trackEvent,
     consent: decide,
     getConsent,

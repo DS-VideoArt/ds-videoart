@@ -242,6 +242,7 @@
           const svc = (form.querySelector("input[name=service]:checked") || {}).value || "";
           const serviceType = svc === "דף נחיתה" ? "landing_page" : svc === "אתר תדמית" ? "website" : "unsure";
           if (window.DS_ANALYTICS) window.DS_ANALYTICS.trackEvent("contact_request_submitted", { service_type: serviceType });
+          if (window.DS_ANALYTICS && window.DS_ANALYTICS.metaTrack) window.DS_ANALYTICS.metaTrack("Lead", { form_type: "contact" });   // Meta Lead: only here, after the server accepted
         } catch {}
         status.className = "form-status ok";
         status.textContent = "קיבלנו. נחזור אליכם לשיחה קצרה בהקדם.";

@@ -879,6 +879,7 @@
       const res = await fetch(form.getAttribute("action") || "/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body });
       if (!res.ok) throw new Error("status " + res.status);
       track("project_request_submitted", funnelParams(state));   // only after the server accepted
+      try { if (window.DS_ANALYTICS && window.DS_ANALYTICS.metaTrack) window.DS_ANALYTICS.metaTrack("Lead", { form_type: "project_builder" }); } catch {}   // Meta Lead: same condition
       clearSaved();
       showSuccess(data);
     } catch (err) {
