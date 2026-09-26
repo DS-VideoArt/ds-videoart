@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1350" width="1080" height="1350" role="img" aria-labelledby="t">
+  <title id="t">ארגז פתוח שממנו עולים פריטים: עיגול נחושת, מסגרת תמונה, שורות טקסט ותג עם חור, לקראת שער מואר</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1620"/><stop offset="0.62" stop-color="#2a2230"/><stop offset="1" stop-color="#3a3040"/></linearGradient>
+    <radialGradient id="horizon" cx="50%" cy="60%" r="55%"><stop offset="0" stop-color="#d6a46c" stop-opacity="0.42"/><stop offset="0.5" stop-color="#b8582f" stop-opacity="0.14"/><stop offset="1" stop-color="#b8582f" stop-opacity="0"/></radialGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ecd2ab"/><stop offset="0.55" stop-color="#d6a46c"/><stop offset="1" stop-color="#c9744f"/></radialGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d6a46c" stop-opacity="0.55"/><stop offset="1" stop-color="#d6a46c" stop-opacity="0"/></radialGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8cab5"/><stop offset="1" stop-color="#f1eadf"/></linearGradient>
+    <linearGradient id="doorLight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecd2ab"/><stop offset="0.5" stop-color="#d6a46c"/><stop offset="1" stop-color="#b8582f"/></linearGradient>
+    <linearGradient id="doorLightSoft" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecd2ab" stop-opacity="0.9"/><stop offset="1" stop-color="#c9744f" stop-opacity="0.9"/></linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3040"/><stop offset="1" stop-color="#241e23"/></linearGradient>
+    <linearGradient id="stoneA" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2c2430"/><stop offset="0.7" stop-color="#3a3040"/><stop offset="1" stop-color="#5a4550"/></linearGradient>
+    <linearGradient id="stoneB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#241e23"/><stop offset="0.7" stop-color="#332a36"/><stop offset="1" stop-color="#6a4a44"/></linearGradient>
+    <linearGradient id="coinFace" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ecd2ab"/><stop offset="0.5" stop-color="#d6a46c"/><stop offset="1" stop-color="#b8582f"/></linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf7f0"/><stop offset="1" stop-color="#e9dfcf"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#100c12" flood-opacity="0.5"/></filter>
+    <filter id="lift" x="-40%" y="-40%" width="180%" height="190%"><feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#100c12" flood-opacity="0.45"/></filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+    <clipPath id="frame"><rect width="1080" height="1350"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="1080" height="1350" fill="url(#sky)"/>
+    <rect width="1080" height="1350" fill="url(#horizon)"/>
+    <g fill="#f1eadf" fill-opacity="0.5"><circle cx="120" cy="120" r="1.6"/><circle cx="330" cy="80" r="1.2"/><circle cx="520" cy="170" r="1.4"/><circle cx="700" cy="90" r="1.2"/><circle cx="980" cy="140" r="1.6"/><circle cx="220" cy="300" r="1"/><circle cx="1000" cy="330" r="1.3"/><circle cx="90" cy="520" r="1.2"/></g>
+    <circle cx="860" cy="170" r="120" fill="url(#sunGlow)"/>
+    <circle cx="860" cy="170" r="60" fill="url(#sun)"/>
+    <circle cx="860" cy="170" r="84" fill="none" stroke="#d6a46c" stroke-opacity="0.28"/>
+    <circle cx="860" cy="170" r="108" fill="none" stroke="#d6a46c" stroke-opacity="0.14" stroke-dasharray="3 10"/>
+    <g fill="#241e23" fill-opacity="0.75"><path d="M -20 840 v -100 a 50 50 0 0 1 100 0 v 100 z"/></g>
+    <path d="M -100 840 L 1180 840 L 1180 1350 L -100 1350 Z" fill="url(#ground)"/>
+    <path d="M -100 840 L 1180 840 L 1180 854 L -100 854 Z" fill="#c9744f" fill-opacity="0.25"/>
+    <path d="M 330 1080 C 300 800, 480 560, 760 670" fill="none" stroke="#d6a46c" stroke-opacity="0.6" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round"/>
+    <path d="M 330 1180 C 560 1150, 780 1020, 820 854" fill="none" stroke="#fbf7f0" stroke-width="34" stroke-linecap="round"/>
+    <path d="M 330 1180 C 560 1150, 780 1020, 820 854" fill="none" stroke="#b8582f" stroke-opacity="0.55" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round"/>
+    <g filter="url(#shadow)"><path d="M 700.0 840 v -220.0 a 120.0 120.0 0 0 1 240.0 0 v 220.0 z" fill="url(#wall)"/></g><path d="M 774.4 840 v -178.8 a 45.6 45.6 0 0 1 91.2 0 v 178.8 z" fill="url(#doorLight)"/><g fill="#ecd2ab" fill-opacity="0.85"><rect x="728.8" y="629.2" width="21.6" height="34.6" rx="10.8"/><rect x="889.6" y="629.2" width="21.6" height="34.6" rx="10.8"/></g>
+    <path d="M 774 840 v -156 a 46 46 0 0 1 92 0 v 156 z" fill="#ecd2ab" fill-opacity="0.35" filter="url(#glow)"/>
+    <g fill="#3a3040"><rect x="668" y="700" width="20" height="140" rx="10"/><rect x="952" y="700" width="20" height="140" rx="10"/></g>
+    <ellipse cx="330" cy="1238" rx="188" ry="25" fill="#2a2230" fill-opacity="0.18"/>
+    <g filter="url(#shadow)">
+      <path d="M 191 1070 L 135 1012 L 280 1004 L 290 1070 Z" fill="#3a3040"/>
+      <path d="M 469 1070 L 525 1012 L 380 1004 L 370 1070 Z" fill="#332a36"/>
+      <rect x="205" y="1070" width="250" height="160" rx="8" fill="url(#wall)"/>
+    </g>
+    <rect x="213" y="1064" width="234" height="16" rx="6" fill="#ecd2ab" fill-opacity="0.9"/>
+    <rect x="213" y="1064" width="234" height="16" rx="6" fill="#ecd2ab" fill-opacity="0.5" filter="url(#glow)"/>
+    <g stroke="#d6a46c" stroke-opacity="0.45" stroke-width="3" fill="none"><path d="M 219 1128 H 441"/><path d="M 219 1179 H 441"/></g>
+    <g filter="url(#lift)"><circle cx="300" cy="870" r="43.7" fill="url(#coinFace)"/><circle cx="300" cy="870" r="27.6" fill="none" stroke="#fbf7f0" stroke-opacity="0.7" stroke-width="4.6"/><circle cx="300" cy="870" r="9.2" fill="#fbf7f0"/></g><g filter="url(#lift)" transform="rotate(-6 380 700)"><rect x="315.6" y="649.4" width="128.8" height="101.2" rx="9.2" fill="url(#card)"/><rect x="327.1" y="660.9" width="105.8" height="78.2" rx="4.6" fill="#3a3040"/><circle cx="405.3" cy="683.9" r="11.5" fill="#d6a46c"/><path d="M 327.1 739.1 L 363.9 697.7 L 386.9 718.4 L 405.3 704.6 L 432.9 739.1 Z" fill="#b8582f" fill-opacity="0.85"/></g><g filter="url(#lift)" transform="rotate(4 520 560)"><rect x="448.7" y="507.1" width="142.6" height="105.8" rx="11.5" fill="url(#card)"/><rect x="464.8" y="525.5" width="110.4" height="8.0" rx="4.0" fill="#2a2230"/><rect x="464.8" y="543.9" width="96.6" height="8.0" rx="4.0" fill="#8a7f86"/><rect x="464.8" y="562.3" width="105.8" height="8.0" rx="4.0" fill="#8a7f86"/><rect x="464.8" y="580.7" width="66.7" height="8.0" rx="4.0" fill="#8a7f86"/></g><g filter="url(#lift)" transform="rotate(-14 650 470)"><path d="M 583.3 440.1 H 684.5 L 716.7 470 L 684.5 499.9 H 583.3 Z" fill="#b8582f"/><circle cx="684.5" cy="470" r="8.0" fill="#fbf7f0"/><rect x="599.4" y="463.1" width="59.8" height="5.8" rx="2.9" fill="#f1eadf" fill-opacity="0.8"/><rect x="599.4" y="474.6" width="39.1" height="5.8" rx="2.9" fill="#f1eadf" fill-opacity="0.55"/></g>
+  </g>
+</svg>
