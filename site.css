@@ -526,6 +526,14 @@ section { position: relative; }
 }
 .tag.demo { background: rgba(214, 164, 108, 0.14); border-color: rgba(214, 164, 108, 0.5); color: var(--copper-light); }
 .tag.live { background: rgba(31, 122, 83, 0.18); border-color: rgba(31, 122, 83, 0.5); color: #bfe7d1; }
+.tag.client { background: rgba(31, 122, 83, 0.22); border-color: rgba(31, 122, 83, 0.6); color: #bfe7d1; }
+
+/* "what was built" list + demo note inside a portfolio card (dark surface) */
+.work-points-title { margin-top: 18px; color: var(--on-dark); font-weight: 700; font-size: 0.95rem; }
+.work-points { margin-top: 8px; display: grid; gap: 6px; padding: 0; list-style: none; max-width: 52ch; }
+.work-points li { position: relative; padding-inline-start: 20px; color: var(--on-dark-70); font-size: 0.98rem; line-height: 1.55; }
+.work-points li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.62em; width: 7px; height: 7px; border-radius: 50%; background: var(--copper); }
+.work-demo-note { margin-top: 16px; font-size: 0.9rem; color: var(--on-dark-70); }
 
 .work-title { font-size: clamp(1.7rem, 3vw, 2.4rem); font-weight: 900; letter-spacing: -0.02em; }
 .work-kind { margin-top: 6px; color: var(--on-dark-70); font-weight: 500; }

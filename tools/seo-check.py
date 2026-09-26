@@ -18,6 +18,8 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "hub/landing-page-or-business-website.html": ("index, follow", True, False),
 }
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי"]
+# External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
+ALLOWED_EXTERNAL = ["https://fit-with-nikita.netlify.app/", "https://comfix-computer-lab-demo.netlify.app/"]
 CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
@@ -78,6 +80,7 @@ for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbLis
         if ('width=' not in img or 'height=' not in img): fails.append(f"{page}: img without dimensions")
 for f in CORE_TEXT:
     s = read(f)
+    for u in ALLOWED_EXTERNAL: s = s.replace(u, "")
     for bad in FORBIDDEN:
         if bad in s and bad not in EXEMPT.get(f, set()): fails.append(f"{f}: contains '{bad}'")
         elif bad in s: notes.append(f"{f}: contains '{bad}' (documented exception, page is noindex)")
@@ -102,6 +105,8 @@ if 'href="/hub/do-you-need-a-website"' not in a2: fails.append("article 02 does 
 home = read("index.html")
 if home.count('golondon-desktop.jpg') != 1 or 'id="complex"' not in home: fails.append("homepage: GoLondon must appear once, inside #complex")
 if 'פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית' not in home: fails.append("homepage: complex-project disclaimer missing")
+if home.count('nikita-desktop.jpg') != 1 or 'פרויקט אמיתי · לקוח' not in home: fails.append("homepage: Fit With Nikita card (real client project) must appear once with its tag")
+if 'עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.' not in home: fails.append("homepage: computer-lab demo note missing")
 # sitemap
 sm = read("sitemap.xml"); locs = re.findall(r"<loc>(.*?)</loc>", sm)
 for u in locs:
