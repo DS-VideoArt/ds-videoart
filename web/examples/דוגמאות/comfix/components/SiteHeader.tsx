@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Home, Menu, MonitorCog, Phone, Search, X } from "lucide-react";
+import { Home, Menu, MonitorCog, Phone, X } from "lucide-react";
 import { DemoAction } from "@/components/DemoAction";
-import { openComfixSearch } from "@/components/NavigationExperience";
 import { usePathname } from "next/navigation";
 import { normalizeRoutePath } from "@/lib/route-path";
 
@@ -24,19 +23,19 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="utility-bar">
         <div className="container utility-inner">
-          <p>מעבדה מקצועית בתל אביב · אבחון ראשוני ללא עלות</p>
-          <DemoAction className="utility-action" message="מספר הטלפון הוא חלק מאתר ההדגמה ואינו מחייג בפועל.">
+          <p className="utility-demo"><strong>אתר הדגמה · עסק בדיוני</strong><span className="utility-extra"> · ביט ובורג היא מעבדה מומצאת שנבנתה להמחשת אתר תדמית</span></p>
+          <DemoAction className="utility-action" message="באתר ההדגמה אין מספר טלפון אמיתי. באתר של עסק הכפתור יחייג ישירות.">
             <Phone size={15} aria-hidden="true" />
-            03 555 0184
+            טלפון לדוגמה
           </DemoAction>
         </div>
       </div>
       <div className="container header-inner">
-        <a className="brand" href="/" aria-label="ComFix עמוד הבית" onClick={() => setOpen(false)}>
+        <a className="brand" href="/" aria-label="ביט ובורג, עמוד הבית" onClick={() => setOpen(false)}>
           <span className="brand-mark"><MonitorCog aria-hidden="true" /></span>
           <span className="brand-copy">
-            <strong>ComFix</strong>
-            <small>מחשבים שעובדים בשבילכם</small>
+            <strong>ביט ובורג</strong>
+            <small>מעבדת מחשבים ושירותי מחשוב</small>
           </span>
         </a>
 
@@ -60,9 +59,6 @@ export function SiteHeader() {
               {item.label}
             </a>
           ))}
-          <button className="header-search" type="button" onClick={() => { setOpen(false); openComfixSearch(); }} aria-label="חיפוש בכל האתר">
-            <Search aria-hidden="true" /> <span>חיפוש</span><kbd>/</kbd>
-          </button>
           <a className="button button-sm" href="/repairs#booking" onClick={() => setOpen(false)}>
             הזמנת תיקון
           </a>

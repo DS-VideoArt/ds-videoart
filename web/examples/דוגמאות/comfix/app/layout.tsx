@@ -17,12 +17,12 @@ const heebo = Heebo({
 
 const routePrepaintScript = `(() => {
   try {
-    const saved = JSON.parse(sessionStorage.getItem("comfix-route-transition") || "null");
+    const saved = JSON.parse(sessionStorage.getItem("demo-route-transition") || "null");
     const allowed = ["home", "repairs", "new-computers", "refurbished", "accessories", "contact"];
     if (saved && allowed.includes(saved.motion) && Date.now() - saved.at < 5000) {
       document.documentElement.dataset.routeArrival = saved.motion;
     } else {
-      sessionStorage.removeItem("comfix-route-transition");
+      sessionStorage.removeItem("demo-route-transition");
     }
   } catch (_) {}
 })();`;
@@ -32,24 +32,25 @@ export async function generateMetadata(): Promise<Metadata> {
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3001";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
   const metadataBase = new URL(`${protocol}://${host}`);
-  const description = "תיקוני מחשבים, מחשבים חדשים ומחודשים, רכיבים וציוד נלווה במקום אחד.";
+  const description = "אתר הדגמה · עסק בדיוני. ביט ובורג היא מעבדת מחשבים מומצאת שנבנתה כדי להמחיש אתר תדמית של עד 6 עמודים. הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.";
 
   return {
     metadataBase,
-    title: { default: "ComFix | מעבדת מחשבים ושירות טכני", template: "%s | ComFix" },
+    title: { default: "ביט ובורג | מעבדת מחשבים ושירותי מחשוב · אתר הדגמה", template: "%s | ביט ובורג · אתר הדגמה" },
+    robots: { index: false, follow: false, nocache: true, googleBot: { index: false, follow: false } },
     description,
     openGraph: {
       type: "website",
       locale: "he_IL",
-      title: "ComFix | המחשב שלך חוזר לעבוד כמו שצריך",
+      title: "ביט ובורג | מעבדת מחשבים ושירותי מחשוב · אתר הדגמה",
       description,
-      images: [{ url: new URL("/og.png", metadataBase).toString(), width: 1731, height: 909, alt: "ComFix מעבדת מחשבים" }],
+      images: [{ url: new URL("/og.jpg", metadataBase).toString(), width: 1200, height: 630, alt: "ביט ובורג, מעבדת מחשבים ושירותי מחשוב. אתר הדגמה · עסק בדיוני" }],
     },
     twitter: {
       card: "summary_large_image",
-      title: "ComFix | מעבדת מחשבים ושירות טכני",
+      title: "ביט ובורג | מעבדת מחשבים ושירותי מחשוב · אתר הדגמה",
       description,
-      images: [new URL("/og.png", metadataBase).toString()],
+      images: [new URL("/og.jpg", metadataBase).toString()],
     },
   };
 }
@@ -76,7 +77,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SiteFooter />
         <DemoAction
           className="whatsapp-float"
-          aria-label="הדגמת פתיחת שיחה עם ComFix ב WhatsApp"
+          aria-label="הדגמת פתיחת שיחה עם ביט ובורג ב WhatsApp"
           message="באתר אמיתי הכפתור יפתח שיחת WhatsApp ישירות עם העסק. כאן הוא מוצג לצורכי הדגמה בלבד."
         >
           <MessageCircle aria-hidden="true" />

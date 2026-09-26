@@ -2,13 +2,13 @@
 
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-export function showComfixDemoNotice(message?: string) {
-  window.dispatchEvent(new CustomEvent("comfix:demo-notice", { detail: message }));
+export function showDemoNotice(message?: string) {
+  window.dispatchEvent(new CustomEvent("demo:demo-notice", { detail: message }));
 }
 
 export function DemoAction({ children, message, className = "", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { children: ReactNode; message?: string }) {
   return (
-    <button {...props} className={className} type="button" onClick={() => showComfixDemoNotice(message)}>
+    <button {...props} className={className} type="button" onClick={() => showDemoNotice(message)}>
       {children}
     </button>
   );

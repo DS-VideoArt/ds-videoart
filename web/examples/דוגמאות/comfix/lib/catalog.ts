@@ -102,7 +102,7 @@ export const refurbishedComputers: Product[] = [
     category: "מחודש",
     useCase: "משרד ביתי קומפקטי",
     price: 1490,
-    badge: "חיסכון של 42%",
+    badge: "מחודש ובדוק",
     specs: ["Intel Core i5", "זיכרון 16GB", "WiFi מובנה"],
     image: images.desktop,
     warranty: "12 חודשי אחריות",
@@ -122,7 +122,7 @@ export const refurbishedComputers: Product[] = [
 export const accessories: Product[] = [
   { id: "view-27", name: "מסך View 27 QHD", category: "מסכים", useCase: "עבודה ויצירה", price: 1190, specs: ["רזולוציית QHD", "קצב 100Hz", "חיבור USB C"], image: images.desktop, warranty: "3 שנות אחריות" },
   { id: "focus-24", name: "מסך Focus 24", category: "מסכים", useCase: "משרד ולימודים", price: 690, specs: ["פאנל IPS", "רזולוציית Full HD", "רמקולים מובנים"], image: images.work, warranty: "3 שנות אחריות" },
-  { id: "fastdrive-1", name: "FastDrive 1TB", category: "אחסון", useCase: "שדרוג מהירות ואחסון", price: 349, badge: "הנמכר ביותר", specs: ["תקן NVMe", "מהירות עד 5,000MB", "כולל התקנה"], image: images.storage, warranty: "5 שנות אחריות" },
+  { id: "fastdrive-1", name: "FastDrive 1TB", category: "אחסון", useCase: "שדרוג מהירות ואחסון", price: 349, badge: "מומלץ לשדרוג", specs: ["תקן NVMe", "מהירות עד 5,000MB", "כולל התקנה"], image: images.storage, warranty: "5 שנות אחריות" },
   { id: "backup-2", name: "BackupBox 2TB", category: "אחסון", useCase: "גיבוי תמונות וקבצים", price: 399, specs: ["חיבור USB 3.2", "תואם Windows ו Mac", "תוכנת גיבוי"], image: images.hardware, warranty: "3 שנות אחריות" },
   { id: "keys-pro", name: "מקלדת Keys Pro", category: "ציוד היקפי", useCase: "עבודה ממושכת", price: 279, specs: ["עברית ואנגלית", "חיבור אלחוטי", "טעינת USB C"], image: images.keyboard, warranty: "שנתיים אחריות" },
   { id: "flow-mouse", name: "עכבר Flow", category: "ציוד היקפי", useCase: "עבודה מדויקת ונוחה", price: 189, specs: ["חיבור לשלושה מכשירים", "סוללה ל 18 חודשים", "לחצנים שקטים"], image: images.accessories, warranty: "שנתיים אחריות" },

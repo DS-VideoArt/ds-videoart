@@ -1,13 +1,13 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { appendFile, cp, mkdir, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
 const clientDir = fileURLToPath(new URL("../dist/client/", import.meta.url));
 const outputDir = fileURLToPath(new URL("../netlify-dist/", import.meta.url));
-const siteUrl = process.env.SITE_URL || "https://comfix-computer-lab-demo.netlify.app";
+const siteUrl = process.env.SITE_URL || "https://bit-uborg-demo.netlify.app";
 const { default: worker } = await import(new URL("../dist/server/index.js", import.meta.url));
 
-const routes = ["/", "/repairs", "/new-computers", "/refurbished", "/accessories", "/contact"];
+const routes = ["/", "/repairs", "/new-computers", "/refurbished", "/accessories", "/contact", "/privacy"];
 
 await rm(outputDir, { recursive: true, force: true });
 await cp(clientDir, outputDir, { recursive: true });
@@ -34,4 +34,6 @@ for (const route of routes) {
 }
 
 await writeFile(`${outputDir}/_redirects`, "/index.html /index.html 200\n");
+// Demo site: keep every page out of search engines (the pages also carry <meta name="robots" content="noindex">).
+await appendFile(`${outputDir}/_headers`, "\n/*\n  X-Robots-Tag: noindex, nofollow\n");
 console.log(`Static Netlify build created at ${outputDir.replace(projectRoot, "")}`);

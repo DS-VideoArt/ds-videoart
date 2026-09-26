@@ -62,7 +62,7 @@ export function HomeHero() {
   }, [active, previous]);
 
   return (
-    <section className="immersive-hero" aria-label="ComFix מעבדת מחשבים">
+    <section className="immersive-hero" aria-label="ביט ובורג, מעבדת מחשבים ושירותי מחשוב">
       <div className="scene-stage" aria-hidden="true">
         {previous !== null ? (
           <div className="hero-scene scene-out" style={{ backgroundImage: `url(${scenes[previous].src})`, backgroundPosition: scenes[previous].position }} />
@@ -75,7 +75,7 @@ export function HomeHero() {
       </div>
       <div className="hero-scrim" aria-hidden="true" />
       <div className="hero-noise" aria-hidden="true" />
-      <div className="hero-orbit" aria-hidden="true"><span>CF</span></div>
+      <div className="hero-orbit" aria-hidden="true"><span>ב·ב</span></div>
 
       <div className="container immersive-inner">
         <div className="immersive-copy">
@@ -91,7 +91,7 @@ export function HomeHero() {
       </div>
 
       <div className="scene-meta">
-        <span>עכשיו ב ComFix</span>
+        <span>עכשיו בביט ובורג</span>
         <strong key={`label-${active}`}>{scenes[active].label}</strong>
       </div>
 

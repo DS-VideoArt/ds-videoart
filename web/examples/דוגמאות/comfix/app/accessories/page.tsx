@@ -14,7 +14,7 @@ export default function AccessoriesPage() {
           <span className="eyebrow">החיבור הנכון, בפעם הראשונה</span>
           <h1>כל מה שהמחשב צריך כדי לעבוד טוב יותר</h1>
           <p>מסכים, אחסון, שדרוגים וציוד היקפי שנבחרו בגלל איכות ותאימות. לא בטוחים מה מתאים? נבדוק לפני הרכישה.</p>
-          <div className="button-row"><a className="button" href="#catalog-title">חיפוש בקטלוג <ArrowLeft aria-hidden="true" /></a><a className="button button-secondary" href="/contact">בדיקת תאימות</a></div>
+          <div className="button-row"><a className="button" href="#catalog-title">לצפייה בציוד <ArrowLeft aria-hidden="true" /></a><a className="button button-secondary" href="/contact">בדיקת תאימות</a></div>
         </div>
       </section>
 

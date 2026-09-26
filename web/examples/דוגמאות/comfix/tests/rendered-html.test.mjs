@@ -16,14 +16,17 @@ async function render(path = "/") {
   );
 }
 
-test("server renders the finished Hebrew ComFix home page", async () => {
+test("server renders the finished Hebrew demo home page", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
   assert.match(html, /<html[^>]*lang="he"[^>]*dir="rtl"/i);
-  assert.match(html, /ComFix/);
+  assert.match(html, /ביט ובורג/);
+  assert.match(html, /אתר הדגמה · עסק בדיוני/);
+  assert.match(html, /noindex/);
+  assert.doesNotMatch(html, /ComFix|comfix|הברזל|>4\.9<|יעל אדרי|אורי לוי/i);
   assert.match(html, /המחשב שלך/);
   assert.match(html, /הזמנת תיקון/);
   assert.match(html, /מחשבים מחודשים/);
@@ -34,9 +37,10 @@ test("server renders every requested business route", async () => {
   const routes = [
     ["/repairs", /מחירים לדוגמה/],
     ["/new-computers", /המחשבים החדשים שלנו/],
-    ["/refurbished", /42 נקודות בדיקה/],
+    ["/refurbished", /בדיקה מקיפה/],
     ["/accessories", /ציוד ורכיבים נבחרים/],
-    ["/contact", /ComFix הוא עסק מומצא/],
+    ["/contact", /ביט ובורג הוא עסק מומצא/],
+    ["/privacy", /טפסי הדגמה/],
   ];
 
   for (const [path, expected] of routes) {
@@ -45,7 +49,8 @@ test("server renders every requested business route", async () => {
     const html = await response.text();
     assert.match(html, expected, path);
     assert.match(html, /aria-label="דף הבית"/, `${path} includes a home control`);
-    assert.match(html, /aria-label="חיפוש בכל האתר"/, `${path} includes global search`);
+    assert.doesNotMatch(html, /aria-label="חיפוש בכל האתר"|search-box|filter-buttons/, `${path} has no search or filters`);
+    assert.doesNotMatch(html, /ComFix|comfix/i, `${path} has no old brand`);
     assert.doesNotMatch(html, /href="(?:https:\/\/wa\.me|tel:|mailto:)/i, `${path} has no live outbound contact action`);
   }
 });
@@ -75,7 +80,7 @@ test("route motion has a pre-paint bridge and a unique variant for every destina
   const layout = await readFile(new URL("../app/layout.tsx", import.meta.url), "utf8");
   const navigation = await readFile(new URL("../components/NavigationExperience.tsx", import.meta.url), "utf8");
 
-  assert.match(layout, /comfix-route-transition/);
+  assert.match(layout, /demo-route-transition/);
   assert.match(layout, /route-prepaint-stage/);
 
   for (const variant of ["home", "repairs", "new-computers", "refurbished", "accessories", "contact"]) {

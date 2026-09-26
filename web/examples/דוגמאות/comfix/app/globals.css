@@ -611,3 +611,20 @@ html[data-route-arrival="contact"] .route-prepaint-base { background: linear-gra
   .image-frame img, .why-visual img { transform: none !important; }
   ::view-transition-old(*), ::view-transition-new(*), ::view-transition-group(*) { animation-duration: 0s !important; animation-delay: 0s !important; }
 }
+
+/* ---------- demo labelling, static catalog, privacy page (2026-09-25) ---------- */
+.utility-demo strong { color: #7ff0cb; font-weight: 800; }
+.catalog-note { margin: 0; color: var(--muted); font-size: .95rem; }
+.catalog-group + .catalog-group { margin-top: 40px; }
+.catalog-group-title { margin: 0 0 16px; font-size: 1.25rem; }
+.price-note { display: inline-block; margin-inline-start: 6px; color: var(--muted); font-size: .78rem; font-weight: 600; vertical-align: middle; }
+.testimonial-note { color: var(--muted); }
+.legal-text { max-width: 760px; }
+.legal-text h2 { margin: 30px 0 8px; font-size: 1.35rem; }
+.legal-text h2:first-child { margin-top: 0; }
+@media (max-width: 760px) {
+  .utility-inner p.utility-demo { display: block; }
+  .utility-extra { display: none; }
+  .utility-inner { justify-content: space-between; }
+}
+.main-nav a, .home-nav span { white-space: nowrap; }

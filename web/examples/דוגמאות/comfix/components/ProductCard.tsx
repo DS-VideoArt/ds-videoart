@@ -17,7 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="product-content">
         <span className="product-category">{product.category} · {product.useCase}</span>
         <h3>{product.name}</h3>
-        <strong className="product-price">{priceFormatter.format(product.price)}</strong>
+        <strong className="product-price">{priceFormatter.format(product.price)} <small className="price-note">מחיר להמחשה</small></strong>
         <ul className="spec-list">
           {product.specs.slice(0, 3).map((spec) => <li key={spec}><CheckCircle2 aria-hidden="true" /> {spec}</li>)}
         </ul>

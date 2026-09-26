@@ -8,10 +8,10 @@ export function SiteFooter() {
         <div className="footer-brand">
           <a className="brand brand-light" href="/">
             <span className="brand-mark"><MonitorCog aria-hidden="true" /></span>
-            <span className="brand-copy"><strong>ComFix</strong><small>מחשבים שעובדים בשבילכם</small></span>
+            <span className="brand-copy"><strong>ביט ובורג</strong><small>מעבדת מחשבים ושירותי מחשוב</small></span>
           </a>
           <p>מעבדת מחשבים מקומית שמדברת בגובה העיניים. תיקונים, מחשבים וציוד עם הסבר ברור לפני כל החלטה.</p>
-          <span className="demo-pill">אתר הדגמה</span>
+          <span className="demo-pill">אתר הדגמה · עסק בדיוני</span>
         </div>
         <div>
           <h2>שירותים</h2>
@@ -25,16 +25,16 @@ export function SiteFooter() {
         <div>
           <h2>פרטי המעבדה</h2>
           <ul className="contact-list">
-            <li><MapPin aria-hidden="true" /> רחוב הברזל 18, תל אביב</li>
-            <li><Phone aria-hidden="true" /> <DemoAction className="text-demo-action" message="מספר הטלפון הוא דוגמה בלבד ואינו מחייג.">03 555 0184</DemoAction></li>
-            <li><Mail aria-hidden="true" /> <DemoAction className="text-demo-action" message="כתובת הדואר האלקטרוני היא דוגמה בלבד ואינה פותחת הודעה.">hello@comfix.example</DemoAction></li>
+            <li><MapPin aria-hidden="true" /> תל אביב · לעסק הבדיוני אין כתובת</li>
+            <li><Phone aria-hidden="true" /> <DemoAction className="text-demo-action" message="באתר ההדגמה אין מספר טלפון אמיתי.">טלפון לדוגמה</DemoAction></li>
+            <li><Mail aria-hidden="true" /> <DemoAction className="text-demo-action" message="כתובת הדואר האלקטרוני היא דוגמה בלבד ואינה פותחת הודעה.">hello@bit-uborg.example</DemoAction></li>
             <li><Clock3 aria-hidden="true" /> ראשון עד חמישי, 09:00 עד 19:00</li>
           </ul>
         </div>
       </div>
       <div className="container footer-bottom">
-        <p>© 2026 ComFix. כל הפרטים, המחירים ופרטי העסק באתר הם לצורכי הדגמה בלבד.</p>
-        <a href="/contact">מדיניות פרטיות</a>
+        <p>© 2026 ביט ובורג, עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם לצורכי הדגמה בלבד.</p>
+        <a href="/privacy">מדיניות פרטיות</a>
       </div>
     </footer>
   );

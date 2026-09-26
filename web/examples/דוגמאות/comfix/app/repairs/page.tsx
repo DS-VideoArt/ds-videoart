@@ -55,7 +55,7 @@ export default function RepairsPage() {
 
       <section className="section">
         <div className="container split">
-          <div className="image-frame"><img src="https://images.unsplash.com/photo-1721332153521-120cb0cd02d9?auto=format&fit=crop&w=1400&q=85" alt="טכנאי ComFix עובד על מחשב נייד פתוח" width="900" height="1000" /><div className="image-note"><strong>אבחון עד 24 שעות</strong><span>מקבלים הסבר והצעת מחיר לפני כל פעולה</span></div></div>
+          <div className="image-frame"><img src="https://images.unsplash.com/photo-1721332153521-120cb0cd02d9?auto=format&fit=crop&w=1400&q=85" alt="טכנאי עובד על מחשב נייד פתוח" width="900" height="1000" /><div className="image-note"><strong>אבחון עד 24 שעות</strong><span>מקבלים הסבר והצעת מחיר לפני כל פעולה</span></div></div>
           <div><span className="eyebrow">ככה זה עובד</span><h2>שלושה צעדים וחוזרים לעבוד</h2><div className="stacked-steps"><article><span>1</span><div><h3>מוסרים את המחשב</h3><p>במעבדה או בתיאום איסוף באזור תל אביב.</p></div></article><article><span>2</span><div><h3>מקבלים אבחון</h3><p>הסבר פשוט, מחיר מדויק וזמן טיפול משוער.</p></div></article><article><span>3</span><div><h3>מאשרים ומתקנים</h3><p>רק לאחר אישור שלכם. בסיום מקבלים דוח ואחריות.</p></div></article></div><ul className="check-list privacy-list"><li><CheckCircle2 aria-hidden="true" /> לא פותחים קבצים אישיים שאינם קשורים לתקלה</li><li><CheckCircle2 aria-hidden="true" /> לא מוחקים מידע ללא אישור מפורש</li><li><CheckCircle2 aria-hidden="true" /> כל תיקון מתועד ומגובה באחריות</li></ul></div>
         </div>
       </section>
