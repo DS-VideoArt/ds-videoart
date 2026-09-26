@@ -112,6 +112,10 @@ if home.count('nikita-desktop.jpg') != 1 or 'פרויקט אמיתי · לקוח
 if 'עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.' not in home: fails.append("homepage: computer-lab demo note missing")
 if 'comfix' in home.lower(): fails.append("homepage: old demo name ComFix is still referenced")
 if 'ביט ובורג' not in home or 'bit-uborg-demo.netlify.app' not in home: fails.append("homepage: Bit and Borg demo card or link missing")
+_u = home[home.find('id="useful"'):]; _u = _u[:_u.find('</section>')]
+if 'href="/hub/how-much-does-a-website-cost"' not in _u: fails.append("homepage #useful: price article missing")
+if _u.count('class="hub-teaser-card') > 3: fails.append("homepage #useful: more than 3 teasers")
+if 'href="/hub/">לכל המידע השימושי</a>' not in _u: fails.append("homepage #useful: link to the hub missing")
 # sitemap
 sm = read("sitemap.xml"); locs = re.findall(r"<loc>(.*?)</loc>", sm)
 for u in locs:
