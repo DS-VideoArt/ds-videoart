@@ -22,7 +22,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
 }
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי"]
 # External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
-ALLOWED_EXTERNAL = ["https://fit-with-nikita.netlify.app/", "https://comfix-computer-lab-demo.netlify.app/"]
+ALLOWED_EXTERNAL = ["https://fit-with-nikita.netlify.app/", "https://bit-uborg-demo.netlify.app/"]
 CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
@@ -110,6 +110,8 @@ if home.count('golondon-desktop.jpg') != 1 or 'id="complex"' not in home: fails.
 if 'פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית' not in home: fails.append("homepage: complex-project disclaimer missing")
 if home.count('nikita-desktop.jpg') != 1 or 'פרויקט אמיתי · לקוח' not in home: fails.append("homepage: Fit With Nikita card (real client project) must appear once with its tag")
 if 'עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.' not in home: fails.append("homepage: computer-lab demo note missing")
+if 'comfix' in home.lower(): fails.append("homepage: old demo name ComFix is still referenced")
+if 'ביט ובורג' not in home or 'bit-uborg-demo.netlify.app' not in home: fails.append("homepage: Bit and Borg demo card or link missing")
 # sitemap
 sm = read("sitemap.xml"); locs = re.findall(r"<loc>(.*?)</loc>", sm)
 for u in locs:
