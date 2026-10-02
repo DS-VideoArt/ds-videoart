@@ -22,7 +22,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
 }
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי"]
 # External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
-ALLOWED_EXTERNAL = ["https://fit-with-nikita.netlify.app/", "https://bit-uborg-demo.netlify.app/"]
+ALLOWED_EXTERNAL = ["https://fit-with-nikita-app.netlify.app/", "https://bit-uborg-demo.netlify.app/"]
 CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
