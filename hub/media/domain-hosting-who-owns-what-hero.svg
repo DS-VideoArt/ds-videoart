@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-labelledby="t">
+  <title id="t">שלושה דברים נפרדים: שלט כתובת עם תג, במה של אבן, ושער מואר שעומד עליה</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1620"/><stop offset="0.62" stop-color="#2a2230"/><stop offset="1" stop-color="#3a3040"/></linearGradient>
+    <radialGradient id="horizon" cx="50%" cy="66%" r="55%"><stop offset="0" stop-color="#d6a46c" stop-opacity="0.42"/><stop offset="0.5" stop-color="#b8582f" stop-opacity="0.14"/><stop offset="1" stop-color="#b8582f" stop-opacity="0"/></radialGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ecd2ab"/><stop offset="0.55" stop-color="#d6a46c"/><stop offset="1" stop-color="#c9744f"/></radialGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#d6a46c" stop-opacity="0.55"/><stop offset="1" stop-color="#d6a46c" stop-opacity="0"/></radialGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8cab5"/><stop offset="1" stop-color="#f1eadf"/></linearGradient>
+    <linearGradient id="doorLight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecd2ab"/><stop offset="0.5" stop-color="#d6a46c"/><stop offset="1" stop-color="#b8582f"/></linearGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3040"/><stop offset="1" stop-color="#241e23"/></linearGradient>
+    <linearGradient id="stoneA" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2c2430"/><stop offset="0.7" stop-color="#3a3040"/><stop offset="1" stop-color="#5a4550"/></linearGradient>
+    <linearGradient id="stoneB" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#241e23"/><stop offset="0.7" stop-color="#332a36"/><stop offset="1" stop-color="#6a4a44"/></linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbf7f0"/><stop offset="1" stop-color="#e9dfcf"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#100c12" flood-opacity="0.5"/></filter>
+    <filter id="lift" x="-40%" y="-40%" width="180%" height="190%"><feDropShadow dx="0" dy="14" stdDeviation="10" flood-color="#100c12" flood-opacity="0.45"/></filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+    <clipPath id="frame"><rect width="1600" height="900"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <rect width="1600" height="900" fill="url(#sky)"/>
+    <rect width="1600" height="900" fill="url(#horizon)"/>
+    <g fill="#f1eadf" fill-opacity="0.5"><circle cx="140" cy="90" r="1.6"/><circle cx="420" cy="60" r="1.2"/><circle cx="690" cy="120" r="1.4"/><circle cx="980" cy="70" r="1.2"/><circle cx="1260" cy="110" r="1.6"/><circle cx="1500" cy="60" r="1.2"/><circle cx="1120" cy="180" r="1"/><circle cx="560" cy="220" r="1"/><circle cx="1400" cy="200" r="1.3"/><circle cx="300" cy="260" r="1"/></g>
+    <circle cx="310" cy="190" r="128" fill="url(#sunGlow)"/>
+    <circle cx="310" cy="190" r="64" fill="url(#sun)"/>
+    <circle cx="310" cy="190" r="90" fill="none" stroke="#d6a46c" stroke-opacity="0.28"/>
+    <circle cx="310" cy="190" r="115" fill="none" stroke="#d6a46c" stroke-opacity="0.14" stroke-dasharray="3 10"/>
+    <g fill="#241e23" fill-opacity="0.75"><path d="M 60 600 v -120 a 60 60 0 0 1 120 0 v 120 z"/><path d="M 1450 600 v -140 a 70 70 0 0 1 140 0 v 140 z"/></g>
+    <path d="M -100 600 L 1700 600 L 1700 900 L -100 900 Z" fill="url(#ground)"/>
+    <path d="M -100 600 L 1700 600 L 1700 614 L -100 614 Z" fill="#c9744f" fill-opacity="0.25"/>
+    <g filter="url(#shadow)"><rect x="680" y="530" width="560" height="70" rx="10" fill="url(#stoneA)"/></g>
+    <rect x="680" y="582" width="560" height="18" rx="6" fill="url(#stoneB)"/>
+    <rect x="686" y="534" width="548" height="4" rx="2" fill="#d6a46c" fill-opacity="0.35"/>
+    <g filter="url(#shadow)"><path d="M 835.0 530 v -205.0 a 125.0 125.0 0 0 1 250.0 0 v 205.0 z" fill="url(#wall)"/></g><path d="M 912.5 530 v -163.7 a 47.5 47.5 0 0 1 95.0 0 v 163.7 z" fill="url(#doorLight)"/><g fill="#ecd2ab" fill-opacity="0.85"><rect x="865.0" y="325.4" width="22.5" height="36.0" rx="11.2"/><rect x="1032.5" y="325.4" width="22.5" height="36.0" rx="11.2"/></g>
+    <path d="M 912 530 v -150 a 48 48 0 0 1 96 0 v 150 z" fill="#ecd2ab" fill-opacity="0.35" filter="url(#glow)"/>
+    <g fill="#3a3040"><rect x="806" y="400" width="20" height="130" rx="10"/><rect x="1094" y="400" width="20" height="130" rx="10"/></g>
+    <g fill="#d6a46c"><circle cx="816" cy="392" r="7"/><circle cx="1104" cy="392" r="7"/></g>
+    <g filter="url(#lift)">
+      <rect x="464.0" y="350" width="12.0" height="250" rx="6.0" fill="#3a3040"/>
+      <path d="M 454.0 376.0 H 590.0 L 620.0 406.0 L 590.0 436.0 H 454.0 Z" fill="#b8582f"/>
+      <circle cx="590.0" cy="406.0" r="8.0" fill="#fbf7f0"/>
+      <rect x="472.0" y="398.0" width="92.0" height="7.0" rx="3.5" fill="#f1eadf" fill-opacity="0.85"/>
+      <rect x="472.0" y="412.0" width="60.0" height="7.0" rx="3.5" fill="#f1eadf" fill-opacity="0.55"/>
+    </g>
+    <ellipse cx="470" cy="606.0" rx="40.0" ry="8.0" fill="#2a2230" fill-opacity="0.15"/>
+    <path d="M 620 410 C 700 370, 760 370, 830 410" fill="none" stroke="#d6a46c" stroke-opacity="0.6" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round"/>
+    <path d="M 800 790 C 790 720, 840 660, 900 600" fill="none" stroke="#fbf7f0" stroke-width="40" stroke-linecap="round"/>
+    <path d="M 800 790 C 790 720, 840 660, 900 600" fill="none" stroke="#b8582f" stroke-opacity="0.6" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round"/>
+    <ellipse cx="800" cy="830.0" rx="150.0" ry="34.0" fill="#2a2230" fill-opacity="0.12"/>
+    <circle cx="800" cy="806" r="60.0" fill="#b8582f"/>
+    <circle cx="800" cy="806" r="60.0" fill="none" stroke="#d6a46c" stroke-width="3" stroke-opacity="0.9"/>
+    <circle cx="800" cy="806" r="84.0" fill="none" stroke="#d6a46c" stroke-opacity="0.5" stroke-width="2"/>
+    <circle cx="800" cy="806" r="108.0" fill="none" stroke="#d6a46c" stroke-opacity="0.22" stroke-dasharray="3 10"/>
+    <circle cx="800" cy="806" r="18.0" fill="#f1eadf"/>
+    <circle cx="800" cy="806" r="8.0" fill="#2a2230"/>
+  </g>
+</svg>
