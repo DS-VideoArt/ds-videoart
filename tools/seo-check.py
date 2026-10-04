@@ -115,7 +115,8 @@ if 'עסק בדיוני. השם, הפרטים, המחירים וההמלצות �
 if 'comfix' in home.lower(): fails.append("homepage: old demo name ComFix is still referenced")
 if 'ביט ובורג' not in home or 'bit-uborg-demo.netlify.app' not in home: fails.append("homepage: Bit and Borg demo card or link missing")
 _u = home[home.find('id="useful"'):]; _u = _u[:_u.find('</section>')]
-if 'href="/hub/how-much-does-a-website-cost"' not in _u: fails.append("homepage #useful: price article missing")
+_order = [m for m in re.findall(r'class="hub-teaser-card[^"]*" href="([^"]+)"', _u)]
+if _order != ["/hub/website-is-live-what-now", "/hub/domain-hosting-who-owns-what", "/hub/how-much-does-a-website-cost"]: fails.append(f"homepage #useful: expected the two newest articles and the price article, got {_order}")
 if _u.count('class="hub-teaser-card') > 3: fails.append("homepage #useful: more than 3 teasers")
 if 'href="/hub/">לכל המידע השימושי</a>' not in _u: fails.append("homepage #useful: link to the hub missing")
 # search: every public page with the standard nav carries the visible search field and the search script
