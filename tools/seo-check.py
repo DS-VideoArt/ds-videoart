@@ -21,6 +21,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "hub/what-to-prepare-before-building-a-website.html": ("index, follow", True, False),
     "hub/domain-hosting-who-owns-what.html": ("index, follow", True, False),
     "hub/website-is-live-what-now.html": ("index, follow", True, False),
+    "hub/business-website-or-custom-system.html": ("index, follow", True, False),
 }
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי"]
 # External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
@@ -69,7 +70,7 @@ for page, (robots, h1, jsonld) in PAGES.items():
 # card.html is a noindex digital business card whose visible copy still lists the old DS VideoArt areas (documented, not an SEO surface).
 EXEMPT = {"card.html": {"DS VideoArt"}}
 # Content Hub schema checks
-for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/landing-page-or-business-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/how-much-does-a-website-cost.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/which-pages-does-a-business-website-need.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/what-to-prepare-before-building-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/domain-hosting-who-owns-what.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/website-is-live-what-now.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
+for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/landing-page-or-business-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/how-much-does-a-website-cost.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/which-pages-does-a-business-website-need.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/what-to-prepare-before-building-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/domain-hosting-who-owns-what.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/website-is-live-what-now.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/business-website-or-custom-system.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
     s = read(page); blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
     if len(blocks) != 1: fails.append(f"{page}: JSON-LD blocks {len(blocks)}")
     else:
@@ -97,7 +98,7 @@ def exists(path):
     p = path.lstrip("/")
     cands = [p, p + ".html", os.path.join(p, "index.html")] if p else ["index.html"]
     return any(os.path.exists(os.path.join(root, c)) for c in cands)
-for page in ("index.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html"):
+for page in ("index.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html", "hub/business-website-or-custom-system.html"):
     base = os.path.dirname(page)
     for href in re.findall(r'href="([^"]+)"', read(page)):
         if href.startswith("#") or href.startswith(("http", "mailto:", "tel:")): continue
@@ -116,7 +117,7 @@ if 'comfix' in home.lower(): fails.append("homepage: old demo name ComFix is sti
 if 'ביט ובורג' not in home or 'bit-uborg-demo.netlify.app' not in home: fails.append("homepage: Bit and Borg demo card or link missing")
 _u = home[home.find('id="useful"'):]; _u = _u[:_u.find('</section>')]
 _order = [m for m in re.findall(r'class="hub-teaser-card[^"]*" href="([^"]+)"', _u)]
-if _order != ["/hub/website-is-live-what-now", "/hub/domain-hosting-who-owns-what", "/hub/how-much-does-a-website-cost"]: fails.append(f"homepage #useful: expected the two newest articles and the price article, got {_order}")
+if _order != ["/hub/business-website-or-custom-system", "/hub/how-much-does-a-website-cost", "/hub/landing-page-or-business-website"]: fails.append(f"homepage #useful: expected the system article, the price article and landing page or website, got {_order}")
 if _u.count('class="hub-teaser-card') > 3: fails.append("homepage #useful: more than 3 teasers")
 if 'href="/hub/">לכל המידע השימושי</a>' not in _u: fails.append("homepage #useful: link to the hub missing")
 # search: every public page with the standard nav carries the visible search field and the search script
