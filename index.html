@@ -31,7 +31,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=20260925a">
+  <link rel="stylesheet" href="site.css?v=20261004a">
 
   <script type="application/ld+json">
   {
@@ -95,6 +95,12 @@
         <a href="#faq">שאלות</a>
         <a href="#contact">יצירת קשר</a>
       </div>
+      <form class="nav-search" role="search" action="/hub/" aria-label="חיפוש באתר">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr-only" for="navSearch">מה תרצו לדעת? חיפוש באתר</label>
+        <input id="navSearch" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="מה תרצו לדעת? למשל: מה ההבדל בין דף נחיתה לאתר?">
+        <kbd aria-hidden="true" title="קיצור מקלדת">/</kbd>
+      </form>
       <a class="btn btn-primary nav-cta" href="builder/">להתחיל לבד</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="תפריט"><span></span></button>
     </div>
@@ -173,7 +179,7 @@
 
         <div class="work-list">
 
-          <article class="work rv">
+          <article class="work rv" id="work-fit-with-nikita">
             <div class="work-visual">
               <div class="work-frame" data-view="desktop">
                 <img class="img-desktop" src="assets/work/nikita-desktop.jpg" width="1440" height="900" alt="Fit With Nikita, האתר הציבורי של מאמן כושר אישי, תצוגת מחשב" loading="lazy">
@@ -214,7 +220,7 @@
             </div>
           </article>
 
-          <article class="work rv">
+          <article class="work rv" id="work-bit-uborg">
             <div class="work-visual">
               <div class="work-frame" data-view="desktop">
                 <img class="img-desktop" src="assets/work/computer-lab-desktop.jpg" width="1440" height="900" alt="ביט ובורג, אתר הדגמה לאתר תדמית של עד 6 עמודים, תצוגת מחשב" loading="lazy">
@@ -251,7 +257,7 @@
             </div>
           </article>
 
-          <article class="work rv">
+          <article class="work rv" id="work-kemach-umayim">
             <div class="work-visual">
               <div class="work-frame" data-view="desktop">
                 <img class="img-desktop" src="assets/work/bakery-desktop.jpg" width="1440" height="900" alt="קמח ומים, אתר תדמית למאפיית בוטיק, תצוגת מחשב" loading="lazy">
@@ -280,7 +286,7 @@
             </div>
           </article>
 
-          <article class="work rv">
+          <article class="work rv" id="work-padel-layla">
             <div class="work-visual">
               <div class="work-frame" data-view="desktop">
                 <img class="img-desktop" src="assets/work/padel-desktop.jpg" width="1440" height="900" alt="פאדל לילה, דף נחיתה למגרשי פאדל, תצוגת מחשב" loading="lazy">
@@ -373,7 +379,7 @@
 
         <div class="packages">
 
-          <article class="package rv">
+          <article class="package rv" id="package-landing">
             <h3 class="package-name">דף נחיתה</h3>
             <p class="package-scope">מחיר החבילה הבסיסית</p>
             <div class="package-price">
@@ -406,7 +412,7 @@
             <a class="alt-link" href="#contact">או לדבר איתנו קודם</a>
           </article>
 
-          <article class="package featured rv d1">
+          <article class="package featured rv d1" id="package-website">
             <h3 class="package-name">אתר תדמית</h3>
             <p class="package-scope">מחיר הבסיס, כולל עד 6 עמודי תוכן סטנדרטיים</p>
             <div class="package-price">
@@ -453,7 +459,7 @@
           </div>
         </div>
 
-        <div class="maintenance rv">
+        <div class="maintenance rv" id="maintenance">
           <h3 class="h3">ואחרי המסירה?</h3>
           <p class="lead" style="max-width:60ch">אין חובה לשלם לנו כל חודש. תחזוקה היא אפשרות בלבד, ובוחרים אותה רק אם רוצים. שום דבר לא מסומן מראש.</p>
           <div class="maintenance-grid">
@@ -619,33 +625,33 @@
 
         <div class="faq-grid rv">
           <div>
-            <details class="faq"><summary>מה ההבדל בין דף נחיתה לאתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>דף נחיתה הוא עמוד אחד ממוקד למטרה אחת: להסביר מה אתם מציעים ולהוביל לפעולה, למשל השארת פרטים או שיחה. אתר תדמית הוא כמה עמודים עם תפריט, שמציגים את העסק בצורה רחבה יותר. מחיר הבסיס כולל עד 6 עמודי תוכן סטנדרטיים, ואפשר גם יותר. אם לא בטוחים, זה בדיוק מה שמבררים בשיחה קצרה.</p></div></details>
-            <details class="faq"><summary>חייבים לדבר איתכם לפני שמתחילים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אפשר למלא לבד את בונה הפרויקט באתר, בכמה דקות, ולראות סיכום לפי הבחירות. מי שמעדיף לדבר, משאיר שם וטלפון. שני המסלולים שווים, ושניהם מסתיימים באותו סיכום הזמנה כתוב.</p></div></details>
-            <details class="faq"><summary>אני צריך יותר משישה עמודים. אתם בונים גם את זה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן, ובשמחה. 1,290 ₪ הוא מחיר הבסיס לאתר של עד 6 עמודי תוכן סטנדרטיים, לא תקרת השירות. אתר של 7 עמודים ומעלה מתומחר בנפרד לפי היקף ואפיון, בלי חישוב אוטומטי, ותקבלו מחיר מדויק בסיכום לפני כל התחייבות.</p></div></details>
-            <details class="faq"><summary>מה נחשב עמוד תוכן סטנדרטי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עמוד שמשתמש בשפה העיצובית, במערכת הרכיבים ובתשתית של האתר. למשל בית, אודות, שירותים, פרויקטים, שאלות נפוצות וצור קשר, או מבנה אחר שמתאים לעסק. חנות, אזור אישי, מערכת הזמנות או סליקה, לוח ניהול, כלי אינטראקטיבי מורכב או פיתוח ייחודי אינם נחשבים עמוד תוכן, ומתומחרים בנפרד לפי הצורך. עמודי תשתית כמו מדיניות פרטיות, הצהרת נגישות ותנאי שימוש אינם נספרים במכסה: אנחנו מטמיעים אותם לפי הצורך, והנוסחים המשפטיים באחריות הלקוח.</p></div></details>
-            <details class="faq"><summary>האם המחיר חד פעמי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. 440 ₪ לדף נחיתה, ואתר תדמית החל מ־1,290 ₪, משולמים פעם אחת בלבד עבור הבנייה.</p></div></details>
-            <details class="faq"><summary>האם יש מנוי חודשי חובה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אחרי המסירה אין חובה לשלם לנו כל חודש. תחזוקה חודשית קיימת כאפשרות בלבד, ובוחרים אותה רק אם רוצים.</p></div></details>
-            <details class="faq"><summary>האם המחיר באתר הוא המחיר הסופי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>440 ₪ הוא מחיר החבילה הבסיסית של דף נחיתה, ו־1,290 ₪ הוא מחיר הבסיס לאתר של עד 6 עמודי תוכן סטנדרטיים. אם תבחרו תוספות, הן מופיעות תמיד עם מחיר ברור ומצטרפות לסכום רק באישורכם. המחיר הסופי נסגר בסיכום ההזמנה שאתם מאשרים לפני תחילת העבודה.</p></div></details>
-            <details class="faq"><summary>מתי משלמים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>50% מקדמה אחרי שאישרתם את סיכום ההזמנה, ורק אז מתחילים לבנות. 50% הנותרים לפני המסירה הסופית.</p></div></details>
-            <details class="faq"><summary>האם השיחה הראשונה מחייבת?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. מטרתה רק להבין אם מתאים לכם דף נחיתה או אתר תדמית. אפשר לסיים אותה בלי להמשיך הלאה.</p></div></details>
-            <details class="faq"><summary>אין לי דומיין. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נעזור לכם לבחור שם, לבדוק זמינות, לרכוש אותו יחד איתכם ולהגדיר אותו, בלי דמי שירות נוספים מצידנו. אתם משלמים רק את מחיר הדומיין לספק.</p></div></details>
-            <details class="faq"><summary>למי שייך הדומיין?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לכם. הוא נרשם על שמכם, שייך לכם ונמצא בשליטתכם. החידוש השנתי מול הספק באחריותכם, ונסביר בדיוק מה צריך לדעת.</p></div></details>
-            <details class="faq"><summary>מה לגבי אחסון?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אחסון האתר מוגדר במסלול חינמי שמתאים לרוב דפי הנחיתה ואתרי התדמית הקטנים. כל עוד האתר במסגרת המכסה החינמית של הספק, אין עלות אחסון חודשית. החשבון מוקם על שמכם, ואתם מקבלים את כל פרטי הגישה במסירה.</p></div></details>
-            <details class="faq"><summary>מה קורה אם המסלול החינמי כבר לא מספיק?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>זה קורה בעיקר באתרים עם תנועה גדולה מאוד. אם יידרש שדרוג, נעדכן אתכם מראש עם האפשרויות והעלויות, ולא יתבצע שום חיוב בלי אישור שלכם.</p></div></details>
-            <details class="faq"><summary>אין לי טקסטים. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>זה בסדר גמור. בשיחה ובטופס נאסוף את המידע החשוב, ונעזור לנסח את הטקסטים לפי מה שתספרו לנו. אתם מאשרים כל טקסט לפני שהוא עולה.</p></div></details>
+            <details class="faq" id="faq-1"><summary>מה ההבדל בין דף נחיתה לאתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>דף נחיתה הוא עמוד אחד ממוקד למטרה אחת: להסביר מה אתם מציעים ולהוביל לפעולה, למשל השארת פרטים או שיחה. אתר תדמית הוא כמה עמודים עם תפריט, שמציגים את העסק בצורה רחבה יותר. מחיר הבסיס כולל עד 6 עמודי תוכן סטנדרטיים, ואפשר גם יותר. אם לא בטוחים, זה בדיוק מה שמבררים בשיחה קצרה.</p></div></details>
+            <details class="faq" id="faq-2"><summary>חייבים לדבר איתכם לפני שמתחילים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אפשר למלא לבד את בונה הפרויקט באתר, בכמה דקות, ולראות סיכום לפי הבחירות. מי שמעדיף לדבר, משאיר שם וטלפון. שני המסלולים שווים, ושניהם מסתיימים באותו סיכום הזמנה כתוב.</p></div></details>
+            <details class="faq" id="faq-3"><summary>אני צריך יותר משישה עמודים. אתם בונים גם את זה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן, ובשמחה. 1,290 ₪ הוא מחיר הבסיס לאתר של עד 6 עמודי תוכן סטנדרטיים, לא תקרת השירות. אתר של 7 עמודים ומעלה מתומחר בנפרד לפי היקף ואפיון, בלי חישוב אוטומטי, ותקבלו מחיר מדויק בסיכום לפני כל התחייבות.</p></div></details>
+            <details class="faq" id="faq-4"><summary>מה נחשב עמוד תוכן סטנדרטי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עמוד שמשתמש בשפה העיצובית, במערכת הרכיבים ובתשתית של האתר. למשל בית, אודות, שירותים, פרויקטים, שאלות נפוצות וצור קשר, או מבנה אחר שמתאים לעסק. חנות, אזור אישי, מערכת הזמנות או סליקה, לוח ניהול, כלי אינטראקטיבי מורכב או פיתוח ייחודי אינם נחשבים עמוד תוכן, ומתומחרים בנפרד לפי הצורך. עמודי תשתית כמו מדיניות פרטיות, הצהרת נגישות ותנאי שימוש אינם נספרים במכסה: אנחנו מטמיעים אותם לפי הצורך, והנוסחים המשפטיים באחריות הלקוח.</p></div></details>
+            <details class="faq" id="faq-5"><summary>האם המחיר חד פעמי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. 440 ₪ לדף נחיתה, ואתר תדמית החל מ־1,290 ₪, משולמים פעם אחת בלבד עבור הבנייה.</p></div></details>
+            <details class="faq" id="faq-6"><summary>האם יש מנוי חודשי חובה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אחרי המסירה אין חובה לשלם לנו כל חודש. תחזוקה חודשית קיימת כאפשרות בלבד, ובוחרים אותה רק אם רוצים.</p></div></details>
+            <details class="faq" id="faq-7"><summary>האם המחיר באתר הוא המחיר הסופי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>440 ₪ הוא מחיר החבילה הבסיסית של דף נחיתה, ו־1,290 ₪ הוא מחיר הבסיס לאתר של עד 6 עמודי תוכן סטנדרטיים. אם תבחרו תוספות, הן מופיעות תמיד עם מחיר ברור ומצטרפות לסכום רק באישורכם. המחיר הסופי נסגר בסיכום ההזמנה שאתם מאשרים לפני תחילת העבודה.</p></div></details>
+            <details class="faq" id="faq-8"><summary>מתי משלמים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>50% מקדמה אחרי שאישרתם את סיכום ההזמנה, ורק אז מתחילים לבנות. 50% הנותרים לפני המסירה הסופית.</p></div></details>
+            <details class="faq" id="faq-9"><summary>האם השיחה הראשונה מחייבת?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. מטרתה רק להבין אם מתאים לכם דף נחיתה או אתר תדמית. אפשר לסיים אותה בלי להמשיך הלאה.</p></div></details>
+            <details class="faq" id="faq-10"><summary>אין לי דומיין. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נעזור לכם לבחור שם, לבדוק זמינות, לרכוש אותו יחד איתכם ולהגדיר אותו, בלי דמי שירות נוספים מצידנו. אתם משלמים רק את מחיר הדומיין לספק.</p></div></details>
+            <details class="faq" id="faq-11"><summary>למי שייך הדומיין?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לכם. הוא נרשם על שמכם, שייך לכם ונמצא בשליטתכם. החידוש השנתי מול הספק באחריותכם, ונסביר בדיוק מה צריך לדעת.</p></div></details>
+            <details class="faq" id="faq-12"><summary>מה לגבי אחסון?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אחסון האתר מוגדר במסלול חינמי שמתאים לרוב דפי הנחיתה ואתרי התדמית הקטנים. כל עוד האתר במסגרת המכסה החינמית של הספק, אין עלות אחסון חודשית. החשבון מוקם על שמכם, ואתם מקבלים את כל פרטי הגישה במסירה.</p></div></details>
+            <details class="faq" id="faq-13"><summary>מה קורה אם המסלול החינמי כבר לא מספיק?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>זה קורה בעיקר באתרים עם תנועה גדולה מאוד. אם יידרש שדרוג, נעדכן אתכם מראש עם האפשרויות והעלויות, ולא יתבצע שום חיוב בלי אישור שלכם.</p></div></details>
+            <details class="faq" id="faq-14"><summary>אין לי טקסטים. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>זה בסדר גמור. בשיחה ובטופס נאסוף את המידע החשוב, ונעזור לנסח את הטקסטים לפי מה שתספרו לנו. אתם מאשרים כל טקסט לפני שהוא עולה.</p></div></details>
           </div>
           <div>
-            <details class="faq"><summary>אין לי תמונות. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נשתמש בתמונות שיש לכם. אם אין, נעזור לבחור תמונות מתאימות ממאגרים, או נציע איך לצלם כמה תמונות פשוטות בעצמכם.</p></div></details>
-            <details class="faq"><summary>אפשר לבקש תיקונים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. כל חבילה כוללת עד שני סבבי תיקונים מרוכזים.</p></div></details>
-            <details class="faq"><summary>מהו סבב תיקונים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>רשימה מרוכזת אחת של כל ההערות שלכם, שנשלחת פעם אחת ומטופלת יחד. ככה מתקדמים מהר ולא מפספסים דברים. שני סבבים כאלה כלולים במחיר.</p></div></details>
-            <details class="faq"><summary>כמה זמן לוקח לקבל דף נחיתה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עד 3 ימי עסקים. הספירה מתחילה אחרי אישור ההזמנה, תשלום המקדמה וקבלת כל החומרים.</p></div></details>
-            <details class="faq"><summary>כמה זמן לוקח לקבל אתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עד 5 ימי עסקים, באותם תנאים: אחרי אישור ההזמנה, המקדמה וקבלת החומרים.</p></div></details>
-            <details class="faq"><summary>מה קורה אם אני רוצה תוספת באמצע?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אומרים לנו. נסביר מה זה כולל, כמה זה עולה וכמה זמן זה מוסיף, ורק אחרי שתאשרו נמשיך. בלי אישור, כלום לא משתנה במחיר.</p></div></details>
-            <details class="faq"><summary>מה קורה אחרי המסירה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>האתר שלכם, בחשבון על שמכם, עם כל פרטי הגישה. אין חובה להמשיך איתנו. אם תרצו שינוי נקודתי בעתיד, נתמחר אותו בנפרד ומראש.</p></div></details>
-            <details class="faq"><summary>אפשר תחזוקה חודשית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן, כאפשרות בלבד. תחזוקה בסיסית ב־149 ₪ לחודש לעדכוני תוכן ושינויים קטנים לפי הצורך, או תחזוקה מורחבת ב־349 ₪ לחודש לתחזוקה שוטפת והיקף רחב יותר של עדכונים. המסלולים אופציונליים לחלוטין, לא נבחרים אוטומטית, ואפשר להפסיק בכל שלב.</p></div></details>
-            <details class="faq"><summary>מי מטפל במסמכים המשפטיים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אנחנו לא משרד עורכי דין ולא נותנים ייעוץ משפטי. אם יש לכם מדיניות פרטיות, תנאי שימוש או הצהרת נגישות, נטמיע אותם באתר. אם אין, נסביר איך אפשר להשיג אותם דרך גורם משפטי חיצוני. ההתקשרות, התשלום והאחריות המקצועית הם ביניכם לבין אותו גורם.</p></div></details>
-            <details class="faq"><summary>האם האתר מוכן בצורה בסיסית לגוגל?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. כל עמוד מקבל כותרת, תיאור ומבנה נכון, כדי שגוגל יוכל להבין ולסרוק אותו.</p></div></details>
-            <details class="faq"><summary>האם אתם מבטיחים מיקום בגוגל?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אף אחד לא יכול להבטיח את זה באמת. אנחנו דואגים שהאתר יהיה בנוי נכון, וזה הבסיס שממנו מתחילים.</p></div></details>
+            <details class="faq" id="faq-15"><summary>אין לי תמונות. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נשתמש בתמונות שיש לכם. אם אין, נעזור לבחור תמונות מתאימות ממאגרים, או נציע איך לצלם כמה תמונות פשוטות בעצמכם.</p></div></details>
+            <details class="faq" id="faq-16"><summary>אפשר לבקש תיקונים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. כל חבילה כוללת עד שני סבבי תיקונים מרוכזים.</p></div></details>
+            <details class="faq" id="faq-17"><summary>מהו סבב תיקונים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>רשימה מרוכזת אחת של כל ההערות שלכם, שנשלחת פעם אחת ומטופלת יחד. ככה מתקדמים מהר ולא מפספסים דברים. שני סבבים כאלה כלולים במחיר.</p></div></details>
+            <details class="faq" id="faq-18"><summary>כמה זמן לוקח לקבל דף נחיתה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עד 3 ימי עסקים. הספירה מתחילה אחרי אישור ההזמנה, תשלום המקדמה וקבלת כל החומרים.</p></div></details>
+            <details class="faq" id="faq-19"><summary>כמה זמן לוקח לקבל אתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עד 5 ימי עסקים, באותם תנאים: אחרי אישור ההזמנה, המקדמה וקבלת החומרים.</p></div></details>
+            <details class="faq" id="faq-20"><summary>מה קורה אם אני רוצה תוספת באמצע?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אומרים לנו. נסביר מה זה כולל, כמה זה עולה וכמה זמן זה מוסיף, ורק אחרי שתאשרו נמשיך. בלי אישור, כלום לא משתנה במחיר.</p></div></details>
+            <details class="faq" id="faq-21"><summary>מה קורה אחרי המסירה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>האתר שלכם, בחשבון על שמכם, עם כל פרטי הגישה. אין חובה להמשיך איתנו. אם תרצו שינוי נקודתי בעתיד, נתמחר אותו בנפרד ומראש.</p></div></details>
+            <details class="faq" id="faq-22"><summary>אפשר תחזוקה חודשית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן, כאפשרות בלבד. תחזוקה בסיסית ב־149 ₪ לחודש לעדכוני תוכן ושינויים קטנים לפי הצורך, או תחזוקה מורחבת ב־349 ₪ לחודש לתחזוקה שוטפת והיקף רחב יותר של עדכונים. המסלולים אופציונליים לחלוטין, לא נבחרים אוטומטית, ואפשר להפסיק בכל שלב.</p></div></details>
+            <details class="faq" id="faq-23"><summary>מי מטפל במסמכים המשפטיים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אנחנו לא משרד עורכי דין ולא נותנים ייעוץ משפטי. אם יש לכם מדיניות פרטיות, תנאי שימוש או הצהרת נגישות, נטמיע אותם באתר. אם אין, נסביר איך אפשר להשיג אותם דרך גורם משפטי חיצוני. ההתקשרות, התשלום והאחריות המקצועית הם ביניכם לבין אותו גורם.</p></div></details>
+            <details class="faq" id="faq-24"><summary>האם האתר מוכן בצורה בסיסית לגוגל?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. כל עמוד מקבל כותרת, תיאור ומבנה נכון, כדי שגוגל יוכל להבין ולסרוק אותו.</p></div></details>
+            <details class="faq" id="faq-25"><summary>האם אתם מבטיחים מיקום בגוגל?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אף אחד לא יכול להבטיח את זה באמת. אנחנו דואגים שהאתר יהיה בנוי נכון, וזה הבסיס שממנו מתחילים.</p></div></details>
           </div>
         </div>
       </div>
@@ -810,5 +816,6 @@
 
   <script src="analytics.js?v=20260916c"></script>
   <script src="site.js?v=20260916b"></script>
+  <script src="search.js?v=20261004a" type="module"></script>
 </body>
 </html>

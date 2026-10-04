@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/site.css?v=20260925a">
+  <link rel="stylesheet" href="/site.css?v=20261004a">
   <link rel="stylesheet" href="/hub/content-hub.css?v=20260914c">
   <script type="application/ld+json">
   {
@@ -65,6 +65,12 @@
         <a href="/hub/" aria-current="page">מידע שימושי</a>
         <a href="/#contact">יצירת קשר</a>
       </div>
+      <form class="nav-search" role="search" action="/hub/" aria-label="חיפוש באתר">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr-only" for="navSearch">מה תרצו לדעת? חיפוש באתר</label>
+        <input id="navSearch" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="מה תרצו לדעת? למשל: מה ההבדל בין דף נחיתה לאתר?">
+        <kbd aria-hidden="true" title="קיצור מקלדת">/</kbd>
+      </form>
       <a class="btn btn-primary nav-cta" href="/builder/">להתחיל לבד</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="תפריט"><span></span></button>
     </div>
@@ -79,11 +85,13 @@
     <a class="btn btn-ghost" href="/#contact">אני מעדיף לדבר</a>
   </div>
 
-  <main id="main" class="hub-page surface-stone">
+  <main id="main" data-pagefind-body class="hub-page surface-stone">
+    <p class="sr-only" data-pagefind-index-attrs="data-search-terms" data-search-terms="⟦ מידע שימושי, מאמרים, כל המאמרים, מדריכים, בלוג, קריאה, לקרוא ⟧" data-pagefind-weight="0.6"></p>
+    <span data-pagefind-meta="type:עמוד" data-pagefind-filter="type:עמוד"></span><span data-pagefind-filter="topic:אתר או דף נחיתה"></span>
     <div class="deco deco-ring lg" style="inset-inline-end:-380px; top:-300px;" aria-hidden="true"></div>
     <div class="deco deco-dots" style="inset-inline-start:-60px; top:60px;" aria-hidden="true"></div>
     <div class="container">
-      <nav class="crumbs" aria-label="פירורי לחם">
+      <nav class="crumbs" data-pagefind-ignore aria-label="פירורי לחם">
         <ol>
           <li><a href="/">DS Creative Studio</a></li>
           <li aria-current="page">מידע שימושי</li>
@@ -95,7 +103,7 @@
         <p class="lead">מאמרים קצרים ופרקטיים על דפי נחיתה ואתרי תדמית, בשפה פשוטה. מה באמת צריך, כמה זה עולה, מה להכין, מי שולט במה, מה קורה אחרי העלייה לאוויר, ואיך מקבלים החלטה טובה בכל שלב.</p>
       </header>
 
-      <div class="hub-grid" aria-label="מאמרים">
+      <div class="hub-grid" data-pagefind-ignore aria-label="מאמרים">
         <a class="hub-card" href="/hub/website-is-live-what-now">
           <figure>
             <img src="/hub/media/website-is-live-what-now-hero.svg" width="1600" height="900" alt="" loading="lazy" decoding="async">
@@ -195,5 +203,6 @@
 
   <script src="/analytics.js?v=20260916c"></script>
   <script src="/site.js?v=20260907e"></script>
+  <script src="/search.js?v=20261004a" type="module"></script>
 </body>
 </html>

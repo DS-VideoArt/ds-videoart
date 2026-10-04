@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../site.css?v=20260914c">
+  <link rel="stylesheet" href="../site.css?v=20261004a">
   <link rel="stylesheet" href="style.css?v=20260821a">
 </head>
 <body>
@@ -30,6 +30,12 @@
         <a href="/#faq">שאלות</a>
         <a href="/#contact">יצירת קשר</a>
       </div>
+      <form class="nav-search" role="search" action="/hub/" aria-label="חיפוש באתר">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr-only" for="navSearch">מה תרצו לדעת? חיפוש באתר</label>
+        <input id="navSearch" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="מה תרצו לדעת? למשל: מה ההבדל בין דף נחיתה לאתר?">
+        <kbd aria-hidden="true" title="קיצור מקלדת">/</kbd>
+      </form>
       <a class="btn btn-primary nav-cta" href="/builder/">להתחיל לבד</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="תפריט"><span></span></button>
     </div>
@@ -44,7 +50,9 @@
     <a class="btn btn-ghost" href="/#contact">אני מעדיף לדבר</a>
   </div>
 
-  <main id="main" class="legal-page surface-stone">
+  <main id="main" data-pagefind-body data-pagefind-weight="0.8" class="legal-page surface-stone">
+    <p class="sr-only" data-pagefind-index-attrs="data-search-terms" data-search-terms="⟦ נגישות, הצהרת נגישות, אתר נגיש, נגישות אתרים, תקן, WCAG, קורא מסך, מקלדת, ניגודיות, רכז נגישות, תקנות הנגישות, ליקויי נגישות ⟧" data-pagefind-weight="0.6"></p>
+    <span data-pagefind-meta="type:עמוד" data-pagefind-filter="type:עמוד"></span><span data-pagefind-filter="topic:פרטיות, נגישות ומדידה"></span>
     <div class="container">
       <article class="legal">
         <h1>הצהרת נגישות</h1>
@@ -88,5 +96,6 @@
 
   <script src="../analytics.js?v=20260916c"></script>
   <script src="../site.js?v=20260907e"></script>
+  <script src="../search.js?v=20261004a" type="module"></script>
 </body>
 </html>

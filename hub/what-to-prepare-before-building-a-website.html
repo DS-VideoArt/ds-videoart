@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/site.css?v=20260925a">
+  <link rel="stylesheet" href="/site.css?v=20261004a">
   <link rel="stylesheet" href="/hub/content-hub.css?v=20260914c">
   <script type="application/ld+json">
   {
@@ -88,6 +88,12 @@
         <a href="/hub/">מידע שימושי</a>
         <a href="/#contact">יצירת קשר</a>
       </div>
+      <form class="nav-search" role="search" action="/hub/" aria-label="חיפוש באתר">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr-only" for="navSearch">מה תרצו לדעת? חיפוש באתר</label>
+        <input id="navSearch" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="מה תרצו לדעת? למשל: מה ההבדל בין דף נחיתה לאתר?">
+        <kbd aria-hidden="true" title="קיצור מקלדת">/</kbd>
+      </form>
       <a class="btn btn-primary nav-cta" href="/builder/">להתחיל לבד</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="תפריט"><span></span></button>
     </div>
@@ -102,18 +108,20 @@
     <a class="btn btn-ghost" href="/#contact">אני מעדיף לדבר</a>
   </div>
 
-  <main id="main" class="article-page surface-stone">
+  <main id="main" data-pagefind-body class="article-page surface-stone">
     <div class="deco deco-ring lg" style="inset-inline-start:-420px; top:-260px;" aria-hidden="true"></div>
     <div class="deco deco-dots" style="inset-inline-end:-80px; top:120px;" aria-hidden="true"></div>
     <div class="container">
       <div class="article-col">
-        <nav class="crumbs" aria-label="פירורי לחם">
+        <nav class="crumbs" data-pagefind-ignore aria-label="פירורי לחם">
           <ol>
             <li><a href="/">DS Creative Studio</a></li>
             <li><a href="/hub/">מידע שימושי</a></li>
             <li aria-current="page">מה צריך להכין לפני שבונים אתר</li>
           </ol>
         </nav>
+        <p class="sr-only" data-pagefind-index-attrs="data-search-terms" data-search-terms="⟦ מה צריך להכין, מה להכין, הכנה, חומרים, רשימת חומרים, צ'ק ליסט, טקסטים, תוכן, כתיבה, תמונות, צילומים, לוגו, פרטי העסק, שעות פעילות, כתובת, דומיין, טופס, טופס פנייה, טופס יצירת קשר, השארת פרטים, וואטסאפ, בוואטסאפ, טלפון, הפעולה מהלקוח, מסמכים משפטיים, מדיניות פרטיות, כלי מדידה, Analytics, דוגמאות לאתרים ⟧" data-pagefind-weight="0.6"></p>
+        <span data-pagefind-meta="type:מאמר" data-pagefind-filter="type:מאמר"></span><span data-pagefind-filter="topic:תכנון והכנה"></span>
         <header class="article-head">
           <p class="kicker">מידע שימושי לבעלי עסקים</p>
           <h1>מה צריך להכין לפני שבונים אתר: רשימת החומרים המלאה</h1>
@@ -204,13 +212,13 @@
           <p>ואם השאלה הבאה היא כמה כל זה יעלה, יש לה תשובה מסודרת במאמר <a href="/hub/how-much-does-a-website-cost">כמה עולה אתר לעסק קטן בישראל, ומה באמת קובע את המחיר</a>.</p>
         </article>
 
-        <aside class="article-cta" aria-labelledby="ctaTitle">
+        <aside class="article-cta" data-pagefind-ignore aria-labelledby="ctaTitle">
           <h2 id="ctaTitle">מוכנים להתחיל? לא צריך לחכות שכל החומרים יהיו מוכנים.</h2>
           <p>בבונה הפרויקט של DS Creative Studio ממלאים מה האתר צריך ורואים סיכום עם מחיר. את החומרים שולחים אחר כך, כשנוח, והספירה של ימי העבודה מתחילה רק כשהכול אצלנו.</p>
           <a class="btn btn-primary" href="/builder/">להתחיל בבונה הפרויקט</a>
         </aside>
 
-        <section class="related" aria-labelledby="relatedTitle">
+        <section class="related" data-pagefind-ignore aria-labelledby="relatedTitle">
           <h2 id="relatedTitle">המשך קריאה</h2>
           <a class="related-card" href="/hub/which-pages-does-a-business-website-need">
             <img src="/hub/media/which-pages-does-a-business-website-need-hero.svg" width="1600" height="900" alt="" loading="lazy" decoding="async">
@@ -235,5 +243,6 @@
 
   <script src="/analytics.js?v=20260916c"></script>
   <script src="/site.js?v=20260916b"></script>
+  <script src="/search.js?v=20261004a" type="module"></script>
 </body>
 </html>

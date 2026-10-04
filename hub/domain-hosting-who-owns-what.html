@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/site.css?v=20260925a">
+  <link rel="stylesheet" href="/site.css?v=20261004a">
   <link rel="stylesheet" href="/hub/content-hub.css?v=20260914c">
   <script type="application/ld+json">
   {
@@ -88,6 +88,12 @@
         <a href="/hub/">מידע שימושי</a>
         <a href="/#contact">יצירת קשר</a>
       </div>
+      <form class="nav-search" role="search" action="/hub/" aria-label="חיפוש באתר">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr-only" for="navSearch">מה תרצו לדעת? חיפוש באתר</label>
+        <input id="navSearch" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="מה תרצו לדעת? למשל: מה ההבדל בין דף נחיתה לאתר?">
+        <kbd aria-hidden="true" title="קיצור מקלדת">/</kbd>
+      </form>
       <a class="btn btn-primary nav-cta" href="/builder/">להתחיל לבד</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="תפריט"><span></span></button>
     </div>
@@ -102,18 +108,20 @@
     <a class="btn btn-ghost" href="/#contact">אני מעדיף לדבר</a>
   </div>
 
-  <main id="main" class="article-page surface-stone">
+  <main id="main" data-pagefind-body class="article-page surface-stone">
     <div class="deco deco-ring lg" style="inset-inline-start:-420px; top:-260px;" aria-hidden="true"></div>
     <div class="deco deco-dots" style="inset-inline-end:-80px; top:120px;" aria-hidden="true"></div>
     <div class="container">
       <div class="article-col">
-        <nav class="crumbs" aria-label="פירורי לחם">
+        <nav class="crumbs" data-pagefind-ignore aria-label="פירורי לחם">
           <ol>
             <li><a href="/">DS Creative Studio</a></li>
             <li><a href="/hub/">מידע שימושי</a></li>
             <li aria-current="page">דומיין, אחסון והאתר שלכם</li>
           </ol>
         </nav>
+        <p class="sr-only" data-pagefind-index-attrs="data-search-terms" data-search-terms="⟦ דומיין, הדומיין, לדומיין, דומיינים, שם מתחם, רשם, רשם דומיינים, co.il, חידוש דומיין, בעלות על הדומיין, מי הבעלים, מה שייך למי, אחסון, האחסון, לאחסון, hosting, שרת, Netlify, מסלול חינמי, DNS, SSL, תעודת אבטחה, https, מנעול, אימייל עסקי, Google Workspace, גישה, חשבון, סיסמה, מעבר ספק, לעבור לבונה אחר, עלויות שוטפות ⟧" data-pagefind-weight="0.6"></p>
+        <span data-pagefind-meta="type:מאמר" data-pagefind-filter="type:מאמר"></span><span data-pagefind-filter="topic:דומיין ואחסון"></span>
         <header class="article-head">
           <p class="kicker">מידע שימושי לבעלי עסקים</p>
           <h1>דומיין, אחסון והאתר שלכם: מה שייך למי ומה באמת צריך לקנות?</h1>
@@ -162,8 +170,8 @@
           </ul>
 
           <h2>DNS בקצרה</h2>
-          <p>DNS הוא ספר הטלפונים של האינטרנט. כשמישהו מקליד את הדומיין שלכם, הדפדפן שואל את ה־DNS לאן לפנות, ומקבל את כתובת השרת. ההגדרות האלה נקראות רשומות, ולאתר רגיל צריך שתיים: אחת לדומיין עצמו ואחת ל־www. לאימייל על הדומיין יש רשומה נפרדת.</p>
-          <p>שינוי ברשומות יכול לקחת עד יממה עד שהוא מתעדכן בכל העולם. בפועל נוגעים בזה פעם אחת, בחיבור האתר. מה שחשוב לזכור: מי ששולט ב־DNS שולט לאן הדומיין מפנה. לכן גם הוא נשאר בחשבון שלכם.</p>
+          <p>DNS הוא ספר הטלפונים של האינטרנט. כשמישהו מקליד את הדומיין שלכם, רשומות ה־DNS אומרות לדפדפן לאיזה שירות או שרת לפנות. סוג הרשומות וכמותן תלויים בספק ובתצורה: למשל, הדומיין הראשי ו־www יכולים להשתמש בסוגי רשומות שונים. לאימייל על הדומיין יש רשומות נפרדות.</p>
+          <p>אחרי שינוי ב־DNS יכול לקחת זמן עד שהשינוי מתעדכן בכל האינטרנט: לעיתים כמה שעות, ולעיתים יום או יומיים ואף יותר, בהתאם לספק. בפועל נוגעים בזה פעם אחת, בחיבור האתר. מה שחשוב לזכור: מי ששולט ב־DNS שולט לאן הדומיין מפנה. לכן גם הוא נשאר בחשבון שלכם.</p>
 
           <h2>SSL, או המנעול בשורת הכתובת</h2>
           <p>המנעול ליד הכתובת אומר שהחיבור מוצפן ושהאתר באמת שייך לדומיין הזה. מאחוריו עומדת תעודה דיגיטלית. באתרים שאנחנו בונים התעודה מונפקת ומתחדשת אוטומטית דרך התשתית של ספק האחסון, בלי עלות, ולכן ברוב המקרים אין צורך לרכוש או לחדש SSL ידנית. אם מישהו מציע לכם תעודה בתשלום שנתי לאתר כזה, כדאי לשאול למה.</p>
@@ -191,13 +199,13 @@
           <p>אם התשובות ברורות ובכתב, אתם במקום טוב. ואם אתם רק מתחילים, הדומיין הוא אחד הפריטים ברשימת ההכנה: <a href="/hub/what-to-prepare-before-building-a-website">מה צריך להכין לפני שבונים אתר</a>. על שאר העלויות, כולל מה לא מופיע בהצעת המחיר, כתבנו במאמר <a href="/hub/how-much-does-a-website-cost">כמה עולה אתר לעסק קטן בישראל</a>.</p>
         </article>
 
-        <aside class="article-cta" aria-labelledby="ctaTitle">
+        <aside class="article-cta" data-pagefind-ignore aria-labelledby="ctaTitle">
           <h2 id="ctaTitle">רוצים לראות מה כלול ומה לא, לפני שמדברים?</h2>
           <p>בבונה הפרויקט של DS Creative Studio רואים מה כוללת כל חבילה, כולל חיבור לדומיין קיים והעלאה לאוויר, וכמה דברים חשובים על דומיין ואחסון. כמה דקות, בלי התחייבות.</p>
           <a class="btn btn-primary" href="/builder/">לפתוח את בונה הפרויקט</a>
         </aside>
 
-        <section class="related" aria-labelledby="relatedTitle">
+        <section class="related" data-pagefind-ignore aria-labelledby="relatedTitle">
           <h2 id="relatedTitle">המשך קריאה</h2>
           <a class="related-card" href="/hub/website-is-live-what-now">
             <img src="/hub/media/website-is-live-what-now-hero.svg" width="1600" height="900" alt="" loading="lazy" decoding="async">
@@ -222,5 +230,6 @@
 
   <script src="/analytics.js?v=20260916c"></script>
   <script src="/site.js?v=20260916b"></script>
+  <script src="/search.js?v=20261004a" type="module"></script>
 </body>
 </html>

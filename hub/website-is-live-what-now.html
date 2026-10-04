@@ -29,7 +29,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/site.css?v=20260925a">
+  <link rel="stylesheet" href="/site.css?v=20261004a">
   <link rel="stylesheet" href="/hub/content-hub.css?v=20260914c">
   <script type="application/ld+json">
   {
@@ -88,6 +88,12 @@
         <a href="/hub/">מידע שימושי</a>
         <a href="/#contact">יצירת קשר</a>
       </div>
+      <form class="nav-search" role="search" action="/hub/" aria-label="חיפוש באתר">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr-only" for="navSearch">מה תרצו לדעת? חיפוש באתר</label>
+        <input id="navSearch" type="search" name="q" autocomplete="off" spellcheck="false" placeholder="מה תרצו לדעת? למשל: מה ההבדל בין דף נחיתה לאתר?">
+        <kbd aria-hidden="true" title="קיצור מקלדת">/</kbd>
+      </form>
       <a class="btn btn-primary nav-cta" href="/builder/">להתחיל לבד</a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="תפריט"><span></span></button>
     </div>
@@ -102,18 +108,20 @@
     <a class="btn btn-ghost" href="/#contact">אני מעדיף לדבר</a>
   </div>
 
-  <main id="main" class="article-page surface-stone">
+  <main id="main" data-pagefind-body class="article-page surface-stone">
     <div class="deco deco-ring lg" style="inset-inline-start:-420px; top:-260px;" aria-hidden="true"></div>
     <div class="deco deco-dots" style="inset-inline-end:-80px; top:120px;" aria-hidden="true"></div>
     <div class="container">
       <div class="article-col">
-        <nav class="crumbs" aria-label="פירורי לחם">
+        <nav class="crumbs" data-pagefind-ignore aria-label="פירורי לחם">
           <ol>
             <li><a href="/">DS Creative Studio</a></li>
             <li><a href="/hub/">מידע שימושי</a></li>
             <li aria-current="page">האתר עלה לאוויר. מה עכשיו?</li>
           </ol>
         </nav>
+        <p class="sr-only" data-pagefind-index-attrs="data-search-terms" data-search-terms="⟦ האתר עלה לאוויר, מה עכשיו, אחרי שהאתר עלה, גוגל, בגוגל, לגוגל, Google, אינדוקס, אינדקס, סריקה, למה האתר לא מופיע בגוגל, לא מופיע בגוגל, קידום, SEO, מקום ראשון, Search Console, סרץ' קונסול, sitemap, מפת אתר, Analytics, אנליטיקס, GA4, מדידה, סטטיסטיקות, כמה אנשים נכנסו, עוגיות, cookies, קוקיז, הסכמה, באנר, פרטיות, מדיניות פרטיות, תחזוקה, עדכונים, בדיקות, PageSpeed, מהירות ⟧" data-pagefind-weight="0.6"></p>
+        <span data-pagefind-meta="type:מאמר" data-pagefind-filter="type:מאמר"></span><span data-pagefind-filter="topic:Google ו־SEO"></span>
         <header class="article-head">
           <p class="kicker">מידע שימושי לבעלי עסקים</p>
           <h1>האתר עלה לאוויר. מה עכשיו? גוגל, אינדוקס, מדידה ותחזוקה</h1>
@@ -198,13 +206,13 @@
           <p>על מה שמתחדש ומה לא, ועל מי שולט במה, כתבנו במאמר <a href="/hub/domain-hosting-who-owns-what">דומיין, אחסון והאתר שלכם</a>. ואם אתם עוד לפני הבנייה, כלי המדידה הם סעיף 8 ברשימת <a href="/hub/what-to-prepare-before-building-a-website">מה צריך להכין לפני שבונים אתר</a>.</p>
         </article>
 
-        <aside class="article-cta" aria-labelledby="ctaTitle">
+        <aside class="article-cta" data-pagefind-ignore aria-labelledby="ctaTitle">
           <h2 id="ctaTitle">רוצים לדעת מה האתר שלכם יקבל במסירה?</h2>
           <p>בבונה הפרויקט של DS Creative Studio רואים מה כלול בכל חבילה, כולל הכנה בסיסית לגוגל, ואילו תוספות כמו מדידה אפשר להוסיף רק אם צריך. כמה דקות, בלי התחייבות.</p>
           <a class="btn btn-primary" href="/builder/">לראות מה כלול</a>
         </aside>
 
-        <section class="related" aria-labelledby="relatedTitle">
+        <section class="related" data-pagefind-ignore aria-labelledby="relatedTitle">
           <h2 id="relatedTitle">המשך קריאה</h2>
           <a class="related-card" href="/hub/domain-hosting-who-owns-what">
             <img src="/hub/media/domain-hosting-who-owns-what-hero.svg" width="1600" height="900" alt="" loading="lazy" decoding="async">
@@ -229,5 +237,6 @@
 
   <script src="/analytics.js?v=20260916c"></script>
   <script src="/site.js?v=20260916b"></script>
+  <script src="/search.js?v=20261004a" type="module"></script>
 </body>
 </html>

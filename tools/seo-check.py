@@ -25,7 +25,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי"]
 # External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
 ALLOWED_EXTERNAL = ["https://fit-with-nikita-app.netlify.app/", "https://bit-uborg-demo.netlify.app/"]
-CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
+CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "search.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
 def count(pat, s): return len(re.findall(pat, s))
@@ -118,6 +118,11 @@ _u = home[home.find('id="useful"'):]; _u = _u[:_u.find('</section>')]
 if 'href="/hub/how-much-does-a-website-cost"' not in _u: fails.append("homepage #useful: price article missing")
 if _u.count('class="hub-teaser-card') > 3: fails.append("homepage #useful: more than 3 teasers")
 if 'href="/hub/">לכל המידע השימושי</a>' not in _u: fails.append("homepage #useful: link to the hub missing")
+# search: every public page with the standard nav carries the visible search field and the search script
+for page in [p for p in PAGES if p not in ("builder/index.html", "card.html", "qr.html")]:
+    s = read(page)
+    if 'class="nav-search"' not in s: fails.append(f"{page}: search field missing")
+    if not re.search(r'<script src="(?:\.\./|/)?search\.js\?v=', s): fails.append(f"{page}: search.js missing")
 # sitemap
 sm = read("sitemap.xml"); locs = re.findall(r"<loc>(.*?)</loc>", sm)
 for u in locs:
