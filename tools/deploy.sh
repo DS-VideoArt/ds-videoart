@@ -9,8 +9,8 @@ EXPORT="$(mktemp -d)/site"; mkdir -p "$EXPORT"
 git -C "$REPO" archive "$REF" | tar -x -C "$EXPORT"
 python3 "$EXPORT/tools/seo-check.py" "$EXPORT"
 ( cd "$EXPORT/tools/search" && npm ci --no-audit --no-fund --silent && node build-index.mjs "$EXPORT" )
-rm -rf "$EXPORT/tools/search/node_modules"
 test -f "$EXPORT/pagefind/pagefind.js"
+rm -rf "$EXPORT/tools"   # build tooling is not part of the public site
 if [ "$MODE" = "prod" ]; then
   netlify deploy --prod --no-build --dir="$EXPORT" --site "$SITE_ID" --message "production: $REF $(git -C "$REPO" rev-parse --short "$REF")"
 else
