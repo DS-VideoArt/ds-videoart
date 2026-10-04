@@ -17,3 +17,4 @@ hub-media/image/ds-logo.png
 # Build output and dependencies (npm run build)
 node_modules/
 dist/
+.build-tmp/

@@ -3,14 +3,16 @@
 //   1. copies the public site into dist/ (the files git tracks, or would track, minus build tooling)
 //   2. runs the static SEO check on dist/
 //   3. builds the Pagefind search index into dist/pagefind/ and verifies it
-// dist/ is the publish directory and exists only after a successful build, so the site cannot be published without its search index.
+// The build runs in .build-tmp/ and becomes dist/ (the publish directory) only after every step passed,
+// so a failed build leaves no dist/ and the site cannot be published without its search index.
 import { execFileSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync } from "node:fs";
 import { dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = join(ROOT, "dist");
+const DIST = join(ROOT, "dist");
+const OUT = join(ROOT, ".build-tmp");
 const MIN_RECORDS = 40;   // 47 at the time of writing: 11 pages + 36 homepage records
 const SKIP = [/^tools\//, /^dist\//, /(^|\/)node_modules\//, /^package(-lock)?\.json$/, /^netlify\.toml$/, /(^|\/)\.(?!well-known\/)/];
 
@@ -32,6 +34,7 @@ function files() {
   return out;
 }
 
+rmSync(DIST, { recursive: true, force: true });
 rmSync(OUT, { recursive: true, force: true });
 let copied = 0;
 for (const rel of [...new Set(files())]) {
@@ -42,7 +45,7 @@ for (const rel of [...new Set(files())]) {
   cpSync(src, join(OUT, rel));
   copied++;
 }
-console.log(`build: ${copied} files copied to dist/`);
+console.log(`build: ${copied} files copied`);
 
 execFileSync("python3", [join(ROOT, "tools/seo-check.py"), OUT], { stdio: "inherit" });
 execFileSync(process.execPath, [join(ROOT, "tools/search/build-index.mjs"), OUT], { stdio: "inherit" });
@@ -53,4 +56,5 @@ if (!existsSync(join(OUT, "pagefind/pagefind.js")) || records < MIN_RECORDS) {
   console.error(`build: search index incomplete (${records} records, expected at least ${MIN_RECORDS})`);
   process.exit(1);
 }
-console.log(`build: OK, search index has ${records} records`);
+renameSync(OUT, DIST);
+console.log(`build: OK, dist/ ready, search index has ${records} records`);
