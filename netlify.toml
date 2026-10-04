@@ -1,0 +1,9 @@
+# Canonical build: the same command runs on every deploy path
+# (Netlify Git deploys, `netlify deploy` from the CLI, and tools/deploy.sh).
+# dist/ exists only after a successful build, so the site cannot be published without its search index.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"

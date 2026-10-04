@@ -1,0 +1,15 @@
+{
+  "name": "dscreative-site",
+  "private": true,
+  "description": "dscreative.co.il static site. `npm run build` writes the deployable site to dist/: SEO check plus the Pagefind search index.",
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "pagefind": "1.5.2"
+  }
+}

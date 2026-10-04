@@ -1,8 +1,0 @@
-{
-  "name": "ds-site-search-index",
-  "private": true,
-  "description": "Builds the Pagefind search index for dscreative.co.il at deploy time (not committed).",
-  "type": "module",
-  "scripts": { "build": "node build-index.mjs" },
-  "dependencies": { "pagefind": "^1.5.2" }
-}

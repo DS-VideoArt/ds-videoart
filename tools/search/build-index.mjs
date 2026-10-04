@@ -1,10 +1,10 @@
 // Builds the Pagefind search index for dscreative.co.il.
-// Usage: node build-index.mjs <site-dir>   (run at deploy time on the exported site; /pagefind/ is never committed)
+// Usage: node build-index.mjs <site-dir>. Called by the canonical build (tools/build.mjs, npm run build); /pagefind/ is never committed.
 // Scope: hub articles, hub index, privacy, terms, accessibility (pages tagged data-pagefind-body),
 //        plus the homepage split into virtual records (FAQ questions, pricing, portfolio, process, transparency, complex, contact).
 // Hebrew: Pagefind has no Hebrew stemming. Each record carries a manual alias layer (data-search-terms); no automatic prefix expansion.
 import * as pagefind from "pagefind";
-import { readFileSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 
 const SITE = process.argv[2];
@@ -94,6 +94,7 @@ for (const r of records) {
   if (res.errors?.length) { console.error(r.url, res.errors); process.exit(1); }
 }
 console.log(`homepage records: ${records.length}`);
+rmSync(join(SITE, "pagefind"), { recursive: true, force: true });   // Pagefind does not remove index files from a previous run
 const out = await index.writeFiles({ outputPath: join(SITE, "pagefind") });
 if (out.errors?.length) { console.error(out.errors); process.exit(1); }
 await pagefind.close();
