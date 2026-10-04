@@ -59,11 +59,13 @@ for (const m of faq.matchAll(/<details[^>]*id="(faq-\d+)"[^>]*>([\s\S]*?)<\/deta
 console.log(`faq records: ${n}`);
 
 // pricing: one record per package + maintenance
+// "1,290" is split by the index into "1" and "290", so each package carries its price as one plain token too
+const PRICE_ALIASES = { "package-website": ", 1290, ב־1290, 1,290, מחיר אתר תדמית", "package-landing": ", 440, 440 ₪, ב־440, מחיר דף נחיתה 440" };
 const pricing = section(home, "pricing");
 for (const art of pricing.matchAll(/<article class="package[^"]*"([^>]*)>([\s\S]*?)<\/article>/g)) {
   const id = (art[1].match(/id="([^"]+)"/) || [])[1]; const t = text(art[2]); const title = text((art[2].match(/<h3[^>]*>([\s\S]*?)<\/h3>/) || ["", ""])[1]);
   if (!title || !id) continue;
-  push({ url: `/#${id}`, title: `${title}: המחיר ומה כלול`, body: t.slice(0, 1400), type: "מחירים", topics: ["מחירים"], aliases: "מחיר, מחירים, כמה עולה, עלות, עלויות, חבילה, חבילות, מה כלול, 440, 1,290, תשלום חד פעמי, מסירה, דומיין, אחסון, SEO" });
+  push({ url: `/#${id}`, title: `${title}: המחיר ומה כלול`, body: t.slice(0, 1400), type: "מחירים", topics: ["מחירים"], aliases: "מחיר, מחירים, כמה עולה, עלות, עלויות, חבילה, חבילות, מה כלול, תשלום חד פעמי, מסירה, דומיין, אחסון, SEO" + (PRICE_ALIASES[id] || "") });
 }
 const mt = pricing.indexOf("ואחרי המסירה");
 if (mt > 0) push({ url: "/#maintenance", title: "תחזוקה אחרי המסירה: 0, 149 או 349 ₪ לחודש", body: text(pricing.slice(mt)).slice(0, 1000), type: "מחירים", topics: ["תחזוקה", "מחירים"], aliases: "תחזוקה, התחזוקה, מנוי חודשי, עדכונים, שינויים, 149, 349, בלי תחזוקה, אחרי המסירה" });
