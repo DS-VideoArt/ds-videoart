@@ -125,7 +125,7 @@ for page in [p for p in PAGES if p not in ("builder/index.html", "card.html", "q
     s = read(page)
     if 'class="nav-search"' not in s: fails.append(f"{page}: search field missing")
     if not re.search(r'<script src="(?:\.\./|/)?search\.js\?v=', s): fails.append(f"{page}: search.js missing")
-# marketing short links /go/<slug>: permanent redirect to an existing page on this site, with UTM, never in the sitemap
+# marketing short links /go/<slug>: temporary redirect (302, or 307) to an existing page on this site, with UTM, never in the sitemap
 _go = {}
 for _line in read("_redirects").splitlines():
     _p = _line.split()
@@ -134,7 +134,7 @@ for _line in read("_redirects").splitlines():
     if _src in _go: fails.append(f"_redirects: {_src} defined twice")
     _go[_src] = _dst
     if not re.fullmatch(r"/go/[a-z0-9]+(?:-[a-z0-9]+)*", _src): fails.append(f"_redirects: {_src}: slug must be lowercase a-z, 0-9 and single hyphens")
-    if _status not in ("301", "301!"): fails.append(f"_redirects: {_src}: must be a permanent 301 redirect, got '{_status}'")
+    if _status not in ("302", "302!", "307", "307!"): fails.append(f"_redirects: {_src}: must be a temporary 302 (or 307) redirect so the target can change, got '{_status}'")
     _path, _, _query = _dst.partition("?")
     if not _path.startswith("/") or _path.startswith("//"): fails.append(f"_redirects: {_src}: target must be a page on this site, got {_dst}")
     _keys = {kv.split("=", 1)[0] for kv in _query.split("&") if "=" in kv}

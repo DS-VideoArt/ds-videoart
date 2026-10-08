@@ -13,9 +13,10 @@ http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
 /fb-440a1-h2  /builder/?utm_source=facebook&utm_medium=organic_social&utm_campaign=landing_page_440&utm_content=ad01_h2  302
 
 # Marketing short links: https://dscreative.co.il/go/<slug>
-# One rule per link: /go/<slug>  <page on this site>?utm_source=…&utm_medium=…&utm_campaign=…  301!
+# One rule per link: /go/<slug>  <page on this site>?utm_source=…&utm_medium=…&utm_campaign=…  302!
+# Temporary (302) by default, like the campaign links above: the target or the UTM can change later without browsers caching a permanent redirect.
 # Lowercase slug (a-z, 0-9, hyphen), target is an existing page, never listed in sitemap.xml. tools/seo-check.py enforces all of this.
-/go/system  /hub/business-website-or-custom-system?utm_source=facebook&utm_medium=reel&utm_campaign=hub_custom_system  301!
+/go/system  /hub/business-website-or-custom-system?utm_source=facebook&utm_medium=reel&utm_campaign=hub_custom_system  302!
 
 # Privacy policy: one canonical URL. The old path and the .html form redirect permanently.
 /legal/privacy.html  /privacy  301
