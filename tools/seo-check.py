@@ -125,6 +125,26 @@ for page in [p for p in PAGES if p not in ("builder/index.html", "card.html", "q
     s = read(page)
     if 'class="nav-search"' not in s: fails.append(f"{page}: search field missing")
     if not re.search(r'<script src="(?:\.\./|/)?search\.js\?v=', s): fails.append(f"{page}: search.js missing")
+# marketing short links /go/<slug>: permanent redirect to an existing page on this site, with UTM, never in the sitemap
+_go = {}
+for _line in read("_redirects").splitlines():
+    _p = _line.split()
+    if not _p or not _p[0].startswith("/go/"): continue
+    _src, _dst, _status = _p[0], (_p[1] if len(_p) > 1 else ""), (_p[2] if len(_p) > 2 else "")
+    if _src in _go: fails.append(f"_redirects: {_src} defined twice")
+    _go[_src] = _dst
+    if not re.fullmatch(r"/go/[a-z0-9]+(?:-[a-z0-9]+)*", _src): fails.append(f"_redirects: {_src}: slug must be lowercase a-z, 0-9 and single hyphens")
+    if _status not in ("301", "301!"): fails.append(f"_redirects: {_src}: must be a permanent 301 redirect, got '{_status}'")
+    _path, _, _query = _dst.partition("?")
+    if not _path.startswith("/") or _path.startswith("//"): fails.append(f"_redirects: {_src}: target must be a page on this site, got {_dst}")
+    _keys = {kv.split("=", 1)[0] for kv in _query.split("&") if "=" in kv}
+    for _k in ("utm_source", "utm_medium", "utm_campaign"):
+        if _k not in _keys: fails.append(f"_redirects: {_src}: target is missing {_k}")
+    _file = _path.strip("/")
+    if not any(os.path.isfile(os.path.join(root, f)) for f in (_file + ".html", os.path.join(_file, "index.html"), _file or "index.html")):
+        fails.append(f"_redirects: {_src}: target page {_path} does not exist")
+if "/go/" in read("sitemap.xml"): fails.append("sitemap.xml: /go/ short links must not be listed")
+notes.append(f"short links /go/: {len(_go)}")
 # sitemap
 sm = read("sitemap.xml"); locs = re.findall(r"<loc>(.*?)</loc>", sm)
 for u in locs:
