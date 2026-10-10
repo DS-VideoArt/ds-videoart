@@ -276,8 +276,7 @@ body[data-room="card"] {
 .ds-splash-media {
   position: absolute;
   inset: -4%;
-  background: url("assets/card-splash.jpg?v=20260914a") center / cover no-repeat;
-  animation: dsSplashZoom 3.4s ease-out forwards;
+  background: url("assets/card-splash.jpg?v=20261010c") center / cover no-repeat, url("data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCAAoABgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDiBViI1WrcHiA/YzAbZTmHyslvYDP04zj1zVMtFPIxRVbzOKKmw7kGKM1JsppFVcTQ3NFFFMRaI4qF6KKyiayIjRRRWpkf/9k=") center / cover no-repeat;
 }
 
 .ds-splash-scrim {
@@ -302,7 +301,15 @@ body[data-room="card"] {
   letter-spacing: -0.02em;
   text-shadow: 0 2px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.5), 0 0 70px rgba(255, 255, 255, 0.25);
   opacity: 0;
-  animation: dsSplashTextIn 1s ease-out 0.35s forwards;
+}
+
+.go .ds-splash-media { animation: dsSplashZoom 3.4s ease-out forwards; }
+.go .ds-splash-text { animation: dsSplashTextIn 1s ease-out 0.35s forwards; }
+.go .business-card { animation: cardIn 1s var(--ease-out) 2.4s both; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
 }
 
 @keyframes dsSplashZoom {
@@ -329,6 +336,7 @@ body[data-room="card"] {
 .qr-share-btn svg{width:20px;height:20px;color:#25d366;flex-shrink:0}
 
 @media (prefers-reduced-motion: reduce) {
+  .go .business-card { animation: none; }
   .ds-splash-media { animation: none; }
   .ds-splash-text { animation: none; opacity: 1; transform: none; }
 }

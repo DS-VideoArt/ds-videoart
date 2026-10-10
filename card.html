@@ -23,8 +23,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100;300;400;700;900&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/card-splash.jpg?v=20261010c" as="image" fetchpriority="high">
   <link rel="stylesheet" href="ds-shared.css?v=20260723a">
-  <link rel="stylesheet" href="card.css?v=20261010b">
+  <link rel="stylesheet" href="card.css?v=20261010c">
 </head>
 <body data-room="card">
   <a href="#main-content" class="skip-link" data-he="דלג לתוכן הראשי" data-en="Skip to main content">דלג לתוכן הראשי</a>
@@ -97,12 +98,23 @@
         splash.classList.add("is-gone");
         return;
       }
-      setTimeout(function () {
-        splash.classList.add("is-hiding");
-        splash.addEventListener("transitionend", function () {
-          splash.classList.add("is-gone");
-        }, { once: true });
-      }, 2600);
+      var started = false;
+      function start() {
+        if (started) return;
+        started = true;
+        document.documentElement.classList.add("go");
+        setTimeout(function () {
+          splash.classList.add("is-hiding");
+          splash.addEventListener("transitionend", function () {
+            splash.classList.add("is-gone");
+          }, { once: true });
+        }, 2600);
+      }
+      var probe = new Image();
+      probe.onload = probe.onerror = start;
+      probe.src = "assets/card-splash.jpg?v=20261010c";
+      if (probe.complete) start();
+      setTimeout(start, 3500);
     })();
   </script>
 </body>
