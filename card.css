@@ -325,6 +325,9 @@ body[data-room="card"] {
   display: none;
 }
 
+.qr-share-btn{width:100%;max-width:320px;padding:15px 30px;font-size:16px;gap:10px}
+.qr-share-btn svg{width:20px;height:20px;color:#25d366;flex-shrink:0}
+
 @media (prefers-reduced-motion: reduce) {
   .ds-splash-media { animation: none; }
   .ds-splash-text { animation: none; opacity: 1; transform: none; }
