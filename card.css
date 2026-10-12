@@ -17,7 +17,7 @@
   --cream: #f7f5f2;
   --text-primary: #15171c;
   --text-muted: rgba(21, 23, 28, 0.64);
-  --text-faint: rgba(21, 23, 28, 0.48);
+  --text-faint: rgba(21, 23, 28, 0.66);   /* was 0.48 (3.2:1); AA for the small labels */
   --border: rgba(21, 23, 28, 0.1);
   --border-strong: rgba(21, 23, 28, 0.2);
 

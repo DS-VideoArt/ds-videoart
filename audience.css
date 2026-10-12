@@ -42,3 +42,17 @@
   .aud-points, .aud-prices, .aud-steps { grid-template-columns: 1fr; }
   .aud-ctas .btn { width: 100%; }
 }
+
+/* Work samples: three calm cards, local screenshots, every card says what it is */
+.aud-work { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.aud-work-card { margin: 0; background: #fffaf3; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; }
+.aud-work-card img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; border-bottom: 1px solid var(--line); }
+.aud-work-card figcaption { padding: 18px 20px 22px; }
+.aud-work-card h3 { margin-top: 10px; font-size: 1.2rem; font-weight: 800; }
+.aud-work-card p { margin-top: 6px; color: var(--ink-70); line-height: 1.55; font-size: 0.97rem; }
+.aud-badge { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; border: 1px solid; }
+.aud-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.aud-badge.real { color: #1d6545; background: rgba(31, 122, 83, 0.1); border-color: rgba(31, 122, 83, 0.4); }
+.aud-badge.demo { color: #7a4a1f; background: rgba(214, 164, 108, 0.18); border-color: rgba(214, 164, 108, 0.6); }
+@media (max-width: 900px) { .aud-work { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .aud-work { grid-template-columns: 1fr; } }

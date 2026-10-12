@@ -39,7 +39,7 @@
 .hub-card .kicker { margin-bottom: 14px; }
 .hub-card h2 { font-size: clamp(1.3rem, 2vw, 1.65rem); font-weight: 900; letter-spacing: -0.02em; line-height: 1.18; }
 .hub-card p { margin-top: 14px; color: var(--ink-70); max-width: 44ch; }
-.hub-card .meta { margin-top: 20px; font-size: 0.9rem; color: var(--ink-55); display: flex; flex-wrap: wrap; gap: 8px 14px; }
+.hub-card .meta { margin-top: 20px; font-size: 0.9rem; color: var(--ink-70); display: flex; flex-wrap: wrap; gap: 8px 14px; }
 .hub-card .more { margin-top: 22px; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--terracotta-deep); }
 .hub-card .more::after { content: "←"; transition: transform 0.25s var(--ease-out); }
 .hub-card:hover .more::after { transform: translateX(-4px); }

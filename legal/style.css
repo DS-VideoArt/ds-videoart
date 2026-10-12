@@ -56,6 +56,7 @@
   display: inline-flex;
   margin-top: 48px;
 }
+.legal a.btn-primary { color: #fff; text-decoration: none; }   /* .legal a would otherwise paint the label in the button colour */
 
 /* Short summary box at the top of a legal document. */
 .legal .legal-summary {

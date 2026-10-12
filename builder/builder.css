@@ -64,7 +64,7 @@
 .cmp-row { display: grid; grid-template-columns: 110px 1fr 1fr; gap: 14px; padding: 11px 16px; align-items: start; }
 .cmp-row + .cmp-row { border-top: 1px solid var(--line); }
 .cmp-row.head { background: var(--stone-50); font-weight: 800; }
-.cmp-row.head span { font-weight: 800; color: var(--ink-55); }
+.cmp-row.head span { font-weight: 800; color: var(--ink-70); }
 .cmp-row span { color: var(--ink-55); font-weight: 600; }
 .cmp-row em { font-style: normal; color: var(--ink-70); line-height: 1.5; }
 .cards.catalog { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }

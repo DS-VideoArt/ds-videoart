@@ -19,7 +19,7 @@
   --stone-200: #e7dccc;
   --stone-300: #d8cab5;
 
-  --terracotta: #b8582f;
+  --terracotta: #b3542c;   /* was #b8582f: minimal shift for WCAG AA contrast (white text 4.97:1) */
   --terracotta-deep: #9c4726;
   --terracotta-soft: #c9744f;
   --copper: #d6a46c;
@@ -696,7 +696,7 @@ section { position: relative; }
 }
 .summary-doc .doc-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
 .summary-doc .doc-head strong { font-size: 1.1rem; }
-.summary-doc .doc-head span { font-size: 0.8rem; color: var(--ink-55); font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(214, 164, 108, 0.25); }
+.summary-doc .doc-head span { font-size: 0.8rem; color: var(--ink-70); font-weight: 600; padding: 4px 10px; border-radius: 999px; background: rgba(214, 164, 108, 0.25); }
 .summary-doc dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 18px; margin-top: 16px; font-size: 0.98rem; }
 .summary-doc dt { color: var(--ink-70); }
 .summary-doc dd { font-weight: 600; text-align: end; }
@@ -858,7 +858,7 @@ section { position: relative; }
 
 .form .btn { width: 100%; margin-top: 22px; }
 /* was .consent, which also matched the fixed consent banner and hid this line as an empty dark box */
-.form .form-note { margin-top: 12px; font-size: 0.85rem; color: var(--ink-55); text-align: center; }
+.form .form-note { margin-top: 12px; font-size: 0.85rem; color: var(--ink-70); text-align: center; }
 
 .form-status { margin-top: 16px; padding: 14px 16px; border-radius: 12px; font-weight: 600; display: none; }
 .form-status.ok { display: block; background: rgba(31, 122, 83, 0.12); color: #175f41; }
