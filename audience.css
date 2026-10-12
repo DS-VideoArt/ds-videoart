@@ -1,0 +1,44 @@
+/* ============================================================
+   Audience landing pages (first: /haredi). Builds on site.css tokens.
+   Calm, text-led, no photos of people. Decorative marks are dots, never lines.
+   ============================================================ */
+.aud .kicker::before { width: 8px; height: 8px; border-radius: 50%; background: var(--terracotta); }
+
+.aud-hero { padding: calc(var(--nav-h) + clamp(48px, 8vw, 96px)) 0 clamp(64px, 9vw, 112px); }
+.aud-hero h1 { font-size: clamp(2.2rem, 5vw, 3.9rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; max-width: 18ch; }
+.aud-hero .lead { margin-top: 20px; max-width: 46ch; }
+.aud-ctas { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+.aud-ctas .btn { white-space: normal; text-align: center; }
+.aud-note { margin-top: 18px; font-size: 1rem; color: var(--ink-70); }
+.aud-note strong { color: var(--ink); }
+
+.aud-points { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.aud-point { background: #fffaf3; border: 1px solid var(--line); border-radius: var(--radius-md); padding: 24px 26px; }
+.aud-point h3 { font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+.aud-point h3::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--copper); flex: 0 0 auto; }
+.aud-point p { margin-top: 8px; color: var(--ink-70); line-height: 1.6; }
+
+.aud-prices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.aud-price { background: #fffaf3; border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-soft); }
+.aud-price h3 { font-size: 1.3rem; font-weight: 800; }
+.aud-price .amount { margin-top: 10px; font-size: clamp(2rem, 4vw, 2.6rem); font-weight: 900; color: var(--terracotta-deep); }
+.aud-price .amount small { font-size: 1rem; font-weight: 700; color: var(--ink-70); margin-inline-end: 4px; }
+.aud-price ul { margin-top: 14px; display: grid; gap: 8px; color: var(--ink-70); }
+.aud-price li { display: flex; gap: 10px; line-height: 1.5; }
+.aud-price li::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--copper); margin-top: 0.6em; flex: 0 0 auto; }
+.aud-fine { margin-top: 22px; color: var(--ink-70); line-height: 1.7; max-width: 70ch; }
+.aud-fine a { color: var(--terracotta-deep); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+
+.aud-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: step; list-style: none; padding: 0; }
+.aud-steps li { counter-increment: step; background: #fffaf3; border: 1px solid var(--line); border-radius: var(--radius-md); padding: 22px; }
+.aud-steps li::before { content: counter(step); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--plum-800); color: var(--on-dark); font-weight: 800; margin-bottom: 12px; }
+.aud-steps h3 { font-size: 1.1rem; font-weight: 800; }
+.aud-steps p { margin-top: 6px; color: var(--ink-70); line-height: 1.55; }
+
+@media (max-width: 900px) {
+  .aud-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .aud-points, .aud-prices, .aud-steps { grid-template-columns: 1fr; }
+  .aud-ctas .btn { width: 100%; }
+}

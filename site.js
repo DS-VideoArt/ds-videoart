@@ -225,7 +225,7 @@
       status.className = "form-status";
       if (!validate()) return;
       const ctx = qs("#builderContext", form);
-      if (ctx) ctx.value = builderContext();
+      if (ctx) ctx.value = [form.dataset.context || "", builderContext()].filter(Boolean).join(" | ").slice(0, 500);
       UTM_KEYS.forEach((k) => { const inp = form.elements[k]; if (inp) inp.value = utmValue(k); });
       submit.disabled = true;
       const original = submit.textContent;
@@ -249,7 +249,10 @@
         form.reset();
       } catch (err) {
         status.className = "form-status fail";
-        status.innerHTML = 'משהו השתבש בשליחה. אפשר לכתוב לנו ישירות <a href="' + (form.dataset.wa || "#") + '" target="_blank" rel="noopener">בוואטסאפ</a> או להתקשר.';
+        const mail = form.dataset.email || "";
+        status.innerHTML = 'משהו השתבש בשליחה. אפשר להתקשר ל־<a href="tel:+972548203022"><span dir="ltr">054-820-3022</span></a>'
+          + (mail ? ', לכתוב ל־<a href="mailto:' + mail + '"><span dir="ltr">' + mail + '</span></a>' : '')
+          + ' או לכתוב <a href="' + (form.dataset.wa || "#") + '" target="_blank" rel="noopener">בוואטסאפ</a>.';
       } finally {
         submit.disabled = false;
         submit.textContent = original;

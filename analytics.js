@@ -7,7 +7,8 @@
    - Consent denied        -> nothing is loaded, events are dropped, choice remembered.
    - Consent granted       -> gtag.js loads, page_view fires, waiting events flush;
                               the Meta Pixel base code loads once and sends PageView, plus
-                              Contact (whatsapp / phone click) and Lead (form accepted by the server).
+                              Contact (whatsapp / phone / email click) and Lead (form accepted by the server).
+                              GA4 receives the same clicks as contact_click with contact_method.
                               Meta never receives form values or any personal data.
 
    Public API (window.DS_ANALYTICS):
@@ -31,7 +32,7 @@
 
   const CONSENT_KEY = "dsc_consent_v1";
   const PRIVACY_URL = "/privacy";
-  const ALLOWED_PARAMS = ["service_type", "step_number", "step_name", "custom_quote", "maintenance_plan", "setup_total"];
+  const ALLOWED_PARAMS = ["service_type", "step_number", "step_name", "custom_quote", "maintenance_plan", "setup_total", "contact_method"];
   const MAX_QUEUE = 30;
 
   let tagLoaded = false;
@@ -107,6 +108,7 @@
      builder's success screen), registered once per page load, one event per click. */
   function contactMethodOf(href) {
     if (/^tel:/i.test(href)) return "phone";
+    if (/^mailto:/i.test(href)) return "email";
     if (/^(https?:)?\/\/(wa\.me|api\.whatsapp\.com|(www\.)?whatsapp\.com)\//i.test(href)) return "whatsapp";
     return null;
   }
@@ -117,7 +119,9 @@
       const a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
       if (!a) return;
       const method = contactMethodOf(a.getAttribute("href") || "");
-      if (method) metaTrack("Contact", { contact_method: method });
+      if (!method) return;
+      metaTrack("Contact", { contact_method: method });
+      trackEvent("contact_click", { contact_method: method });
     }, true);
   }
 

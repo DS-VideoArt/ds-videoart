@@ -857,7 +857,8 @@ section { position: relative; }
 .choice input:focus-visible + span { outline: 3px solid var(--terracotta); outline-offset: 3px; }
 
 .form .btn { width: 100%; margin-top: 22px; }
-.form .consent { margin-top: 12px; font-size: 0.85rem; color: var(--ink-55); text-align: center; }
+/* was .consent, which also matched the fixed consent banner and hid this line as an empty dark box */
+.form .form-note { margin-top: 12px; font-size: 0.85rem; color: var(--ink-55); text-align: center; }
 
 .form-status { margin-top: 16px; padding: 14px 16px; border-radius: 12px; font-weight: 600; display: none; }
 .form-status.ok { display: block; background: rgba(31, 122, 83, 0.12); color: #175f41; }

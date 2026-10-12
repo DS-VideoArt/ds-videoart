@@ -128,13 +128,15 @@
     });
     return html;
   }
-  /* header field: opening the dialog on focus or on the first keystroke keeps the field itself a real, visible search box */
-  FIELD.addEventListener("focus", function () { if (!closing) open(FIELD.value); });
+  /* header field: a real, visible search box; the results dialog opens from it */
+  /* No opening on focus: a keyboard user tabbing through the header must be able to pass the field (WCAG 3.2.1).
+     The dialog opens on a pointer click, on typing, or on Enter / ArrowDown in the field. */
+  FIELD.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === "ArrowDown") && (!dialog || dialog.hidden)) { e.preventDefault(); open(FIELD.value); } });
   FIELD.addEventListener("input", function () { if (!dialog || dialog.hidden) open(FIELD.value); });
   FIELD.addEventListener("click", function () { if (!dialog || dialog.hidden) open(FIELD.value); });   /* the field keeps focus after Esc, so a second click must reopen */
   FIELD.closest("form").addEventListener("submit", function (e) { e.preventDefault(); open(FIELD.value); });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest("input, textarea, select, [contenteditable]")) { e.preventDefault(); FIELD.focus(); }
+    if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest("input, textarea, select, [contenteditable]")) { e.preventDefault(); FIELD.focus(); open(FIELD.value); }
   });
   /* deep links from search results into a FAQ question: open that question */
   function openFaq() { var m = location.hash.match(/^#(faq-\d+)$/); if (!m) return; var d = document.getElementById(m[1]); if (d && d.tagName === "DETAILS") { d.open = true; d.scrollIntoView({ block: "start" }); } }

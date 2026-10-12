@@ -8,6 +8,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "index.html": ("index, follow", True, True),
     "builder/index.html": ("noindex, follow", False, False),
     "privacy.html": ("index, follow", True, False),
+    "haredi.html": ("index, follow", True, False),
     "legal/terms.html": ("index, follow", True, False),
     "legal/accessibility.html": ("index, follow", True, False),
     "404.html": ("noindex, follow", True, False),
@@ -98,7 +99,7 @@ def exists(path):
     p = path.lstrip("/")
     cands = [p, p + ".html", os.path.join(p, "index.html")] if p else ["index.html"]
     return any(os.path.exists(os.path.join(root, c)) for c in cands)
-for page in ("index.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html", "hub/business-website-or-custom-system.html"):
+for page in ("index.html", "haredi.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html", "hub/business-website-or-custom-system.html"):
     base = os.path.dirname(page)
     for href in re.findall(r'href="([^"]+)"', read(page)):
         if href.startswith("#") or href.startswith(("http", "mailto:", "tel:")): continue
