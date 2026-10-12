@@ -330,6 +330,8 @@ body[data-room="card"] {
 
 .qr-share-btn{width:100%;max-width:320px;padding:15px 30px;font-size:16px;gap:10px}
 .qr-share-btn svg{width:20px;height:20px;color:#25d366;flex-shrink:0}
+.qr-share-mail svg{color:var(--text-primary)}
+.qr-share-btn:last-child{margin-bottom:56px}
 
 @media (prefers-reduced-motion: reduce) {
   .go .business-card { animation: none; }
