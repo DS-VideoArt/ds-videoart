@@ -1,0 +1,397 @@
+/* ============================================================
+   DS Creative Studio — homepage + pricing page layer
+   Loaded only by index.html and pricing.html, after site.css.
+   Every rule is scoped to body.home or body.pricing-page, so the
+   shared stylesheet and the pages that use it (/haredi, hub, legal)
+   are untouched.
+
+   Direction: premium studio, quiet. Generous whitespace, one accent
+   per section, motion only on reveal and hover, and every section
+   still reads fully with motion off.
+   ============================================================ */
+
+/* ---------- shared details ---------- */
+
+/* Kicker marker: a round dot, never a short line (house rule: no dash-like decorations) */
+.home .kicker::before,
+.pricing-page .kicker::before { width: 7px; height: 7px; border-radius: 50%; background: var(--terracotta); }
+.home .on-dark .kicker { color: var(--on-dark-70); }
+.home .on-dark .kicker::before { background: var(--copper); }
+
+.home .section { padding: clamp(88px, 11vw, 148px) 0; }
+.home .section-head { margin-bottom: clamp(40px, 6vw, 72px); }
+.home .section-head .h2 { max-width: 20ch; }
+.home .section-head.center .h2 { margin-inline: auto; }
+.home .section-head .h2.hm-wide { max-width: none; }
+
+.home .link-arrow { min-height: 44px; }
+.home .link-arrow::after { transition: transform 0.3s var(--ease-out); }
+.home .link-arrow:hover::after, .home .link-arrow:focus-visible::after { transform: translateX(-4px); }
+.home .on-dark .link-arrow { color: var(--copper-light); }
+.home .on-dark .link-arrow:hover, .home .on-dark .link-arrow:focus-visible { color: var(--on-dark); }
+
+
+/* ============================================================
+   01 Hero
+   ============================================================ */
+
+.home .hm-hero {
+  padding: calc(var(--nav-h) + clamp(40px, 7vw, 104px)) 0 clamp(72px, 9vw, 128px);
+  background:
+    radial-gradient(900px 620px at 88% 8%, rgba(214, 164, 108, 0.26), transparent 62%),
+    radial-gradient(700px 520px at 6% 96%, rgba(179, 84, 44, 0.10), transparent 64%),
+    linear-gradient(180deg, var(--stone-100) 0%, var(--stone-50) 100%);
+}
+.home .hm-hero .container { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: clamp(32px, 5vw, 72px); }
+/* sized so each of the two headline lines stays on one line next to the visual */
+.home .hm-hero .display {
+  font-size: clamp(2.4rem, 4.6vw, 4.2rem);
+  font-weight: 800; letter-spacing: -0.03em; line-height: 1.04;
+}
+.home .hm-hero .lead { margin-top: 22px; max-width: 36ch; font-size: clamp(1.1rem, 1.6vw, 1.3rem); }
+.home .hm-hero .hero-ctas { margin-top: 34px; gap: 12px; }
+.hm-facts {
+  margin-top: 26px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+  font-size: 0.95rem; color: var(--ink-70);
+}
+.hm-facts li { display: inline-flex; align-items: baseline; gap: 6px; }
+.hm-facts li + li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--copper); align-self: center; margin-inline-end: 8px; }
+.hm-facts strong { color: var(--ink); font-weight: 800; }
+
+/* the hero visual reuses the existing desktop + phone mockups, without the floating shapes */
+.home .hm-hero .hero-visual { min-height: 420px; }
+.home .hm-dots {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: 240px; height: 240px; inset-inline-start: 3%; top: calc(var(--nav-h) + 24px);
+  background-image: radial-gradient(rgba(42, 34, 48, 0.22) 1.2px, transparent 1.7px);
+  background-size: 18px 18px;
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+  mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+}
+
+/* entrance: copy rises in once on load. With motion off the elements are simply there. */
+@keyframes hmRise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.home .hm-hero .hero-copy > * { animation: hmRise 0.9s var(--ease-out) both; }
+.home .hm-hero .hero-copy > :nth-child(2) { animation-delay: 0.06s; }
+.home .hm-hero .hero-copy > :nth-child(3) { animation-delay: 0.12s; }
+.home .hm-hero .hero-copy > :nth-child(4) { animation-delay: 0.18s; }
+.home .hm-hero .hero-copy > :nth-child(5) { animation-delay: 0.24s; }
+.home .hm-hero .hero-visual { animation: hmRise 1.1s var(--ease-out) 0.15s both; }
+
+/* ============================================================
+   02 Services
+   ============================================================ */
+
+.hm-services {
+  background:
+    radial-gradient(760px 520px at 0% 0%, rgba(214, 164, 108, 0.20), transparent 64%),
+    radial-gradient(640px 420px at 100% 100%, rgba(179, 84, 44, 0.06), transparent 64%),
+    var(--stone-50);
+}
+
+.svc-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 24px); align-items: stretch; }
+.svc {
+  position: relative; display: flex; flex-direction: column;
+  padding: clamp(26px, 3vw, 38px);
+  border-radius: var(--radius-lg);
+  background: #fdfaf5;
+  border: 1px solid var(--line);
+  transition: transform 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), border-color 0.45s var(--ease-out);
+}
+.svc:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); border-color: var(--line-strong); }
+.svc-name { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.01em; }
+.svc-price {
+  margin-top: 22px; min-height: 3.4rem; display: flex; align-items: flex-end; flex-wrap: wrap; gap: 4px;
+  font-weight: 900; letter-spacing: -0.03em; line-height: 1;
+}
+.svc-price .amount { font-size: clamp(2.6rem, 4vw, 3.3rem); }
+.svc-price .cur { font-size: 1.35rem; font-weight: 700; color: var(--ink-70); }
+.svc-price .from { font-size: 1rem; font-weight: 700; color: var(--ink-70); letter-spacing: 0; margin-inline-end: 4px; }
+.svc-price.is-text { font-size: clamp(1.45rem, 2vw, 1.7rem); letter-spacing: -0.02em; line-height: 1.15; padding-bottom: 4px; }
+.svc-scope { margin-top: 10px; font-size: 0.92rem; font-weight: 600; color: var(--ink-70); }
+.svc-desc { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--ink-70); }
+.svc-facts { margin-top: 18px; display: grid; gap: 8px; font-size: 0.95rem; font-weight: 600; }
+.svc-facts li { position: relative; padding-inline-start: 18px; }
+.svc-facts li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); }
+.svc-actions { margin-top: auto; padding-top: 24px; }
+
+/* the custom tier is a different kind of work, so it sits on the dark brand surface */
+.svc.is-custom {
+  background:
+    radial-gradient(420px 260px at 0% 0%, rgba(214, 164, 108, 0.18), transparent 70%),
+    linear-gradient(180deg, var(--plum-800), var(--plum-900));
+  color: var(--on-dark); border-color: transparent;
+}
+.svc.is-custom .svc-scope, .svc.is-custom .svc-desc { color: var(--on-dark-70); }
+.svc.is-custom .svc-desc { border-top-color: var(--on-dark-line); }
+.svc.is-custom .link-arrow { color: var(--copper-light); }
+.svc.is-custom .link-arrow:hover, .svc.is-custom .link-arrow:focus-visible { color: var(--on-dark); }
+.svc.is-custom .svc-facts a { color: var(--on-dark); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(214, 164, 108, 0.6); }
+.svc.is-custom .svc-facts a:hover { text-decoration-color: var(--copper); }
+
+.svc-foot {
+  margin-top: clamp(28px, 4vw, 44px);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 28px;
+  color: var(--ink-70); font-size: 0.97rem;
+}
+.svc-foot p { max-width: 64ch; }
+
+/* ============================================================
+   03 Selected work
+   ============================================================ */
+
+.sel { display: grid; gap: clamp(72px, 10vw, 136px); }
+.sel-item {
+  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+  gap: clamp(32px, 5vw, 80px); align-items: center;
+}
+.sel-item:nth-child(even) .sel-visual { order: 2; }
+
+.sel-visual { position: relative; display: block; padding-bottom: 6%; }
+.sel-screen {
+  position: relative; display: block; overflow: hidden;
+  border-radius: 16px; padding-top: 24px;
+  background: var(--plum-700);
+  box-shadow: 0 50px 100px -40px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--on-dark-line);
+  aspect-ratio: 16 / 10.4;
+}
+.sel-screen::before {
+  content: ""; position: absolute; top: 0; inset-inline: 0; height: 24px; z-index: 1;
+  background: var(--plum-800);
+  background-image: radial-gradient(circle, var(--copper) 3px, transparent 3.5px),
+                    radial-gradient(circle, var(--copper-light) 3px, transparent 3.5px),
+                    radial-gradient(circle, var(--terracotta-soft) 3px, transparent 3.5px);
+  background-size: 14px 14px; background-repeat: no-repeat;
+  background-position: calc(100% - 12px) 5px, calc(100% - 28px) 5px, calc(100% - 44px) 5px;
+}
+.sel-screen img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 1.1s var(--ease-out); }
+.sel-phone {
+  position: absolute; z-index: 2; inset-inline-start: -3%; bottom: 0;
+  width: 23%; max-width: 172px; aspect-ratio: 9 / 19.2;
+  padding: 7px; border-radius: 24px; background: var(--plum-900);
+  box-shadow: 0 40px 70px -26px rgba(0, 0, 0, 0.75), 0 0 0 1px var(--on-dark-line-strong);
+  transition: transform 0.8s var(--ease-out);
+}
+.sel-phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 18px; }
+.sel-item:nth-child(even) .sel-phone { inset-inline-start: auto; inset-inline-end: -3%; }
+.sel-item:hover .sel-screen img { transform: scale(1.025); }
+.sel-item:hover .sel-phone { transform: translateY(-8px); }
+
+.sel-title { font-size: clamp(1.9rem, 3.2vw, 2.6rem); font-weight: 900; letter-spacing: -0.02em; line-height: 1.08; }
+.sel-kind { margin-top: 8px; color: var(--on-dark-70); font-weight: 500; }
+.sel-desc { margin-top: 18px; color: var(--on-dark-70); max-width: 44ch; }
+.sel-note { margin-top: 16px; font-size: 0.92rem; color: var(--on-dark-70); max-width: 46ch; }
+.sel-body .link-arrow { margin-top: 14px; }
+
+/* "what was built" stays available, folded */
+.sel-more { margin-top: 18px; border-top: 1px solid var(--on-dark-line); border-bottom: 1px solid var(--on-dark-line); }
+.sel-more summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 48px; cursor: pointer; list-style: none;
+  font-weight: 700; font-size: 0.95rem; color: var(--on-dark);
+}
+.sel-more summary::-webkit-details-marker { display: none; }
+.sel-more summary::after {
+  content: ""; width: 9px; height: 9px; flex: 0 0 auto; margin-inline-end: 4px;
+  border-right: 2px solid var(--copper); border-bottom: 2px solid var(--copper);   /* physical sides: a down chevron in both directions */
+  transform: rotate(45deg) translateY(-3px); transition: transform 0.3s var(--ease-out);
+}
+.sel-more[open] summary::after { transform: rotate(225deg) translateY(-3px); }
+.sel-more > div { padding-bottom: 18px; }
+.sel-more .work-points-title:first-child { margin-top: 0; }
+.sel-more .detail-note { margin-top: 16px; }
+
+/* design samples: compact, honest labels */
+.demos { margin-top: clamp(88px, 11vw, 150px); padding-top: clamp(40px, 5vw, 56px); border-top: 1px solid var(--on-dark-line); }
+.demos-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: clamp(24px, 3vw, 36px); }
+.demos-title { font-size: clamp(1.35rem, 2.2vw, 1.7rem); font-weight: 800; letter-spacing: -0.01em; }
+.demos-head p { color: var(--on-dark-70); font-size: 0.97rem; max-width: 52ch; }
+.demos-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2.4vw, 28px); }
+.demo { display: flex; flex-direction: column; align-items: flex-start; }
+.demo-visual {
+  display: block; width: 100%; overflow: hidden; border-radius: var(--radius-md);
+  aspect-ratio: 16 / 10; background: var(--plum-700);
+  box-shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--on-dark-line);
+  margin-bottom: 18px;
+}
+.demo-visual img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 1s var(--ease-out); }
+.demo:hover .demo-visual img { transform: scale(1.04); }
+.demo-title { margin-top: 12px; font-size: 1.25rem; font-weight: 800; }
+.demo p { margin-top: 6px; color: var(--on-dark-70); font-size: 0.97rem; }
+.demo .demo-note { margin-top: 8px; font-size: 0.86rem; }
+.demo .link-arrow { margin-top: auto; padding-top: 6px; }
+.hm-work .work-footnote { margin-top: clamp(36px, 5vw, 56px); padding-top: 0; border-top: 0; }
+
+/* ============================================================
+   04 Why DS
+   ============================================================ */
+
+.hm-why {
+  background:
+    radial-gradient(900px 520px at 100% 0%, rgba(214, 164, 108, 0.22), transparent 60%),
+    linear-gradient(180deg, var(--stone-200), var(--stone-100));
+}
+.hm-why .deco-ring { inset-inline-end: -300px; top: -320px; }
+.hm-why .container { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(40px, 7vw, 112px); align-items: center; }
+.hm-why .lead { margin-top: 18px; max-width: 44ch; }
+.why-list { list-style: none; margin-top: clamp(32px, 4vw, 48px); display: grid; gap: 0; }
+.why-list li {
+  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 4px 20px;
+  padding: 24px 0; border-top: 1px solid var(--line-strong);
+}
+.why-list li:last-child { border-bottom: 1px solid var(--line-strong); }
+.why-num { font-size: 1.05rem; font-weight: 800; color: var(--terracotta-deep); letter-spacing: 0.04em; padding-top: 4px; font-variant-numeric: tabular-nums; }
+.why-list h3 { font-size: clamp(1.25rem, 1.9vw, 1.5rem); font-weight: 800; letter-spacing: -0.01em; }
+.why-list p { margin-top: 6px; color: var(--ink-70); max-width: 52ch; }
+.hm-why .link-arrow { margin-top: 18px; }
+.why-visual { position: relative; }
+.why-visual .summary-doc { max-width: 440px; margin-inline: auto; }
+
+/* ============================================================
+   05 Useful reading (slim) + final CTA
+   ============================================================ */
+
+.home .hm-useful { padding: clamp(64px, 8vw, 104px) 0; background: var(--stone-50); }
+.hm-useful-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 32px; margin-bottom: clamp(24px, 3vw, 36px); }
+.hm-useful-head .kicker { margin-bottom: 12px; }
+.hm-useful-head .h2 { font-size: clamp(1.6rem, 2.8vw, 2.2rem); }
+.home .hm-useful .hub-teaser-all { margin-top: 0; }
+.home .hm-useful .hub-teaser-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line-strong); }
+.home .hm-useful .hub-teaser-card {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+  padding: 26px 0 28px; border: 0; border-radius: 0; background: none; box-shadow: none;
+  border-bottom: 1px solid var(--line-strong);
+}
+.home .hm-useful .hub-teaser-card + .hub-teaser-card { padding-inline-start: clamp(20px, 3vw, 36px); border-inline-start: 1px solid var(--line); }
+.home .hm-useful .hub-teaser-card:hover, .home .hm-useful .hub-teaser-card:focus-visible { transform: none; box-shadow: none; }
+.home .hm-useful .hub-teaser-card:hover h3 { color: var(--terracotta-deep); }
+.home .hm-useful .hub-teaser-body h3 { font-size: clamp(1.1rem, 1.5vw, 1.3rem); font-weight: 800; line-height: 1.3; transition: color 0.3s var(--ease-out); }
+.home .hm-useful .hub-teaser-more { margin-top: 14px; font-size: 0.95rem; }
+
+.home .contact .h2 { max-width: 14ch; }
+
+/* mobile sticky bar: the "talk" button sat in dark text on the dark bar (unreadable). Homepage only. */
+.home .sticky-cta .btn-ghost { color: var(--on-dark); border-color: var(--on-dark-line-strong); }
+.home .sticky-cta .btn-ghost:hover { border-color: var(--on-dark); background: rgba(241, 234, 223, 0.06); }
+.home .contact .container { align-items: center; }
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 1024px) {
+  .svc-grid { grid-template-columns: 1fr; max-width: 620px; margin-inline: auto; }
+  .svc-foot { max-width: 620px; margin-inline: auto; }
+  .sel-item { grid-template-columns: 1fr; }
+  .sel-item:nth-child(even) .sel-visual { order: 0; }
+  .hm-why .container { grid-template-columns: 1fr; }
+  .why-visual .summary-doc { margin-inline: 0; }
+}
+
+@media (max-width: 860px) {
+  .home .hm-hero .container { grid-template-columns: 1fr; }
+  .home .hm-hero .hero-visual { min-height: 0; }
+  .home .hm-dots { display: none; }
+  .demos-grid { grid-template-columns: 1fr; max-width: 520px; }
+  .home .hm-useful .hub-teaser-grid { grid-template-columns: 1fr; }
+  .home .hm-useful .hub-teaser-card + .hub-teaser-card { padding-inline-start: 0; border-inline-start: 0; }
+  .home .hm-useful .hub-teaser-card { padding: 20px 0; }
+}
+
+@media (max-width: 560px) {
+  .home .section { padding: 76px 0; }
+  .home .hm-hero .display { font-size: clamp(2rem, 9vw, 2.5rem); }
+  .sel-phone { inset-inline-start: 2%; }
+  .sel-item:nth-child(even) .sel-phone { inset-inline-end: 2%; }
+  .home .hm-hero { padding: calc(var(--nav-h) + 24px) 0 56px; }
+  .home .hm-hero .lead { margin-top: 16px; }
+  .home .hm-hero .hero-ctas { margin-top: 26px; }
+  .home .hm-hero .hero-ctas .btn { width: 100%; }
+  .hm-facts { margin-top: 20px; font-size: 0.9rem; gap: 4px 10px; }
+  .hm-facts li + li::before { margin-inline-end: 4px; }
+  .hm-facts li:last-child { flex-basis: 100%; }
+  .hm-facts li:last-child::before { display: none; }
+  .sel-phone { width: 26%; border-radius: 18px; padding: 5px; }
+  .sel-phone img { border-radius: 13px; }
+  .why-list li { grid-template-columns: 44px minmax(0, 1fr); gap: 4px 12px; padding: 20px 0; }
+  /* the illustration repeats what the list says; on phones the list alone is enough */
+  .why-visual { display: none; }
+  .home .hm-useful .hub-teaser-grid .hub-teaser-card { display: flex; grid-template-columns: none; padding: 18px 0; }
+  .home .hm-useful .hub-teaser-grid .hub-teaser-body h3 { font-size: 1.05rem; }
+  .home .hm-useful .hub-teaser-grid .hub-teaser-label { display: inline-block; }
+  .home .hm-useful .hub-teaser-grid .hub-teaser-more { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home .hm-hero .hero-copy > *, .home .hm-hero .hero-visual { animation: none; }
+  .svc, .sel-screen img, .sel-phone, .demo-visual img, .home .link-arrow::after { transition: none; }
+  .svc:hover { transform: none; }
+  .sel-item:hover .sel-screen img, .sel-item:hover .sel-phone, .demo:hover .demo-visual img { transform: none; }
+}
+html.a11y-still .svc:hover, html.a11y-still .sel-item:hover .sel-screen img,
+html.a11y-still .sel-item:hover .sel-phone, html.a11y-still .demo:hover .demo-visual img { transform: none; }
+
+/* ============================================================
+   Pricing page (/pricing): page header and in-page jump links.
+   The sections below it reuse the original homepage markup and styles.
+   ============================================================ */
+
+.pricing-page .pp-hero {
+  position: relative; overflow: hidden;
+  padding: calc(var(--nav-h) + clamp(40px, 6vw, 88px)) 0 clamp(48px, 6vw, 80px);
+  background:
+    radial-gradient(900px 600px at 90% 0%, rgba(214, 164, 108, 0.24), transparent 62%),
+    linear-gradient(180deg, var(--stone-100) 0%, var(--stone-50) 100%);
+}
+.pricing-page .pp-hero .container { position: relative; z-index: 1; }
+.pricing-page .pp-hero .display { font-size: clamp(2.2rem, 4.6vw, 3.8rem); font-weight: 800; letter-spacing: -0.03em; max-width: 18ch; }
+.pricing-page .pp-hero .lead { margin-top: 18px; max-width: 56ch; }
+.pp-prices { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 6px 14px; color: var(--ink-70); font-size: 0.97rem; }
+.pp-prices li { display: inline-flex; align-items: baseline; gap: 6px; }
+.pp-prices li + li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--copper); align-self: center; margin-inline-end: 8px; }
+.pp-prices strong { color: var(--ink); font-weight: 800; }
+.pp-jump { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; }
+.pp-jump a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  border-radius: 999px; border: 1px solid var(--line-strong); background: rgba(253, 250, 245, 0.7);
+  font-weight: 600; font-size: 0.95rem; color: var(--ink);
+  transition: border-color 0.25s, background 0.25s;
+}
+.pp-jump a:hover, .pp-jump a:focus-visible { border-color: var(--ink); background: #fdfaf5; }
+.pricing-page .pp-hero .hm-dots-static {
+  position: absolute; z-index: 0; pointer-events: none; width: 260px; height: 260px;
+  inset-inline-end: 4%; bottom: -40px;
+  background-image: radial-gradient(rgba(42, 34, 48, 0.2) 1.2px, transparent 1.7px); background-size: 18px 18px;
+  -webkit-mask-image: radial-gradient(circle, #000 25%, transparent 70%); mask-image: radial-gradient(circle, #000 25%, transparent 70%);
+}
+
+/* example and custom blocks under the two packages */
+.pp-blocks { margin-top: clamp(28px, 4vw, 40px); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; }
+.pp-block {
+  padding: clamp(24px, 3vw, 34px); border-radius: var(--radius-lg);
+  background: rgba(253, 250, 245, 0.8); border: 1px solid var(--line);
+}
+.pp-block .kicker { margin-bottom: 12px; }
+.pp-block h3 { font-size: clamp(1.25rem, 2vw, 1.5rem); font-weight: 800; letter-spacing: -0.01em; }
+.pp-block > p { margin-top: 10px; color: var(--ink-70); }
+.pp-block .work-points li { color: var(--ink-70); }
+.pp-block .work-points li::before { background: var(--copper); }
+.pp-block .pp-fine { margin-top: 14px; font-size: 0.9rem; color: var(--ink-70); }
+.pp-block .pp-links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 0 24px; }
+.pp-block.is-custom {
+  background:
+    radial-gradient(420px 260px at 0% 0%, rgba(214, 164, 108, 0.18), transparent 70%),
+    linear-gradient(180deg, var(--plum-800), var(--plum-900));
+  color: var(--on-dark); border-color: transparent;
+}
+.pp-block.is-custom > p { color: var(--on-dark-70); }
+.pp-block.is-custom .kicker { color: var(--on-dark-70); }
+.pp-block.is-custom .kicker::before { background: var(--copper); }
+.pp-block.is-custom .link-arrow { color: var(--copper-light); }
+.pp-block.is-custom .link-arrow:hover, .pp-block.is-custom .link-arrow:focus-visible { color: var(--on-dark); }
+
+.pricing-page #faq .dual-cta { margin-top: clamp(48px, 6vw, 80px); }
+
+@media (max-width: 860px) {
+  .pp-blocks { grid-template-columns: 1fr; }
+}

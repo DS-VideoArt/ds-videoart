@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    // Packages, maintenance, the order summary, the process and the FAQ moved to /pricing (October 2026).
+    // Old deep links keep working: /#faq-4 or /#process continue to the same anchor there, /#pricing to the top of the page.
+    (function () { var h = location.hash; if (/^#(pricing|process|faq(-\d+)?|maintenance|package-(landing|website)|transparency)$/.test(h)) location.replace("/pricing" + location.search + (h === "#pricing" ? "" : h)); })();
+  </script>
   <title>DS Creative Studio | דפי נחיתה ואתרי תדמית לעסקים</title>
   <meta name="description" content="DS Creative Studio, סטודיו לדפי נחיתה ולאתרי תדמית לעסקים. יודעים מראש מה מקבלים וכמה משלמים: דף נחיתה 440 ₪, אתר תדמית החל מ־1,290 ₪, תשלום חד פעמי, ואפשר להתחיל לבד באתר בכמה דקות.">
   <link rel="canonical" href="https://dscreative.co.il/">
@@ -32,6 +37,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="site.css?v=20261012a">
+  <link rel="stylesheet" href="home.css?v=20261015a">
+  <noscript><style>.rv { opacity: 1; transform: none; }</style></noscript>
 
   <script type="application/ld+json">
   {
@@ -64,8 +71,8 @@
           "https://www.linkedin.com/company/ds-creative-studio/"
         ],
         "makesOffer": [
-          { "@type": "Offer", "name": "דף נחיתה, החבילה הבסיסית", "price": "440", "priceCurrency": "ILS", "url": "https://dscreative.co.il/#pricing" },
-          { "@type": "Offer", "name": "אתר תדמית, החבילה הבסיסית (עד 6 עמודי תוכן סטנדרטיים)", "price": "1290", "priceCurrency": "ILS", "url": "https://dscreative.co.il/#pricing" }
+          { "@type": "Offer", "name": "דף נחיתה, החבילה הבסיסית", "price": "440", "priceCurrency": "ILS", "url": "https://dscreative.co.il/pricing#package-landing" },
+          { "@type": "Offer", "name": "אתר תדמית, החבילה הבסיסית (עד 6 עמודי תוכן סטנדרטיים)", "price": "1290", "priceCurrency": "ILS", "url": "https://dscreative.co.il/pricing#package-website" }
         ]
       },
       {
@@ -80,7 +87,7 @@
   }
   </script>
 </head>
-<body id="top">
+<body id="top" class="home">
   <a href="#main" class="skip-link">דלג לתוכן הראשי</a>
   <div class="grain" aria-hidden="true"></div>
 
@@ -90,9 +97,9 @@
       <a class="brand" href="#top" aria-label="DS Creative Studio, לראש העמוד">DS <span>Creative Studio</span></a>
       <div class="nav-links">
         <a href="#work">עבודות</a>
-        <a href="#pricing">מחירים</a>
-        <a href="#process">איך זה עובד</a>
-        <a href="#faq">שאלות</a>
+        <a href="/pricing">מחירים</a>
+        <a href="/pricing#process">איך זה עובד</a>
+        <a href="/pricing#faq">שאלות</a>
         <a href="#contact">יצירת קשר</a>
       </div>
       <form class="nav-search" role="search" action="/hub/" aria-label="חיפוש באתר">
@@ -107,9 +114,9 @@
   </nav>
   <div class="mobile-menu" id="mobileMenu">
     <a href="#work">עבודות</a>
-    <a href="#pricing">מחירים</a>
-    <a href="#process">איך זה עובד</a>
-    <a href="#faq">שאלות נפוצות</a>
+    <a href="/pricing">מחירים</a>
+    <a href="/pricing#process">איך זה עובד</a>
+    <a href="/pricing#faq">שאלות נפוצות</a>
     <a href="#contact">יצירת קשר</a>
     <a class="btn btn-primary" href="builder/">להתחיל לבד</a>
     <a class="btn btn-ghost" href="#contact">אני מעדיף לדבר</a>
@@ -118,402 +125,227 @@
 
   <main id="main">
 
-    <!-- ================= HERO ================= -->
-    <header class="hero" data-parallax-zone>
-      <div class="shapes" aria-hidden="true">
-        <div class="shape shape-bloom" style="inset-inline-start:-14%; top:-20%;" data-depth="-0.4"></div>
-        <div class="shape shape-bloom-2" style="inset-inline-end:-10%; bottom:-30%;" data-depth="0.35"></div>
-        <div class="shape shape-ring floaty d2" style="inset-inline-start:46%; top:8%;" data-depth="0.9"></div>
-        <div class="shape shape-disc floaty d3" style="inset-inline-start:52%; bottom:6%;" data-depth="1.3"></div>
-        <div class="shape shape-arc floaty d3" style="inset-inline-start:-8%; bottom:-30%;" data-depth="0.5"></div>
-        <div class="shape shape-dots floaty d2" style="inset-inline-start:4%; top:9%;" data-depth="1.1"></div>
-      </div>
+    <!-- ================= 01 HERO ================= -->
+    <header class="hero hm-hero">
+      <div class="hm-dots" aria-hidden="true"></div>
       <div class="container">
         <div class="hero-copy">
           <p class="kicker">סטודיו לדפי נחיתה ולאתרי תדמית</p>
           <h1 class="display">אתר לעסק שלכם.<br>בלי פרויקט על הראש.</h1>
-          <p class="lead">עיצוב שמותאם לעסק, תהליך מסודר, ומחיר שמאשרים מראש. אנחנו לוקחים על עצמנו כמה שיותר מהדרך, ואתם יודעים בכל שלב מה קורה.</p>
-
-          <div class="price-strip" aria-label="מחירים">
-            <div class="price-cell">
-              <span class="label">דף נחיתה</span>
-              <span class="amount">440 <small>₪</small></span>
-            </div>
-            <div class="price-cell">
-              <span class="label">אתר תדמית</span>
-              <span class="amount"><span class="from">החל מ־</span>1,290 <small>₪</small></span>
-              <span class="sub">עד 6 עמודי תוכן סטנדרטיים</span>
-            </div>
-            <div class="price-foot">תשלום חד פעמי. ללא תשלום חודשי חובה ל־DS.</div>
-          </div>
-
-          <p class="hero-helper">יודעים מה אתם צריכים? אפשר להתחיל עכשיו. לא בטוחים? נדבר כמה דקות ונעזור לבחור.</p>
+          <p class="lead">עיצוב שמותאם לעסק, תהליך מסודר, ומחיר שמאשרים מראש.</p>
           <div class="hero-ctas">
             <a class="btn btn-primary" href="builder/">להתחיל לבד</a>
             <a class="btn btn-ghost" href="#contact">אני מעדיף לדבר</a>
           </div>
-          <p class="hero-note">שליחת בקשה לא מחייבת בתשלום. המחיר הסופי נסגר בסיכום שאתם מאשרים לפני תחילת העבודה. <a class="hero-tertiary" href="#work">לראות קודם את העבודות</a></p>
+          <ul class="hm-facts" aria-label="מחירים">
+            <li>דף נחיתה <strong>440 ₪</strong></li>
+            <li>אתר תדמית <strong>החל מ־1,290 ₪</strong></li>
+            <li>תשלום חד פעמי</li>
+          </ul>
         </div>
 
         <div class="hero-visual" aria-label="דוגמה לעבודה: אתר תדמית למאפייה, בתצוגת מחשב וטלפון">
-          <div class="shape shape-plate floaty" data-depth="0.6" aria-hidden="true"></div>
-          <div class="shape shape-ring floaty d3" data-depth="0.8" aria-hidden="true"></div>
-          <div class="mock mock-desktop floaty d2" data-depth="0.25">
+          <div class="mock mock-desktop">
             <img src="assets/work/bakery-desktop.jpg" width="1440" height="900" alt="דף הבית של אתר התדמית קמח ומים בתצוגת מחשב" loading="eager" fetchpriority="high">
           </div>
-          <div class="mock mock-phone floaty" data-depth="0.7">
+          <div class="mock mock-phone">
             <img src="assets/work/bakery-mobile.jpg" width="390" height="844" alt="אותו אתר בתצוגת טלפון">
           </div>
         </div>
       </div>
     </header>
 
-    <!-- ================= WORK ================= -->
-    <section id="work" class="section surface-dark on-dark work-section">
+    <!-- ================= 02 SERVICES ================= -->
+    <section id="services" class="section hm-services" aria-labelledby="servicesTitle">
+      <div class="container">
+        <div class="section-head rv">
+          <p class="kicker">שירותים</p>
+          <h2 id="servicesTitle" class="h2 hm-wide">דף נחיתה, אתר תדמית,<br>או מערכת.</h2>
+          <p class="lead">שתי חבילות במחיר קבוע, ופיתוח מותאם כשהעסק צריך יותר.</p>
+        </div>
+
+        <div class="svc-grid">
+          <article class="svc rv" id="service-landing">
+            <h3 class="svc-name">דף נחיתה</h3>
+            <p class="svc-price"><span class="amount">440</span><span class="cur">₪</span></p>
+            <p class="svc-scope">מחיר החבילה הבסיסית</p>
+            <p class="svc-desc">עמוד אחד שמסביר מה אתם מציעים ומוביל לפעולה אחת ברורה: שיחה, וואטסאפ או השארת פרטים.</p>
+            <ul class="svc-facts">
+              <li>מסירה עד 3 ימי עסקים</li>
+              <li>עד שני סבבי תיקונים מרוכזים</li>
+            </ul>
+            <div class="svc-actions"><a class="link-arrow" href="builder/?type=landing">להתחיל עם דף נחיתה</a></div>
+          </article>
+
+          <article class="svc rv d1" id="service-website">
+            <h3 class="svc-name">אתר תדמית</h3>
+            <p class="svc-price"><span class="from">החל מ־</span><span class="amount">1,290</span><span class="cur">₪</span></p>
+            <p class="svc-scope">עד 6 עמודי תוכן סטנדרטיים</p>
+            <p class="svc-desc">כמה עמודים עם תפריט, שמציגים את העסק בצורה רחבה: בית, אודות, שירותים, פרויקטים, שאלות נפוצות וצור קשר, או מבנה אחר שמתאים לכם.</p>
+            <ul class="svc-facts">
+              <li>מסירה עד 5 ימי עסקים</li>
+              <li>עד שני סבבי תיקונים מרוכזים</li>
+            </ul>
+            <div class="svc-actions"><a class="link-arrow" href="builder/?type=site">להתחיל עם אתר תדמית</a></div>
+          </article>
+
+          <article class="svc is-custom rv d2" id="complex">
+            <h3 class="svc-name">אתר מתקדם או מערכת מותאמת</h3>
+            <p class="svc-price is-text">מחיר בהתאמה אישית</p>
+            <p class="svc-scope">לפי אפיון והיקף</p>
+            <p class="svc-desc">אזור אישי, מערכת ניהול, כלים ייעודיים או אתר רחב היקף. האפיון והתמחור נעשים בנפרד, ומקבלים מחיר מדויק בסיכום לפני כל התחייבות.</p>
+            <ul class="svc-facts">
+              <li><a href="/hub/business-website-or-custom-system">מה ההבדל בין אתר תדמית למערכת?</a></li>
+            </ul>
+            <div class="svc-actions"><a class="link-arrow" href="#contact">לדבר על פרויקט כזה</a></div>
+          </article>
+        </div>
+
+        <div class="svc-foot rv">
+          <p>תשלום חד פעמי. ללא תשלום חודשי חובה ל־DS Creative Studio. המחיר הסופי נסגר בסיכום שאתם מאשרים לפני תחילת העבודה.</p>
+          <a class="link-arrow" href="/pricing">מה כלול, תחזוקה ותנאי תשלום</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 03 SELECTED WORK ================= -->
+    <section id="work" class="section surface-dark on-dark hm-work" aria-labelledby="workTitle">
       <div class="copper-rule" aria-hidden="true"></div>
       <div class="container">
         <div class="section-head rv">
-          <h2 class="h2">תיק עבודות: פרויקטים אמיתיים ודוגמאות שאפשר להיכנס אליהן</h2>
-          <p class="lead">לא רק צילומי מסך. כל פריט כאן הוא דף חי שאפשר לפתוח, לגלול ולבדוק בטלפון. ליד כל פריט כתוב בדיוק מה הוא: פרויקט אמיתי של לקוח, דוגמת עיצוב לעסק בדיוני, או פרויקט עצמאי של הסטודיו.</p>
+          <p class="kicker">עבודות נבחרות</p>
+          <h2 id="workTitle" class="h2">אתרים חיים, שאפשר לפתוח ולבדוק.</h2>
+          <p class="lead">ליד כל פריט כתוב בדיוק מה הוא: פרויקט אמיתי של לקוח, פרויקט עצמאי של הסטודיו, או דוגמת עיצוב לעסק בדיוני.</p>
         </div>
 
-        <div class="work-list">
-
-          <article class="work rv" id="work-fit-with-nikita">
-            <div class="work-visual">
-              <div class="work-frame" data-view="desktop">
-                <img class="img-desktop" src="assets/work/nikita-desktop.jpg" width="1440" height="900" alt="Fit With Nikita, מחשבון הקלוריות והמזונות באתר, תצוגת מחשב" loading="lazy">
-                <img class="img-mobile" src="assets/work/nikita-mobile.jpg" width="390" height="844" alt="Fit With Nikita, מחשבון הקלוריות והמזונות בתצוגת טלפון" loading="lazy">
-              </div>
-              <div class="view-switch" role="group" aria-label="בחירת תצוגה">
-                <button type="button" data-view="desktop" aria-pressed="true">מחשב</button>
-                <button type="button" data-view="mobile" aria-pressed="false">טלפון</button>
-              </div>
-            </div>
-            <div class="work-body">
+        <div class="sel">
+          <article class="sel-item rv" id="work-fit-with-nikita">
+            <a class="sel-visual" href="https://fit-with-nikita-app.netlify.app/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <span class="sel-screen"><img src="assets/work/nikita-desktop.jpg" width="1440" height="900" alt="Fit With Nikita, מחשבון הקלוריות והמזונות באתר, תצוגת מחשב" loading="lazy"></span>
+              <span class="sel-phone"><img src="assets/work/nikita-mobile.jpg" width="390" height="844" alt="Fit With Nikita, מחשבון הקלוריות והמזונות בתצוגת טלפון" loading="lazy"></span>
+            </a>
+            <div class="sel-body">
               <div class="work-tags">
                 <span class="tag client">פרויקט אמיתי · לקוח</span>
                 <span class="tag">אתר תדמית + מערכת מותאמת</span>
               </div>
-              <h3 class="work-title">Fit With Nikita</h3>
-              <p class="work-kind">מאמן כושר אישי · ראשון לציון, המרכז והשפלה</p>
-              <p class="work-desc"><strong>מטרת הפרויקט:</strong> אתר ציבורי שמציג את השירות ואת דרך האימון ומוביל לפנייה פשוטה בוואטסאפ, ולצידו אזור אישי למתאמנים שכבר התחילו ליווי.</p>
-              <p class="work-points-title">מה נבנה</p>
-              <ul class="work-points">
-                <li>אתר ציבורי: בית, אודות, ליווי ואימונים, איך זה עובד ויצירת קשר</li>
-                <li>מחשבון קלוריות ומזונות ככלי אינטראקטיבי מותאם</li>
-                <li>אזור אישי למתאמנים: תוכניות אימון, האימון הבא, תיעוד סטים וחזרות, היסטוריה, צ'ק אין שבועי, תזונה ומעקב התקדמות</li>
-                <li>מערכת עבודה למאמן: ניהול מתאמנים ותוכניות ועדכון תוכנית תוך שמירת היסטוריה</li>
-              </ul>
-              <p class="work-points-title">הבחנה מסחרית</p>
-              <ul class="work-points">
-                <li>האתר הציבורי מדגים אתר תדמית בחבילה שמתחילה ב־1,290 ₪.</li>
-                <li>המחשבון, האזור האישי למתאמנים ומערכת הניהול הם פיתוח מותאם אישית בתוספת תשלום, לפי אפיון.</li>
-              </ul>
-              <div class="detail-note">
-                <strong>פרט שכדאי לראות</strong>
-                <p>הסקשן "באימון, ובין האימונים" בעמוד הבית מציג את חוויית המתאמן בלי צורך להתחבר: תוכנית, ביצוע ומשוב מהמאמן.</p>
-              </div>
-              <div class="work-actions">
-                <a class="btn btn-ghost" href="https://fit-with-nikita-app.netlify.app/" target="_blank" rel="noopener">לאתר החי</a>
-              </div>
+              <h3 class="sel-title">Fit With Nikita</h3>
+              <p class="sel-kind">מאמן כושר אישי · ראשון לציון, המרכז והשפלה</p>
+              <p class="sel-desc">אתר ציבורי שמציג את השירות ואת דרך האימון ומוביל לפנייה פשוטה בוואטסאפ, ולצידו אזור אישי למתאמנים שכבר התחילו ליווי.</p>
+              <details class="sel-more">
+                <summary>מה נבנה, ומה נחשב פיתוח מותאם</summary>
+                <div>
+                  <p class="work-points-title">מה נבנה</p>
+                  <ul class="work-points">
+                    <li>אתר ציבורי: בית, אודות, ליווי ואימונים, איך זה עובד ויצירת קשר</li>
+                    <li>מחשבון קלוריות ומזונות ככלי אינטראקטיבי מותאם</li>
+                    <li>אזור אישי למתאמנים: תוכניות אימון, האימון הבא, תיעוד סטים וחזרות, היסטוריה, צ'ק אין שבועי, תזונה ומעקב התקדמות</li>
+                    <li>מערכת עבודה למאמן: ניהול מתאמנים ותוכניות ועדכון תוכנית תוך שמירת היסטוריה</li>
+                  </ul>
+                  <p class="work-points-title">הבחנה מסחרית</p>
+                  <ul class="work-points">
+                    <li>האתר הציבורי מדגים אתר תדמית בחבילה שמתחילה ב־1,290 ₪.</li>
+                    <li>המחשבון, האזור האישי למתאמנים ומערכת הניהול הם פיתוח מותאם אישית בתוספת תשלום, לפי אפיון.</li>
+                  </ul>
+                  <div class="detail-note">
+                    <strong>פרט שכדאי לראות</strong>
+                    <p>הסקשן "באימון, ובין האימונים" בעמוד הבית מציג את חוויית המתאמן בלי צורך להתחבר: תוכנית, ביצוע ומשוב מהמאמן.</p>
+                  </div>
+                </div>
+              </details>
+              <a class="link-arrow" href="https://fit-with-nikita-app.netlify.app/" target="_blank" rel="noopener">לאתר החי<span class="sr-only"> (נפתח בלשונית חדשה)</span></a>
             </div>
           </article>
 
-          <article class="work rv" id="work-bit-uborg">
-            <div class="work-visual">
-              <div class="work-frame" data-view="desktop">
-                <img class="img-desktop" src="assets/work/computer-lab-desktop.jpg" width="1440" height="900" alt="ביט ובורג, אתר הדגמה לאתר תדמית של עד 6 עמודים, תצוגת מחשב" loading="lazy">
-                <img class="img-mobile" src="assets/work/computer-lab-mobile.jpg" width="390" height="844" alt="ביט ובורג בתצוגת טלפון" loading="lazy">
-              </div>
-              <div class="view-switch" role="group" aria-label="בחירת תצוגה">
-                <button type="button" data-view="desktop" aria-pressed="true">מחשב</button>
-                <button type="button" data-view="mobile" aria-pressed="false">טלפון</button>
-              </div>
-            </div>
-            <div class="work-body">
+          <article class="sel-item rv" id="work-golondon">
+            <a class="sel-visual" href="https://golondon.co.il" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <span class="sel-screen"><img src="assets/work/golondon-desktop.jpg" width="1440" height="900" alt="GoLondon, אתר תוכן ותיירות למטיילים, תצוגת מחשב" loading="lazy"></span>
+              <span class="sel-phone"><img src="assets/work/golondon-mobile.jpg" width="390" height="844" alt="GoLondon בתצוגת טלפון" loading="lazy"></span>
+            </a>
+            <div class="sel-body">
               <div class="work-tags">
-                <span class="tag demo">אתר הדגמה · עסק בדיוני</span>
-                <span class="tag">אתר תדמית · עד 6 עמודים</span>
+                <span class="tag live">פרויקט עצמאי · אתר חי</span>
+                <span class="tag">פרויקט מורכב</span>
               </div>
-              <h3 class="work-title">ביט ובורג</h3>
-              <p class="work-kind">מעבדת מחשבים ושירותי מחשוב, פרויקט קונספט</p>
-              <p class="work-desc">הדוגמה הזאת מדגימה את חבילת אתר התדמית הבסיסית שמתחילה ב־1,290 ₪: 6 עמודי תוכן + טופס פנייה בסיסי. עד 6 עמודי תוכן סטנדרטיים עם תפריט, טופס יצירת קשר בסיסי, וואטסאפ ושאלות נפוצות.</p>
-              <p class="work-points-title">מה נבנה</p>
-              <ul class="work-points">
-                <li>שישה עמודי תוכן: בית, תיקונים, מחשבים חדשים, מחשבים מחודשים, ציוד נלווה, אודות ויצירת קשר</li>
-                <li>שירותים ומוצרים ברשימות סטטיות, בלי חנות, בלי סליקה, בלי חיפוש ובלי סינון</li>
-                <li>טופס פנייה בסיסי בעמוד יצירת הקשר (כפתור "הזמנת תיקון" מוביל אליו, הוא לא עמוד תוכן נוסף), כפתור וואטסאפ ושאלות נפוצות. בהדגמה הם לא שולחים דבר</li>
-                <li>עמוד מדיניות פרטיות כעמוד תשתית, מעבר למכסת עמודי התוכן</li>
-              </ul>
-              <div class="detail-note">
-                <strong>פרט שכדאי לראות</strong>
-                <p>הדוגמה נבנתה בתוך גבולות החבילה. חיפוש, סינון וקטלוג דינמי הוסרו ממנה בכוונה, כי הם לא חלק ממחיר הבסיס ומתומחרים בנפרד לפי אפיון.</p>
-              </div>
-              <p class="work-demo-note">עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.</p>
-              <div class="work-actions">
-                <a class="btn btn-ghost" href="https://bit-uborg-demo.netlify.app/" target="_blank" rel="noopener">לפתוח את הדוגמה</a>
-              </div>
+              <h3 class="sel-title">GoLondon</h3>
+              <p class="sel-kind">קהילת ישראלים שמתכננים טיול ללונדון</p>
+              <p class="sel-desc">פרויקט תוכן ותיירות רחב היקף: מערכת לתכנון מסלול, מפות וכלים ייעודיים, עשרות עמודי תוכן, מערכת תוכן מתפתחת ותשתיות מדידה ואנליטיקה.</p>
+              <p class="sel-note">GoLondon הוא פרויקט עצמאי של הסטודיו, לא עבודת לקוח. פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית ומתומחר בנפרד לפי אפיון והיקף.</p>
+              <a class="link-arrow" href="https://golondon.co.il" target="_blank" rel="noopener">לאתר החי<span class="sr-only"> (נפתח בלשונית חדשה)</span></a>
             </div>
           </article>
+        </div>
 
-          <article class="work rv" id="work-kemach-umayim">
-            <div class="work-visual">
-              <div class="work-frame" data-view="desktop">
-                <img class="img-desktop" src="assets/work/bakery-desktop.jpg" width="1440" height="900" alt="קמח ומים, אתר תדמית למאפיית בוטיק, תצוגת מחשב" loading="lazy">
-                <img class="img-mobile" src="assets/work/bakery-mobile.jpg" width="390" height="844" alt="קמח ומים בתצוגת טלפון" loading="lazy">
-              </div>
-              <div class="view-switch" role="group" aria-label="בחירת תצוגה">
-                <button type="button" data-view="desktop" aria-pressed="true">מחשב</button>
-                <button type="button" data-view="mobile" aria-pressed="false">טלפון</button>
-              </div>
-            </div>
-            <div class="work-body">
-              <div class="work-tags">
-                <span class="tag demo">דוגמת עיצוב · עסק בדיוני</span>
-                <span class="tag">אתר תדמית</span>
-              </div>
-              <h3 class="work-title">קמח ומים</h3>
-              <p class="work-kind">מאפיית בוטיק בתל אביב</p>
-              <p class="work-desc">אתר חם ומזמין למאפייה שאופה בבוקר. תפריט, סיפור המקום, המוצרים, שאלות נפוצות וטופס הזמנה, הכול בעמוד אחד ארוך ונעים לגלילה.</p>
-              <div class="detail-note">
-                <strong>פרט שכדאי לראות</strong>
-                <p>האיורים הקוויים שצפים ברקע נעים לאט, כל אחד בכיוון ובקצב אחר. הדף מרגיש חי, אבל שום דבר לא מתחרה בתמונות המוצר על תשומת הלב.</p>
-              </div>
-              <div class="work-actions">
-                <a class="btn btn-ghost" href="web/examples/bakery/index.html" target="_blank" rel="noopener">לפתוח את הדף</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="work rv" id="work-padel-layla">
-            <div class="work-visual">
-              <div class="work-frame" data-view="desktop">
-                <img class="img-desktop" src="assets/work/padel-desktop.jpg" width="1440" height="900" alt="פאדל לילה, דף נחיתה למגרשי פאדל, תצוגת מחשב" loading="lazy">
-                <img class="img-mobile" src="assets/work/padel-mobile.jpg" width="390" height="844" alt="פאדל לילה בתצוגת טלפון" loading="lazy">
-              </div>
-              <div class="view-switch" role="group" aria-label="בחירת תצוגה">
-                <button type="button" data-view="desktop" aria-pressed="true">מחשב</button>
-                <button type="button" data-view="mobile" aria-pressed="false">טלפון</button>
-              </div>
-            </div>
-            <div class="work-body">
-              <div class="work-tags">
-                <span class="tag demo">דוגמת עיצוב · עסק בדיוני</span>
-                <span class="tag">דף נחיתה</span>
-              </div>
-              <h3 class="work-title">פאדל לילה</h3>
-              <p class="work-kind">מגרשי פאדל שפועלים בלילה</p>
-              <p class="work-desc">דף נחיתה אחד עם מטרה אחת: להזמין מגרש. תמונות אמיתיות של מגרש, לוח שעות ומסלול חברות, בלי שום דבר מיותר בדרך לכפתור.</p>
-              <div class="detail-note">
-                <strong>פרט שכדאי לראות</strong>
-                <p>כל התמונות עברו את אותו טיפול צבע חם. שלוש תמונות שצולמו בזמנים שונים מרגישות כמו מותג אחד, במקום תמונות מאגר שהודבקו.</p>
-              </div>
-              <div class="work-actions">
-                <a class="btn btn-ghost" href="web/examples/padel-layla/index.html" target="_blank" rel="noopener">לפתוח את הדף</a>
-              </div>
-            </div>
-          </article>
-
+        <div class="demos">
+          <div class="demos-head rv">
+            <h3 class="demos-title">דוגמאות עיצוב</h3>
+            <p>עסקים בדיוניים שנבנו כדי להראות רמת עיצוב וגימור, לכל סוג אתר.</p>
+          </div>
+          <div class="demos-grid">
+            <article class="demo rv" id="work-bit-uborg">
+              <a class="demo-visual" href="https://bit-uborg-demo.netlify.app/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="assets/work/computer-lab-desktop.jpg" width="1440" height="900" alt="ביט ובורג, אתר הדגמה לאתר תדמית של עד 6 עמודים, תצוגת מחשב" loading="lazy"></a>
+              <span class="tag demo">אתר הדגמה · עסק בדיוני</span>
+              <h4 class="demo-title">ביט ובורג</h4>
+              <p>אתר תדמית של 6 עמודים, שנבנה בתוך גבולות החבילה הבסיסית.</p>
+              <p class="demo-note">עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.</p>
+              <a class="link-arrow" href="https://bit-uborg-demo.netlify.app/" target="_blank" rel="noopener">לפתוח את הדוגמה<span class="sr-only"> (נפתח בלשונית חדשה)</span></a>
+            </article>
+            <article class="demo rv d1" id="work-kemach-umayim">
+              <a class="demo-visual" href="web/examples/bakery/index.html" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="assets/work/bakery-desktop.jpg" width="1440" height="900" alt="קמח ומים, אתר תדמית למאפיית בוטיק, תצוגת מחשב" loading="lazy"></a>
+              <span class="tag demo">דוגמת עיצוב · עסק בדיוני</span>
+              <h4 class="demo-title">קמח ומים</h4>
+              <p>אתר חם ומזמין למאפיית בוטיק: תפריט, סיפור המקום, שאלות נפוצות וטופס הזמנה.</p>
+              <a class="link-arrow" href="web/examples/bakery/index.html" target="_blank" rel="noopener">לפתוח את הדף<span class="sr-only"> (נפתח בלשונית חדשה)</span></a>
+            </article>
+            <article class="demo rv d2" id="work-padel-layla">
+              <a class="demo-visual" href="web/examples/padel-layla/index.html" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="assets/work/padel-desktop.jpg" width="1440" height="900" alt="פאדל לילה, דף נחיתה למגרשי פאדל, תצוגת מחשב" loading="lazy"></a>
+              <span class="tag demo">דוגמת עיצוב · עסק בדיוני</span>
+              <h4 class="demo-title">פאדל לילה</h4>
+              <p>דף נחיתה אחד עם מטרה אחת: להזמין מגרש. בלי שום דבר מיותר בדרך לכפתור.</p>
+              <a class="link-arrow" href="web/examples/padel-layla/index.html" target="_blank" rel="noopener">לפתוח את הדף<span class="sr-only"> (נפתח בלשונית חדשה)</span></a>
+            </article>
+          </div>
         </div>
 
         <p class="work-footnote rv">Fit With Nikita הוא פרויקט לקוח אמיתי, ומוצג כאן באישור הלקוח. ביט ובורג, קמח ומים ופאדל לילה הם עסקים בדיוניים שנבנו כדי להראות רמת עיצוב וגימור, והטפסים בהם לא שולחים פניות אמיתיות.</p>
       </div>
     </section>
 
-    <!-- ================= COMPLEX CUSTOM PROJECTS (proof of capability, not a package) ================= -->
-    <section id="complex" class="section surface-sand complex" aria-labelledby="complexTitle">
-      <div class="deco deco-ring md" style="inset-inline-start:-180px; bottom:-160px;" aria-hidden="true"></div>
+    <!-- ================= 04 WHY DS ================= -->
+    <section id="why" class="section hm-why" aria-labelledby="whyTitle">
+      <div class="deco deco-ring lg" aria-hidden="true"></div>
       <div class="container">
-        <div class="section-head rv">
-          <p class="kicker">מעבר לחבילות</p>
-          <h2 id="complexTitle" class="h2">פרויקטים מורכבים בהתאמה אישית</h2>
-          <p class="lead">לא כל פרויקט נכנס לחבילה קבועה. כשמדובר באתר רחב היקף, עם מערכות, כלים ייעודיים, כמות גדולה של תוכן או דרישות מיוחדות, האפיון והתמחור נעשים בנפרד לפי היקף הפרויקט.</p>
-          <p><a class="link-arrow" href="/hub/business-website-or-custom-system">מה ההבדל בין אתר תדמית למערכת?</a></p>
-        </div>
-
-        <article class="complex-card rv d1">
-          <div class="work-visual">
-            <div class="work-frame" data-view="desktop">
-              <img class="img-desktop" src="assets/work/golondon-desktop.jpg" width="1440" height="900" alt="GoLondon, אתר תוכן ותיירות למטיילים, תצוגת מחשב" loading="lazy">
-              <img class="img-mobile" src="assets/work/golondon-mobile.jpg" width="390" height="844" alt="GoLondon בתצוגת טלפון" loading="lazy">
-            </div>
-            <div class="view-switch" role="group" aria-label="בחירת תצוגה">
-              <button type="button" data-view="desktop" aria-pressed="true">מחשב</button>
-              <button type="button" data-view="mobile" aria-pressed="false">טלפון</button>
-            </div>
-          </div>
-          <div class="complex-body">
-            <div class="work-tags">
-              <span class="tag live">פרויקט עצמאי · אתר חי</span>
-              <span class="tag">פרויקט מורכב</span>
-            </div>
-            <h3 class="work-title">GoLondon</h3>
-            <p class="work-kind">קהילת ישראלים שמתכננים טיול ללונדון</p>
-            <p class="work-desc">פרויקט תוכן ותיירות רחב היקף הכולל בין היתר:</p>
-            <ul class="complex-list">
-              <li>מערכת לתכנון מסלול</li>
-              <li>מפות וכלים ייעודיים</li>
-              <li>עשרות עמודי תוכן</li>
-              <li>מערכת תוכן מתפתחת</li>
-              <li>תשתיות מדידה ואנליטיקה</li>
-            </ul>
-            <p class="complex-note">GoLondon הוא פרויקט עצמאי של הסטודיו, לא עבודת לקוח. פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית ומתומחר בנפרד לפי אפיון והיקף.</p>
-            <div class="work-actions">
-              <a class="btn btn-ghost" href="https://golondon.co.il" target="_blank" rel="noopener">לאתר החי</a>
-              <a class="link-arrow" href="#contact">יש לכם פרויקט בסדר גודל כזה? דברו איתנו</a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ================= PACKAGES ================= -->
-    <section id="pricing" class="section surface-stone">
-      <div class="deco deco-ring lg" style="inset-inline-end:-300px; top:-360px;" aria-hidden="true"></div>
-      <div class="deco deco-dots" style="inset-inline-start:-80px; bottom:60px;" aria-hidden="true"></div>
-      <div class="container">
-        <div class="section-head center rv">
-          <h2 class="h2">שתי חבילות. אותה רמת איכות.</h2>
-          <p class="lead">ההבדל ביניהן הוא היקף העבודה בלבד. מתחילים לבד באתר, או בשיחה קצרה, איך שנוח לכם.</p>
-        </div>
-
-        <div class="packages">
-
-          <article class="package rv" id="package-landing">
-            <h3 class="package-name">דף נחיתה</h3>
-            <p class="package-scope">מחיר החבילה הבסיסית</p>
-            <div class="package-price">
-              <span class="amount">440</span><span class="currency">₪</span>
-              <span class="once">תשלום חד פעמי. ללא תשלום חודשי חובה ל־DS Creative Studio.</span>
-            </div>
-            <p class="package-desc">עמוד אחד שמסביר מה אתם מציעים ומוביל לפעולה אחת ברורה: שיחה, וואטסאפ או השארת פרטים. תוספות, אם תרצו, מופיעות עם מחיר ברור ומצטרפות רק באישורכם.</p>
-            <div class="package-meta">
-              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>מסירה עד 3 ימי עסקים</span></div>
-              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><span>עד שני סבבי תיקונים מרוכזים</span></div>
-            </div>
-            <details class="disclosure">
-              <summary>מה כלול בחבילה <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>
-              <div class="body">
-                <ul>
-                  <li>דף נחיתה אחד, בעיצוב שמותאם לעסק</li>
-                  <li>התאמה מלאה לטלפון</li>
-                  <li>עד 6 עד 7 אזורי תוכן</li>
-                  <li>כפתורי פעולה, וואטסאפ וטלפון לפי הצורך</li>
-                  <li>טופס יצירת קשר בסיסי</li>
-                  <li>קישורים לרשתות חברתיות אם קיימים ורלוונטיים</li>
-                  <li>הכנה בסיסית למנועי חיפוש</li>
-                  <li>חיבור לדומיין קיים והעלאה לאוויר בשלב הפרסום</li>
-                  <li>בדיקת קישורים וטפסים, במחשב ובטלפון</li>
-                </ul>
-                <p class="fine">ספירת ימי העבודה מתחילה אחרי אישור ההזמנה, תשלום 50% מקדמה וקבלת כל החומרים הנדרשים מכם. זה מחיר החבילה הבסיסית. כל תוספת מופיעה עם מחיר ברור בסיכום, לפני שמאשרים.</p>
+        <div class="why-copy rv">
+          <p class="kicker">למה DS Creative Studio</p>
+          <h2 id="whyTitle" class="h2">שלושה דברים שתדעו מראש.</h2>
+          <p class="lead">מתמקדים בדבר אחד, דפי נחיתה ואתרי תדמית לעסקים, ומסבירים כל החלטה במילים פשוטות.</p>
+          <ol class="why-list">
+            <li>
+              <span class="why-num" aria-hidden="true">01</span>
+              <div>
+                <h3>כמה זה עולה</h3>
+                <p>לפני שבונים אתם מקבלים סיכום הזמנה כתוב: מה נבנה, מה נבחר והמחיר הסופי. שום תוספת לא מבוצעת ולא נגבית בלי אישור שלכם מראש.</p>
               </div>
-            </details>
-            <a class="btn btn-primary" href="builder/?type=landing">להתחיל עם דף נחיתה</a>
-            <a class="alt-link" href="#contact">או לדבר איתנו קודם</a>
-          </article>
-
-          <article class="package featured rv d1" id="package-website">
-            <h3 class="package-name">אתר תדמית</h3>
-            <p class="package-scope">מחיר הבסיס, כולל עד 6 עמודי תוכן סטנדרטיים</p>
-            <div class="package-price">
-              <span class="from">החל מ־</span><span class="amount">1,290</span><span class="currency">₪</span>
-              <span class="once">תשלום חד פעמי. ללא תשלום חודשי חובה ל־DS Creative Studio.</span>
-            </div>
-            <p class="package-desc">המחיר כולל עד 6 עמודי תוכן סטנדרטיים, למשל בית, אודות, שירותים, פרויקטים, שאלות נפוצות וצור קשר, או כל מבנה אחר שמתאים לעסק. צריכים 7 עמודים ומעלה, או מערכת מיוחדת? נתאים היקף ומחיר אחרי אפיון.</p>
-            <div class="package-meta">
-              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>מסירה עד 5 ימי עסקים</span></div>
-              <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg><span>עד שני סבבי תיקונים מרוכזים</span></div>
-            </div>
-            <details class="disclosure">
-              <summary>מה כלול בחבילה <span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span></summary>
-              <div class="body">
-                <ul>
-                  <li>עד 6 עמודי תוכן סטנדרטיים, בעיצוב מותאם לעסק</li>
-                  <li>התאמה מלאה לטלפון</li>
-                  <li>תפריט ניווט, כותרת עליונה ותחתית לכל עמוד</li>
-                  <li>כפתורי פעולה, וואטסאפ וטלפון לפי הצורך</li>
-                  <li>טופס יצירת קשר בסיסי, ומפה בסיסית אם נדרשת</li>
-                  <li>קישורים לרשתות חברתיות אם קיימים</li>
-                  <li>הכנה בסיסית למנועי חיפוש לכל עמוד</li>
-                  <li>חיבור לדומיין קיים והעלאה לאוויר בשלב הפרסום</li>
-                  <li>בדיקת קישורים וטפסים, במחשב ובטלפון</li>
-                  <li>עמודי תשתית לפי הצורך, כמו מדיניות פרטיות, הצהרת נגישות ותנאי שימוש, מעבר למכסת עמודי התוכן</li>
-                </ul>
-                <p class="fine">ספירת ימי העבודה מתחילה אחרי אישור ההזמנה, תשלום 50% מקדמה וקבלת כל החומרים הנדרשים מכם. אתר של 7 עמודי תוכן ומעלה, או רכיבים מיוחדים כמו חנות או אזור אישי, מקבלים מחיר מדויק בסיכום אחרי אפיון, לפני כל התחייבות.</p>
+            </li>
+            <li>
+              <span class="why-num" aria-hidden="true">02</span>
+              <div>
+                <h3>מתי זה מוכן</h3>
+                <p>עד 3 ימי עסקים לדף נחיתה ועד 5 לאתר תדמית, מרגע שכל החומרים אצלנו. כולל עד שני סבבי תיקונים מרוכזים.</p>
               </div>
-            </details>
-            <a class="btn btn-primary" href="builder/?type=site">להתחיל עם אתר תדמית</a>
-            <a class="alt-link" href="#contact">או לדבר איתנו קודם</a>
-          </article>
-
+            </li>
+            <li>
+              <span class="why-num" aria-hidden="true">03</span>
+              <div>
+                <h3>של מי האתר</h3>
+                <p>האתר בחשבון על שמכם, עם כל פרטי הגישה. אין חובה לשלם לנו כל חודש, ותחזוקה קיימת כאפשרות בלבד.</p>
+              </div>
+            </li>
+          </ol>
+          <a class="link-arrow" href="/pricing#process">איך זה עובד, שלב אחרי שלב</a>
         </div>
 
-        <div class="addons rv">
-          <div>
-            <h3>צריכים משהו מעבר לחבילה?</h3>
-            <p>יש תוספות אפשריות, למשל עמוד נוסף או גלריית תמונות. את הרשימה המלאה, עם המחיר של כל תוספת, תראו בטופס שנשלח אחרי השיחה הראשונה. ככה מחליטים בנחת, עם כל המספרים מולכם.</p>
-          </div>
-          <div class="pledge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
-            <span>שום תוספת לא מבוצעת ולא נגבית בלי אישור שלכם מראש.</span>
-          </div>
-        </div>
-
-        <div class="maintenance rv" id="maintenance">
-          <h3 class="h3">ואחרי המסירה?</h3>
-          <p class="lead" style="max-width:60ch">אין חובה לשלם לנו כל חודש. תחזוקה היא אפשרות בלבד, ובוחרים אותה רק אם רוצים. שום דבר לא מסומן מראש.</p>
-          <div class="maintenance-grid">
-            <div class="maint zero">
-              <div class="m-name">בלי תחזוקה</div>
-              <div class="m-price">0 <small>₪ לחודש</small></div>
-              <ul>
-                <li>האתר שלכם, בלי תשלום חודשי</li>
-                <li>שינוי נקודתי בעתיד מתומחר בנפרד ומראש</li>
-              </ul>
-            </div>
-            <div class="maint">
-              <div class="m-name">תחזוקה בסיסית</div>
-              <div class="m-price">149 <small>₪ לחודש</small></div>
-              <ul>
-                <li>עדכוני תוכן ושינויים קטנים באתר, לפי הצורך ובהתאם להיקף המסלול</li>
-                <li>שינויי טקסט והחלפת תמונות</li>
-                <li>בדיקת קישורים וטפסים, תיקונים קטנים</li>
-                <li>מענה בתוך שני ימי עסקים</li>
-              </ul>
-            </div>
-            <div class="maint">
-              <div class="m-name">תחזוקה מורחבת</div>
-              <div class="m-price">349 <small>₪ לחודש</small></div>
-              <ul>
-                <li>תחזוקה שוטפת והיקף רחב יותר של עדכונים ושינויים באתר</li>
-                <li>בדיקה טכנית שוטפת</li>
-                <li>טיפול בעדיפות</li>
-                <li>מענה בתוך יום עסקים</li>
-              </ul>
-            </div>
-          </div>
-          <p class="fine">מסלולי התחזוקה אופציונליים לחלוטין ואין חובה להצטרף אליהם. אפשר להצטרף או להפסיק בכל שלב.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= TRANSPARENCY ================= -->
-    <section id="transparency" class="section surface-dark on-dark transparency">
-      <div class="copper-rule" aria-hidden="true"></div>
-      <div class="container">
-        <div class="rv">
-          <h2 class="h2">לפני שמתחילים, מסכמים.</h2>
-          <p class="lead">לפני שנבנה משהו, אתם מקבלים סיכום הזמנה כתוב: מה בדיוק נבנה, מה נבחר, כמה זה עולה ומתי זה נמסר. רק אחרי שאישרתם, מתחילים.</p>
-          <div class="principles">
-            <div class="principle"><span class="num">1</span><p>המחיר שרואים הוא המחיר שמשלמים. בלי אותיות קטנות.</p></div>
-            <div class="principle"><span class="num">2</span><p>שום תוספת לא מבוצעת ולא נגבית בלי אישור שלכם מראש.</p></div>
-            <div class="principle"><span class="num">3</span><p>הכול כתוב במילים פשוטות. לא צריך להבין במונחים טכניים.</p></div>
-            <div class="principle"><span class="num">4</span><p>יודעים מה קורה בכל שלב, ומה השלב הבא.</p></div>
-          </div>
-        </div>
-
-        <div class="rv d1">
+        <div class="why-visual rv d1">
           <div class="summary-doc" aria-label="דוגמה לסיכום הזמנה">
             <span class="stamp">דוגמה להמחשה</span>
             <div class="doc-head"><strong>סיכום הזמנה</strong><span>לפני תחילת עבודה</span></div>
@@ -534,137 +366,50 @@
       </div>
     </section>
 
-    <!-- ================= PROCESS ================= -->
-    <section id="process" class="section surface-sand">
-      <div class="deco deco-glow" style="inset-inline-start:-260px; top:10%;" aria-hidden="true"></div>
-      <div class="deco deco-ring md" style="inset-inline-end:-120px; bottom:-140px;" aria-hidden="true"></div>
+    <!-- ================= USEFUL INFO (Content Hub, slim) ================= -->
+    <section id="useful" class="section hub-teaser hm-useful" aria-labelledby="usefulTitle">
       <div class="container">
-        <div class="section-head center rv">
-          <h2 class="h2">איך זה עובד, שלב אחרי שלב</h2>
-          <p class="lead">בלי שאלון ארוך בכניסה, בלי תשלום באתר ובלי הפתעות. שיחה קצרה, טופס ברור, סיכום כתוב, ואז בונים.</p>
-        </div>
-
-        <div class="timeline">
-          <div class="timeline-progress" aria-hidden="true"></div>
-
-          <div class="step rv"><span class="dot" aria-hidden="true">1</span>
-            <h3>מתחילים, איך שנוח לכם</h3>
-            <p>יודעים מה אתם צריכים? ממלאים לבד את בונה הפרויקט באתר, כמה דקות ובלי התחייבות. מעדיפים לדבר? משאירים שם וטלפון או כותבים בוואטסאפ.</p>
-            <span class="pill">לא מחייב</span>
-          </div>
-          <div class="step rv"><span class="dot" aria-hidden="true">2</span>
-            <h3>שיחה קצרה, למי שצריך</h3>
-            <p>לא בטוחים מה מתאים? נעזור להבין אם זה דף נחיתה או אתר תדמית, ונשלח לכם אחרי השיחה את הטופס המתאים.</p>
-          </div>
-          <div class="step rv"><span class="dot" aria-hidden="true">3</span>
-            <h3>הפרטים ברורים, משני הכיוונים</h3>
-            <p>בבונה באתר או בטופס שנשלח, רואים אותו דבר: מה כלול, מה לא, אילו תוספות אפשר לבחור, אפשרויות תחזוקה, וכמה דברים חשובים על דומיין ואחסון.</p>
-          </div>
-          <div class="step rv"><span class="dot" aria-hidden="true">4</span>
-            <h3>עוברים על הפרטים יחד</h3>
-            <p>אנחנו קוראים את מה שמילאתם. אם צריך, שיחת סיכום קצרה כדי לוודא שהבנו אתכם נכון.</p>
-          </div>
-          <div class="step rv"><span class="dot" aria-hidden="true">5</span>
-            <h3>סיכום הזמנה כתוב</h3>
-            <p>השירות, התוספות שנבחרו, המחיר הסופי, 50% מקדמה, 50% יתרה ומועד המסירה. אתם קוראים ומאשרים.</p>
-          </div>
-          <div class="step rv"><span class="dot" aria-hidden="true">6</span>
-            <h3>מקדמה, ומתחילים לבנות</h3>
-            <p>50% מקדמה, ורק אז העבודה מתחילה. עד 3 ימי עסקים לדף נחיתה, עד 5 לאתר תדמית, מרגע שכל החומרים אצלנו.</p>
-          </div>
-          <div class="step rv"><span class="dot" aria-hidden="true">7</span>
-            <h3>תיקונים ומסירה</h3>
-            <p>עד שני סבבי תיקונים מרוכזים. לפני המסירה הסופית משולמים 50% הנותרים, ואתם מקבלים אתר חי עם כל פרטי הגישה.</p>
-          </div>
-        </div>
-
-        <div class="dual-cta rv">
+        <div class="hm-useful-head rv">
           <div>
-            <h3 class="h3">מוכנים להתחיל?</h3>
-            <p>לבד, בכמה דקות, או בשיחה קצרה. שני המסלולים מובילים לאותו סיכום ברור.</p>
+            <p class="kicker">לפני שבונים</p>
+            <h2 id="usefulTitle" class="h2">מידע שימושי לעסק שלכם</h2>
           </div>
-          <div class="dual-cta-actions">
-            <a class="btn btn-primary" href="builder/">להתחיל לבד</a>
-            <a class="btn btn-ghost" href="#contact">אני מעדיף לדבר</a>
-          </div>
+          <p class="hub-teaser-all"><a href="/hub/">לכל המידע השימושי</a></p>
+        </div>
+        <div class="hub-teaser-grid">
+          <a class="hub-teaser-card rv" href="/hub/business-website-or-custom-system">
+            <div class="hub-teaser-body">
+              <span class="hub-teaser-label">מאמר</span>
+              <h3>אתר תדמית או מערכת? מתי האתר כבר דורש פיתוח מותאם אישית</h3>
+              <span class="hub-teaser-more">לקריאת המאמר</span>
+            </div>
+          </a>
+          <a class="hub-teaser-card rv d1" href="/hub/how-much-does-a-website-cost">
+            <div class="hub-teaser-body">
+              <span class="hub-teaser-label">מאמר</span>
+              <h3>כמה עולה אתר לעסק קטן בישראל, ומה באמת קובע את המחיר</h3>
+              <span class="hub-teaser-more">לקריאת המאמר</span>
+            </div>
+          </a>
+          <a class="hub-teaser-card rv d2" href="/hub/landing-page-or-business-website">
+            <div class="hub-teaser-body">
+              <span class="hub-teaser-label">מאמר</span>
+              <h3>דף נחיתה או אתר תדמית, איך באמת יודעים מה צריך?</h3>
+              <span class="hub-teaser-more">לקריאת המאמר</span>
+            </div>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ================= ABOUT ================= -->
-    <section id="about" class="section surface-warm about">
-      <div class="deco deco-lines" aria-hidden="true"></div>
-      <div class="deco deco-plate" style="inset-inline-end:-90px; top:-70px;" aria-hidden="true"></div>
-      <div class="container">
-        <div class="rv">
-          <h2 class="h2">יש עם מי לדבר.<br>ויש מי שמוביל.</h2>
-        </div>
-        <div class="about-body rv d1">
-          <p>ב<strong>DS Creative Studio</strong> מתמקדים בדבר אחד: דפי נחיתה ואתרי תדמית לעסקים. חשוב לנו לא רק שהתוצאה תיראה טוב, אלא שגם הדרך אליה תהיה ברורה.</p>
-          <p>אנחנו מתחילים בהקשבה, מסדרים את מה שצריך, מסכמים את העבודה לפני שבונים, ומסבירים החלטות במילים פשוטות. אתם לא צריכים להפוך למנהלי פרויקט ולא צריכים ללמוד מונחים טכניים.</p>
-          <p>המטרה: תוצאה שנעים להציג, ותהליך שנעים לעבור.</p>
-          <div class="about-marks" aria-label="עקרונות">
-            <span>מחיר ברור מראש</span>
-            <span>בלי אותיות קטנות</span>
-            <span>אותה איכות בכל מסלול</span>
-            <span>הסברים בשפה פשוטה</span>
-            <span>מובייל קודם כול</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= FAQ ================= -->
-    <section id="faq" class="section surface-stone">
-      <div class="deco deco-dots" style="inset-inline-end:-60px; top:40px;" aria-hidden="true"></div>
-      <div class="deco deco-ring lg" style="inset-inline-start:-380px; bottom:-420px;" aria-hidden="true"></div>
-      <div class="container">
-        <div class="section-head center rv">
-          <h2 class="h2">שאלות נפוצות</h2>
-          <p class="lead">תשובות קצרות, בשפה פשוטה. אם משהו לא ברור, שואלים אותנו בשיחה.</p>
-        </div>
-
-        <div class="faq-grid rv">
-          <div>
-            <details class="faq" id="faq-1"><summary>מה ההבדל בין דף נחיתה לאתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>דף נחיתה הוא עמוד אחד ממוקד למטרה אחת: להסביר מה אתם מציעים ולהוביל לפעולה, למשל השארת פרטים או שיחה. אתר תדמית הוא כמה עמודים עם תפריט, שמציגים את העסק בצורה רחבה יותר. מחיר הבסיס כולל עד 6 עמודי תוכן סטנדרטיים, ואפשר גם יותר. אם לא בטוחים, זה בדיוק מה שמבררים בשיחה קצרה.</p></div></details>
-            <details class="faq" id="faq-2"><summary>חייבים לדבר איתכם לפני שמתחילים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אפשר למלא לבד את בונה הפרויקט באתר, בכמה דקות, ולראות סיכום לפי הבחירות. מי שמעדיף לדבר, משאיר שם וטלפון. שני המסלולים שווים, ושניהם מסתיימים באותו סיכום הזמנה כתוב.</p></div></details>
-            <details class="faq" id="faq-3"><summary>אני צריך יותר משישה עמודים. אתם בונים גם את זה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן, ובשמחה. 1,290 ₪ הוא מחיר הבסיס לאתר של עד 6 עמודי תוכן סטנדרטיים, לא תקרת השירות. אתר של 7 עמודים ומעלה מתומחר בנפרד לפי היקף ואפיון, בלי חישוב אוטומטי, ותקבלו מחיר מדויק בסיכום לפני כל התחייבות.</p></div></details>
-            <details class="faq" id="faq-4"><summary>מה נחשב עמוד תוכן סטנדרטי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עמוד שמשתמש בשפה העיצובית, במערכת הרכיבים ובתשתית של האתר. למשל בית, אודות, שירותים, פרויקטים, שאלות נפוצות וצור קשר, או מבנה אחר שמתאים לעסק. חנות, אזור אישי, מערכת הזמנות או סליקה, לוח ניהול, כלי אינטראקטיבי מורכב או פיתוח ייחודי אינם נחשבים עמוד תוכן, ומתומחרים בנפרד לפי הצורך. עמודי תשתית כמו מדיניות פרטיות, הצהרת נגישות ותנאי שימוש אינם נספרים במכסה: אנחנו מטמיעים אותם לפי הצורך, והנוסחים המשפטיים באחריות הלקוח. על ההבדל בין עמוד תוכן למערכת כתבנו במאמר <a href="/hub/business-website-or-custom-system">אתר תדמית או מערכת?</a></p></div></details>
-            <details class="faq" id="faq-5"><summary>האם המחיר חד פעמי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. 440 ₪ לדף נחיתה, ואתר תדמית החל מ־1,290 ₪, משולמים פעם אחת בלבד עבור הבנייה.</p></div></details>
-            <details class="faq" id="faq-6"><summary>האם יש מנוי חודשי חובה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אחרי המסירה אין חובה לשלם לנו כל חודש. תחזוקה חודשית קיימת כאפשרות בלבד, ובוחרים אותה רק אם רוצים.</p></div></details>
-            <details class="faq" id="faq-7"><summary>האם המחיר באתר הוא המחיר הסופי?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>440 ₪ הוא מחיר החבילה הבסיסית של דף נחיתה, ו־1,290 ₪ הוא מחיר הבסיס לאתר של עד 6 עמודי תוכן סטנדרטיים. אם תבחרו תוספות, הן מופיעות תמיד עם מחיר ברור ומצטרפות לסכום רק באישורכם. המחיר הסופי נסגר בסיכום ההזמנה שאתם מאשרים לפני תחילת העבודה.</p></div></details>
-            <details class="faq" id="faq-8"><summary>מתי משלמים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>50% מקדמה אחרי שאישרתם את סיכום ההזמנה, ורק אז מתחילים לבנות. 50% הנותרים לפני המסירה הסופית.</p></div></details>
-            <details class="faq" id="faq-9"><summary>האם השיחה הראשונה מחייבת?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. מטרתה רק להבין אם מתאים לכם דף נחיתה או אתר תדמית. אפשר לסיים אותה בלי להמשיך הלאה.</p></div></details>
-            <details class="faq" id="faq-10"><summary>אין לי דומיין. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נעזור לכם לבחור שם, לבדוק זמינות, לרכוש אותו יחד איתכם ולהגדיר אותו, בלי דמי שירות נוספים מצידנו. אתם משלמים רק את מחיר הדומיין לספק.</p></div></details>
-            <details class="faq" id="faq-11"><summary>למי שייך הדומיין?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לכם צריכה להיות השליטה ברישום הדומיין. הדומיין נרשם על שם העסק או המחזיק הרלוונטי, ואתם מחזיקים בזכויות הרישום ובגישה לניהול שלו כל עוד הרישום בתוקף. DS מקבלת רק את הגישה הטכנית שנדרשת לצורך החיבור והעבודה. חידוש הרישום מול הרשם, לפי התקופה שבחרתם, באחריותכם, ונסביר מה צריך לדעת.</p></div></details>
-            <details class="faq" id="faq-12"><summary>מה לגבי אחסון?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אנחנו מתחילים במסלול שמתאים להיקף האתר ולשימוש הצפוי. באתרים קטנים מסוימים ניתן להשתמש במסלול חינמי, כל עוד האתר נשאר בתוך מכסת השימוש של הספק. החשבון מוקם על שמכם ואתם מקבלים את פרטי הגישה.</p></div></details>
-            <details class="faq" id="faq-13"><summary>מה קורה אם המסלול החינמי כבר לא מספיק?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אם השימוש באתר חורג מהמכסה של המסלול, למשל בגלל תעבורה, פריסות, טפסים או שימוש בשירותים נוספים, נבדוק את האפשרויות ונעדכן אתכם מראש. לא יתבצע שום שדרוג או חיוב בלי אישורכם.</p></div></details>
-            <details class="faq" id="faq-14"><summary>אין לי טקסטים. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>זה בסדר גמור. בשיחה ובטופס נאסוף את המידע החשוב, ונעזור לנסח את הטקסטים לפי מה שתספרו לנו. אתם מאשרים כל טקסט לפני שהוא עולה.</p></div></details>
-          </div>
-          <div>
-            <details class="faq" id="faq-15"><summary>אין לי תמונות. מה עושים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>נשתמש בתמונות שיש לכם. אם אין, נעזור לבחור תמונות מתאימות ממאגרים, או נציע איך לצלם כמה תמונות פשוטות בעצמכם.</p></div></details>
-            <details class="faq" id="faq-16"><summary>אפשר לבקש תיקונים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. כל חבילה כוללת עד שני סבבי תיקונים מרוכזים.</p></div></details>
-            <details class="faq" id="faq-17"><summary>מהו סבב תיקונים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>רשימה מרוכזת אחת של כל ההערות שלכם, שנשלחת פעם אחת ומטופלת יחד. ככה מתקדמים מהר ולא מפספסים דברים. שני סבבים כאלה כלולים במחיר.</p></div></details>
-            <details class="faq" id="faq-18"><summary>כמה זמן לוקח לקבל דף נחיתה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עד 3 ימי עסקים. הספירה מתחילה אחרי אישור ההזמנה, תשלום המקדמה וקבלת כל החומרים.</p></div></details>
-            <details class="faq" id="faq-19"><summary>כמה זמן לוקח לקבל אתר תדמית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>עד 5 ימי עסקים, באותם תנאים: אחרי אישור ההזמנה, המקדמה וקבלת החומרים.</p></div></details>
-            <details class="faq" id="faq-20"><summary>מה קורה אם אני רוצה תוספת באמצע?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אומרים לנו. נסביר מה זה כולל, כמה זה עולה וכמה זמן זה מוסיף, ורק אחרי שתאשרו נמשיך. בלי אישור, כלום לא משתנה במחיר.</p></div></details>
-            <details class="faq" id="faq-21"><summary>מה קורה אחרי המסירה?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>האתר שלכם, בחשבון על שמכם, עם כל פרטי הגישה. אין חובה להמשיך איתנו. אם תרצו שינוי נקודתי בעתיד, נתמחר אותו בנפרד ומראש.</p></div></details>
-            <details class="faq" id="faq-22"><summary>אפשר תחזוקה חודשית?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן, כאפשרות בלבד. תחזוקה בסיסית ב־149 ₪ לחודש לעדכוני תוכן ושינויים קטנים לפי הצורך, או תחזוקה מורחבת ב־349 ₪ לחודש לתחזוקה שוטפת והיקף רחב יותר של עדכונים. המסלולים אופציונליים לחלוטין, לא נבחרים אוטומטית, ואפשר להפסיק בכל שלב.</p></div></details>
-            <details class="faq" id="faq-23"><summary>מי מטפל במסמכים המשפטיים?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>אנחנו לא משרד עורכי דין ולא נותנים ייעוץ משפטי. אם יש לכם מדיניות פרטיות, תנאי שימוש או הצהרת נגישות, נטמיע אותם באתר. אם אין, נסביר איך אפשר להשיג אותם דרך גורם משפטי חיצוני. ההתקשרות, התשלום והאחריות המקצועית הם ביניכם לבין אותו גורם.</p></div></details>
-            <details class="faq" id="faq-24"><summary>האם האתר מוכן בצורה בסיסית לגוגל?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>כן. כל עמוד מקבל כותרת, תיאור ומבנה נכון, כדי שגוגל יוכל להבין ולסרוק אותו.</p></div></details>
-            <details class="faq" id="faq-25"><summary>האם אתם מבטיחים מיקום בגוגל?<span class="plus" aria-hidden="true"></span></summary><div class="answer"><p>לא. אף אחד לא יכול להבטיח את זה באמת. אנחנו דואגים שהאתר יהיה בנוי נכון, וזה הבסיס שממנו מתחילים.</p></div></details>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= CONTACT ================= -->
-    <section id="contact" class="section surface-dark on-dark contact">
+    <!-- ================= 05 FINAL CTA + CONTACT ================= -->
+    <section id="contact" class="section surface-dark on-dark contact" aria-labelledby="contactTitle">
       <div class="deco deco-dots" style="inset-inline-start:-40px; top:-40px;" aria-hidden="true"></div>
       <div class="copper-rule" aria-hidden="true"></div>
       <div class="container">
         <div class="contact-side rv">
-          <h2 class="h2">אני מעדיף לדבר</h2>
+          <p class="kicker">יצירת קשר</p>
+          <h2 id="contactTitle" class="h2">בואו נדבר על האתר שלכם.</h2>
           <p class="lead">השאירו שם וטלפון, ונחזור אליכם לשיחה קצרה ולא מחייבת. לא בטוחים מה מתאים לכם? זה בדיוק בשביל זה.</p>
           <p class="contact-self">יודעים מה אתם צריכים? <a href="builder/">אפשר להתחיל לבד בבונה הפרויקט</a>, בכמה דקות.</p>
           <div class="contact-alt">
@@ -724,53 +469,6 @@
   </main>
 
   <!-- ================= FOOTER ================= -->
-    <!-- ================= USEFUL INFO (Content Hub teaser) ================= -->
-    <section id="useful" class="section surface-stone hub-teaser" aria-labelledby="usefulTitle">
-      <div class="deco deco-ring md" style="inset-inline-end:-160px; top:-120px;" aria-hidden="true"></div>
-      <div class="container">
-        <div class="hub-teaser-head rv">
-          <p class="kicker">לפני שבונים</p>
-          <h2 id="usefulTitle" class="h2">מידע שימושי לעסק שלכם</h2>
-        </div>
-        <div class="hub-teaser-grid">
-          <a class="hub-teaser-card rv d1" href="/hub/business-website-or-custom-system">
-            <figure>
-              <img src="hub/media/business-website-or-custom-system-hero.svg" width="1600" height="900" alt="" loading="lazy" decoding="async">
-            </figure>
-            <div class="hub-teaser-body">
-              <span class="hub-teaser-label">מאמר</span>
-              <h3>אתר תדמית או מערכת? מתי האתר כבר דורש פיתוח מותאם אישית</h3>
-              <p>אזור אישי, התחברות או מסד נתונים הם לא עוד עמוד. ההבדל בין אתר תדמית למערכת, ושמונה שאלות שעוזרות להבין מה צריך.</p>
-              <span class="hub-teaser-more">לקריאת המאמר</span>
-            </div>
-          </a>
-          <a class="hub-teaser-card rv d2" href="/hub/how-much-does-a-website-cost">
-            <figure>
-              <img src="hub/media/how-much-does-a-website-cost-hero.svg" width="1600" height="900" alt="" loading="lazy" decoding="async">
-            </figure>
-            <div class="hub-teaser-body">
-              <span class="hub-teaser-label">מאמר</span>
-              <h3>כמה עולה אתר לעסק קטן בישראל, ומה באמת קובע את המחיר</h3>
-              <p>חמשת הדברים שקובעים את המחיר, מה עולה כמה אצלנו, ואילו עלויות לא מופיעות בהצעת המחיר.</p>
-              <span class="hub-teaser-more">לקריאת המאמר</span>
-            </div>
-          </a>
-          <a class="hub-teaser-card rv d3" href="/hub/landing-page-or-business-website">
-            <figure>
-              <img src="hub/media/landing-page-or-business-website-hero.svg" width="1600" height="900" alt="" loading="lazy" decoding="async">
-            </figure>
-            <div class="hub-teaser-body">
-              <span class="hub-teaser-label">מאמר</span>
-              <h3>דף נחיתה או אתר תדמית, איך באמת יודעים מה צריך?</h3>
-              <p>לא כמה עמודים, אלא כמה מידע ואמון הלקוח צריך לפני הפעולה הבאה. מבחן החלטה פשוט.</p>
-              <span class="hub-teaser-more">לקריאת המאמר</span>
-            </div>
-          </a>
-        </div>
-        <p class="hub-teaser-all rv d3"><a href="/hub/">לכל המידע השימושי</a></p>
-      </div>
-    </section>
-
   <footer class="footer">
     <div class="container">
       <div class="top">
@@ -784,9 +482,9 @@
           <ul>
             <li><a href="builder/">בונה הפרויקט</a></li>
             <li><a href="#work">עבודות</a></li>
-            <li><a href="#pricing">מחירים</a></li>
-            <li><a href="#process">איך זה עובד</a></li>
-            <li><a href="#faq">שאלות נפוצות</a></li>
+            <li><a href="/pricing">מחירים</a></li>
+            <li><a href="/pricing#process">איך זה עובד</a></li>
+            <li><a href="/pricing#faq">שאלות נפוצות</a></li>
             <li><a href="/hub/">מידע שימושי</a></li>
             <li><a href="#contact">יצירת קשר</a></li>
           </ul>

@@ -6,6 +6,7 @@ import json, os, re, sys
 root = sys.argv[1] if len(sys.argv) > 1 else "."
 PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "index.html": ("index, follow", True, True),
+    "pricing.html": ("index, follow", True, False),
     "builder/index.html": ("noindex, follow", False, False),
     "privacy.html": ("index, follow", True, False),
     "haredi.html": ("index, follow", True, False),
@@ -27,7 +28,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי"]
 # External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
 ALLOWED_EXTERNAL = ["https://fit-with-nikita-app.netlify.app/", "https://bit-uborg-demo.netlify.app/"]
-CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "search.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css"]
+CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "search.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css", "home.css"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
 def count(pat, s): return len(re.findall(pat, s))
@@ -99,7 +100,7 @@ def exists(path):
     p = path.lstrip("/")
     cands = [p, p + ".html", os.path.join(p, "index.html")] if p else ["index.html"]
     return any(os.path.exists(os.path.join(root, c)) for c in cands)
-for page in ("index.html", "haredi.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html", "hub/business-website-or-custom-system.html"):
+for page in ("index.html", "pricing.html", "haredi.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html", "hub/business-website-or-custom-system.html"):
     base = os.path.dirname(page)
     for href in re.findall(r'href="([^"]+)"', read(page)):
         if href.startswith("#") or href.startswith(("http", "mailto:", "tel:")): continue
@@ -110,7 +111,7 @@ a1 = read("hub/do-you-need-a-website.html"); a2 = read("hub/landing-page-or-busi
 if 'href="/hub/landing-page-or-business-website"' not in a1: fails.append("article 01 does not link to article 02")
 if 'href="/hub/do-you-need-a-website"' not in a2: fails.append("article 02 does not link to article 01")
 home = read("index.html")
-if home.count('golondon-desktop.jpg') != 1 or 'id="complex"' not in home: fails.append("homepage: GoLondon must appear once, inside #complex")
+if home.count('golondon-desktop.jpg') != 1 or 'id="work-golondon"' not in home: fails.append("homepage: GoLondon must appear once, as #work-golondon")
 if 'פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית' not in home: fails.append("homepage: complex-project disclaimer missing")
 if home.count('nikita-desktop.jpg') != 1 or 'פרויקט אמיתי · לקוח' not in home: fails.append("homepage: Fit With Nikita card (real client project) must appear once with its tag")
 if 'עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.' not in home: fails.append("homepage: computer-lab demo note missing")
@@ -121,6 +122,23 @@ _order = [m for m in re.findall(r'class="hub-teaser-card[^"]*" href="([^"]+)"', 
 if _order != ["/hub/business-website-or-custom-system", "/hub/how-much-does-a-website-cost", "/hub/landing-page-or-business-website"]: fails.append(f"homepage #useful: expected the system article, the price article and landing page or website, got {_order}")
 if _u.count('class="hub-teaser-card') > 3: fails.append("homepage #useful: more than 3 teasers")
 if 'href="/hub/">לכל המידע השימושי</a>' not in _u: fails.append("homepage #useful: link to the hub missing")
+# homepage redesign (2026-10-15): the detail sections live on /pricing, the homepage keeps the summary and forwards old anchors
+pp = read("pricing.html")
+_faq_ids = re.findall(r'<details class="faq" id="(faq-\d+)"', pp)
+if _faq_ids != [f"faq-{i}" for i in range(1, 26)]: fails.append(f"pricing: expected faq-1..faq-25 in order, got {len(_faq_ids)}")
+for _id in ("packages", "package-landing", "package-website", "maintenance", "transparency", "process", "faq", "custom"):
+    if f'id="{_id}"' not in pp: fails.append(f"pricing: anchor #{_id} missing")
+for _price in ("440", "1,290", "149", "349", "220"):
+    if _price not in pp: fails.append(f"pricing: price {_price} missing")
+for _price in ("440", "1,290"):
+    if _price not in home: fails.append(f"homepage: price {_price} missing")
+_fwd = re.search(r'/\^#\((.*?)\)\$/\.test\(h\)', home)
+if not _fwd or 'location.replace("/pricing"' not in home: fails.append("homepage: forward of moved anchors to /pricing missing")
+else:
+    for _id in ("pricing", "process", "faq", "maintenance", "package-", "transparency"):
+        if _id not in _fwd.group(1): fails.append(f"homepage: moved anchor #{_id} is not forwarded to /pricing")
+for _id in ("work", "contact", "work-fit-with-nikita", "complex"):
+    if f'id="{_id}"' not in home: fails.append(f"homepage: anchor #{_id} missing (linked from other pages)")
 # search: every public page with the standard nav carries the visible search field and the search script
 for page in [p for p in PAGES if p not in ("builder/index.html", "card.html", "qr.html")]:
     s = read(page)

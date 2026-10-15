@@ -44,3 +44,7 @@ http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
 # Audience page: one canonical URL
 /haredi.html  /haredi  301!
 /haredi/      /haredi  301
+
+# Pricing and process page (moved from the homepage, October 2026): one canonical URL
+/pricing.html  /pricing  301!
+/pricing/      /pricing  301
