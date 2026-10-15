@@ -83,10 +83,12 @@ for (const art of work.matchAll(/<article class="(?:sel-item|demo)\b[^"]*" id="(
   if (title) push({ url: `/#${art[1]}`, title: `תיק עבודות: ${title}`, body, type: "תיק עבודות", topics: ["תיק עבודות"], aliases: "תיק עבודות, דוגמאות, עבודות, פרויקטים, לקוחות, הדגמה, portfolio, עיצוב", weight: 0.4 });
 }
 // other sections: [page html, page path, anchor, how to cut it, title, topic, aliases]
+// The custom-projects title names the offer as the homepage card does ("אתר מתקדם או מערכת מותאמת"): its short body never says "מערכת" itself,
+// and without it the query "מערכת" dropped this record, which ranked second when it was #complex on the old homepage.
 const others = [
   [pricingPage, "/pricing", "process", section, "איך זה עובד, שלב אחרי שלב", "תכנון והכנה", "תהליך, שלבים, כמה זמן לוקח, ימי עסקים, מקדמה, סיכום הזמנה, תיקונים, שיחה, בונה הפרויקט"],
   [pricingPage, "/pricing", "transparency", section, "שקיפות: מה כלול ומה לא", "מחירים", "תוספות, מה כלול, מה לא כלול, הפתעות, מחיר סופי, סיכום"],
-  [pricingPage, "/pricing", "custom", article, "פרויקטים מורכבים בהתאמה אישית", "מערכות ותוספות", "מערכת, מערכות, המערכת, אזור אישי, אזור לקוחות, חנות, תורים, קביעת תורים, פיתוח, אפיון, פרויקט מורכב, תוספות"],
+  [pricingPage, "/pricing", "custom", article, "פרויקטים מורכבים בהתאמה אישית: אתר מתקדם או מערכת מותאמת", "מערכות ותוספות", "מערכת, מערכות, המערכת, אזור אישי, אזור לקוחות, חנות, תורים, קביעת תורים, פיתוח, אפיון, פרויקט מורכב, תוספות"],
   [home, "/", "contact", section, "יצירת קשר: טופס פנייה, וואטסאפ וטלפון", "תכנון והכנה", "טופס, טופס פנייה, טופס יצירת קשר, הטופס, השארת פרטים, פנייה, פניות, לקבל פניות, יצירת קשר, צור קשר, וואטסאפ, בוואטסאפ, טלפון, שיחה, לדבר"],
 ];
 for (const [html, path, id, cut, title, topic, aliases] of others) {

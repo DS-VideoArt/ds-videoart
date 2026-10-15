@@ -214,6 +214,7 @@
   box-shadow: 0 30px 60px -34px rgba(0, 0, 0, 0.7), 0 0 0 1px var(--on-dark-line);
   margin-bottom: 18px;
 }
+.demo-visual picture { display: block; width: 100%; height: 100%; }
 .demo-visual img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 1s var(--ease-out); }
 .demo:hover .demo-visual img { transform: scale(1.04); }
 .demo-title { margin-top: 12px; font-size: 1.25rem; font-weight: 800; }
@@ -313,6 +314,26 @@
   .hm-facts li:last-child::before { display: none; }
   .sel-phone { width: 26%; border-radius: 18px; padding: 5px; }
   .sel-phone img { border-radius: 13px; }
+  /* phones: the two real projects keep their large visuals; the design samples become compact rows
+     (phone screenshot as a thumbnail beside the text) so the section is far shorter */
+  .sel { gap: 64px; }
+  .demos { margin-top: 64px; padding-top: 32px; }
+  .demos-head { margin-bottom: 8px; }
+  .demos-head p { font-size: 0.92rem; }
+  .demos-grid { gap: 0; max-width: none; }
+  .demo {
+    display: grid; grid-template-columns: 84px minmax(0, 1fr); column-gap: 16px; align-items: start;
+    padding: 18px 0; border-bottom: 1px solid var(--on-dark-line);
+  }
+  .demo:last-child { border-bottom: 0; padding-bottom: 0; }
+  .demo-visual { grid-column: 1; grid-row: 1 / span 6; margin: 0; aspect-ratio: 3 / 4; border-radius: 12px; }
+  .demo > :not(.demo-visual) { grid-column: 2; justify-self: start; }
+  .demo .tag { padding: 4px 10px; font-size: 0.76rem; white-space: nowrap; }
+  .demo-title { margin-top: 8px; font-size: 1.12rem; }
+  .demo p { margin-top: 4px; font-size: 0.92rem; line-height: 1.5; }
+  .demo .demo-note { margin-top: 6px; font-size: 0.82rem; }
+  .demo .link-arrow { margin-top: 4px; padding-top: 0; min-height: 40px; font-size: 0.95rem; }
+  .hm-work .work-footnote { font-size: 0.88rem; }
   .why-list li { grid-template-columns: 44px minmax(0, 1fr); gap: 4px 12px; padding: 20px 0; }
   /* the illustration repeats what the list says; on phones the list alone is enough */
   .why-visual { display: none; }
@@ -350,14 +371,29 @@ html.a11y-still .sel-item:hover .sel-phone, html.a11y-still .demo:hover .demo-vi
 .pp-prices li { display: inline-flex; align-items: baseline; gap: 6px; }
 .pp-prices li + li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--copper); align-self: center; margin-inline-end: 8px; }
 .pp-prices strong { color: var(--ink); font-weight: 800; }
-.pp-jump { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; }
-.pp-jump a {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
-  border-radius: 999px; border: 1px solid var(--line-strong); background: rgba(253, 250, 245, 0.7);
-  font-weight: 600; font-size: 0.95rem; color: var(--ink);
-  transition: border-color 0.25s, background 0.25s;
+
+/* sticky in-page navigation: stays under the main bar, marks the part being read (pricing.js),
+   scrolls sideways on phones instead of wrapping */
+.pp-subnav {
+  position: sticky; top: var(--nav-h); z-index: 800;
+  background: rgba(248, 243, 235, 0.94);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
 }
-.pp-jump a:hover, .pp-jump a:focus-visible { border-color: var(--ink); background: #fdfaf5; }
+.pp-subnav-inner {
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+  padding: 8px max(24px, calc((100% - var(--container)) / 2));
+}
+.pp-subnav-inner::-webkit-scrollbar { display: none; }
+.pp-subnav a {
+  flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px;
+  border-radius: 999px; font-weight: 600; font-size: 0.95rem; color: var(--ink-70);
+  transition: background 0.25s, color 0.25s;
+}
+.pp-subnav a:hover { color: var(--ink); background: rgba(42, 34, 48, 0.06); }
+.pp-subnav a[aria-current] { background: var(--ink); color: var(--on-dark); }
+/* anchors land below both bars */
+.pricing-page [id] { scroll-margin-top: calc(var(--nav-h) + 76px); }
 .pricing-page .pp-hero .hm-dots-static {
   position: absolute; z-index: 0; pointer-events: none; width: 260px; height: 260px;
   inset-inline-end: 4%; bottom: -40px;
@@ -391,7 +427,89 @@ html.a11y-still .sel-item:hover .sel-phone, html.a11y-still .demo:hover .demo-vi
 .pp-block.is-custom .link-arrow:hover, .pp-block.is-custom .link-arrow:focus-visible { color: var(--on-dark); }
 
 .pricing-page #faq .dual-cta { margin-top: clamp(48px, 6vw, 80px); }
+.pp-block .disclosure { margin-top: 14px; }
+.pp-block .disclosure .body ul { margin: 0; }
 
+/* process: the seven steps as compact numbered cards */
+.pricing-page #process .section-head { margin-bottom: clamp(32px, 4vw, 48px); }
+.pp-steps { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.pp-step {
+  padding: 22px 22px 24px; border-radius: var(--radius-md);
+  background: rgba(253, 250, 245, 0.78); border: 1px solid var(--line);
+}
+.pp-step-num {
+  display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 14px;
+  border-radius: 50%; background: var(--terracotta); color: #fff; font-weight: 800; font-size: 0.95rem;
+}
+.pp-step h3 { font-size: 1.08rem; font-weight: 800; line-height: 1.3; }
+.pp-step p { margin-top: 6px; color: var(--ink-70); font-size: 0.95rem; line-height: 1.55; }
+.pp-steps-hint { display: none; margin-top: 4px; font-size: 0.88rem; color: var(--ink-70); }
+.pp-step .pill {
+  display: inline-block; margin-top: 10px; padding: 4px 10px; border-radius: 999px;
+  background: rgba(179, 84, 44, 0.1); color: var(--terracotta-deep); font-size: 0.82rem; font-weight: 700;
+}
+
+/* FAQ: six topics, two columns on desktop, one on phones */
+.pp-topics { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: calc(clamp(40px, 6vw, 64px) * -0.5) auto clamp(32px, 4vw, 52px); max-width: 980px; }
+.pp-topics a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px;
+  border-radius: 999px; border: 1px solid var(--line-strong); background: rgba(253, 250, 245, 0.7);
+  font-weight: 600; font-size: 0.93rem; color: var(--ink);
+  transition: border-color 0.25s, background 0.25s;
+}
+.pp-topics a:hover, .pp-topics a:focus-visible { border-color: var(--ink); background: #fdfaf5; }
+.pp-faq { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(36px, 4vw, 56px) clamp(32px, 4vw, 56px); align-items: start; }
+.pp-faq-title {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line-strong);
+  font-size: 1.2rem; font-weight: 800; letter-spacing: -0.01em;
+}
+.pp-faq-title span { font-size: 0.85rem; font-weight: 600; color: var(--ink-70); letter-spacing: 0; }
+/* bigger, steadier tap targets */
+.pricing-page .faq summary { min-height: 58px; align-items: center; padding: 14px 0; }
+.pricing-page .faq summary .plus { width: 28px; height: 28px; margin-top: 0; }
+.pricing-page .faq .answer { padding-bottom: 20px; }
+
+/* open and close smoothly where the browser supports animating <details>; elsewhere it simply toggles */
+@supports (interpolate-size: allow-keywords) {
+  .pricing-page { interpolate-size: allow-keywords; }
+  .pricing-page .faq::details-content, .pricing-page .disclosure::details-content {
+    block-size: 0; overflow-y: clip;
+    transition: block-size 0.32s var(--ease-out), content-visibility 0.32s allow-discrete;
+  }
+  .pricing-page .faq[open]::details-content, .pricing-page .disclosure[open]::details-content { block-size: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pricing-page .faq::details-content, .pricing-page .disclosure::details-content { transition: none; }
+}
+html.a11y-still .pricing-page .faq::details-content, html.a11y-still .pricing-page .disclosure::details-content { transition: none; }
+
+@media (max-width: 1024px) {
+  .pp-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 860px) {
   .pp-blocks { grid-template-columns: 1fr; }
+  .pp-faq { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .pp-subnav-inner { padding-inline: 16px; }
+  .pp-subnav a { padding: 0 14px; font-size: 0.92rem; }
+  /* phones: the steps sit side by side and swipe, numbered, with the next card peeking in */
+  .pp-steps {
+    display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-inline: -16px; padding: 4px 16px 14px; scroll-padding-inline: 16px;
+  }
+  .pp-steps::-webkit-scrollbar { display: none; }
+  .pp-steps:focus-visible { outline-offset: -3px; }
+  .pp-step { flex: 0 0 80%; scroll-snap-align: start; padding: 20px 20px 22px; }
+  .pp-steps .rv { opacity: 1; transform: none; }
+  .pp-steps-hint { display: block; }
+  /* topic chips: one row that scrolls sideways, like the bar above */
+  .pp-topics {
+    flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none;
+    margin: -8px -16px 28px; padding: 0 16px; max-width: none;
+  }
+  .pp-topics::-webkit-scrollbar { display: none; }
+  .pp-topics a { flex: 0 0 auto; min-height: 40px; padding: 0 13px; font-size: 0.88rem; }
+  .pp-faq { gap: 28px; }
 }

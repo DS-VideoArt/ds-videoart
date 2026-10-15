@@ -28,7 +28,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי"]
 # External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
 ALLOWED_EXTERNAL = ["https://fit-with-nikita-app.netlify.app/", "https://bit-uborg-demo.netlify.app/"]
-CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "search.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css", "home.css"]
+CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "search.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css", "home.css", "pricing.js"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
 def count(pat, s): return len(re.findall(pat, s))
@@ -125,7 +125,11 @@ if 'href="/hub/">לכל המידע השימושי</a>' not in _u: fails.append("
 # homepage redesign (2026-10-15): the detail sections live on /pricing, the homepage keeps the summary and forwards old anchors
 pp = read("pricing.html")
 _faq_ids = re.findall(r'<details class="faq" id="(faq-\d+)"', pp)
-if _faq_ids != [f"faq-{i}" for i in range(1, 26)]: fails.append(f"pricing: expected faq-1..faq-25 in order, got {len(_faq_ids)}")
+if sorted(_faq_ids, key=lambda x: int(x[4:])) != [f"faq-{i}" for i in range(1, 26)]: fails.append(f"pricing: expected faq-1..faq-25 once each, got {len(_faq_ids)}")
+# the questions are grouped by topic: every group has a heading and a chip linking to it
+_topics = re.findall(r'<div class="pp-faq-group[^"]*" id="(topic-[a-z]+)"', pp)
+if len(_topics) < 4 or any(f'href="#{t}"' not in pp for t in _topics): fails.append(f"pricing: FAQ topic groups or their links missing {_topics}")
+if 'class="pp-subnav"' not in pp or 'pricing.js?v=' not in pp: fails.append("pricing: sticky in-page navigation or its script missing")
 for _id in ("packages", "package-landing", "package-website", "maintenance", "transparency", "process", "faq", "custom"):
     if f'id="{_id}"' not in pp: fails.append(f"pricing: anchor #{_id} missing")
 for _price in ("440", "1,290", "149", "349", "220"):
