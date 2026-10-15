@@ -251,6 +251,7 @@ p { text-wrap: pretty; }
   font-size: 1.6rem; font-weight: 800; padding: 14px 0; border-bottom: 1px solid var(--line);
 }
 .mobile-menu .btn { margin-top: 24px; align-self: flex-start; }
+.mobile-menu a.btn { padding: 0 26px; font-size: 1rem; }   /* the menu's big-link style left the buttons with no side padding */
 .mobile-menu .menu-note { margin-top: auto; color: var(--ink-55); font-size: 0.95rem; }
 
 /* ============================================================
@@ -1271,7 +1272,18 @@ html.a11y-still .consent { animation: none; }
 .ds-search-hints { padding: 10px 18px 14px; border-top: 1px solid var(--line); font-size: 0.8rem; color: var(--ink-55); display: flex; gap: 16px; flex-wrap: wrap; }
 .ds-search-hints kbd { font: 600 0.72rem/1 Heebo, sans-serif; padding: 2px 6px; border: 1px solid var(--line-strong); border-radius: 6px; }
 body.ds-search-open { overflow: hidden; }
-@media (max-width: 1100px) { .nav-search { width: 250px; } }
+/* Header row with the longer builder button ("בואו נתכנן את האתר שלכם", 2026-10-15): the search field gives up
+   width first and the links sit closer on mid widths. Below 1080px the links and the button move into the menu,
+   since the row does not fit there (it already overflowed at 861–920px with the shorter label). */
+.nav .container .nav-search { flex: 0 1 330px; width: auto; min-width: 150px; }
+.nav .brand, .nav .nav-links, .nav .nav-cta { flex-shrink: 0; }   /* only the search field shrinks */
+.nav .brand { white-space: nowrap; }   /* "DS Creative Studio" stays on one line (it wrapped at 1024–1100px before) */
+@media (max-width: 1180px) { .nav-links { gap: 20px; } }
+@media (max-width: 1079px) {
+  .nav-links, .nav .nav-cta { display: none; }
+  .nav-toggle { display: inline-flex; }
+  .nav .container .nav-search { flex: 1; min-width: 0; margin-inline-start: 0; }
+}
 @media (max-width: 860px) {
   .nav .container { gap: 12px; }
   .nav .container .nav-search { display: flex; flex: 1; width: auto; min-width: 0; min-height: 40px; margin-inline-start: 0; padding: 0 10px; }

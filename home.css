@@ -274,6 +274,16 @@
 /* mobile sticky bar: the "talk" button sat in dark text on the dark bar (unreadable). Homepage only. */
 .home .sticky-cta .btn-ghost { color: var(--on-dark); border-color: var(--on-dark-line-strong); }
 .home .sticky-cta .btn-ghost:hover { border-color: var(--on-dark); background: rgba(241, 234, 223, 0.06); }
+
+/* phones: when the bottom bar shows, the accessibility button rises by --sticky-space and used to sit on the
+   consent banner's "להמשיך בלי" button. The banner rises by the same amount, so the stack from the bottom is:
+   bottom bar, accessibility button, banner, with no overlap. */
+@media (max-width: 860px) {
+  .home .consent { transition: bottom 0.3s var(--ease-out); }
+  body.home.sticky-visible .consent { bottom: calc(84px + var(--sticky-space, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) { .home .consent { transition: none; } }
+html.a11y-still .home .consent { transition: none; }
 .home .contact .container { align-items: center; }
 
 /* ============================================================
