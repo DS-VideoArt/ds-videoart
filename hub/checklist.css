@@ -210,6 +210,7 @@
   .cl-sheet { margin-top: 12pt; break-inside: avoid; }
   .checklist-page .cl-sheet h2 { margin-top: 0; padding-top: 0; font-size: 12pt; }
   .checklist-page .cl-sheet h2::before { display: none; }
+  .checklist-page .article-body p.cl-sheet-note { margin-top: 3pt; font-size: 8.8pt; line-height: 1.38; color: #4d4154; }
   .cl-sheet table { width: 100%; margin-top: 6pt; border-collapse: collapse; table-layout: fixed; font-size: 9pt; }
   .cl-sheet th, .cl-sheet td { border: 1px solid #d8cab5; padding: 4pt 6pt; height: 22pt; text-align: start; vertical-align: top; }
   .cl-sheet thead th { height: auto; background: #f1eadf; font-weight: 800; color: #2a2230; }
