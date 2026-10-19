@@ -40,6 +40,8 @@ http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
 /hub/domain-hosting-who-owns-what/      /hub/domain-hosting-who-owns-what  301
 /hub/business-website-or-custom-system.html  /hub/business-website-or-custom-system  301!
 /hub/business-website-or-custom-system/      /hub/business-website-or-custom-system  301
+/hub/questions-before-ordering-a-website.html  /hub/questions-before-ordering-a-website  301!
+/hub/questions-before-ordering-a-website/      /hub/questions-before-ordering-a-website  301
 
 # Audience page: one canonical URL
 /haredi.html  /haredi  301!

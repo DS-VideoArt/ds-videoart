@@ -187,6 +187,7 @@
     const setInvalid = (input, bad) => {
       const field = input.closest(".field");
       field.classList.toggle("invalid", bad);
+      if (bad) field.classList.add("had-error");
       input.setAttribute("aria-invalid", bad ? "true" : "false");
     };
     const validPhone = (v) => {
@@ -201,8 +202,15 @@
       if (!okName) name.focus(); else if (!okPhone) phone.focus();
       return okName && okPhone;
     };
-    name.addEventListener("blur", () => setInvalid(name, name.value.trim().length < 2 && name.value !== ""));
-    phone.addEventListener("blur", () => setInvalid(phone, !validPhone(phone.value.trim()) && phone.value !== ""));
+    // Pressing the send button blurs the field first. Leave the check to the submit handler then,
+    // so no error line appears or disappears above the button between press and release.
+    let pressingSubmit = false;
+    submit.addEventListener("pointerdown", () => {
+      pressingSubmit = true;
+      setTimeout(() => { pressingSubmit = false; }, 1000);
+    });
+    name.addEventListener("blur", () => { if (!pressingSubmit) setInvalid(name, name.value.trim().length < 2 && name.value !== ""); });
+    phone.addEventListener("blur", () => { if (!pressingSubmit) setInvalid(phone, !validPhone(phone.value.trim()) && phone.value !== ""); });
 
     // If the visitor started the project builder and then chose to talk instead,
     // pass a short summary of what they already filled in, so the call has context.
@@ -247,6 +255,7 @@
         status.className = "form-status ok";
         status.textContent = "קיבלנו. נחזור אליכם לשיחה קצרה בהקדם.";
         form.reset();
+        form.querySelectorAll(".field.had-error").forEach((f) => f.classList.remove("had-error"));
       } catch (err) {
         status.className = "form-status fail";
         const mail = form.dataset.email || "";

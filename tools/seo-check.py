@@ -24,8 +24,9 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "hub/domain-hosting-who-owns-what.html": ("index, follow", True, False),
     "hub/website-is-live-what-now.html": ("index, follow", True, False),
     "hub/business-website-or-custom-system.html": ("index, follow", True, False),
+    "hub/questions-before-ordering-a-website.html": ("index, follow", True, False),
 }
-FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי"]
+FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי", "6 עד 7 אזורי"]
 # External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
 ALLOWED_EXTERNAL = ["https://fit-with-nikita-app.netlify.app/", "https://bit-uborg-demo.netlify.app/"]
 CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "search.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css", "home.css", "pricing.js"]
@@ -72,7 +73,7 @@ for page, (robots, h1, jsonld) in PAGES.items():
 # card.html is a noindex digital business card whose visible copy still lists the old DS VideoArt areas (documented, not an SEO surface).
 EXEMPT = {"card.html": {"DS VideoArt"}}
 # Content Hub schema checks
-for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/landing-page-or-business-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/how-much-does-a-website-cost.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/which-pages-does-a-business-website-need.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/what-to-prepare-before-building-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/domain-hosting-who-owns-what.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/website-is-live-what-now.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/business-website-or-custom-system.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
+for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/landing-page-or-business-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/how-much-does-a-website-cost.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/which-pages-does-a-business-website-need.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/what-to-prepare-before-building-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/domain-hosting-who-owns-what.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/website-is-live-what-now.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/business-website-or-custom-system.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/questions-before-ordering-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
     s = read(page); blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
     if len(blocks) != 1: fails.append(f"{page}: JSON-LD blocks {len(blocks)}")
     else:
@@ -100,7 +101,7 @@ def exists(path):
     p = path.lstrip("/")
     cands = [p, p + ".html", os.path.join(p, "index.html")] if p else ["index.html"]
     return any(os.path.exists(os.path.join(root, c)) for c in cands)
-for page in ("index.html", "pricing.html", "haredi.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html", "hub/business-website-or-custom-system.html"):
+for page in ("index.html", "pricing.html", "haredi.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html", "hub/business-website-or-custom-system.html", "hub/questions-before-ordering-a-website.html"):
     base = os.path.dirname(page)
     for href in re.findall(r'href="([^"]+)"', read(page)):
         if href.startswith("#") or href.startswith(("http", "mailto:", "tel:")): continue
@@ -143,6 +144,13 @@ else:
         if _id not in _fwd.group(1): fails.append(f"homepage: moved anchor #{_id} is not forwarded to /pricing")
 for _id in ("work", "contact", "work-fit-with-nikita", "complex"):
     if f'id="{_id}"' not in home: fails.append(f"homepage: anchor #{_id} missing (linked from other pages)")
+# the "12 questions" checklist (2026-10-19): 12 questions, a print file, a separate DS area, links in from the sources
+cl = read("hub/questions-before-ordering-a-website.html")
+if len(re.findall(r'<li class="cl-item" id="q\d+">', cl)) != 12: fails.append("checklist: expected 12 questions")
+if not os.path.isfile(os.path.join(root, "hub/media/questions-before-ordering-a-website.pdf")): fails.append("checklist: print file hub/media/questions-before-ordering-a-website.pdf missing")
+if cl.find('class="cl-ds"') < cl.rfind('id="q12"'): fails.append("checklist: the DS answers must come after the 12 questions")
+for _src in ("hub/how-much-does-a-website-cost.html", "hub/domain-hosting-who-owns-what.html", "hub/what-to-prepare-before-building-a-website.html", "hub/index.html", "pricing.html"):
+    if 'href="/hub/questions-before-ordering-a-website"' not in read(_src): fails.append(f"{_src}: no link to the checklist")
 # search: every public page with the standard nav carries the visible search field and the search script
 for page in [p for p in PAGES if p not in ("builder/index.html", "card.html", "qr.html")]:
     s = read(page)

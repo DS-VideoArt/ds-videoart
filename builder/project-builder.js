@@ -277,7 +277,7 @@
       <div class="compare" aria-label="השוואה קצרה בין השירותים">
         <div class="cmp-row head"><span>בקצרה</span><strong>${esc(svc.landing.name)}</strong><strong>${esc(svc.site.name)}</strong></div>
         <div class="cmp-row"><span>מתאים ל</span><em>שירות אחד, קמפיין, או התחלה בקטן</em><em>עסק שרוצה להציג כמה נושאים ולהופיע בגוגל בכמה חיפושים</em></div>
-        <div class="cmp-row"><span>מה מקבלים</span><em>עמוד אחד ממוקד עם עד 6 עד 7 אזורי תוכן</em><em>עד 6 עמודי תוכן סטנדרטיים עם תפריט. 7 ומעלה מתומחרים לאחר אפיון</em></div>
+        <div class="cmp-row"><span>מה מקבלים</span><em>עמוד אחד ממוקד עם עד 6 אזורי תוכן</em><em>עד 6 עמודי תוכן סטנדרטיים עם תפריט. 7 ומעלה מתומחרים לאחר אפיון</em></div>
         <div class="cmp-row"><span>מסירה</span><em>עד ${svc.landing.deliveryDays} ימי עסקים</em><em>עד ${svc.site.deliveryDays} ימי עסקים</em></div>
         <div class="cmp-row"><span>מחיר</span><em>${P.formatPrice(svc.landing.basePrice)}, ${esc(svc.landing.priceNote).toLowerCase()}</em><em>החל מ־${P.formatPrice(svc.site.basePrice)}, כולל עד 6 עמודי תוכן סטנדרטיים</em></div>
       </div>
@@ -384,7 +384,7 @@
     "extras"() {
       const landing = state.type === "landing";
       const groups = [];
-      if (landing) groups.push(addonGroup("אזורים ותמונות", "מה שכלול בדף: עד 6 עד 7 אזורי תוכן. כאן מוסיפים מעבר לזה.", inScope("landing-sections")));
+      if (landing) groups.push(addonGroup("אזורים ותמונות", "מה שכלול בדף: עד 6 אזורי תוכן. כאן מוסיפים מעבר לזה.", inScope("landing-sections")));
       groups.push(addonGroup("מדידה ופרטיות", "רוצים לדעת כמה אנשים מגיעים ומאיפה? בוחרים את שני כלי המדידה יחד, ומשלמים 150 ₪ במקום 200. " + esc(P.copy.consentHint), inScope("tracking")));
       if (landing) groups.push(addonGroup("חיבור למערכות שכבר יש לכם", "מערכת תורים, לינק תשלום או רשימת תפוצה שכבר עובדים אצלכם.", inScope("connect")));
       groups.push(addonGroup("דברים שדורשים מחיר מותאם", "לאלה אין מחיר קבוע, כי ההיקף משתנה מעסק לעסק. סמנו מה שרלוונטי, ונחזור אליכם עם מחיר לפני כל התחייבות.", inScope("custom")));
