@@ -841,7 +841,9 @@ section { position: relative; }
 .field input:focus { border-color: var(--ink); box-shadow: 0 0 0 4px rgba(42, 34, 48, 0.08); outline: none; }
 .field input[aria-invalid="true"] { border-color: #b3261e; }
 .field .err { display: none; margin-top: 8px; font-size: 0.88rem; color: #b3261e; font-weight: 600; }
-.field.invalid .err { display: block; }
+/* once a field has shown its error, the line keeps its space while hidden, so fixing the field never moves the send button under the finger */
+.field.had-error .err { display: block; visibility: hidden; }
+.field.invalid .err { display: block; visibility: visible; }
 
 .form fieldset { border: 0; padding: 0; margin: 18px 0 0; min-width: 0; }
 .form legend { padding: 0; }
