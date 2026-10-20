@@ -133,6 +133,12 @@
 
 .cl-related .related-card + .related-card { margin-top: 10px; }
 
+/* Keyboard focus and the last lines of the page stay clear of the fixed header and the accessibility button.
+   The scroll padding replaces the per-anchor margin from site.css here, so anchors are not offset twice. */
+html:has(.checklist-page) { scroll-padding-top: calc(var(--nav-h) + 12px); scroll-padding-bottom: 84px; }
+.checklist-page[id], .checklist-page [id] { scroll-margin-top: 0; }
+body:has(.checklist-page) .footer { padding-bottom: 96px; }
+
 @media (max-width: 560px) {
   .cl-head { gap: 12px; }
   .cl-num { min-width: 24px; height: 24px; margin-inline-end: 8px; font-size: 0.78rem; }
