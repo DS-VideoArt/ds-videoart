@@ -144,11 +144,16 @@ else:
         if _id not in _fwd.group(1): fails.append(f"homepage: moved anchor #{_id} is not forwarded to /pricing")
 for _id in ("work", "contact", "work-fit-with-nikita", "complex"):
     if f'id="{_id}"' not in home: fails.append(f"homepage: anchor #{_id} missing (linked from other pages)")
-# the "12 questions" checklist (2026-10-19): 12 questions, a print file, a separate DS area, links in from the sources
+# the checklist (2026-10-19, 15 questions since 2026-10-20): the questions, one checkbox each, a print file, a separate DS area with one answer per question, links in from the sources
 cl = read("hub/questions-before-ordering-a-website.html")
-if len(re.findall(r'<li class="cl-item" id="q\d+">', cl)) != 12: fails.append("checklist: expected 12 questions")
+CL_QUESTIONS = 15
+if len(re.findall(r'<li class="cl-item" id="q\d+">', cl)) != CL_QUESTIONS: fails.append(f"checklist: expected {CL_QUESTIONS} questions")
+for _n in range(1, CL_QUESTIONS + 1):
+    if f'id="q{_n}"' not in cl or f'<input class="cl-check" type="checkbox" id="c{_n}">' not in cl or f'<label for="c{_n}">' not in cl: fails.append(f"checklist: question {_n} needs its card, checkbox and label")
 if not os.path.isfile(os.path.join(root, "hub/media/questions-before-ordering-a-website.pdf")): fails.append("checklist: print file hub/media/questions-before-ordering-a-website.pdf missing")
-if cl.find('class="cl-ds"') < cl.rfind('id="q12"'): fails.append("checklist: the DS answers must come after the 12 questions")
+if cl.find('class="cl-ds"') < cl.rfind(f'id="q{CL_QUESTIONS}"'): fails.append("checklist: the DS answers must come after the last question")
+if len(re.findall(r'<div><dt><span aria-hidden="true">\d+</span>', cl)) != CL_QUESTIONS: fails.append(f"checklist: expected {CL_QUESTIONS} DS answers, one per question")
+if re.search(r'(?<![\d.,])(?:12 שאלות|12 השאלות|ל־12 השאלות)', cl): fails.append("checklist: still mentions 12 questions")
 for _src in ("hub/how-much-does-a-website-cost.html", "hub/domain-hosting-who-owns-what.html", "hub/what-to-prepare-before-building-a-website.html", "hub/index.html", "pricing.html"):
     if 'href="/hub/questions-before-ordering-a-website"' not in read(_src): fails.append(f"{_src}: no link to the checklist")
 # search: every public page with the standard nav carries the visible search field and the search script
