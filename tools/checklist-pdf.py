@@ -17,7 +17,7 @@ from playwright.sync_api import sync_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PAGE = "/hub/questions-before-ordering-a-website.html"
 OUT = os.path.join(ROOT, "hub", "media", "questions-before-ordering-a-website.pdf")
-EXPECTED_PAGES = 2
+EXPECTED_PAGES = 3   # questions 1 to 7, questions 8 to 15, the comparison sheet
 
 class Quiet(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *args): pass

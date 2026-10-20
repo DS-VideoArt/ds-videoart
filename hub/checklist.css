@@ -1,11 +1,11 @@
 /* ============================================================
-   DS Creative Studio — "12 questions" checklist page
+   DS Creative Studio — "15 questions" checklist page
    Loaded only by hub/questions-before-ordering-a-website.html, after
    site.css and content-hub.css. Everything is scoped to .checklist-page,
    so the other hub articles are untouched.
 
    Screen: a calm checklist with real checkboxes, DS answers kept apart.
-   Print (also the source of the downloadable file): two A4 pages,
+   Print (also the source of the downloadable file): A4 pages,
    question + what to ask for, three columns to compare suppliers.
    ============================================================ */
 
@@ -30,6 +30,12 @@
 .checklist-page .article-body .cl-actions a.btn { color: #fff; text-decoration: none; }
 .checklist-page .article-body .cl-actions .btn-ghost { color: var(--ink); }
 .checklist-page .article-body p.cl-note { margin-top: 12px; font-size: 0.92rem; color: var(--ink-70); }
+/* the campaign message, right under the opening */
+.checklist-page .article-body p.cl-message {
+  margin-top: 18px; padding: clamp(14px, 2.4vw, 18px) clamp(16px, 2.6vw, 22px);
+  border-radius: var(--radius-md); background: rgba(214, 164, 108, 0.16);
+}
+.checklist-page .article-body p.cl-message strong { display: block; margin-bottom: 6px; color: var(--ink); font-size: 1.12em; line-height: 1.45; }
 .checklist-page .article-body p.cl-tick-hint { margin-top: clamp(26px, 4vw, 34px); font-size: 0.98rem; color: var(--ink-70); }
 
 /* the kicker gets the same round dot (the hub template draws a short line) */
@@ -157,7 +163,7 @@
   .article-page > .container, .container { width: 100%; max-width: none; }
   .article-col { max-width: none; }
 
-  /* page 1: questions 1 to 7. Page 2: questions 8 to 12 and the comparison sheet */
+  /* page 1: questions 1 to 7. Page 2: questions 8 to 15. Page 3: the comparison sheet, a whole page to write on */
   .checklist-page #g3 { break-before: page; }
 
   .cl-print-head {
@@ -204,18 +210,20 @@
 
   .article-body .pull { margin: 10pt 0 0; padding: 0 9pt; border-inline-start: 2pt solid #b3542c; break-inside: avoid; }
   .article-body .pull p { font-size: 10.5pt; }
+  .checklist-page .article-body p.cl-message { margin-top: 6pt; padding: 5pt 10pt; border-radius: 6pt; background: #fbf7f1; border: 1px solid #d8cab5; font-size: 9.6pt; }
+  .checklist-page .article-body p.cl-message strong { margin-bottom: 2pt; font-size: 10.5pt; }
   .article-body .pull p + p { margin-top: 1pt; }
   .article-body .pull + p { font-size: 9.5pt; }
 
-  .cl-sheet { margin-top: 12pt; break-inside: avoid; }
+  .cl-sheet { margin-top: 0; break-before: page; break-inside: avoid; }
   .checklist-page .cl-sheet h2 { margin-top: 0; padding-top: 0; font-size: 12pt; }
   .checklist-page .cl-sheet h2::before { display: none; }
   .checklist-page .article-body p.cl-sheet-note { margin-top: 3pt; font-size: 8.8pt; line-height: 1.38; color: #4d4154; }
   .cl-sheet table { width: 100%; margin-top: 6pt; border-collapse: collapse; table-layout: fixed; font-size: 9pt; }
-  .cl-sheet th, .cl-sheet td { border: 1px solid #d8cab5; padding: 4pt 6pt; height: 22pt; text-align: start; vertical-align: top; }
+  .cl-sheet th, .cl-sheet td { border: 1px solid #d8cab5; padding: 5pt 6pt; height: 50pt; text-align: start; vertical-align: top; }
   .cl-sheet thead th { height: auto; background: #f1eadf; font-weight: 800; color: #2a2230; }
   .cl-sheet tbody th { width: 30%; font-weight: 700; color: #3a3040; background: #fbf7f1; }
-  .cl-sheet .cl-sheet-notes th, .cl-sheet .cl-sheet-notes td { height: 54pt; }
+  .cl-sheet .cl-sheet-notes th, .cl-sheet .cl-sheet-notes td { height: 225pt; }
 
   .cl-print-foot { margin-top: 12pt; padding-top: 6pt; border-top: 1px solid #d8cab5; font-size: 8.5pt; line-height: 1.45; color: #4d4154; }
   .cl-print-foot span { white-space: nowrap; unicode-bidi: isolate; }
