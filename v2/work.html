@@ -24,7 +24,7 @@
         <a href="/v2/work.html" aria-current="page">עבודות</a>
         <a href="/pricing">שירותים</a>
         <a href="/hub/">מגזין</a>
-        <a href="/v2/#studio">הסטודיו</a>
+        <a href="/v2/studio.html">הסטודיו</a>
         <a href="/v2/#contact">צור קשר</a>
       </nav>
       <div class="nav-tools">
@@ -45,7 +45,7 @@
         <a href="/v2/work.html" aria-current="page">עבודות <small>פרויקטים וקונספטים</small></a>
         <a href="/pricing">שירותים <small>מה בונים ובכמה</small></a>
         <a href="/hub/">מגזין <small>מדריכים ומאמרים</small></a>
-        <a href="/v2/#studio">הסטודיו</a>
+        <a href="/v2/studio.html">הסטודיו</a>
         <a href="/v2/#contact">צור קשר</a>
       </nav>
       <div class="menu-contact">
@@ -61,35 +61,26 @@
       <span class="ring ring-a" aria-hidden="true"></span><span class="ring ring-b" aria-hidden="true"></span>
       <div class="wrap">
         <h1 id="pageTitle">עבודות</h1>
-        <p>פרויקטים אמיתיים וקונספטים לעסקים בדיוניים. ליד כל עבודה כתוב בדיוק מה היא.</p>
-        <div class="gallery-legend"><span class="tag tag-real">פרויקט אמיתי</span><span>אתר חי, של לקוח או של הסטודיו</span><span class="tag tag-concept">קונספט</span><span>עסק בדיוני, נבנה להמחשה</span></div>
-        <div class="filters" role="group" aria-label="סינון עבודות">
-          <div class="filter-group" role="group" aria-label="סוג העבודה">
-            <span aria-hidden="true">מה מוצג:</span>
-            <button class="chip" type="button" data-filter="kind" data-value="all" aria-pressed="true">הכול</button>
-            <button class="chip" type="button" data-filter="kind" data-value="real" aria-pressed="false">פרויקטים אמיתיים</button>
-            <button class="chip" type="button" data-filter="kind" data-value="concept" aria-pressed="false">קונספטים</button>
-          </div>
-          <div class="filter-group" role="group" aria-label="סוג האתר">
-            <span aria-hidden="true">סוג אתר:</span>
-            <button class="chip" type="button" data-filter="type" data-value="all" aria-pressed="true">כל הסוגים</button>
-            <button class="chip" type="button" data-filter="type" data-value="landing" aria-pressed="false">עמוד אחד</button>
-            <button class="chip" type="button" data-filter="type" data-value="site" aria-pressed="false">אתר תדמית</button>
-            <button class="chip" type="button" data-filter="type" data-value="complex" aria-pressed="false">פרויקט מורכב</button>
-          </div>
+        <p>אתרים אמיתיים וקונספטים לעסקים בדיוניים. ליד כל עבודה כתוב בדיוק מה היא.</p>
+        <div class="segmented" role="group" aria-label="מה להציג">
+          <button type="button" data-filter="kind" data-value="all" aria-pressed="true">הכול</button>
+          <button type="button" data-filter="kind" data-value="real" aria-pressed="false">אמיתיים</button>
+          <button type="button" data-filter="kind" data-value="concept" aria-pressed="false">קונספטים</button>
         </div>
         <p class="gallery-count" data-gallery-count role="status" aria-live="polite"></p>
       </div>
     </section>
 
-    <section class="section paper-deep on-cream" style="padding-top: clamp(40px, 5vw, 64px)" aria-label="גלריית העבודות">
+    <section class="section paper-deep on-cream gallery-wrap" aria-label="גלריית העבודות" data-gallery>
       <span class="ring ring-e" aria-hidden="true"></span><span class="ring ring-d" aria-hidden="true"></span>
       <div class="wrap">
-        <div class="gallery" data-gallery>
+        <section class="work-group" data-group="real" aria-labelledby="gReal">
+          <div class="group-head"><h2 id="gReal"><span class="tag tag-real">אמיתי</span>פרויקטים אמיתיים</h2><p>אתרים חיים: עבודת לקוח ופרויקט של הסטודיו.</p></div>
+          <div class="gallery">
           <article class="work-item" data-kind="real" data-type="site complex" id="work-fit-with-nikita">
             <div class="work-shot shot-split"><img class="desk" src="/assets/work/nikita-desktop.jpg" width="1200" height="750" alt="Fit With Nikita: מחשבון מזונות באתר, תצוגת מחשב" loading="lazy"><img class="phone" src="/assets/work/nikita-mobile.jpg" width="780" height="1640" alt="" loading="lazy"></div>
             <div class="work-meta"><span class="tag tag-real">פרויקט אמיתי · לקוח</span><span class="tag tag-type">אתר תדמית ומערכת מותאמת</span></div>
-            <h2 class="work-title"><bdi>Fit With Nikita</bdi></h2>
+            <h3 class="work-title"><bdi>Fit With Nikita</bdi></h3>
             <p class="work-desc">מאמן כושר אישי. אתר ציבורי שמציג את השירות ואת דרך האימון ומוביל לפנייה פשוטה בוואטסאפ, ולצידו אזור אישי למתאמנים שכבר התחילו ליווי.</p>
             <ul class="work-built"><li>אתר ציבורי: בית, אודות, ליווי ואימונים, איך זה עובד ויצירת קשר</li><li>מחשבון קלוריות ומזונות ככלי אינטראקטיבי מותאם</li><li>אזור אישי למתאמנים ומערכת עבודה למאמן</li></ul>
             <a class="link-arrow" href="https://fit-with-nikita-app.netlify.app/" target="_blank" rel="noopener">לאתר החי<span class="sr-only"> (נפתח בלשונית חדשה)</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
@@ -97,33 +88,39 @@
           <article class="work-item" data-kind="real" data-type="complex">
             <div class="work-shot shot-tall"><img src="/assets/work/golondon-mobile.jpg" width="780" height="1640" alt="GoLondon: עמוד הבית בטלפון" loading="lazy"></div>
             <div class="work-meta"><span class="tag tag-real">פרויקט עצמאי · אתר חי</span><span class="tag tag-type">פרויקט מורכב</span></div>
-            <h2 class="work-title"><bdi>GoLondon</bdi></h2>
+            <h3 class="work-title"><bdi>GoLondon</bdi></h3>
             <p class="work-desc">קהילת ישראלים שמתכננים טיול ללונדון: מערכת לתכנון מסלול, מפות וכלים ייעודיים ועשרות עמודי תוכן. פרויקט של הסטודיו, לא עבודת לקוח.</p>
             <a class="link-arrow" href="https://golondon.co.il" target="_blank" rel="noopener">לאתר החי<span class="sr-only"> (נפתח בלשונית חדשה)</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
           </article>
+          </div>
+        </section>
+        <section class="work-group" data-group="concept" aria-labelledby="gConcept">
+          <div class="group-head"><h2 id="gConcept"><span class="tag tag-concept">קונספט</span>קונספטים לעסקים בדיוניים</h2><p>נבנו כדי להראות רמת עיצוב וגימור. השמות, הפרטים והמחירים בהם הם המחשה בלבד, והטפסים בהם לא שולחים פניות.</p></div>
+          <div class="gallery">
           <article class="work-item" data-kind="concept" data-type="site">
             <div class="work-shot"><img src="/assets/work/bit-uborg-products.jpg" width="1200" height="750" alt="ביט ובורג: עמוד מוצרים של חנות מחשבים בדיונית" loading="lazy"></div>
             <div class="work-meta"><span class="tag tag-concept">אתר הדגמה · עסק בדיוני</span><span class="tag tag-type">אתר תדמית</span></div>
-            <h2 class="work-title">ביט ובורג</h2>
+            <h3 class="work-title">ביט ובורג</h3>
             <p class="work-desc">אתר תדמית של 6 עמודים, שנבנה בתוך גבולות החבילה הבסיסית. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.</p>
             <a class="link-arrow" href="https://bit-uborg-demo.netlify.app/" target="_blank" rel="noopener">לפתוח את הדוגמה<span class="sr-only"> (נפתח בלשונית חדשה)</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
           </article>
           <article class="work-item" data-kind="concept" data-type="landing">
             <div class="work-shot"><img src="/assets/work/bakery-desktop.jpg" width="1200" height="750" alt="קמח ומים: עמוד הבית של מאפייה בדיונית" loading="lazy"></div>
             <div class="work-meta"><span class="tag tag-concept">דוגמת עיצוב · עסק בדיוני</span><span class="tag tag-type">עמוד אחד</span></div>
-            <h2 class="work-title">קמח ומים</h2>
+            <h3 class="work-title">קמח ומים</h3>
             <p class="work-desc">אתר חם ומזמין למאפיית בוטיק: תפריט, סיפור המקום, שאלות נפוצות וטופס הזמנה.</p>
             <a class="link-arrow" href="/web/examples/bakery/index.html" target="_blank" rel="noopener">לפתוח את הדוגמה<span class="sr-only"> (נפתח בלשונית חדשה)</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
           </article>
           <article class="work-item" data-kind="concept" data-type="landing">
             <div class="work-shot"><img src="/assets/work/padel-desktop.jpg" width="1200" height="750" alt="פאדל לילה: דף נחיתה למגרשי פאדל בדיוניים" loading="lazy"></div>
             <div class="work-meta"><span class="tag tag-concept">דוגמת עיצוב · עסק בדיוני</span><span class="tag tag-type">דף נחיתה</span></div>
-            <h2 class="work-title">פאדל לילה</h2>
+            <h3 class="work-title">פאדל לילה</h3>
             <p class="work-desc">דף נחיתה אחד עם מטרה אחת: להזמין מגרש. בלי שום דבר מיותר בדרך לכפתור.</p>
             <a class="link-arrow" href="/web/examples/padel-layla/index.html" target="_blank" rel="noopener">לפתוח את הדוגמה<span class="sr-only"> (נפתח בלשונית חדשה)</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
           </article>
-        </div>
-        <p class="work-note">Fit With Nikita הוא פרויקט לקוח אמיתי, ומוצג כאן באישור הלקוח. הטפסים בקונספטים לא שולחים פניות אמיתיות.</p>
+          </div>
+        </section>
+        <p class="work-note">Fit With Nikita הוא פרויקט לקוח אמיתי, ומוצג כאן באישור הלקוח.</p>
       </div>
     </section>
   </main>
@@ -137,7 +134,7 @@
         </div>
         <div>
           <h2>האתר</h2>
-          <ul><li><a href="/v2/work.html">עבודות</a></li><li><a href="/pricing">שירותים ומחירים</a></li><li><a href="/hub/">מגזין</a></li><li><a href="/v2/#studio">הסטודיו</a></li><li><a href="/builder/">בונה הפרויקט</a></li></ul>
+          <ul><li><a href="/v2/work.html">עבודות</a></li><li><a href="/pricing">שירותים ומחירים</a></li><li><a href="/hub/">מגזין</a></li><li><a href="/v2/studio.html">הסטודיו</a></li><li><a href="/builder/">בונה הפרויקט</a></li></ul>
         </div>
         <div>
           <h2>מהמגזין</h2>

@@ -509,3 +509,66 @@ p { margin: 0; text-wrap: pretty; }
 }
 .page-head { position: relative; overflow: hidden; }
 .page-head > .wrap { position: relative; z-index: 1; }
+
+/* ============================================================
+   Refinement round (homepage as a gateway)
+   ============================================================ */
+.hero-actions { align-items: center; }
+.text-link {
+  display: inline-flex; align-items: center; min-height: 50px; padding-inline: 8px;
+  color: var(--on-navy); font-weight: 500; text-decoration: underline; text-decoration-color: rgba(214, 173, 98, 0.6);
+  text-underline-offset: 6px; text-decoration-thickness: 1.5px;
+}
+.text-link:hover { color: var(--gold-300); text-decoration-color: var(--gold-300); }
+
+/* one clear way into the full gallery */
+.gallery-link {
+  margin-top: clamp(28px, 4vw, 44px); display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  padding: clamp(20px, 3vw, 28px) clamp(22px, 3vw, 32px); border-radius: var(--radius-md);
+  background: var(--navy-900); color: var(--on-navy); text-decoration: none;
+  transition: background-color 220ms var(--ease-out);
+}
+.gallery-link:hover { background: var(--navy-800); }
+.gallery-link span { display: grid; gap: 4px; color: var(--on-navy-72); }
+.gallery-link strong { font-family: var(--font-display); font-size: clamp(1.4rem, 2.4vw, 1.9rem); color: var(--on-navy); }
+.gallery-link svg { width: 28px; height: 28px; color: var(--gold-300); flex: 0 0 auto; transition: transform 220ms var(--ease-out); }
+.gallery-link:hover svg { transform: translateX(-6px); }
+
+.mag-picks-title { font-weight: 700; margin-bottom: 8px; color: var(--ink-74); font-size: 0.95rem; }
+.mag-list h3 { font-size: 1.2rem; }
+
+.build-list a { grid-template-columns: minmax(160px, 0.5fr) minmax(0, 1.5fr) 24px; }
+.build-list a > svg { width: 22px; height: 22px; color: var(--gold-700); transition: transform 200ms var(--ease-out); }
+.build-list a:hover > svg { transform: translateX(-4px); }
+@media (max-width: 760px) {
+  .build-list a { grid-template-columns: minmax(0, 1fr) 24px; }
+  .build-list a p { grid-column: 1; }
+  .build-list a > svg { grid-row: 1 / span 2; grid-column: 2; align-self: center; }
+}
+
+.contact-alt { margin-top: 18px !important; font-size: 0.98rem; }
+.contact-alt a { color: var(--gold-300); text-underline-offset: 4px; }
+
+/* gallery: one segmented choice instead of two filter rows, and two clearly titled groups */
+.segmented {
+  margin-top: 28px; display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 4px;
+  border-radius: 999px; background: rgba(19, 32, 58, 0.07);
+}
+.segmented button {
+  min-height: 44px; padding: 0 22px; border: 0; border-radius: 999px; cursor: pointer; background: transparent;
+  font: 600 0.98rem/1 var(--font-body); color: var(--ink);
+  transition: background-color 180ms var(--ease-out), color 180ms var(--ease-out);
+}
+.segmented button:hover { background: rgba(255, 255, 255, 0.7); }
+.segmented button[aria-pressed="true"] { background: var(--navy-900); color: var(--on-navy); }
+@media (max-width: 560px) { .segmented { display: grid; width: 100%; } .segmented button { padding: 0 10px; } }
+.gallery-wrap { padding-top: clamp(40px, 5vw, 64px); }
+.work-group[hidden] { display: none; }
+.work-group + .work-group { margin-top: clamp(56px, 7vw, 88px); }
+.group-head h2 { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: clamp(1.6rem, 2.8vw, 2.3rem); }
+.group-head h2 .tag { font-family: var(--font-body); font-size: 0.8rem; }
+.group-head p { margin-top: 8px; color: var(--ink-74); max-width: 62ch; }
+.work-group .gallery { margin-top: 24px; }
+.work-item h3.work-title { font-size: clamp(1.4rem, 2.2vw, 1.85rem); }
+/* on phones the large rings would cross text and controls; the small ones and the glows stay */
+@media (max-width: 560px) { .ring-a, .ring-e { display: none; } }

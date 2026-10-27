@@ -32,29 +32,25 @@
     items.forEach((el) => el.classList.add("in"));
   }
 
-  /* work gallery filters: one choice per group, a live count for screen readers */
+  /* work gallery: one simple choice, real projects or concepts, with a live count */
   const gallery = document.querySelector("[data-gallery]");
   if (gallery) {
-    const state = { kind: "all", type: "all" };
     const count = document.querySelector("[data-gallery-count]");
-    const apply = () => {
+    const apply = (kind) => {
       let shown = 0;
-      gallery.querySelectorAll(".work-item").forEach((item) => {
-        const ok = (state.kind === "all" || item.dataset.kind === state.kind) &&
-                   (state.type === "all" || (item.dataset.type || "").split(" ").includes(state.type));
-        item.hidden = !ok;
-        if (ok) shown++;
+      gallery.querySelectorAll("[data-group]").forEach((group) => {
+        const ok = kind === "all" || group.dataset.group === kind;
+        group.hidden = !ok;
+        if (ok) shown += group.querySelectorAll(".work-item").length;
       });
-      if (count) count.textContent = shown === 0 ? "אין עבודות בצירוף הזה. אפשר לבחור סינון אחר." : shown === 1 ? "מוצגת עבודה אחת" : `מוצגות ${shown} עבודות`;
+      if (count) count.textContent = shown === 1 ? "מוצגת עבודה אחת" : `מוצגות ${shown} עבודות`;
     };
-    document.querySelectorAll("[data-filter]").forEach((btn) => {
+    document.querySelectorAll('[data-filter="kind"]').forEach((btn) => {
       btn.addEventListener("click", () => {
-        const group = btn.dataset.filter;
-        state[group] = btn.dataset.value;
-        document.querySelectorAll(`[data-filter="${group}"]`).forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-        apply();
+        document.querySelectorAll('[data-filter="kind"]').forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+        apply(btn.dataset.value);
       });
     });
-    apply();
+    apply("all");
   }
 })();
