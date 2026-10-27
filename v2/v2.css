@@ -507,3 +507,5 @@ p { margin: 0; text-wrap: pretty; }
   .proto-flag { font-size: 0.7rem; padding: 4px 10px; bottom: 10px; }
   .ring-a, .ring-c { width: 220px; height: 220px; }
 }
+.page-head { position: relative; overflow: hidden; }
+.page-head > .wrap { position: relative; z-index: 1; }
