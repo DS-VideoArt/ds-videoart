@@ -1,8 +1,8 @@
-/* DS Creative Studio, redesign V2 prototype: header state, mobile menu, reveal on scroll, work filters.
-   No measurement here on purpose: the prototype is local and must not send analytics hits. */
+/* DS Creative Studio, site behaviour for the redesigned pages (V2): header state, mobile menu, reveal on scroll,
+   the work gallery choice and the magazine topics. Measurement stays in analytics.js and site.js. */
 (function () {
   "use strict";
-  document.documentElement.classList.add("js");
+  document.documentElement.classList.add("js");   /* also set in each page head, so nothing flashes */
 
   /* header turns solid once the page scrolls */
   const head = document.querySelector(".site-head");
@@ -52,5 +52,23 @@
       });
     });
     apply("all");
+  }
+  /* magazine topics: one choice at a time, cards outside the topic hide, a live count */
+  const mag = document.querySelector("[data-magazine]");
+  if (mag) {
+    const out = document.querySelector("[data-magazine-count]");
+    const show = (topic) => {
+      let n = 0;
+      mag.querySelectorAll("[data-topics]").forEach((card) => {
+        const ok = topic === "all" || card.dataset.topics.split("|").includes(topic);
+        card.hidden = !ok; if (ok) n++;
+      });
+      if (out) out.textContent = n === 1 ? "מוצג מאמר אחד" : `מוצגים ${n} מאמרים`;
+    };
+    document.querySelectorAll("[data-topic]").forEach((btn) => btn.addEventListener("click", () => {
+      document.querySelectorAll("[data-topic]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+      show(btn.dataset.topic);
+    }));
+    show("all");
   }
 })();

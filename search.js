@@ -1,14 +1,16 @@
 /* DS Creative Studio: site search (Pagefind, client side, no server).
-   - A visible search field sits in the header of every public page (.nav-search).
+   - A visible search field sits in the header of the classic pages (.nav-search); the redesigned pages open the same
+     dialog from a search button ([data-search-open]).
    - Focus or typing opens an accessible dialog with the results: listbox, arrow keys, Enter, Esc, focus trap, aria-live summary.
    - Hebrew: no stemming in Pagefind, so every record carries a manual alias layer built at index time. No automatic prefix expansion. */
 (function () {
   "use strict";
   var FIELD = document.querySelector(".nav-search input");
-  if (!FIELD) return;
+  var TRIGGERS = document.querySelectorAll("[data-search-open]");
+  if (!FIELD && !TRIGGERS.length) return;
   var LONG = "מה תרצו לדעת? למשל: מה ההבדל בין דף נחיתה לאתר?", SHORT = "מה תרצו לדעת?";
   var mq = window.matchMedia("(max-width: 860px)");
-  function placeholder() { FIELD.placeholder = mq.matches ? SHORT : LONG; }
+  function placeholder() { if (FIELD) FIELD.placeholder = mq.matches ? SHORT : LONG; }
   placeholder(); mq.addEventListener ? mq.addEventListener("change", placeholder) : mq.addListener(placeholder);
 
   var TOPICS = ["אתר או דף נחיתה", "מחירים", "תכנון והכנה", "דומיין ואחסון", "Google ו־SEO", "פרטיות, נגישות ומדידה", "תחזוקה", "מערכות ותוספות", "תיק עבודות"];
@@ -70,7 +72,7 @@
     build(); lastFocus = document.activeElement; dialog.hidden = false; document.body.classList.add("ds-search-open");
     input.value = prefill || ""; input.focus(); load().then(function () { run(input.value); });
   }
-  function close() { if (!dialog || dialog.hidden) return; dialog.hidden = true; document.body.classList.remove("ds-search-open"); FIELD.value = ""; closing = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); setTimeout(function () { closing = false; }, 0); }
+  function close() { if (!dialog || dialog.hidden) return; dialog.hidden = true; document.body.classList.remove("ds-search-open"); if (FIELD) FIELD.value = ""; closing = true; if (lastFocus && lastFocus.focus) lastFocus.focus(); setTimeout(function () { closing = false; }, 0); }
   function load() {
     if (pf) return Promise.resolve(pf);
     live.textContent = "טוען את החיפוש…";
@@ -131,12 +133,15 @@
   /* header field: a real, visible search box; the results dialog opens from it */
   /* No opening on focus: a keyboard user tabbing through the header must be able to pass the field (WCAG 3.2.1).
      The dialog opens on a pointer click, on typing, or on Enter / ArrowDown in the field. */
+  if (FIELD) {
   FIELD.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === "ArrowDown") && (!dialog || dialog.hidden)) { e.preventDefault(); open(FIELD.value); } });
   FIELD.addEventListener("input", function () { if (!dialog || dialog.hidden) open(FIELD.value); });
   FIELD.addEventListener("click", function () { if (!dialog || dialog.hidden) open(FIELD.value); });   /* the field keeps focus after Esc, so a second click must reopen */
   FIELD.closest("form").addEventListener("submit", function (e) { e.preventDefault(); open(FIELD.value); });
+  }
+  TRIGGERS.forEach(function (b) { b.addEventListener("click", function () { open(""); }); });
   document.addEventListener("keydown", function (e) {
-    if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest("input, textarea, select, [contenteditable]")) { e.preventDefault(); FIELD.focus(); open(FIELD.value); }
+    if (e.key === "/" && !e.ctrlKey && !e.metaKey && !e.altKey && !e.target.closest("input, textarea, select, [contenteditable]")) { e.preventDefault(); if (FIELD) { FIELD.focus(); open(FIELD.value); } else open(""); }
   });
   /* deep links from search results into a FAQ question: open that question */
   function openFaq() { var m = location.hash.match(/^#(faq-\d+)$/); if (!m) return; var d = document.getElementById(m[1]); if (d && d.tagName === "DETAILS") { d.open = true; d.scrollIntoView({ block: "start" }); } }

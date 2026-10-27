@@ -25,11 +25,22 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "hub/website-is-live-what-now.html": ("index, follow", True, False),
     "hub/business-website-or-custom-system.html": ("index, follow", True, False),
     "hub/questions-before-ordering-a-website.html": ("index, follow", True, False),
+    # V2 (October 2026): gallery, project pages, studio, contact
+    "work/index.html": ("index, follow", True, False),
+    "work/fit-with-nikita.html": ("index, follow", True, False),
+    "work/golondon.html": ("index, follow", True, False),
+    "work/bit-uborg.html": ("index, follow", True, False),
+    "work/kemach-umayim.html": ("index, follow", True, False),
+    "work/padel-layla.html": ("index, follow", True, False),
+    "studio.html": ("index, follow", True, False),
+    "contact.html": ("index, follow", True, False),
 }
+# the redesigned pages share the V2 chrome (tools/site-chrome.py); /builder/ and /haredi keep the classic one
+V2_PAGES = [p for p in PAGES if p not in ("builder/index.html", "haredi.html", "card.html", "qr.html")]
 FORBIDDEN = ["localhost", "127.0.0.1", "netlify.app", "example.com", "DS VideoArt", "AI Commercials", "AI Creative Director", "staging.", "עד 3 עמודים", "עד שלושה עמודים", "שלושה עמודים", "כולל עד 3", "דקות עבודה", "עד 30 דקות", "עד 90 דקות", "חצי שעה", "שעה וחצי", "6 עד 7 אזורי"]
 # External live URLs the portfolio links to on purpose (decision 2026-09-25: no custom domain for the client site yet; the demo site stays on Netlify).
 ALLOWED_EXTERNAL = ["https://fit-with-nikita-app.netlify.app/", "https://bit-uborg-demo.netlify.app/"]
-CORE_TEXT = list(PAGES) + ["analytics.js", "site.js", "search.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css", "home.css", "pricing.js"]
+CORE_TEXT = list(PAGES) + ["studio.css", "studio.js", "analytics.js", "site.js", "search.js", "builder/pricing-config.js", "builder/project-builder.js", "manifest.json", "robots.txt", "sitemap.xml", "_headers", "hub/content-hub.css", "home.css", "pricing.js"]
 fails, notes = [], []
 def read(p): return open(os.path.join(root, p), encoding="utf-8").read()
 def count(pat, s): return len(re.findall(pat, s))
@@ -101,7 +112,7 @@ def exists(path):
     p = path.lstrip("/")
     cands = [p, p + ".html", os.path.join(p, "index.html")] if p else ["index.html"]
     return any(os.path.exists(os.path.join(root, c)) for c in cands)
-for page in ("index.html", "pricing.html", "haredi.html", "privacy.html", "legal/terms.html", "legal/accessibility.html", "404.html", "builder/index.html", "hub/index.html", "hub/do-you-need-a-website.html", "hub/landing-page-or-business-website.html", "hub/how-much-does-a-website-cost.html", "hub/which-pages-does-a-business-website-need.html", "hub/what-to-prepare-before-building-a-website.html", "hub/domain-hosting-who-owns-what.html", "hub/website-is-live-what-now.html", "hub/business-website-or-custom-system.html", "hub/questions-before-ordering-a-website.html"):
+for page in [p for p in PAGES if p not in ("card.html", "qr.html")]:
     base = os.path.dirname(page)
     for href in re.findall(r'href="([^"]+)"', read(page)):
         if href.startswith("#") or href.startswith(("http", "mailto:", "tel:")): continue
@@ -112,17 +123,33 @@ a1 = read("hub/do-you-need-a-website.html"); a2 = read("hub/landing-page-or-busi
 if 'href="/hub/landing-page-or-business-website"' not in a1: fails.append("article 01 does not link to article 02")
 if 'href="/hub/do-you-need-a-website"' not in a2: fails.append("article 02 does not link to article 01")
 home = read("index.html")
-if home.count('golondon-desktop.jpg') != 1 or 'id="work-golondon"' not in home: fails.append("homepage: GoLondon must appear once, as #work-golondon")
-if 'פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית' not in home: fails.append("homepage: complex-project disclaimer missing")
-if home.count('nikita-desktop.jpg') != 1 or 'פרויקט אמיתי · לקוח' not in home: fails.append("homepage: Fit With Nikita card (real client project) must appear once with its tag")
-if 'עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד.' not in home: fails.append("homepage: computer-lab demo note missing")
-if 'comfix' in home.lower(): fails.append("homepage: old demo name ComFix is still referenced")
-if 'ביט ובורג' not in home or 'bit-uborg-demo.netlify.app' not in home: fails.append("homepage: Bit and Borg demo card or link missing")
-_u = home[home.find('id="useful"'):]; _u = _u[:_u.find('</section>')]
-_order = [m for m in re.findall(r'class="hub-teaser-card[^"]*" href="([^"]+)"', _u)]
-if _order != ["/hub/business-website-or-custom-system", "/hub/how-much-does-a-website-cost", "/hub/landing-page-or-business-website"]: fails.append(f"homepage #useful: expected the system article, the price article and landing page or website, got {_order}")
-if _u.count('class="hub-teaser-card') > 3: fails.append("homepage #useful: more than 3 teasers")
-if 'href="/hub/">לכל המידע השימושי</a>' not in _u: fails.append("homepage #useful: link to the hub missing")
+# V2 homepage (2026-10-27): a short gateway. Five sections, two works, three magazine links, no prices, no form.
+_body = home[home.index("<body"):]
+for _id in ("work", "magazine", "services", "contact", "work-fit-with-nikita", "work-golondon", "complex"):
+    if f'id="{_id}"' not in _body: fails.append(f"homepage: anchor #{_id} missing")
+if len(re.findall(r'<section class="(?:hero|section)\b', _body)) != 5: fails.append("homepage: expected exactly five sections")
+if "₪" in _body or re.search(r"\b(440|1,290|149|349)\b", _body): fails.append("homepage: prices belong on /pricing only")
+if "<form" in _body: fails.append("homepage: the contact form lives on /contact")
+if _body.count('class="work-item"') != 2: fails.append("homepage: expected two works")
+for _href in ("/work/", "/hub/", "/pricing", "/contact", "/hub/questions-before-ordering-a-website"):
+    if f'href="{_href}"' not in _body: fails.append(f"homepage: link to {_href} missing")
+# no people in screenshots: these two captures show a passer-by and a hand
+for page in V2_PAGES:
+    if re.search(r"golondon-desktop\.jpg|computer-lab-", read(page)): fails.append(f"{page}: uses a screenshot with people in it")
+# gallery and project pages: real and concept work stay apart and keep their notes
+_w = read("work/index.html")
+if 'data-group="real"' not in _w or 'data-group="concept"' not in _w or _w.count('class="work-item"') != 5: fails.append("work: expected 5 works in a real group and a concept group")
+for _f, _txt in (("work/golondon.html", "פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית"), ("work/bit-uborg.html", "עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד."),
+                 ("work/fit-with-nikita.html", "ומוצג כאן באישור הלקוח"), ("work/kemach-umayim.html", "עסק בדיוני"), ("work/padel-layla.html", "עסק בדיוני")):
+    if _txt not in read(_f): fails.append(f"{_f}: note missing: {_txt}")
+for _f in ["studio.html", "contact.html"] + [p for p in PAGES if p.startswith("work/")]:
+    _b = read(_f); _b = _b[_b.index("<body"):]
+    if "₪" in _b: fails.append(f"{_f}: prices belong on /pricing only")
+# contact page: the same Netlify form as before (name and fields), so submissions and conversion tracking continue
+_c = read("contact.html")
+for _need in ('<form id="contactForm"', 'name="contact-request"', 'data-netlify="true"', 'netlify-honeypot="bot-field"', 'name="form-name" value="contact-request"',
+              'name="builder_context"', 'name="utm_source"', 'name="utm_medium"', 'name="utm_campaign"', 'name="utm_content"', 'name="utm_term"', 'name="bot-field"', 'name="name"', 'name="phone"', 'name="service"'):
+    if _need not in _c: fails.append(f"contact: form is missing {_need}")
 # homepage redesign (2026-10-15): the detail sections live on /pricing, the homepage keeps the summary and forwards old anchors
 pp = read("pricing.html")
 _faq_ids = re.findall(r'<details class="faq" id="(faq-\d+)"', pp)
@@ -135,15 +162,12 @@ for _id in ("packages", "package-landing", "package-website", "maintenance", "tr
     if f'id="{_id}"' not in pp: fails.append(f"pricing: anchor #{_id} missing")
 for _price in ("440", "1,290", "149", "349", "220"):
     if _price not in pp: fails.append(f"pricing: price {_price} missing")
-for _price in ("440", "1,290"):
-    if _price not in home: fails.append(f"homepage: price {_price} missing")
 _fwd = re.search(r'/\^#\((.*?)\)\$/\.test\(h\)', home)
 if not _fwd or 'location.replace("/pricing"' not in home: fails.append("homepage: forward of moved anchors to /pricing missing")
 else:
     for _id in ("pricing", "process", "faq", "maintenance", "package-", "transparency"):
         if _id not in _fwd.group(1): fails.append(f"homepage: moved anchor #{_id} is not forwarded to /pricing")
-for _id in ("work", "contact", "work-fit-with-nikita", "complex"):
-    if f'id="{_id}"' not in home: fails.append(f"homepage: anchor #{_id} missing (linked from other pages)")
+if 'h === "#contact") location.replace("/contact"' not in home: fails.append("homepage: /#contact is not forwarded to /contact")
 # the checklist (2026-10-19, 15 questions since 2026-10-20): the questions, one checkbox each, a print file, a separate DS area with one answer per question, links in from the sources
 cl = read("hub/questions-before-ordering-a-website.html")
 CL_QUESTIONS = 15
@@ -159,7 +183,7 @@ for _src in ("hub/how-much-does-a-website-cost.html", "hub/domain-hosting-who-ow
 # search: every public page with the standard nav carries the visible search field and the search script
 for page in [p for p in PAGES if p not in ("builder/index.html", "card.html", "qr.html")]:
     s = read(page)
-    if 'class="nav-search"' not in s: fails.append(f"{page}: search field missing")
+    if 'class="nav-search"' not in s and "data-search-open" not in s: fails.append(f"{page}: search field or button missing")
     if not re.search(r'<script src="(?:\.\./|/)?search\.js\?v=', s): fails.append(f"{page}: search.js missing")
 # marketing short links /go/<slug>: temporary redirect (302, or 307) to an existing page on this site, with UTM, never in the sitemap
 _go = {}

@@ -177,7 +177,7 @@
   }
   /* A small "measurement settings" link in the site footer, so the choice can be changed later. */
   function addSettingsLink() {
-    const bottom = document.querySelector(".footer .bottom span:last-child");
+    const bottom = document.querySelector(".footer .bottom span:last-child, .site-foot .foot-bottom span:last-child");   /* classic and redesigned footers */
     if (!bottom || document.getElementById("dscConsentLink")) return;
     const a = document.createElement("a");
     a.href = "#"; a.id = "dscConsentLink"; a.textContent = "הגדרות מדידה";

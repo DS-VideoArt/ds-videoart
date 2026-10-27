@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = join(ROOT, "dist");
 const OUT = join(ROOT, ".build-tmp");
-const MIN_RECORDS = 40;   // 47 at the time of writing: 11 pages + 36 homepage records
+const MIN_RECORDS = 40;   // 52 at the time of writing (V2): 21 pages + 31 pricing records
 const SKIP = [/^tools\//, /^dist\//, /(^|\/)node_modules\//, /^package(-lock)?\.json$/, /^netlify\.toml$/, /(^|\/)\.(?!well-known\/)/];
 
 function files() {

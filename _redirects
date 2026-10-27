@@ -47,6 +47,22 @@ http://ds-videoart.netlify.app/*   https://dscreative.co.il/:splat  301!
 /hub/questions-before-ordering-a-website.html  /hub/questions-before-ordering-a-website  301!
 /hub/questions-before-ordering-a-website/      /hub/questions-before-ordering-a-website  301
 
+# V2 pages (October 2026): one canonical URL each
+/studio.html  /studio  301!
+/studio/      /studio  301
+/contact.html  /contact  301!
+/contact/      /contact  301
+/work/fit-with-nikita.html  /work/fit-with-nikita  301!
+/work/fit-with-nikita/      /work/fit-with-nikita  301
+/work/golondon.html  /work/golondon  301!
+/work/golondon/      /work/golondon  301
+/work/bit-uborg.html  /work/bit-uborg  301!
+/work/bit-uborg/      /work/bit-uborg  301
+/work/kemach-umayim.html  /work/kemach-umayim  301!
+/work/kemach-umayim/      /work/kemach-umayim  301
+/work/padel-layla.html  /work/padel-layla  301!
+/work/padel-layla/      /work/padel-layla  301
+
 # Audience page: one canonical URL
 /haredi.html  /haredi  301!
 /haredi/      /haredi  301

@@ -16,7 +16,7 @@
 
   const P = window.DS_PRICING;
   const STORAGE_KEY = "dsc_builder_v1";
-  const CONTACT_URL = "/#contact";
+  const CONTACT_URL = "/contact";
   const WA = "https://wa.me/972548203022";
 
   const qs = (s, r = document) => r.querySelector(s);
