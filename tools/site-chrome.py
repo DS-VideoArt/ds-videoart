@@ -68,7 +68,7 @@ def head_html(current, solid):
       </nav>
       <div class="nav-tools">
         <button class="icon-btn" type="button" data-search-open aria-label="חיפוש באתר">{ICON["search"]}</button>
-        <a class="btn btn-line nav-cta" href="/contact">לדבר על רעיון</a>
+        <a class="btn btn-line nav-cta" href="/contact">בואו נדבר</a>
         <button class="icon-btn menu-btn" type="button" data-menu-open aria-controls="menu" aria-expanded="false" aria-label="פתיחת התפריט">{ICON["menu"]}</button>
       </div>
     </div>

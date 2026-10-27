@@ -784,8 +784,7 @@ body { background: var(--cream-50); color: var(--ink); }
 
 /* ============================================================
    Homepage entrance (second round, 2026-10-27): a short opening with two actions, then four ways in.
-   No screenshots, no articles, no prices. The three .paths-- directions are drafts for the owner:
-   the two that are not chosen are removed afterwards.
+   No screenshots, no articles, no prices. The four ways in are doorways (the owner's choice, 2026-10-27).
    ============================================================ */
 .lobby {   /* one dark room from the opening down to the footer, lit from a few corners */
   background:
@@ -862,123 +861,62 @@ body { background: var(--cream-50); color: var(--ink); }
   .entry-note::before { margin-top: 0.55em; }
 }
 
-/* ---------- four ways in: shared parts ---------- */
-.paths { position: relative; overflow: hidden; isolation: isolate; padding: clamp(20px, 2.5vw, 32px) 0 clamp(64px, 7.5vw, 96px); }
-.paths-title { display: inline-flex; align-items: center; gap: 10px; margin-bottom: clamp(18px, 2.4vw, 28px); font: 600 0.98rem/1.4 var(--font-body); }
+/* ---------- four ways in: a doorway each, and the whole door is the link ---------- */
+.paths { position: relative; overflow: hidden; isolation: isolate; color: var(--on-navy); padding: clamp(20px, 2.5vw, 32px) 0 clamp(64px, 7.5vw, 96px); }
+.paths-title { display: inline-flex; align-items: center; gap: 10px; margin-bottom: clamp(18px, 2.4vw, 28px); font: 600 0.98rem/1.4 var(--font-body); color: var(--gold-300); }
 .paths-title::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-400); }
-.paths-list { list-style: none; margin: 0; padding: 0; }
-.path { position: relative; isolation: isolate; color: inherit; text-decoration: none; }
-.path-num { font: 600 0.85rem/1 var(--font-body); letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
-.path-name { display: block; font-family: var(--font-display); font-weight: 700; line-height: 1.1; }
-.path-sub { display: block; text-wrap: balance; }
-.path-go { display: inline-grid; place-items: center; border-radius: 50%; transition: background-color 240ms var(--ease-out), color 240ms var(--ease-out), box-shadow 240ms var(--ease-out); }
-.path-go svg { width: 18px; height: 18px; transition: transform 240ms var(--ease-out); }
-.path:hover .path-go svg, .path:focus-visible .path-go svg { transform: translateX(-3px); }
-.path-icon { transition: transform 420ms var(--ease-out); }
-.paths--tiles, .paths--doors { color: var(--on-navy); }
-.paths--tiles .paths-title, .paths--doors .paths-title { color: var(--gold-300); }
-
-/* direction A: four typographic tiles */
-.paths--tiles .paths-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); }
-.paths--tiles .path {
-  height: 100%; min-height: clamp(210px, 18vw, 244px); padding: clamp(20px, 2vw, 28px);
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr auto auto; gap: 8px 12px;
-  border-radius: var(--radius-md); overflow: hidden;
-  background: rgba(243, 236, 223, 0.035); box-shadow: inset 0 0 0 1px var(--on-navy-line);
-  transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out), background-color 300ms var(--ease-out);
-}
-.paths--tiles .path::before {   /* light that follows the pointer inside the tile */
-  content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity 320ms var(--ease-out);
-  background: radial-gradient(240px circle at var(--gx, 50%) var(--gy, 30%), rgba(214, 173, 98, 0.22), transparent 70%);
-}
-.paths--tiles .path-num { color: var(--gold-300); }
-.paths--tiles .path-icon { grid-column: 2; grid-row: 1; width: 34px; height: 34px; color: var(--gold-400); }
-.paths--tiles .path-name { grid-column: 1 / -1; grid-row: 3; font-size: clamp(1.55rem, 2.2vw, 2.05rem); }
-.paths--tiles .path-sub { grid-column: 1; grid-row: 4; align-self: end; color: var(--on-navy-72); font-size: 0.95rem; }
-.paths--tiles .path-go { grid-column: 2; grid-row: 4; width: 42px; height: 42px; color: var(--gold-300); box-shadow: inset 0 0 0 1.5px var(--on-navy-line); }
-.paths--tiles .path:hover, .paths--tiles .path:focus-visible {
-  transform: translateY(-4px); background-color: rgba(243, 236, 223, 0.05);
-  box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.55), 0 26px 44px -30px rgba(0, 0, 0, 0.9);
-}
-.paths--tiles .path:hover::before, .paths--tiles .path:focus-visible::before { opacity: 1; }
-.paths--tiles .path:hover .path-icon, .paths--tiles .path:focus-visible .path-icon { transform: translateY(-3px) rotate(-6deg); }
-.paths--tiles .path:hover .path-go, .paths--tiles .path:focus-visible .path-go { background: var(--gold-400); color: var(--navy-950); box-shadow: none; }
-@media (max-width: 900px) { .paths--tiles .paths-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 560px) {
-  .paths--tiles .path { min-height: 158px; padding: 16px; gap: 6px 8px; }
-  .paths--tiles .path-icon { width: 28px; height: 28px; }
-  .paths--tiles .path-name { font-size: 1.4rem; }
-  .paths--tiles .path-sub { grid-column: 1 / -1; font-size: 0.86rem; line-height: 1.45; }
-  .paths--tiles .path-go { display: none; }
-}
-
-/* direction B: a typographic index on cream */
-.paths--index {
-  margin-top: clamp(24px, 3vw, 40px); padding-top: clamp(40px, 5vw, 64px); color: var(--ink);
-  background:
-    radial-gradient(900px 520px at 100% 0%, rgba(214, 173, 98, 0.16), transparent 65%),
-    radial-gradient(700px 500px at 0% 100%, rgba(34, 53, 95, 0.06), transparent 70%),
-    var(--cream-50);
-}
-.paths--index .paths-title { color: var(--gold-700); }
-.paths--index .path {
-  display: grid; grid-template-columns: 3rem auto minmax(0, 1fr) 48px; align-items: center; gap: 6px clamp(16px, 3vw, 40px);
-  padding: clamp(16px, 2vw, 24px) clamp(6px, 1vw, 14px); overflow: hidden; box-shadow: 0 1px 0 var(--ink-line);
-}
-.paths--index li:first-child .path { box-shadow: 0 -1px 0 var(--ink-line), 0 1px 0 var(--ink-line); }
-.paths--index .path::before {
-  content: ""; position: absolute; inset: 0; z-index: -1; transform: scaleX(0); transform-origin: right;
-  background: linear-gradient(to left, rgba(214, 173, 98, 0.2), rgba(214, 173, 98, 0.03)); transition: transform 460ms var(--ease-out);
-}
-.paths--index .path:hover::before, .paths--index .path:focus-visible::before { transform: scaleX(1); }
-.paths--index .path-num { color: var(--gold-700); }
-.paths--index .path-icon { display: none; }
-.paths--index .path-name { font-size: clamp(2rem, 4.2vw, 3.5rem); transition: transform 460ms var(--ease-out), color 240ms var(--ease-out); }
-.paths--index .path-sub { justify-self: end; color: var(--ink-74); font-size: 1.02rem; }
-.paths--index .path-go { width: 48px; height: 48px; color: var(--gold-700); box-shadow: inset 0 0 0 1.5px var(--ink-line); }
-.paths--index .path:hover .path-name, .paths--index .path:focus-visible .path-name { transform: translateX(-10px); color: var(--gold-700); }
-.paths--index .path:hover .path-go, .paths--index .path:focus-visible .path-go { background: var(--navy-900); color: var(--gold-300); box-shadow: none; }
-.paths--index :focus-visible { outline-color: var(--gold-700); }
-@media (max-width: 720px) {
-  .paths--index .path { grid-template-columns: 2.2rem minmax(0, 1fr) 40px; gap: 2px 12px; }
-  .paths--index .path-num { grid-row: 1 / span 2; align-self: start; padding-top: 0.7em; }
-  .paths--index .path-name { grid-column: 2; font-size: 1.85rem; }
-  .paths--index .path-sub { grid-column: 2; grid-row: 2; justify-self: start; font-size: 0.92rem; }
-  .paths--index .path-go { grid-column: 3; grid-row: 1 / span 2; width: 40px; height: 40px; }
-}
-
-/* direction C: four doorways, an arch over each way in */
-.paths--doors .paths-list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.8vw, 24px); }
-.paths--doors .path {
-  height: 100%; min-height: clamp(280px, 23vw, 336px); padding: 0 clamp(16px, 2vw, 26px) clamp(22px, 2.4vw, 30px);
+.paths-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.8vw, 24px); }
+.path {
+  position: relative; isolation: isolate; height: 100%; min-height: clamp(280px, 23vw, 336px);
+  padding: 0 clamp(16px, 2vw, 26px) clamp(22px, 2.4vw, 30px);
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; text-align: center;
+  color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent;
   border-radius: 999px 999px 14px 14px; overflow: hidden;
   background: linear-gradient(to top, rgba(243, 236, 223, 0.05), rgba(243, 236, 223, 0.012));
   box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.34);
   transition: transform 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
 }
-.paths--doors .path::after { content: ""; position: absolute; inset: 9px; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.14); }
-.paths--doors .path::before {   /* light coming through the open door */
+.path::after { content: ""; position: absolute; inset: 9px; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.14); }
+.path::before {   /* light coming through the open door */
   content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transform: translateY(16%);
   background: radial-gradient(120% 70% at 50% 100%, rgba(214, 173, 98, 0.34), transparent 70%);
   transition: opacity 440ms var(--ease-out), transform 560ms var(--ease-out);
 }
-.paths--doors .path-icon { order: -1; width: 40px; height: 40px; margin: clamp(52px, 5.4vw, 70px) 0 auto; color: var(--gold-400); }
-.paths--doors .path-num { color: var(--gold-300); }
-.paths--doors .path-name { margin-top: 4px; font-size: clamp(1.55rem, 2.2vw, 2.1rem); }
-.paths--doors .path-sub { max-width: 22ch; color: var(--on-navy-72); font-size: 0.95rem; }
-.paths--doors .path-go { margin-top: 12px; width: 42px; height: 42px; color: var(--gold-300); box-shadow: inset 0 0 0 1.5px var(--on-navy-line); }
-.paths--doors .path:hover, .paths--doors .path:focus-visible { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.7); }
-.paths--doors .path:hover::before, .paths--doors .path:focus-visible::before { opacity: 1; transform: none; }
-.paths--doors .path:hover .path-icon, .paths--doors .path:focus-visible .path-icon { transform: translateY(-6px); }
-.paths--doors .path:hover .path-go, .paths--doors .path:focus-visible .path-go { background: var(--gold-400); color: var(--navy-950); box-shadow: none; }
-@media (max-width: 900px) { .paths--doors .paths-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.path-icon { order: -1; width: 40px; height: 40px; margin: clamp(52px, 5.4vw, 70px) 0 auto; color: var(--gold-400); transition: transform 420ms var(--ease-out); }
+.path-num { font: 600 0.85rem/1 var(--font-body); letter-spacing: 0.08em; font-variant-numeric: tabular-nums; color: var(--gold-300); }
+.path-name { display: block; margin-top: 4px; font-family: var(--font-display); font-size: clamp(1.55rem, 2.2vw, 2.1rem); font-weight: 700; line-height: 1.1; }
+.path-sub { display: block; max-width: 22ch; color: var(--on-navy-72); font-size: 0.95rem; text-wrap: balance; }
+.path-go {
+  display: inline-grid; place-items: center; margin-top: 12px; width: 42px; height: 42px; border-radius: 50%;
+  color: var(--gold-300); box-shadow: inset 0 0 0 1.5px var(--on-navy-line);
+  transition: background-color 240ms var(--ease-out), color 240ms var(--ease-out), box-shadow 240ms var(--ease-out);
+}
+.path-go svg { width: 18px; height: 18px; transition: transform 240ms var(--ease-out); }
+/* the door opens under a real pointer only, so a tap on a phone never leaves it stuck open; the keyboard gets the same light */
+@media (hover: hover) {
+  .path:hover { transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.7); }
+  .path:hover::before { opacity: 1; transform: none; }
+  .path:hover .path-icon { transform: translateY(-6px); }
+  .path:hover .path-go { background: var(--gold-400); color: var(--navy-950); box-shadow: none; }
+  .path:hover .path-go svg { transform: translateX(-3px); }
+}
+.path:focus-visible { border-radius: 999px 999px 14px 14px; transform: translateY(-4px); box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.7); }
+.path:focus-visible::before { opacity: 1; transform: none; }
+.path:focus-visible .path-icon { transform: translateY(-6px); }
+.path:focus-visible .path-go { background: var(--gold-400); color: var(--navy-950); box-shadow: none; }
+/* on touch the door lights while the finger is on it */
+.path:active { box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.7); }
+.path:active::before { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {   /* the light still changes, nothing moves */
+  .path::before, .path:hover, .path:focus-visible, .path:hover .path-icon, .path:focus-visible .path-icon, .path:hover .path-go svg { transform: none; }
+}
+@media (max-width: 900px) { .paths-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) {
-  .paths--doors .path { min-height: 232px; padding: 0 12px 18px; }
-  .paths--doors .path-icon { width: 30px; height: 30px; margin-top: 46px; }
-  .paths--doors .path-name { font-size: 1.35rem; }
-  .paths--doors .path-sub { font-size: 0.84rem; line-height: 1.45; }
-  .paths--doors .path-go { display: none; }
+  .path { min-height: 232px; padding: 0 12px 18px; }
+  .path-icon { width: 30px; height: 30px; margin-top: 46px; }
+  .path-name { font-size: 1.35rem; }
+  .path-sub { font-size: 0.84rem; line-height: 1.45; }
+  .path-go { display: none; }
 }
 
 /* ---------- the homepage's short footer: contact and secondary links ---------- */

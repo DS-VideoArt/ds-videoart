@@ -71,18 +71,20 @@
     }));
     show("all");
   }
-  /* homepage entrance: with a mouse, a soft light follows the pointer over the dot field, the emblem leans a little,
-     and each way in lights up under the pointer. Nothing moves on touch screens or with reduced motion. */
+  /* homepage entrance: with a mouse, a soft light follows the pointer over the dot field and the emblem leans a little.
+     Nothing moves on touch screens or with reduced motion. */
   const entry = document.querySelector("[data-entry]");
-  if (window.matchMedia && matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)").matches) {
-    const follow = (el, onMove) => {
-      let raf = 0, ev = null;
-      el.addEventListener("pointermove", (e) => { ev = e; if (!raf) raf = requestAnimationFrame(() => { raf = 0; const r = el.getBoundingClientRect(); onMove(ev.clientX - r.left, ev.clientY - r.top, r); }); });
-    };
-    if (entry) follow(entry, (x, y, r) => {
-      entry.style.setProperty("--mx", x + "px"); entry.style.setProperty("--my", y + "px");
-      entry.style.setProperty("--px", (x / r.width - 0.5).toFixed(3)); entry.style.setProperty("--py", (y / r.height - 0.5).toFixed(3));
+  if (entry && window.matchMedia && matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)").matches) {
+    let raf = 0, last = null;
+    entry.addEventListener("pointermove", (e) => {
+      last = e;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = entry.getBoundingClientRect(), x = last.clientX - r.left, y = last.clientY - r.top;
+        entry.style.setProperty("--mx", x + "px"); entry.style.setProperty("--my", y + "px");
+        entry.style.setProperty("--px", (x / r.width - 0.5).toFixed(3)); entry.style.setProperty("--py", (y / r.height - 0.5).toFixed(3));
+      });
     });
-    document.querySelectorAll(".path").forEach((el) => follow(el, (x, y) => { el.style.setProperty("--gx", x + "px"); el.style.setProperty("--gy", y + "px"); }));
   }
 })();
