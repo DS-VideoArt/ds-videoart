@@ -61,7 +61,7 @@
 .w-line-gold { font-weight: 700; color: var(--gold-400); }
 .w-lead { margin: 26px 0 0; font-size: clamp(1.06rem, 1.25vw, 1.2rem); line-height: 1.65; color: var(--on-navy-72); max-width: 31rem; }
 .w-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
-.w-actions .btn-line { border-color: rgba(214, 173, 98, 0.55); }
+.w-actions .btn-line { border-color: rgba(214, 173, 98, 0.55); background: rgba(3, 12, 28, 0.72); }  /* stays readable where it crosses the planet */
 .w-open-foot {
   position: absolute; inset-inline: 0; bottom: 28px; display: flex; align-items: center; gap: 14px;
   margin: 0 auto; font: 500 0.85rem/1 var(--font-body); letter-spacing: 0.05em; color: var(--on-navy-72);
@@ -222,6 +222,21 @@
 .w-close :focus-visible { outline-color: var(--gold-700); }
 .site-foot-short { position: relative; }
 
+/* ---------- quick actions: once the opening scrolls away, both actions stay one tap away ----------
+   worlds.js shows it after the opening's buttons leave the screen and hides it over the builder area,
+   the invitation and the footer, which carry their own. body.sticky-visible lifts the accessibility button above it. */
+.w-dock {
+  position: fixed; z-index: 90; inset-inline: 0; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  width: max-content; max-width: calc(100% - 24px); margin-inline: auto;
+  display: flex; gap: 8px; padding: 7px; border-radius: 999px;
+  background: rgba(3, 12, 28, 0.95); box-shadow: 0 0 0 1px rgba(214, 173, 98, 0.38), 0 18px 40px -14px rgba(0, 0, 0, 0.65);
+  opacity: 0; visibility: hidden; translate: 0 calc(100% + 24px);
+  transition: translate 420ms var(--ease-out), opacity 260ms var(--ease-out), visibility 0s linear 420ms;
+}
+.w-dock.is-on { opacity: 1; visibility: visible; translate: 0 0; transition: translate 420ms var(--ease-out), opacity 260ms var(--ease-out), visibility 0s; }
+.w-dock .btn { min-height: 46px; padding: 0 22px; font-size: 0.97rem; }
+.w-dock .btn-line { border-color: rgba(214, 173, 98, 0.55); }
+
 /* ---------- motion (worlds.js adds html.w-motion when reduced motion is not requested) ---------- */
 .w-motion .w-gallery { height: 210vh; }
 .w-motion .w-gallery .w-stage { position: sticky; top: 0; height: 100vh; height: 100svh; }
@@ -277,32 +292,58 @@
   .w-actions .btn { flex: 1 1 auto; }
   .w-open-foot { display: none; }
 
-  .w-frame { clip-path: inset(calc((1 - var(--p)) * 10%) calc((1 - var(--p)) * 9%) round calc((1 - var(--p)) * 22px)); }
+  /* the gallery opens as it scrolls in, without pinning the page */
+  .w-motion .w-gallery, .w-motion .w-studio { height: auto; }
+  .w-motion .w-gallery .w-stage, .w-motion .w-studio .w-stage { position: relative; top: auto; height: auto; }
+  .w-gallery .w-stage { min-height: 86vh; min-height: 86svh; }
+  .w-frame { clip-path: inset(calc((1 - var(--p)) * 12%) calc((1 - var(--p)) * 10%) round calc((1 - var(--p)) * 22px)); }
   .w-frame img { object-position: 50% 50%; }
-  .w-motion .w-gallery { height: 170vh; }
+  .w-caption { opacity: 1; transform: none; padding-bottom: 56px; }
+  .w-frame::after { opacity: 1; background: linear-gradient(to top, rgba(11, 20, 38, 0.96) 0%, rgba(11, 20, 38, 0.82) 38%, rgba(11, 20, 38, 0) 70%); }
 
   .w-day { border-radius: 26px; margin-block: -26px; }
-  .w-workshop-grid, .w-spread { grid-template-columns: 1fr; }
-  .w-plate { width: min(88%, 420px); }
+  .w-workshop { padding-block: 84px 36px; }
+  .w-reading { padding-block: 40px 84px; }
+  .w-workshop-grid, .w-spread { grid-template-columns: 1fr; gap: 36px; }
+  .w-plate { width: min(78%, 380px); }
+  .w-plate-img, .w-page { aspect-ratio: 4 / 5; }
   .w-spread .w-copy { order: -1; }
-  .w-page { width: min(88%, 420px); }
+  .w-page { width: min(84%, 400px); }
+  .w-legend { margin-top: 22px; gap: 10px; }
+  .w-go { margin-top: 16px; }
 
-  .w-motion .w-studio { height: 170vh; }
-  .w-studio .w-stage { align-items: end; padding-block: 0 56px; }
-  .w-lens { inset-inline: 0; top: calc(var(--nav-h) + 8px); translate: 0 0; width: min(100vw, 62svh); margin-inline: auto; }
+  /* the lens opens while it scrolls in, never pinned, and starts large enough to read; the words sit right under it */
+  .w-studio .w-stage { display: flex; flex-direction: column; align-items: stretch; gap: 26px; min-height: 0; padding-block: 76px 72px; }
+  .w-lens { position: relative; inset: auto; top: auto; translate: none; width: min(84vw, 420px); margin-inline: auto; clip-path: circle(calc(30% + var(--p) * 20%) at 50% 50%); }
+  .w-lens-rim { scale: calc(0.6 + var(--p) * 0.4); }
+  .w-studio .w-copy { opacity: 1; transform: none; }
 
-  .w-build-grid { grid-template-columns: 1fr; }
+  .w-build { padding-block: 40px 96px; }
+  .w-build-grid { grid-template-columns: 1fr; gap: 12px; }
   .w-build .w-copy { grid-row: 2; }
-  .w-model { grid-column: 1; width: min(100%, 520px); justify-self: center; }
+  .w-model { grid-column: 1; width: min(86%, 440px); justify-self: center; }
+  .w-blocks { margin-top: 22px; }
   .w-close { border-radius: 26px 26px 0 0; margin-top: -26px; }
 }
 @media (max-width: 560px) {
   .w-blocks { grid-template-columns: 1fr; }
+  .w-dock { inset-inline: 12px; width: auto; margin-inline: 0; }
+  .w-dock .btn { flex: 1 1 0; padding: 0 12px; }
+  .w-block { padding: 16px 18px; }
   .w-num b { font-size: 2.8rem; }
   .w-caption h2, .w-day h2, .w-studio h2, .w-build h2 { font-size: clamp(2.05rem, 8.6vw, 2.6rem); }
   .w-close h2 { font-size: clamp(2.2rem, 9.6vw, 2.9rem); }
 }
+@media (max-width: 380px) {
+  .w-open { padding-top: calc(var(--nav-h) + 18px); }
+  .w-kicker { margin-bottom: 14px; font-size: 0.88rem; }
+  .w-open h1 { font-size: clamp(2.1rem, 10.6vw, 2.5rem); }
+  .w-lead { font-size: 0.98rem; line-height: 1.55; }
+  .w-actions { gap: 10px; margin-top: 20px; }
+  .w-actions .btn { min-height: 46px; }
+}
 @media (prefers-reduced-motion: reduce) {
+  .w-dock, .w-dock.is-on { transition: none; }
   .w-go svg, .w-more svg, .w-cube, .w-block { transition: none; }
   .w-block:hover .w-cube, .w-block:focus-visible .w-cube { transform: none; }
   .w-model picture { transition: none; transform: none; }
