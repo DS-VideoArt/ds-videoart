@@ -123,22 +123,27 @@ a1 = read("hub/do-you-need-a-website.html"); a2 = read("hub/landing-page-or-busi
 if 'href="/hub/landing-page-or-business-website"' not in a1: fails.append("article 01 does not link to article 02")
 if 'href="/hub/do-you-need-a-website"' not in a2: fails.append("article 02 does not link to article 01")
 home = read("index.html")
-# V2 homepage, second round (2026-10-27): a short entrance. One opening with two actions (talk, or plan with the builder),
-# four ways in (work, services, magazine, studio) and a short footer. No screenshots, no article lists, no prices, no form.
+# Homepage "Creative Worlds" (concept, 2026-10-27): an opening with two actions (talk, or plan with the builder), four worlds that
+# lead to work, services, magazine and studio, an area for the builder, and a short invitation. Every picture is one of the
+# art-directed series in /assets/worlds/ (no people). No article lists, no prices, no form.
 _body = home[home.index("<body"):]
 _main = _body[_body.index("<main"):_body.index("</main>")]
-if len(re.findall(r"<section\b", _main)) != 2: fails.append("homepage: expected two areas, the entrance and the four ways in")
-_entry = _main[:_main.index('class="paths')]
+_open = _main[:_main.index('data-scene="gallery"')]
 for _href in ("/contact", "/builder/"):
-    if f'href="{_href}"' not in _entry: fails.append(f"homepage: the entrance needs its action to {_href}")
-_ways = re.findall(r'<a class="path" href="([^"]+)"', _main)
-if _ways != ["/work/", "/pricing", "/hub/", "/studio"]: fails.append(f"homepage: the four ways in should be work, services, magazine and studio, got {_ways}")
-if re.search(r"<img|<picture", _main): fails.append("homepage: no screenshots or images on the entrance")
+    if f'href="{_href}"' not in _open: fails.append(f"homepage: the opening needs its action to {_href}")
+_ways = re.findall(r'<a class="w-go" href="([^"]+)"', _main)
+if _ways != ["/work/", "/pricing", "/hub/", "/studio"]: fails.append(f"homepage: the four worlds should lead to work, services, magazine and studio, got {_ways}")
+if 'class="w-build"' not in _main or _main[_main.index('class="w-build"'):].count('href="/builder/"') < 1: fails.append("homepage: the builder area needs its link to /builder/")
+for _src in re.findall(r'(?:src|srcset)="([^"]+)"', _main):
+    for _u in re.findall(r"(/[^\s,]+)", _src):
+        if not _u.startswith("/assets/worlds/"): fails.append(f"homepage: picture outside the worlds series: {_u}")
+for _img in re.findall(r"<img\b[^>]*>", _main):
+    if 'alt="' not in _img: fails.append("homepage: every picture needs an alt attribute")
 if re.search(r'href="/hub/[a-z]', _main): fails.append("homepage: article links belong in the magazine")
 if "₪" in _body or re.search(r"\b(440|1,290|149|349)\b", _body): fails.append("homepage: prices belong on /pricing only")
 if "<form" in _body: fails.append("homepage: the contact form lives on /contact")
 _words = len(re.sub(r"<[^>]+>", " ", re.sub(r"<svg.*?</svg>", " ", _main, flags=re.S)).split())
-if _words > 140: fails.append(f"homepage: the entrance should stay short, {_words} words")
+if _words > 320: fails.append(f"homepage: keep the worlds short, {_words} words")
 # the old homepage sections live on their own pages now: their anchors forward there and keep the query
 for _id in ("work", "magazine", "services", "work-fit-with-nikita", "work-golondon", "complex"):
     if f'h === "#{_id}"' not in home: fails.append(f"homepage: old anchor #{_id} is not forwarded")

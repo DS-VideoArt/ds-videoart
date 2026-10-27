@@ -29,14 +29,14 @@
   <meta property="og:site_name" content="DS Creative Studio">
   <meta property="og:url" content="https://dscreative.co.il/">
   <meta property="og:title" content="DS Creative Studio | סטודיו לעיצוב ובניית אתרים ודפי נחיתה">
-  <meta property="og:description" content="יש דברים שמבינים על עסק תוך כמה שניות. אתר טוב יודע לספר אותם נכון. סטודיו לעיצוב ובניית אתרים ודפי נחיתה לעסקים.">
+  <meta property="og:description" content="לכל עסק יש עולם. אנחנו נותנים לו צורה. סטודיו לעיצוב ובניית אתרים ודפי נחיתה לעסקים.">
   <meta property="og:image" content="https://dscreative.co.il/assets/og-studio.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="DS Creative Studio: יש דברים שמבינים על עסק תוך כמה שניות. אתר טוב יודע לספר אותם נכון.">
+  <meta property="og:image:alt" content="DS Creative Studio: לכל עסק יש עולם. אנחנו נותנים לו צורה.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="DS Creative Studio | סטודיו לעיצוב ובניית אתרים ודפי נחיתה">
-  <meta name="twitter:description" content="יש דברים שמבינים על עסק תוך כמה שניות. אתר טוב יודע לספר אותם נכון.">
+  <meta name="twitter:description" content="לכל עסק יש עולם. אנחנו נותנים לו צורה.">
   <meta name="twitter:image" content="https://dscreative.co.il/assets/og-studio.jpg">
 
   <link rel="icon" href="/icons/favicon-32.png?v=20260821a" sizes="32x32">
@@ -45,9 +45,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;500;700;900&family=Heebo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/site.css?v=20261012a">
   <link rel="stylesheet" href="/studio.css?v=20261027b">
+  <link rel="stylesheet" href="/worlds.css?v=20261027w">
+  <link rel="preload" as="image" href="/assets/worlds/planet-1536.avif" type="image/avif" fetchpriority="high">
   <noscript><style>.rv { opacity: 1; transform: none; }</style></noscript>
 
   <script type="application/ld+json">
@@ -140,64 +142,153 @@
   </dialog>
   <!-- /site-head -->
 
-  <main id="main" class="lobby">
+  <main id="main" class="worlds">
 
-    <!-- 1. Entrance: who we are and the two main actions. No screenshots, no prices, no form -->
-    <section class="entry" aria-labelledby="heroTitle" data-entry>
-      <div class="wrap entry-grid">
-        <div class="entry-copy">
-          <p class="hero-kicker">סטודיו לעיצוב ובניית אתרים</p>
-          <h1 id="heroTitle">יש דברים שמבינים על&nbsp;עסק תוך כמה שניות. <em>אתר טוב יודע לספר אותם נכון.</em></h1>
-          <p class="entry-lead">אנחנו מעצבים ובונים אתרים ודפי נחיתה לעסקים. כל עבודה מתחילה בשאלה מה הלקוח שלכם צריך להבין ברגע שהוא נכנס, ומהתשובה נגזרים המבנה, העיצוב והאתר עצמו.</p>
-          <div class="entry-actions">
-            <a class="btn btn-gold" href="/contact">בואו נדבר <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
-            <a class="btn btn-line" href="/builder/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M17 13.5v7M13.5 17h7"/></svg>לתכנן את האתר שלי</a>
-          </div>
-          <p class="entry-note">בבונה הפרויקט בוחרים סוג אתר, רכיבים ותוספות. כמה דקות, בלי התחייבות.</p>
+    <!-- Opening: the DS world. One handmade planet, the headline, and the two main actions -->
+    <section class="w-open" aria-labelledby="heroTitle" data-open>
+      <div class="w-open-art" aria-hidden="true" data-depth>
+        <picture>
+          <source type="image/avif" srcset="/assets/worlds/planet-900.avif 900w, /assets/worlds/planet-1536.avif 1536w" sizes="(min-width: 900px) 72vw, 140vw">
+          <source type="image/webp" srcset="/assets/worlds/planet-900.webp 900w, /assets/worlds/planet-1536.webp 1536w" sizes="(min-width: 900px) 72vw, 140vw">
+          <img src="/assets/worlds/planet-1536.jpg" alt="" width="1536" height="1024" fetchpriority="high" decoding="async">
+        </picture>
+        <canvas class="w-dust" data-dust></canvas>
+      </div>
+      <div class="wrap w-open-copy">
+        <p class="w-kicker">סטודיו לעיצוב ובניית אתרים</p>
+        <h1 id="heroTitle"><span class="w-line"><span>לכל עסק יש עולם.</span></span> <span class="w-line w-line-gold"><span>אנחנו נותנים לו צורה.</span></span></h1>
+        <p class="w-lead">אתרים ודפי נחיתה לעסקים. מתחילים מהשאלה מה הלקוח שלכם צריך להבין, ובונים עד שהאתר עונה עליה בעצמו.</p>
+        <div class="w-actions">
+          <a class="btn btn-gold" href="/contact">בואו נדבר <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
+          <a class="btn btn-line" href="/builder/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><path d="M17 13.5v7M13.5 17h7"/></svg>לתכנן את האתר שלי</a>
         </div>
-        <div class="emblem" aria-hidden="true">
-          <span class="orb orb-1"><i></i></span>
-          <span class="orb orb-2"><i></i></span>
-          <span class="orb orb-3"><i></i></span>
-          <b>DS</b>
+      </div>
+      <p class="w-open-foot wrap" aria-hidden="true"><span>ארבעה עולמות</span><i></i><span>עבודות · שירותים · מגזין · הסטודיו</span></p>
+    </section>
+
+    <!-- 01 Work: the gallery opens to full width as it scrolls in -->
+    <section class="world w-gallery" aria-labelledby="wWork" data-scene="gallery">
+      <div class="w-stage">
+        <div class="w-frame" aria-hidden="true">
+          <picture>
+            <source type="image/avif" srcset="/assets/worlds/gallery-900.avif 900w, /assets/worlds/gallery-1536.avif 1536w" sizes="100vw">
+            <source type="image/webp" srcset="/assets/worlds/gallery-900.webp 900w, /assets/worlds/gallery-1536.webp 1536w" sizes="100vw">
+            <img src="/assets/worlds/gallery-1536.jpg" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+          </picture>
+        </div>
+        <div class="wrap w-caption">
+          <p class="w-num"><b>01</b>עבודות</p>
+          <h2 id="wWork">מה שבנינו, <span>מוצג באור מלא.</span></h2>
+          <p>אתרים אמיתיים לצד קונספטים לעסקים בדיוניים. ליד כל עבודה כתוב בדיוק מה היא.</p>
+          <a class="w-go" href="/work/">לגלריית העבודות <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
         </div>
       </div>
     </section>
 
-    <!-- 2. Four ways in. Words and quiet icons only: the work, the services, the magazine and the studio each live on their own page -->
-    <section class="paths" aria-labelledby="pathsTitle">
-      <div class="wrap">
-        <h2 class="paths-title" id="pathsTitle">לאן ממשיכים מכאן?</h2>
-        <ul class="paths-list">
-          <li><a class="path" href="/work/">
-            <span class="path-num" aria-hidden="true">01</span>
-            <svg class="path-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="16" rx="2.5"/><circle cx="6" cy="7.5" r=".9" fill="currentColor" stroke="none"/><circle cx="8.8" cy="7.5" r=".9" fill="currentColor" stroke="none"/><rect x="6" y="11" width="12" height="5.5" rx="1.2"/></svg>
-            <span class="path-name">עבודות</span>
-            <span class="path-sub">פרויקטים אמיתיים וקונספטים</span>
-            <span class="path-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span>
-          </a></li>
-          <li><a class="path" href="/pricing">
-            <span class="path-num" aria-hidden="true">02</span>
-            <svg class="path-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12.5 9 5 9-5"/><path d="m3 16.5 9 5 9-5"/></svg>
-            <span class="path-name">שירותים</span>
-            <span class="path-sub">מה בונים, איך ובכמה</span>
-            <span class="path-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span>
-          </a></li>
-          <li><a class="path" href="/hub/">
-            <span class="path-num" aria-hidden="true">03</span>
-            <svg class="path-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 5.5c3-1.2 6.5-1.2 9.5 1 3-2.2 6.5-2.2 9.5-1V19c-3-1.2-6.5-1.2-9.5 1-3-2.2-6.5-2.2-9.5-1Z"/><path d="M12 6.5V20"/></svg>
-            <span class="path-name">מגזין ורעיונות</span>
-            <span class="path-sub">מדריכים קצרים לבעלי עסקים</span>
-            <span class="path-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span>
-          </a></li>
-          <li><a class="path" href="/studio">
-            <span class="path-num" aria-hidden="true">04</span>
-            <svg class="path-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.2"/><circle cx="18" cy="6" r="1.7" fill="currentColor" stroke="none"/></svg>
-            <span class="path-name">הסטודיו</span>
-            <span class="path-sub">מי אנחנו ואיך אנחנו עובדים</span>
-            <span class="path-go" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></span>
-          </a></li>
-        </ul>
+    <!-- The daylight chapter: two paper worlds laid on the navy table -->
+    <div class="w-day">
+
+      <!-- 02 Services: a blueprint, with the services as the drawing's legend -->
+      <section class="world w-workshop" aria-labelledby="wServices">
+        <div class="wrap w-workshop-grid">
+          <div class="w-copy" data-reveal>
+            <p class="w-num"><b>02</b>שירותים</p>
+            <h2 id="wServices">בונים לפי שרטוט. <span>מהיסוד.</span></h2>
+            <p>לכל סוג של עסק יש מבנה שמתאים לו. בעמוד השירותים כתוב מה כלול בכל אחד, איך עובדים ובכמה.</p>
+            <ol class="w-legend" aria-label="מה בונים">
+              <li><span aria-hidden="true">א</span>דפי נחיתה</li>
+              <li><span aria-hidden="true">ב</span>אתרי תדמית</li>
+              <li><span aria-hidden="true">ג</span>פרויקטים מורכבים</li>
+              <li><span aria-hidden="true">ד</span>תחזוקה אחרי העלייה לאוויר</li>
+            </ol>
+            <a class="w-go" href="/pricing">לכל השירותים <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
+          </div>
+          <figure class="w-plate" aria-hidden="true">
+            <div class="w-plate-img" data-drift>
+              <picture>
+                <source type="image/avif" srcset="/assets/worlds/workshop-640.avif 640w, /assets/worlds/workshop-1024.avif 1024w" sizes="(min-width: 900px) 40vw, 92vw">
+                <source type="image/webp" srcset="/assets/worlds/workshop-640.webp 640w, /assets/worlds/workshop-1024.webp 1024w" sizes="(min-width: 900px) 40vw, 92vw">
+                <img src="/assets/worlds/workshop-1024.jpg" alt="" width="1024" height="1536" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <span class="w-mark w-mark-a"></span><span class="w-mark w-mark-b"></span>
+          </figure>
+        </div>
+      </section>
+
+      <!-- 03 Magazine: an editorial spread, the picture turns in like a page (right to left) -->
+      <section class="world w-reading" aria-labelledby="wMag">
+        <div class="wrap w-spread">
+          <figure class="w-page" aria-hidden="true" data-page>
+            <picture>
+              <source type="image/avif" srcset="/assets/worlds/reading-640.avif 640w, /assets/worlds/reading-1024.avif 1024w" sizes="(min-width: 900px) 34vw, 92vw">
+              <source type="image/webp" srcset="/assets/worlds/reading-640.webp 640w, /assets/worlds/reading-1024.webp 1024w" sizes="(min-width: 900px) 34vw, 92vw">
+              <img src="/assets/worlds/reading-1024.jpg" alt="" width="1024" height="1536" loading="lazy" decoding="async">
+            </picture>
+          </figure>
+          <div class="w-copy" data-reveal>
+            <p class="w-num"><b>03</b>מגזין</p>
+            <h2 id="wMag">דפים שכדאי לקרוא <span>לפני שבונים.</span></h2>
+            <p class="w-pull">מה באמת צריך, מה להכין,<br> ואיך מחליטים.</p>
+            <p>מאמרים קצרים ופרקטיים על דפי נחיתה ואתרי תדמית, בשפה פשוטה.</p>
+            <a class="w-go" href="/hub/">למגזין <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 04 Studio: a lens that opens as you scroll -->
+    <section class="world w-studio" aria-labelledby="wStudio" data-scene="lens">
+      <div class="w-stage">
+        <div class="w-lens" aria-hidden="true">
+          <picture>
+            <source type="image/avif" srcset="/assets/worlds/studio-640.avif 640w, /assets/worlds/studio-1024.avif 1024w" sizes="(min-width: 900px) 52vw, 100vw">
+            <source type="image/webp" srcset="/assets/worlds/studio-640.webp 640w, /assets/worlds/studio-1024.webp 1024w" sizes="(min-width: 900px) 52vw, 100vw">
+            <img src="/assets/worlds/studio-1024.jpg" alt="" width="1024" height="1024" loading="lazy" decoding="async">
+          </picture>
+          <span class="w-lens-rim"></span>
+        </div>
+        <div class="wrap w-studio-copy">
+          <div class="w-copy">
+            <p class="w-num"><b>04</b>הסטודיו</p>
+            <h2 id="wStudio">פרטים שלא רואים. <span>ושכולם מרגישים.</span></h2>
+            <p>מתחילים מהשאלה מה הלקוח שלכם צריך להבין, ומסבירים כל החלטה במילים פשוטות.</p>
+            <a class="w-go" href="/studio">להכיר את הסטודיו <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- The project builder: its own place to play. The builder itself is unchanged -->
+    <section class="w-build" aria-labelledby="wBuild">
+      <div class="wrap w-build-grid">
+        <figure class="w-model" aria-hidden="true" data-tilt>
+          <picture>
+            <source type="image/avif" srcset="/assets/worlds/builder-900.avif 900w, /assets/worlds/builder-1536.avif 1536w" sizes="(min-width: 900px) 56vw, 120vw">
+            <source type="image/webp" srcset="/assets/worlds/builder-900.webp 900w, /assets/worlds/builder-1536.webp 1536w" sizes="(min-width: 900px) 56vw, 120vw">
+            <img src="/assets/worlds/builder-1536.jpg" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+          </picture>
+        </figure>
+        <div class="w-copy" data-reveal>
+          <p class="w-num w-num-plain">בונה הפרויקט</p>
+          <h2 id="wBuild">מרכיבים את האתר שלכם, <span>חלק אחרי חלק.</span></h2>
+          <p class="w-build-lead">בוחרים את החלק הראשון. אחר כך מוסיפים עמודים, רכיבים ותוספות, ובסוף מקבלים סיכום כתוב של מה שבחרתם.</p>
+          <ul class="w-blocks">
+            <li><a class="w-block" href="/builder/?type=landing"><svg class="w-cubes" viewBox="-2 -12 64 78" width="46" height="56" aria-hidden="true"><g class="w-cube" style="--i:0"><g transform="translate(0 0)"><path d="M30 0 60 15 30 30 0 15Z" class="w-cube-top"/><path d="M0 15 30 30v34L0 49Z" class="w-cube-l"/><path d="M30 30 60 15v34L30 64Z" class="w-cube-r"/></g></g></svg><b>דף נחיתה</b><span>עמוד אחד שמוביל לפעולה אחת</span></a></li>
+            <li><a class="w-block" href="/builder/?type=site"><svg class="w-cubes" viewBox="-2 -18 64 154" width="46" height="111" aria-hidden="true"><g class="w-cube" style="--i:0"><g transform="translate(0 68)"><path d="M30 0 60 15 30 30 0 15Z" class="w-cube-top"/><path d="M0 15 30 30v34L0 49Z" class="w-cube-l"/><path d="M30 30 60 15v34L30 64Z" class="w-cube-r"/></g></g><g class="w-cube" style="--i:1"><g transform="translate(0 34)"><path d="M30 0 60 15 30 30 0 15Z" class="w-cube-top"/><path d="M0 15 30 30v34L0 49Z" class="w-cube-l"/><path d="M30 30 60 15v34L30 64Z" class="w-cube-r"/></g></g><g class="w-cube" style="--i:2"><g transform="translate(0 0)"><path d="M30 0 60 15 30 30 0 15Z" class="w-cube-top"/><path d="M0 15 30 30v34L0 49Z" class="w-cube-l"/><path d="M30 30 60 15v34L30 64Z" class="w-cube-r"/></g></g></svg><b>אתר תדמית</b><span>כמה עמודים שמספרים את העסק</span></a></li>
+          </ul>
+          <a class="w-more" href="/builder/">עוד לא בטוחים? מתחילים מההתחלה <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
+          <p class="w-note">כמה דקות, בלי התחייבות.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Closing: back to the opening line, as an invitation -->
+    <section class="w-close" aria-labelledby="wClose">
+      <div class="wrap" data-reveal>
+        <h2 id="wClose">ומה העולם <span>שלכם?</span></h2>
+        <p>ספרו לנו במשפט אחד מה העסק עושה. משם מתחילים.</p>
+        <a class="btn btn-navy" href="/contact">בואו נדבר <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></a>
       </div>
     </section>
   </main>
@@ -224,6 +315,7 @@
   <script src="/analytics.js?v=20261012a"></script>
   <script src="/site.js?v=20261012a"></script>
   <script src="/studio.js?v=20261027b"></script>
+  <script src="/worlds.js?v=20261027w"></script>
   <script src="/search.js?v=20261012a" type="module"></script>
 </body>
 </html>
