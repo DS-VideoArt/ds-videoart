@@ -1,5 +1,5 @@
-/* DS Creative Studio, homepage "Creative Worlds" (concept): opening sequence, gold dust, scroll scenes, small pointer depth
-   and the quick actions dock. Everything here is decoration. Without this file, with reduced motion, or with "stop animations"
+/* DS Creative Studio, homepage "Creative Worlds" (concept): opening sequence, gold dust, scroll scenes and small pointer depth.
+   Everything here is decoration. Without this file, with reduced motion, or with "stop animations"
    in the site's accessibility menu (html.a11y-still), every scene shows its final state. */
 (function () {
   "use strict";
@@ -29,28 +29,6 @@
     watched.forEach((_, probe) => io.observe(probe));
   } else {
     once.forEach(mark);
-  }
-
-  /* quick actions dock: after the opening's two buttons leave the screen, until the builder area, the invitation or the footer
-     (they carry their own actions) come into view. Works in every motion mode; only the slide is motion */
-  const dock = document.querySelector("[data-dock]");
-  if (dock && "IntersectionObserver" in window) {
-    const own = [document.querySelector(".w-build"), document.querySelector(".w-close"), document.querySelector(".site-foot")].filter(Boolean);
-    let pastOpening = false;
-    const near = new Set();
-    const update = () => {
-      const on = pastOpening && near.size === 0;
-      dock.classList.toggle("is-on", on);
-      dock.inert = !on;
-      document.body.classList.toggle("sticky-visible", on);   /* lifts the accessibility button above the dock (site.css) */
-    };
-    new IntersectionObserver(([e]) => { pastOpening = !e.isIntersecting && e.boundingClientRect.top < 0; update(); })
-      .observe(open.querySelector(".w-actions"));
-    const ownIo = new IntersectionObserver((entries) => {
-      entries.forEach((e) => (e.isIntersecting ? near.add(e.target) : near.delete(e.target)));
-      update();
-    });
-    own.forEach((el) => ownIo.observe(el));
   }
 
   /* ---------- motion ---------- */
