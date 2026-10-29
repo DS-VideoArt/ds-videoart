@@ -25,6 +25,7 @@ PAGES = {  # file: (expected robots substring, expect_h1, expect_jsonld)
     "hub/website-is-live-what-now.html": ("index, follow", True, False),
     "hub/business-website-or-custom-system.html": ("index, follow", True, False),
     "hub/questions-before-ordering-a-website.html": ("index, follow", True, False),
+    "hub/diy-ai-or-professional.html": ("index, follow", True, False),
     # V2 (October 2026): gallery, project pages, studio, contact
     "work/index.html": ("index, follow", True, False),
     "work/fit-with-nikita.html": ("index, follow", True, False),
@@ -84,7 +85,7 @@ for page, (robots, h1, jsonld) in PAGES.items():
 # card.html is a noindex digital business card whose visible copy still lists the old DS VideoArt areas (documented, not an SEO surface).
 EXEMPT = {"card.html": {"DS VideoArt"}}
 # Content Hub schema checks
-for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/landing-page-or-business-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/how-much-does-a-website-cost.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/which-pages-does-a-business-website-need.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/what-to-prepare-before-building-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/domain-hosting-who-owns-what.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/website-is-live-what-now.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/business-website-or-custom-system.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/questions-before-ordering-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
+for page, want in (("hub/do-you-need-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/landing-page-or-business-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/how-much-does-a-website-cost.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/which-pages-does-a-business-website-need.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/what-to-prepare-before-building-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/domain-hosting-who-owns-what.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/website-is-live-what-now.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/business-website-or-custom-system.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/questions-before-ordering-a-website.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/diy-ai-or-professional.html", {"Article", "BreadcrumbList", "Organization"}), ("hub/index.html", {"CollectionPage", "BreadcrumbList"})):
     s = read(page); blocks = re.findall(r'<script type="application/ld\+json">(.*?)</script>', s, re.S)
     if len(blocks) != 1: fails.append(f"{page}: JSON-LD blocks {len(blocks)}")
     else:
