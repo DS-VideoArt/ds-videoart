@@ -49,6 +49,7 @@
   <link rel="stylesheet" href="/site.css?v=20261012a">
   <link rel="stylesheet" href="/studio.css?v=20261027b">
   <link rel="stylesheet" href="/worlds.css?v=20261027w">
+  <link rel="stylesheet" href="/worlds-energy.css?v=20261029e">
   <link rel="preload" as="image" href="/assets/worlds/planet-1536.avif" type="image/avif" fetchpriority="high">
   <noscript><style>.rv { opacity: 1; transform: none; }</style></noscript>
 
@@ -147,11 +148,16 @@
     <!-- Opening: the DS world. One handmade planet, the headline, and the two main actions -->
     <section class="w-open" aria-labelledby="heroTitle" data-open>
       <div class="w-open-art" aria-hidden="true" data-depth>
+        <div class="w-scene w-scene-planet">
         <picture>
           <source type="image/avif" srcset="/assets/worlds/planet-900.avif 900w, /assets/worlds/planet-1536.avif 1536w" sizes="(min-width: 900px) 72vw, 140vw">
           <source type="image/webp" srcset="/assets/worlds/planet-900.webp 900w, /assets/worlds/planet-1536.webp 1536w" sizes="(min-width: 900px) 72vw, 140vw">
           <img src="/assets/worlds/planet-1536.jpg" alt="" width="1536" height="1024" fetchpriority="high" decoding="async">
         </picture>
+          <span class="w-l w-night"><i data-sun></i></span>
+          <span class="w-l w-glow" data-sun></span>
+          <span class="w-l w-window"></span>
+        </div>
         <canvas class="w-dust" data-dust></canvas>
       </div>
       <div class="wrap w-open-copy">
@@ -170,11 +176,17 @@
     <section class="world w-gallery" aria-labelledby="wWork" data-scene="gallery">
       <div class="w-stage">
         <div class="w-frame" aria-hidden="true">
+          <div class="w-scene w-scene-hall" data-hall>
           <picture>
             <source type="image/avif" srcset="/assets/worlds/gallery-900.avif 900w, /assets/worlds/gallery-1536.avif 1536w" sizes="100vw">
             <source type="image/webp" srcset="/assets/worlds/gallery-900.webp 900w, /assets/worlds/gallery-1536.webp 1536w" sizes="100vw">
             <img src="/assets/worlds/gallery-1536.jpg" alt="" width="1536" height="1024" loading="lazy" decoding="async">
           </picture>
+            <span class="w-l w-dimmer"></span>
+            <span class="w-l w-lamps"><i></i></span>
+            <span class="w-l w-spot"><i data-spot></i></span>
+            <span class="w-l w-far"></span>
+          </div>
         </div>
         <div class="wrap w-caption">
           <p class="w-num"><b>01</b>עבודות</p>
@@ -186,7 +198,7 @@
     </section>
 
     <!-- The daylight chapter: two paper worlds laid on the navy table -->
-    <div class="w-day">
+    <div class="w-day" data-edge>
 
       <!-- 02 Services: a blueprint, with the services as the drawing's legend -->
       <section class="world w-workshop" aria-labelledby="wServices">
@@ -316,6 +328,7 @@
   <script src="/site.js?v=20261012a"></script>
   <script src="/studio.js?v=20261027b"></script>
   <script src="/worlds.js?v=20261027w"></script>
+  <script src="/worlds-energy.js?v=20261029e"></script>
   <script src="/search.js?v=20261012a" type="module"></script>
 </body>
 </html>

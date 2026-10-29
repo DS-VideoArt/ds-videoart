@@ -102,7 +102,8 @@
     const n = Math.round(Math.min(90, (w * h) / 16000));
     motes = Array.from({ length: n }, () => ({
       x: Math.random() * w, y: Math.random() * h, r: 0.5 + Math.random() * 1.5,
-      vy: -(0.06 + Math.random() * 0.22), vx: (Math.random() - 0.5) * 0.12, t: Math.random() * Math.PI * 2
+      vy: -(0.06 + Math.random() * 0.22), vx: (Math.random() - 0.5) * 0.12, t: Math.random() * Math.PI * 2,
+      c: Math.random() < 0.26 ? "95, 240, 226" : "226, 194, 127"   /* a quarter of the dust is cool light (energy experiment) */
     }));
   }
   function draw() {
@@ -113,7 +114,7 @@
       if (m.y < -4) { m.y = h + 4; m.x = Math.random() * w; }
       const a = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(m.t));
       ctx.beginPath(); ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(226, 194, 127, ${a.toFixed(3)})`; ctx.fill();
+      ctx.fillStyle = `rgba(${m.c}, ${a.toFixed(3)})`; ctx.fill();
     }
     requestAnimationFrame(draw);
   }
