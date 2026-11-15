@@ -1,6 +1,7 @@
 #!/bin/bash
 # Deploys dscreative.co.il from a clean export of a git ref, using the canonical build (npm run build, see netlify.toml).
 # Usage: tools/deploy.sh <git-ref> preview <alias>   |   tools/deploy.sh <git-ref> prod
+#   preview = an isolated draft on <alias>--ds-videoart.netlify.app: noindex, robots Disallow, no tracker allowed by the CSP
 #   SIMULATE=1          run the checks below and stop: no build, no deploy
 #   DS_REPLACE_LIVE=<sha>  production only: replace the live version with one that does not contain it, on purpose.
 #                       The value must be the commit that is live right now (a rollback is better done with restoreSiteDeploy).
@@ -41,5 +42,19 @@ MSG="$REF $(git -C "$REPO" rev-parse --short "$NEW")"
 if [ "$MODE" = "prod" ]; then
   netlify deploy --prod --no-build --dir="$EXPORT/dist" --site "$SITE_ID" --message "production: $MSG"
 else
-  netlify deploy --no-build --dir="$EXPORT/dist" --site "$SITE_ID" --alias "${ALIAS:?alias}" --message "preview: $MSG"
+  # A preview is never indexed and never measured: the served headers add noindex and drop every tracker host from the CSP,
+  # robots.txt disallows everything, and the CLI runs from an empty folder so it cannot merge the repository's own _headers.
+  python3 - "$EXPORT/dist" <<'PY'
+import sys
+d = sys.argv[1]
+h = open(f"{d}/_headers", encoding="utf-8").read()
+assert h.startswith("/*\n"), "the first block of _headers must be /*"
+h = h.replace("/*\n", "/*\n  X-Robots-Tag: noindex, nofollow\n", 1)
+for host in (" https://www.googletagmanager.com", " https://connect.facebook.net", " https://*.google-analytics.com", " https://*.analytics.google.com", " https://www.facebook.com"):
+    h = h.replace(host, "")
+assert "googletagmanager" not in h and "facebook" not in h and "google-analytics" not in h
+open(f"{d}/_headers", "w", encoding="utf-8").write("# PREVIEW BUILD: no indexing, no measurement\n" + h)
+open(f"{d}/robots.txt", "w", encoding="utf-8").write("# preview build: not for search engines\nUser-agent: *\nDisallow: /\n")
+PY
+  ( cd "$(mktemp -d)" && netlify deploy --no-build --dir="$EXPORT/dist" --site "$SITE_ID" --alias "${ALIAS:?alias}" --message "preview (noindex, no measurement): $MSG" )
 fi
