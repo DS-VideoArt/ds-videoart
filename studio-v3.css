@@ -1,0 +1,335 @@
+/* ============================================================
+   DS Creative Studio, studio pages round 1 (2026-11-15)
+   Loaded after studio.css on every redesigned inner page (not on the homepage, the builder or /haredi).
+   1. One type system, the homepage's: light display serif with a bold accent, large index numerals, a dotted kicker.
+   2. Halls: every main page opens like a world on the homepage. Dark halls carry the world picture full width,
+      light halls (services, magazine) lay it on paper. The header is clear over a hall and turns solid on scroll.
+   3. The work gallery: real projects in a dark exhibition room, concepts in a light study room.
+   4. The project story (Fit With Nikita): the real screens, chapter by chapter.
+   Round dots only, never short lines. Motion only without reduced motion.
+   ============================================================ */
+:root {
+  --t-display: clamp(2.9rem, 6.6vw, 6rem);
+  --t-h2: clamp(2.1rem, 4.2vw, 3.7rem);
+  --t-h3: clamp(1.45rem, 2.2vw, 1.95rem);
+  --t-lead: clamp(1.08rem, 1.25vw, 1.22rem);
+  --navy-night: #030c1c;
+}
+
+/* ---------- 1. type system ---------- */
+.hall h1, .room-head h2, .chapter h2, .sec-head h2, .group-head h2, .facts-grid h2, .contact-band h2, .story-built h2,
+.studio-page h2:not(.contact-band h2), .page-head h1 {
+  font-family: var(--font-display); font-weight: 300; letter-spacing: -0.014em; line-height: 1.05;
+}
+.hall h1 em, .room-head h2 span, .chapter h2 span, .sec-head h2 em, .contact-band h2 em, .story-built h2 span {
+  font-style: normal; font-weight: 700;
+}
+.room-head h2, .chapter h2, .sec-head h2, .contact-band h2, .story-built h2 { font-size: var(--t-h2); }
+.on-cream .room-head h2 span, .on-cream .chapter h2 span, .on-cream .story-built h2 span { color: var(--gold-700); }
+.on-navy .room-head h2 span, .on-navy .chapter h2 span, .contact-band h2 em { color: var(--gold-400); }
+.kicker-dot { display: inline-flex; align-items: center; gap: 10px; font: 600 0.95rem/1.2 var(--font-body); letter-spacing: 0.04em; }
+.kicker-dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
+.index-num { display: flex; align-items: baseline; gap: 14px; font: 600 0.95rem/1.3 var(--font-body); letter-spacing: 0.03em; }
+.index-num b { font-family: var(--font-display); font-weight: 300; font-size: 3.2rem; line-height: 0.8; letter-spacing: 0; }
+/* the template's floating rings and dots are gone: the pictures carry the atmosphere now */
+.ring, .deco, .hm-dots-static { display: none !important; }
+
+/* ---------- 2. halls ---------- */
+.hall { position: relative; isolation: isolate; overflow: clip; }
+.hall-copy { position: relative; z-index: 1; }
+.hall-copy > * { max-width: 40rem; }
+.hall .index-num { margin-bottom: 22px; }
+.hall h1 { font-size: var(--t-display); }
+.hall-lead { margin-top: 22px; font-size: var(--t-lead); line-height: 1.7; max-width: 36rem; }
+
+/* dark: the world picture fills the hall, the words sit low on the start side like a gallery placard */
+.hall-dark {
+  min-height: clamp(560px, 84svh, 860px); display: grid; align-items: end;
+  padding-block: calc(var(--nav-h) + 48px) clamp(56px, 8vh, 96px);
+  background: var(--navy-night); color: var(--on-navy);
+}
+.hall-dark .index-num { color: var(--gold-300); }
+.hall-dark .hall-lead { color: var(--on-navy-72); }
+.hall-art { position: absolute; inset: 0; z-index: -1; }
+.hall-art picture, .hall-art img { display: block; width: 100%; height: 100%; }
+.hall-art img { object-fit: cover; object-position: var(--focus, 50% 50%); }
+.hall-dark .hall-art::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(to top, var(--navy-night) 2%, rgba(3, 12, 28, 0.55) 34%, rgba(3, 12, 28, 0) 62%),
+    linear-gradient(to left, rgba(3, 12, 28, 0.86) 0%, rgba(3, 12, 28, 0.42) 38%, rgba(3, 12, 28, 0) 66%);
+}
+.hall-dark h1, .hall-dark .hall-lead { text-shadow: 0 1px 18px rgba(3, 12, 28, 0.85); }
+
+/* light: paper, the words on the start side, the world picture laid on the other side like a print */
+.hall-light {
+  padding-block: calc(var(--nav-h) + clamp(40px, 6vw, 84px)) clamp(48px, 6vw, 88px);
+  color: var(--ink);
+  background-color: var(--cream-50);
+  background-image:
+    radial-gradient(ellipse 50% 70% at 20% 40%, rgba(214, 173, 98, 0.16), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .36 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.hall-light .hall-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.hall-light .index-num { color: var(--gold-700); }
+.hall-light .hall-lead { color: var(--ink-74); }
+.hall-plate { margin: 0; justify-self: center; width: min(100%, 420px); aspect-ratio: 4 / 5; overflow: hidden; border-radius: 6px; transform: rotate(-1.2deg);
+  box-shadow: 0 40px 70px -38px rgba(19, 32, 58, 0.55), 0 2px 6px rgba(19, 32, 58, 0.08); }
+.hall-plate picture, .hall-plate img { display: block; width: 100%; height: 100%; }
+.hall-plate img { object-fit: cover; object-position: var(--focus, 50% 60%); }
+
+/* links that live in a hall: quiet pills to the rooms below */
+.hall-rooms { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; padding: 0; list-style: none; }
+.hall-rooms a {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 20px; border-radius: 999px;
+  font: 600 0.98rem/1 var(--font-body); text-decoration: none; color: var(--on-navy);
+  background: rgba(3, 12, 28, 0.45); box-shadow: inset 0 0 0 1.5px rgba(214, 173, 98, 0.5);
+  transition: background-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
+}
+.hall-rooms a b { font-family: var(--font-display); font-weight: 300; font-size: 1.35rem; line-height: 1; color: var(--gold-300); }
+.hall-rooms a:hover { background: rgba(214, 173, 98, 0.16); box-shadow: inset 0 0 0 1.5px var(--gold-400); }
+
+/* the header is clear over a hall and turns solid once the page scrolls (studio.js), like the homepage.
+   Over a light hall its words are ink until it turns solid. */
+body:has(.hall-light) .site-head:not(.is-solid) { color: var(--ink); }
+body:has(.hall-light) .site-head:not(.is-solid) .brand span,
+body:has(.hall-light) .site-head:not(.is-solid) .nav-links a[aria-current="page"],
+body:has(.hall-light) .site-head:not(.is-solid) .nav-links a:hover { color: var(--ink); }
+body:has(.hall-light) .site-head:not(.is-solid) .nav-links a { color: var(--ink-74); }
+body:has(.hall-light) .site-head:not(.is-solid) .nav-links a[aria-current="page"]::after { background: var(--gold-700); }
+body:has(.hall-light) .site-head:not(.is-solid) .brand b { color: var(--gold-700); }
+body:has(.hall-light) .site-head:not(.is-solid) .icon-btn { color: var(--ink); border-color: var(--ink-line); }
+body:has(.hall-light) .site-head:not(.is-solid) .btn-line { color: var(--ink); border-color: rgba(19, 32, 58, 0.3); }
+body:has(.hall-light) .site-head:not(.is-solid) :focus-visible { outline-color: var(--gold-700); }
+.site-head { transition: background-color 260ms var(--ease-out), box-shadow 260ms var(--ease-out), color 260ms var(--ease-out); }
+
+/* ---------- 3. the work gallery ---------- */
+.room { position: relative; padding-block: clamp(80px, 10vw, 150px); }
+.room-head { max-width: 46rem; }
+.room-head .tag { margin-bottom: 18px; }
+.room-head p { margin-top: 18px; font-size: var(--t-lead); line-height: 1.7; }
+.room-real { background: radial-gradient(ellipse 60% 40% at 70% 0%, rgba(214, 173, 98, 0.1), transparent 70%), var(--navy-night); color: var(--on-navy); }
+.room-real .room-head p { color: var(--on-navy-72); }
+.room-concepts { color: var(--ink); background: radial-gradient(ellipse 55% 45% at 80% 10%, rgba(214, 173, 98, 0.14), transparent 70%), var(--cream-100); }
+.room-concepts .room-head p { color: var(--ink-74); }
+
+/* an exhibit: the screens on a lit wall, the placard beside them */
+.exhibit { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 80px); align-items: center; margin-top: clamp(56px, 8vw, 110px); }
+.exhibit-media { grid-column: 2; grid-row: 1; display: block; position: relative; }
+.exhibit-copy { grid-column: 1; grid-row: 1; }
+.exhibit.flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+.exhibit.flip .exhibit-media { grid-column: 1; }
+.exhibit.flip .exhibit-copy { grid-column: 2; }
+.exhibit-stage {
+  position: relative; aspect-ratio: 16 / 11; border-radius: 22px; padding: clamp(18px, 3vw, 40px);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 45%, rgba(255, 222, 160, 0.16), transparent 70%),
+    linear-gradient(160deg, #0f1d36, #071224);
+  box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.28), 0 50px 90px -50px rgba(0, 0, 0, 0.8);
+  transition: box-shadow 400ms var(--ease-out);
+}
+.exhibit-stage::before {   /* the lamp above the work */
+  content: ""; position: absolute; inset-inline: 18%; top: -1px; height: 46%; border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255, 226, 168, 0.22), transparent 70%); pointer-events: none;
+  transition: opacity 400ms var(--ease-out); opacity: 0.8;
+}
+.browser { position: absolute; inset-inline-start: clamp(18px, 3vw, 40px); top: clamp(18px, 3vw, 40px); width: 82%; margin: 0;
+  border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.75); transition: transform 500ms var(--ease-out); }
+.browser-bar { display: flex; gap: 6px; padding: 9px 12px; background: #eceae4; }
+.browser-bar i { width: 9px; height: 9px; border-radius: 50%; background: #c9c4b8; }
+.browser picture, .browser img { display: block; width: 100%; }
+.phone { position: absolute; margin: 0; width: 23%; aspect-ratio: 9 / 19.5; overflow: hidden;
+  border-radius: 22px; border: 5px solid #0b1426; background: #0b1426; box-shadow: 0 30px 50px -24px rgba(0, 0, 0, 0.85); transition: transform 500ms var(--ease-out); }
+.phone picture, .phone img { display: block; width: 100%; height: 100%; }
+.phone img { object-fit: cover; object-position: top; }
+.exhibit .phone { inset-inline-end: clamp(14px, 2.4vw, 32px); bottom: clamp(14px, 2.4vw, 32px); }
+/* a stage of phones only (GoLondon): three screens in a fan */
+.stage-phones .phone { bottom: 9%; width: 27%; }
+.stage-phones .phone:nth-child(1) { inset-inline-start: 50%; translate: 50% 0; z-index: 2; width: 31%; bottom: 7%; }
+.stage-phones .phone:nth-child(2) { inset-inline-start: 13%; rotate: -5deg; }
+.stage-phones .phone:nth-child(3) { inset-inline-end: 13%; rotate: 5deg; }
+.exhibit-media:hover .exhibit-stage, .exhibit:focus-within .exhibit-stage { box-shadow: inset 0 0 0 1px rgba(214, 173, 98, 0.55), 0 60px 100px -50px rgba(0, 0, 0, 0.85); }
+.exhibit-media:hover .exhibit-stage::before, .exhibit:focus-within .exhibit-stage::before { opacity: 1; }
+.exhibit-media:hover .browser { transform: translateY(-6px); }
+.exhibit-media:hover .phone:not(.stage-phones .phone) { transform: translateY(-10px); }
+
+.exhibit-copy .work-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.room-real .tag-type { color: var(--on-navy-72); }
+.exhibit-title { margin-top: 18px; font-family: var(--font-display); font-weight: 700; font-size: clamp(2.1rem, 3.6vw, 3.3rem); line-height: 1.05; }
+.exhibit-title a { color: inherit; text-decoration: none; }
+.exhibit-title a::after { content: ""; position: absolute; inset: 0; }   /* the whole placard is the link, the arrow stays the visible cue */
+.exhibit-copy { position: relative; }
+.exhibit-desc { margin-top: 14px; font-size: var(--t-lead); line-height: 1.7; }
+.room-real .exhibit-desc { color: var(--on-navy-72); }
+.exhibit-built { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.exhibit-built li { padding: 7px 14px; border-radius: 999px; font-size: 0.92rem; font-weight: 500; }
+.room-real .exhibit-built li { background: rgba(243, 236, 223, 0.06); box-shadow: inset 0 0 0 1px rgba(243, 236, 223, 0.14); color: var(--on-navy); }
+.exhibit-copy .link-arrow { margin-top: 22px; position: relative; z-index: 1; }
+.room-real .link-arrow { color: var(--gold-300); }
+.room-note { margin-top: clamp(48px, 6vw, 80px); font-size: 0.95rem; color: var(--on-navy-72); display: flex; align-items: center; gap: 10px; }
+.room-note::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-400); flex: 0 0 auto; }
+
+/* the study room: concepts as prints on the wall, each with a museum placard */
+.salon { margin-top: clamp(48px, 6vw, 80px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 4vw, 56px); }
+.print { position: relative; display: grid; gap: 18px; align-content: start; }
+.print-wide { grid-column: 1 / -1; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); align-items: center; gap: clamp(24px, 4vw, 56px); }
+.print-frame { position: relative; margin: 0; border-radius: 8px; overflow: hidden; background: #fff; aspect-ratio: 16 / 10;
+  box-shadow: 0 0 0 10px #fbf7ef, 0 0 0 11px rgba(134, 96, 31, 0.28), 0 40px 60px -36px rgba(19, 32, 58, 0.55); transition: transform 400ms var(--ease-out), box-shadow 400ms var(--ease-out); }
+.print-frame picture, .print-frame > img, .print-frame picture img { display: block; width: 100%; height: 100%; }
+.print-frame img { object-fit: cover; object-position: top; }
+.print-frame .phone { width: 22%; inset-inline-end: 4%; bottom: -8%; border-width: 4px; border-radius: 18px; }
+.print-media { display: block; padding: 11px; }
+.print-media:hover .print-frame { transform: translateY(-4px); box-shadow: 0 0 0 10px #fbf7ef, 0 0 0 11px rgba(134, 96, 31, 0.5), 0 50px 70px -36px rgba(19, 32, 58, 0.6); }
+.placard { position: relative; padding: 4px 4px 0; }
+.placard .tag-concept { color: var(--ink); }
+.placard h3 { margin-top: 12px; font-family: var(--font-display); font-weight: 700; font-size: var(--t-h3); line-height: 1.15; }
+.placard h3 a { color: inherit; text-decoration: none; }
+.placard h3 a::after { content: ""; position: absolute; inset: 0; }
+.placard p { margin-top: 8px; color: var(--ink-74); line-height: 1.65; }
+.placard .link-arrow { position: relative; z-index: 1; margin-top: 6px; }
+
+/* ---------- 4. the project story ---------- */
+.story-hall { min-height: auto; padding-block: calc(var(--nav-h) + clamp(40px, 6vw, 80px)) clamp(64px, 8vw, 120px); align-items: center;
+  background: radial-gradient(ellipse 50% 60% at 30% 55%, rgba(214, 173, 98, 0.13), transparent 70%), var(--navy-night); }
+.story-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+.story-grid .hall-copy > * { max-width: 34rem; }
+.story-sub { margin-top: 14px; font-weight: 600; color: var(--gold-300); font-size: 1.08rem; }
+.story-hall h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.8rem, 5.6vw, 5rem); line-height: 1.02; margin-top: 18px; }
+.crumbs-v2 ol { margin-bottom: 22px; }
+.hall-dark .crumbs-v2 ol { color: var(--on-navy-72); }
+.hall-dark .crumbs-v2 a { color: var(--on-navy); }
+.hall-dark .crumbs-v2 li + li::before { background: var(--gold-400); }
+.hall-dark .tag-type { color: var(--on-navy-72); }
+.story-hall .work-meta { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.story-hall .project-actions { margin-top: 30px; }
+.story-stage { position: relative; aspect-ratio: 16 / 11; }
+.story-stage .browser { inset-inline-start: 0; top: 4%; width: 88%; }
+.story-stage .phone { inset-inline-end: 0; bottom: 0; width: 26%; }
+
+.chapter { position: relative; padding-block: clamp(80px, 10vw, 140px); }
+.chapter.on-cream { background: var(--cream-50); }
+.chapter.paper-2 { background: var(--cream-100); }
+.chapter.on-navy { background: var(--navy-night); }
+.chapter-head { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 80px); align-items: end; }
+.chapter-head p { font-size: var(--t-lead); line-height: 1.7; }
+.chapter.on-cream .chapter-head p, .chapter.paper-2 .chapter-head p { color: var(--ink-74); }
+.chapter.on-navy .chapter-head p { color: var(--on-navy-72); }
+.chapter .index-num { margin-bottom: 18px; }
+.chapter.on-cream .index-num, .chapter.paper-2 .index-num { color: var(--gold-700); }
+.chapter.on-navy .index-num { color: var(--gold-300); }
+.chapter-media { margin-top: clamp(40px, 6vw, 80px); }
+.wide-shot { margin: 0; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 40px 80px -46px rgba(19, 32, 58, 0.6); }
+.wide-shot .browser-bar { background: #eceae4; }
+.wide-shot picture, .wide-shot img { display: block; width: 100%; }
+.shot-row { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 3fr); gap: clamp(20px, 3vw, 44px); align-items: end; }
+.shot-row .phone { position: relative; inset: auto; width: 100%; }
+.caption { margin-top: 14px; font-size: 0.92rem; color: var(--ink-74); display: flex; gap: 10px; align-items: center; }
+.on-navy .caption { color: var(--on-navy-72); }
+.caption::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.7; flex: 0 0 auto; }
+
+/* the app, in the trainee's hands: five real screens from the public homepage, in the order of a week */
+.app-flow { list-style: none; margin: clamp(40px, 6vw, 80px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(14px, 2vw, 26px); align-items: start; }
+.app-flow li { display: grid; gap: 16px; }
+.app-flow li:nth-child(even) { margin-top: clamp(28px, 4vw, 64px); }
+.app-flow figure { margin: 0; filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.5)); }
+.app-flow img { display: block; width: 100%; height: auto; }
+.app-flow b { display: block; font-family: var(--font-display); font-weight: 300; font-size: 2.2rem; line-height: 0.9; color: var(--gold-300); }
+.app-flow span { font-weight: 600; color: var(--on-navy); }
+
+.story-built { padding-block: clamp(80px, 10vw, 140px); background: var(--cream-100); color: var(--ink); }
+.built-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 5vw, 80px); align-items: start; margin-top: clamp(32px, 4vw, 56px); }
+.built-list { list-style: none; margin: 0; padding: 0; counter-reset: b; display: grid; gap: 0; }
+.built-list li { counter-increment: b; display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding-block: 22px; border-top: 1px solid var(--ink-line); line-height: 1.65; font-size: 1.08rem; }
+.built-list li:last-child { border-bottom: 1px solid var(--ink-line); }
+.built-list li::before { content: counter(b, decimal-leading-zero); font-family: var(--font-display); font-weight: 300; font-size: 1.9rem; line-height: 1; color: var(--gold-700); }
+.built-side { display: grid; gap: 16px; }
+.built-side .fact { background: var(--cream-50); box-shadow: inset 0 0 0 1px var(--ink-line); }
+
+/* next and previous: two large doors to the neighbours, with their screens */
+.pager-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 3vw, 32px); padding-block: clamp(48px, 6vw, 80px); }
+.pager-card { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 18px; align-items: center; padding: 18px; border-radius: 16px; text-decoration: none; color: var(--ink);
+  background: var(--cream-50); box-shadow: inset 0 0 0 1px var(--ink-line); transition: box-shadow 240ms var(--ease-out), transform 240ms var(--ease-out); }
+.pager-card:hover { box-shadow: inset 0 0 0 1.5px var(--gold-700); transform: translateY(-3px); }
+.pager-card small { display: block; font-size: 0.88rem; color: var(--ink-74); }
+.pager-card strong { display: block; margin-top: 4px; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; }
+.pager-card img { width: 120px; height: 80px; object-fit: cover; object-position: top; border-radius: 8px; }
+.pager-all { grid-column: 1 / -1; justify-self: center; }
+.story-page-end { background: var(--cream-50); }
+
+/* ---------- motion: the hall arrives softly, nothing else moves on its own ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .hall-art img, .hall-plate { animation: hall-in 1400ms var(--ease-out) both; }
+  .hall-copy > * { animation: copy-in 900ms var(--ease-out) both; }
+  .hall-copy > :nth-child(2) { animation-delay: 80ms; }
+  .hall-copy > :nth-child(3) { animation-delay: 160ms; }
+  .hall-copy > :nth-child(n+4) { animation-delay: 240ms; }
+  .story-stage .browser, .story-stage .phone { animation: copy-in 1100ms var(--ease-out) both; }
+  .story-stage .phone { animation-delay: 220ms; }
+}
+@keyframes hall-in { from { opacity: 0; scale: 1.04; } to { opacity: 1; scale: 1; } }
+@keyframes copy-in { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
+.hall-plate { scale: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .browser, .phone, .exhibit-stage, .print-frame, .pager-card { transition: none; }
+  .exhibit-media:hover .browser, .exhibit-media:hover .phone, .print-media:hover .print-frame, .pager-card:hover { transform: none; }
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 1000px) {
+  .exhibit, .exhibit.flip { grid-template-columns: 1fr; }
+  .exhibit .exhibit-media, .exhibit.flip .exhibit-media { grid-column: 1; grid-row: 1; }
+  .exhibit .exhibit-copy, .exhibit.flip .exhibit-copy { grid-column: 1; grid-row: 2; }
+  .story-grid { grid-template-columns: 1fr; }
+  .story-stage { order: 2; }
+  .app-flow { grid-template-columns: repeat(5, minmax(200px, 1fr)); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+  .app-flow li { scroll-snap-align: start; }
+  .app-flow li:nth-child(even) { margin-top: 0; }
+}
+@media (max-width: 899px) {
+  .hall-dark { min-height: 78svh; padding-block: calc(var(--nav-h) + 32px) 48px; }
+  .hall-dark .hall-art::after {
+    background: linear-gradient(to top, var(--navy-night) 6%, rgba(3, 12, 28, 0.72) 42%, rgba(3, 12, 28, 0.2) 72%, rgba(3, 12, 28, 0.35) 100%);
+  }
+  .hall .index-num b { font-size: 2.6rem; }
+  .hall-light .hall-grid { grid-template-columns: 1fr; }
+  .hall-plate { width: 100%; aspect-ratio: 16 / 9; transform: none; }
+  .salon, .print-wide { grid-template-columns: 1fr; }
+  .chapter-head, .built-grid { grid-template-columns: 1fr; }
+  .shot-row { grid-template-columns: minmax(0, 1fr) minmax(0, 0.42fr); }
+  .pager-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .exhibit-stage { aspect-ratio: 4 / 3.4; }
+  .hall-rooms a { flex: 1 1 auto; justify-content: center; }
+  .pager-card { grid-template-columns: minmax(0, 1fr) 96px; }
+  .pager-card img { width: 96px; height: 64px; }
+}
+
+/* ---------- hall variants ---------- */
+.hall-short { min-height: clamp(420px, 54svh, 600px); }
+.hall-short .kicker-dot { color: var(--gold-300); margin-bottom: 18px; }
+/* a square world (the studio jar) stands on the far side and melts into the night */
+.hall-side .hall-art { inset-inline-start: auto; inset-inline-end: 0; width: min(62%, 900px); }
+.hall-side .hall-art img { object-position: 50% 50%;
+  -webkit-mask-image: radial-gradient(closest-side, #000 58%, transparent 100%); mask-image: radial-gradient(closest-side, #000 58%, transparent 100%); }
+.hall-side .hall-art::after { display: none; }
+.hall-side { background: radial-gradient(ellipse 40% 60% at 30% 50%, rgba(214, 173, 98, 0.1), transparent 70%), var(--navy-night); align-items: center; }
+@media (max-width: 899px) {
+  .hall-side .hall-art { width: 100%; opacity: 0.55; }
+  .hall-short { min-height: 46svh; }
+}
+
+/* ---------- second pass ---------- */
+.hall + .room { padding-top: clamp(56px, 7vw, 100px); }
+@media (max-width: 600px) {
+  .shot-row { grid-template-columns: 1fr; justify-items: center; }
+  .shot-row .wide-shot { width: 100%; }
+  .shot-row .phone { width: 58%; }
+}
+/* the header always reads: a soft night band at the top of every dark hall, ink buttons in light halls */
+.hall-dark .hall-art::before { content: ""; position: absolute; inset: 0 0 auto; height: calc(var(--nav-h) + 90px); z-index: 1; pointer-events: none;
+  background: linear-gradient(to bottom, rgba(3, 12, 28, 0.82), rgba(3, 12, 28, 0)); }
+.hall-light .btn-line { color: var(--ink); border-color: rgba(19, 32, 58, 0.28); }
+.hall-light .btn-line:hover { color: var(--gold-700); border-color: var(--gold-700); }
+@media (max-width: 899px) { .hall-side .hall-art { opacity: 0.42; } }
+.app-flow:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 8px; border-radius: 12px; }

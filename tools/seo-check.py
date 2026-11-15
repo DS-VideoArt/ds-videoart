@@ -153,7 +153,13 @@ for page in V2_PAGES:
     if re.search(r"golondon-desktop\.jpg|computer-lab-", read(page)): fails.append(f"{page}: uses a screenshot with people in it")
 # gallery and project pages: real and concept work stay apart and keep their notes
 _w = read("work/index.html")
-if 'data-group="real"' not in _w or 'data-group="concept"' not in _w or _w.count('class="work-item"') != 5: fails.append("work: expected 5 works in a real group and a concept group")
+# the gallery (2026-11): real projects in their own dark room, concepts in a separate light room, each one labelled
+_real = _w[_w.index('id="real"'):_w.index('id="concepts"')] if 'id="real"' in _w and 'id="concepts"' in _w else ""
+_conc = _w[_w.index('id="concepts"'):] if 'id="concepts"' in _w else ""
+if _real.count('data-kind="real"') != 2 or _conc.count('data-kind="concept"') != 3 or 'data-kind="concept"' in _real or 'data-kind="real"' in _conc:
+    fails.append("work: expected 2 real projects in the real room and 3 concepts in the concept room")
+if _real.count('class="tag tag-real">פרויקט') != 2 or _conc.count('class="tag tag-concept">') < 4 or "המחשה בלבד" not in _conc:
+    fails.append("work: every work keeps its real or concept label, and the concept room keeps its note")
 for _f, _txt in (("work/golondon.html", "פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית"), ("work/bit-uborg.html", "עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד."),
                  ("work/fit-with-nikita.html", "ומוצג כאן באישור הלקוח"), ("work/kemach-umayim.html", "עסק בדיוני"), ("work/padel-layla.html", "עסק בדיוני")):
     if _txt not in read(_f): fails.append(f"{_f}: note missing: {_txt}")
