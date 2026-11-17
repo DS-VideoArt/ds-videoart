@@ -160,6 +160,17 @@ if _real.count('data-kind="real"') != 2 or _conc.count('data-kind="concept"') !=
     fails.append("work: expected 2 real projects in the real room and 3 concepts in the concept room")
 if _real.count('class="tag tag-real">פרויקט') != 2 or _conc.count('class="tag tag-concept">') < 4 or "המחשה בלבד" not in _conc:
     fails.append("work: every work keeps its real or concept label, and the concept room keeps its note")
+# the studio page (round 2, 2026-11-17): four chapters with their anchors, its own stylesheet
+_st = read("studio.html")
+for _id in ("approach", "know", "process", "honest"):
+    if f'id="{_id}"' not in _st: fails.append(f"studio: anchor #{_id} missing")
+if "/studio-page.css?v=" not in _st: fails.append("studio: studio-page.css missing")
+if "/services.css?v=" not in read("pricing.html") or "home.css" in read("pricing.html"): fails.append("pricing: services.css must replace home.css")
+# the client's approval note belongs to its own exhibit (2026-11-17), not to the room after the last project
+_ex = [c for c in _real.split('<article class="exhibit')[1:]]
+_nik = [c for c in _ex if 'href="/work/fit-with-nikita"' in c]
+if len(_nik) != 1 or "ומוצג כאן באישור הלקוח" not in _nik[0].split("</article>")[0] or any("באישור הלקוח" in c for c in _ex if c not in _nik):
+    fails.append("work: the Fit With Nikita approval note must sit inside the Fit With Nikita exhibit only")
 for _f, _txt in (("work/golondon.html", "פרויקט מסוג זה אינו חלק מחבילת אתר התדמית הבסיסית"), ("work/bit-uborg.html", "עסק בדיוני. השם, הפרטים, המחירים וההמלצות באתר הם המחשה בלבד."),
                  ("work/fit-with-nikita.html", "ומוצג כאן באישור הלקוח"), ("work/kemach-umayim.html", "עסק בדיוני"), ("work/padel-layla.html", "עסק בדיוני")):
     if _txt not in read(_f): fails.append(f"{_f}: note missing: {_txt}")

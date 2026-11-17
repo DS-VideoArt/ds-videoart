@@ -166,8 +166,9 @@ body:has(.hall-light) .site-head:not(.is-solid) :focus-visible { outline-color: 
 .room-real .exhibit-built li { background: rgba(243, 236, 223, 0.06); box-shadow: inset 0 0 0 1px rgba(243, 236, 223, 0.14); color: var(--on-navy); }
 .exhibit-copy .link-arrow { margin-top: 22px; position: relative; z-index: 1; }
 .room-real .link-arrow { color: var(--gold-300); }
-.room-note { margin-top: clamp(48px, 6vw, 80px); font-size: 0.95rem; color: var(--on-navy-72); display: flex; align-items: center; gap: 10px; }
-.room-note::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-400); flex: 0 0 auto; }
+/* the client's approval sits with its own project */
+.exhibit-credit { margin-top: 18px; display: flex; align-items: center; gap: 10px; font-size: 0.98rem; line-height: 1.5; color: var(--on-navy-72); }
+.exhibit-credit::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-400); flex: 0 0 auto; }
 
 /* the study room: concepts as prints on the wall, each with a museum placard */
 .salon { margin-top: clamp(48px, 6vw, 80px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 4vw, 56px); }
@@ -333,3 +334,19 @@ body:has(.hall-light) .site-head:not(.is-solid) :focus-visible { outline-color: 
 .hall-light .btn-line:hover { color: var(--gold-700); border-color: var(--gold-700); }
 @media (max-width: 899px) { .hall-side .hall-art { opacity: 0.42; } }
 .app-flow:focus-visible { outline: 3px solid var(--gold-400); outline-offset: 8px; border-radius: 12px; }
+
+/* ---------- R1 polish (2026-11-17): tags and secondary text, same look, easier to read ----------
+   Tags are full pills with their own padding: the old site.css border and the zero side padding of .tag-type
+   made the text touch its frame, and a long tag could squeeze. Now a tag never shrinks; it wraps to the next line. */
+.work-meta .tag, .room-head .tag { flex: none; white-space: nowrap; border: 0; padding: 7px 14px; font-size: 0.9rem; line-height: 1.25; }
+.work-meta .tag-real, .room-head .tag-real { box-shadow: inset 0 0 0 1px rgba(243, 236, 223, 0.22); }
+.work-meta .tag-type { padding-inline: 14px; color: var(--ink); box-shadow: inset 0 0 0 1px rgba(19, 32, 58, 0.24); }
+.room-real .work-meta .tag-type, .hall-dark .work-meta .tag-type, .on-navy .work-meta .tag-type { color: var(--on-navy); box-shadow: inset 0 0 0 1px rgba(243, 236, 223, 0.34); }
+.work-meta, .exhibit-copy .work-meta, .story-hall .work-meta { gap: 10px; }
+.story-hall .work-meta { margin-bottom: 6px; }
+.exhibit-built li { font-size: 0.96rem; }
+.placard p { font-size: 1.02rem; }
+.caption { font-size: 0.98rem; line-height: 1.6; }
+.pager-card small { font-size: 0.95rem; }
+.crumbs-v2 ol { font-size: 0.96rem; }
+.app-flow span { font-size: 1.02rem; line-height: 1.4; }

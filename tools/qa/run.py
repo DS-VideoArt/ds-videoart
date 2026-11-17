@@ -6,7 +6,7 @@
   python3 tools/qa/run.py --base https://dscreative.co.il --netlify
   --only pages,links,...   run some groups only
 
-Groups: pages, links, redirects (Netlify only), prices, protected, forms, measurement, navigation, a11y, mobile, search.
+Groups: pages, links, redirects (Netlify only), prices, content, protected, forms, measurement, navigation, a11y, mobile, search.
 --preview expects an isolated preview (noindex everywhere, no tracker ever leaves the browser); --netlify checks redirects.
 Exit code 1 if anything fails. Needs Python Playwright (pip install playwright; playwright install chromium).
 """
@@ -136,6 +136,19 @@ with sync_playwright() as pw:
         _, _, cfg = fetch(B + "/builder/pricing-config.js")
         ok("builder price table unchanged", hashlib.sha256(cfg).hexdigest() == BASELINE["builder_pricing_sha256"])
 
+    # ---------- content: a redesign moves words, it never drops them (content-baseline.json, make-content-baseline.py) ----------
+    if want("content"):
+        import html as _html
+        CB = json.load(open(os.path.join(HERE, "content-baseline.json"), encoding="utf-8"))
+        norm = lambda t: re.sub(r"\s+", " ", _html.unescape(t)).strip()
+        for path, frags in CB["pages"].items():
+            _, _, body = fetch(B + path)
+            page = re.sub(r"<(script|style|noscript)\b.*?</\1>", " ", body.decode(), flags=re.S | re.I)
+            main = page[page.find("<main"):page.rfind("</main>")] if "<main" in page else page
+            txt = norm(re.sub(r"<[^>]+>", " ", main))
+            missing = [f for f in frags if norm(f) not in txt]
+            ok(f"{path}: all {len(frags)} text fragments of {CB['commit']} are still there", not missing, missing[:4])
+
     # ---------- protected: builder and /haredi are not touched (local repository) ----------
     if want("protected") and os.path.isdir(os.path.join(ROOT, ".git")):
         diff = subprocess.run(["git", "-C", ROOT, "diff", "--name-only", BASELINE["commit"], "--", "builder", "haredi.html", "pricing-config.js"], capture_output=True, text=True).stdout.split()
@@ -222,6 +235,24 @@ with sync_playwright() as pw:
             pg.keyboard.press("Escape"); pg.wait_for_timeout(300)
             ok(f"phone menu on {path} opens with five links and closes with Escape", opened and not pg.evaluate("document.getElementById('menu').open"))
         c.close()
+        # /pricing: the chapter bar marks the chapter being read, its links land on their chapters, a question opens and closes
+        for (w, h, mob) in ((1440, 900, False), (390, 844, True)):
+            c = ctx(br, w, h, mob); pg = c.new_page(); pg.goto(B + "/pricing", wait_until="networkidle")
+            marks = []
+            for cid in ("packages", "maintenance", "transparency", "process", "faq"):
+                pg.click(f'.pp-subnav a[href="#{cid}"]'); pg.wait_for_timeout(500)
+                top = pg.evaluate(f"document.getElementById('{cid}').getBoundingClientRect().top")
+                cur = pg.evaluate("(document.querySelector('.pp-subnav a[aria-current]') || {}).getAttribute?.('href') || null")
+                marks.append((cid, cur == "#" + cid, -2 < top < 200))
+            ok(f"/pricing {w}px: the chapter bar lands on each chapter and marks it", all(m[1] and m[2] for m in marks), marks)
+            pg.click("#faq-8 summary"); pg.wait_for_timeout(200); opened = pg.evaluate("document.getElementById('faq-8').open")
+            pg.click("#faq-8 summary"); pg.wait_for_timeout(200); closed = not pg.evaluate("document.getElementById('faq-8').open")
+            pg.click('#package-website .plate-more summary'); pg.wait_for_timeout(200)
+            inc = pg.evaluate("document.querySelector('#package-website .plate-more').open && document.querySelector('#package-website .plate-more li').getBoundingClientRect().height > 0")
+            ok(f"/pricing {w}px: a question and a package list open and close", opened and closed and inc)
+            hrefs = pg.evaluate("[...document.querySelectorAll('#packages .plate-actions a')].map(a => a.getAttribute('href'))")
+            ok(f"/pricing {w}px: each package starts the builder with its type, or offers a talk", hrefs == ["/builder/?type=landing", "/contact", "/builder/?type=site", "/contact"], hrefs)
+            c.close()
 
     # ---------- accessibility: axe WCAG 2.2 AA, desktop and phone ----------
     if want("a11y"):
@@ -241,6 +272,14 @@ with sync_playwright() as pw:
                 pg.goto(B + path, wait_until="networkidle"); pg.wait_for_timeout(300)
                 if pg.evaluate("document.documentElement.scrollWidth > innerWidth + 1"): bad.append(path)
             ok(f"{w}px: no sideways scroll on {len(KEY_PAGES)} key pages", not bad, bad)
+            # tags are whole pills: never squeezed, never touching their frame (R1 polish, 2026-11-17)
+            tight = []
+            for path in ("/work/", "/work/fit-with-nikita"):
+                pg.goto(B + path, wait_until="networkidle")
+                tight += pg.evaluate("""[...document.querySelectorAll('.work-meta .tag, .room-head .tag')].filter(t => {
+                  const c = getComputedStyle(t), r = t.getBoundingClientRect();
+                  return t.scrollWidth > t.clientWidth + 1 || parseFloat(c.paddingInlineStart) < 10 || r.left < 0 || r.right > innerWidth; }).map(t => t.textContent)""")
+            ok(f"{w}px: tags keep their padding and fit the screen", not tight, tight[:4])
             c.close()
 
     # ---------- search ----------

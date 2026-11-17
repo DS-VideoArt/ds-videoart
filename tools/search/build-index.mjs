@@ -71,9 +71,11 @@ for (const art of pricing.matchAll(/<article class="package[^"]*"([^>]*)>([\s\S]
   if (!title || !id) continue;
   push({ url: `/pricing#${id}`, title: `${title}: המחיר ומה כלול`, body: t.slice(0, 1400), type: "מחירים", topics: ["מחירים"], aliases: "מחיר, מחירים, כמה עולה, עלות, עלויות, חבילה, חבילות, מה כלול, תשלום חד פעמי, מסירה, דומיין, אחסון, SEO" + (PRICE_ALIASES[id] || "") });
 }
-const mt = pricing.indexOf("ואחרי המסירה");
+// maintenance has its own chapter since round 2 (2026-11-17); before that it sat at the end of #packages
+const maint = section(pricingPage, "maintenance") || pricing.slice(Math.max(0, pricing.indexOf("ואחרי המסירה")));
 if (records.filter((r) => r.type === "מחירים").length !== 2) { console.error("expected 2 package records on /pricing"); process.exit(1); }
-if (mt > 0) push({ url: "/pricing#maintenance", title: "תחזוקה אחרי המסירה: 0, 149 או 349 ₪ לחודש", body: text(pricing.slice(mt)).slice(0, 1000), type: "מחירים", topics: ["תחזוקה", "מחירים"], aliases: "תחזוקה, התחזוקה, מנוי חודשי, עדכונים, שינויים, 149, 349, בלי תחזוקה, אחרי המסירה" });
+if (!maint.includes("149")) { console.error("missing the maintenance chapter on /pricing"); process.exit(1); }
+push({ url: "/pricing#maintenance", title: "תחזוקה אחרי המסירה: 0, 149 או 349 ₪ לחודש", body: text(maint).slice(0, 1000), type: "מחירים", topics: ["תחזוקה", "מחירים"], aliases: "תחזוקה, התחזוקה, מנוי חודשי, עדכונים, שינויים, 149, 349, בלי תחזוקה, אחרי המסירה" });
 
 // other sections: [page html, page path, anchor, how to cut it, title, topic, aliases]
 // The custom-projects title names the offer as the homepage card does ("אתר מתקדם או מערכת מותאמת"): its short body never says "מערכת" itself,

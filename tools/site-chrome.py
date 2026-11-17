@@ -15,7 +15,7 @@ import os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VERSION = "20261027b"
-V3 = "20261115a"
+V3 = "20261117a"
 
 # page: (current section for the menu, header solid from the top)
 PAGES = {
