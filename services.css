@@ -10,7 +10,7 @@
   --sub-h: 56px;
 }
 .services [id] { scroll-margin-top: calc(var(--sub-h) + 8px); }
-.services .chapter { padding-block: clamp(60px, 7.4vw, 108px); }
+.services .chapter { padding-block: clamp(56px, 6vw, 88px); }
 
 /* paper rooms: grain and one soft lamp, so no chapter is a flat colour */
 .sv-paper { background-image: radial-gradient(ellipse 55% 45% at 85% 0%, rgba(214, 173, 98, 0.13), transparent 70%), var(--grain); }
@@ -48,7 +48,7 @@
 
 /* ---------- 01 the price sheet: two plates on one sheet, the larger package on the night side ---------- */
 .price-sheet {
-  margin-top: clamp(44px, 6vw, 84px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: clamp(40px, 5vw, 68px); display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
   border-radius: 24px; overflow: hidden;
   box-shadow: 0 0 0 1px var(--ink-line), 0 60px 100px -70px rgba(19, 32, 58, 0.7);
 }
@@ -111,7 +111,7 @@
 .is-featured .alt-link:hover { color: var(--gold-300); }
 
 /* ---------- beyond the plates: the example as a framed print, custom work on a blueprint ---------- */
-.pp-beyond { margin-top: clamp(64px, 8vw, 120px); display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 4vw, 56px); align-items: stretch; }
+.pp-beyond { margin-top: clamp(56px, 6vw, 88px); display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 4vw, 56px); align-items: stretch; }
 /* desktop: the example is one wide exhibit (print beside its placard); custom work and the add ons share the row under it */
 .pp-example { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 4vw, 64px); align-items: center; }
 .pp-example-print { display: block; padding: 11px; }
