@@ -1,0 +1,33 @@
+{
+  "commit": "001fbb9",
+  "prices": ["440 ₪", "1,290 ₪", "149 ₪", "349 ₪"],
+  "builder_pricing_sha256": "d6b81c5c10c683882c75b61ac83e2066fae6833c2d191a5c68cfd4e3b9c87662",
+  "redirects": [
+    ["/go/guide-fb", 302, "/hub/questions-before-ordering-a-website?utm_source=facebook&utm_medium=post&utm_campaign=checklist_before_ordering"],
+    ["/go/guide-wa", 302, "/hub/questions-before-ordering-a-website?utm_source=whatsapp&utm_medium=message&utm_campaign=checklist_before_ordering"],
+    ["/fb-440a1", 302, "/builder/?utm_source=facebook&utm_medium=organic_social&utm_campaign=landing_page_440&utm_content=ad01_h1"],
+    ["/hub/domain-hosting-who-owns-what.html", 301, "/hub/domain-hosting-who-owns-what"],
+    ["/hub/diy-ai-or-professional/", 301, "/hub/diy-ai-or-professional"],
+    ["/privacy.html", 301, "/privacy"],
+    ["/studio.html", 301, "/studio"],
+    ["/contact/", 301, "/contact"],
+    ["/work/fit-with-nikita.html", 301, "/work/fit-with-nikita"]
+  ],
+  "anchors": [
+    ["/#faq-4", "/pricing#faq-4"],
+    ["/#contact", "/contact"],
+    ["/#work", "/work/"],
+    ["/?utm_source=qa#work", "/work/?utm_source=qa"],
+    ["/#work-fit-with-nikita", "/work/fit-with-nikita"]
+  ],
+  "sections": {
+    "/": null,
+    "/work/": "/work/",
+    "/work/fit-with-nikita": "/work/",
+    "/pricing": "/pricing",
+    "/hub/": "/hub/",
+    "/hub/diy-ai-or-professional": "/hub/",
+    "/studio": "/studio",
+    "/contact": "/contact"
+  }
+}

@@ -1,8 +1,9 @@
 // Builds the Pagefind search index for dscreative.co.il.
 // Usage: node build-index.mjs <site-dir>. Called by the canonical build (tools/build.mjs, npm run build); /pagefind/ is never committed.
-// Scope: hub articles, hub index, privacy, terms, accessibility (pages tagged data-pagefind-body),
-//        plus virtual records with anchor urls: the pricing page split into FAQ questions, packages, maintenance,
-//        process, transparency and custom projects; the homepage split into portfolio items and contact.
+// Scope: magazine articles and index, work gallery and project pages, studio, contact, privacy, terms, accessibility
+//        (pages tagged data-pagefind-body), plus virtual records with anchor urls: the pricing page split into FAQ questions,
+//        packages, maintenance, process, transparency and custom projects. Since V2 (October 2026) the homepage is a short
+//        gateway with nothing of its own to index: the portfolio lives on /work and the form on /contact.
 // Hebrew: Pagefind has no Hebrew stemming. Each record carries a manual alias layer (data-search-terms); no automatic prefix expansion.
 import * as pagefind from "pagefind";
 import { readFileSync, rmSync } from "node:fs";
@@ -17,14 +18,13 @@ const section = block("section"), article = block("article");
 
 const { index } = await pagefind.createIndex({
   forceLanguage: "he",
-  excludeSelectors: [".nav", ".mobile-menu", ".footer", ".grain", ".skip-link", ".deco", ".nav-search", ".ds-search", "[data-pagefind-ignore]"],
+  excludeSelectors: [".nav", ".mobile-menu", ".footer", ".site-head", ".menu", ".site-foot", ".grain", ".skip-link", ".deco", ".ring", ".nav-search", ".ds-search", "[data-pagefind-ignore]"],
 });
-const dir = await index.addDirectory({ path: SITE, glob: "{hub/*.html,privacy.html,legal/*.html}" });
+const dir = await index.addDirectory({ path: SITE, glob: "{hub/*.html,privacy.html,legal/*.html,work/*.html,studio.html,contact.html}" });
 if (dir.errors?.length) { console.error(dir.errors); process.exit(1); }
 console.log(`pages indexed from files: ${dir.page_count}`);
 
-// ---------- virtual records with anchor urls (pricing page + homepage) ----------
-const home = readFileSync(join(SITE, "index.html"), "utf8");
+// ---------- virtual records with anchor urls (pricing page) ----------
 const pricingPage = readFileSync(join(SITE, "pricing.html"), "utf8");
 const records = [];
 const push = (r) => records.push(r);
@@ -71,17 +71,12 @@ for (const art of pricing.matchAll(/<article class="package[^"]*"([^>]*)>([\s\S]
   if (!title || !id) continue;
   push({ url: `/pricing#${id}`, title: `${title}: המחיר ומה כלול`, body: t.slice(0, 1400), type: "מחירים", topics: ["מחירים"], aliases: "מחיר, מחירים, כמה עולה, עלות, עלויות, חבילה, חבילות, מה כלול, תשלום חד פעמי, מסירה, דומיין, אחסון, SEO" + (PRICE_ALIASES[id] || "") });
 }
-const mt = pricing.indexOf("ואחרי המסירה");
+// maintenance has its own chapter since round 2 (2026-11-17); before that it sat at the end of #packages
+const maint = section(pricingPage, "maintenance") || pricing.slice(Math.max(0, pricing.indexOf("ואחרי המסירה")));
 if (records.filter((r) => r.type === "מחירים").length !== 2) { console.error("expected 2 package records on /pricing"); process.exit(1); }
-if (mt > 0) push({ url: "/pricing#maintenance", title: "תחזוקה אחרי המסירה: 0, 149 או 349 ₪ לחודש", body: text(pricing.slice(mt)).slice(0, 1000), type: "מחירים", topics: ["תחזוקה", "מחירים"], aliases: "תחזוקה, התחזוקה, מנוי חודשי, עדכונים, שינויים, 149, 349, בלי תחזוקה, אחרי המסירה" });
+if (!maint.includes("149")) { console.error("missing the maintenance chapter on /pricing"); process.exit(1); }
+push({ url: "/pricing#maintenance", title: "תחזוקה אחרי המסירה: 0, 149 או 349 ₪ לחודש", body: text(maint).slice(0, 1000), type: "מחירים", topics: ["תחזוקה", "מחירים"], aliases: "תחזוקה, התחזוקה, מנוי חודשי, עדכונים, שינויים, 149, 349, בלי תחזוקה, אחרי המסירה" });
 
-// portfolio: featured projects (.sel-item) and design samples (.demo) on the homepage
-const work = section(home, "work");
-for (const art of work.matchAll(/<article class="(?:sel-item|demo)\b[^"]*" id="([^"]+)">([\s\S]*?)<\/article>/g)) {
-  const title = text((art[2].match(/<h[34] class="(?:sel|demo)-title">([\s\S]*?)<\/h[34]>/) || ["", ""])[1]);
-  const body = text(art[2].replace(/<a class="(?:sel|demo)-visual"[\s\S]*?<\/a>/, "").replace(/<a class="link-arrow"[\s\S]*?<\/a>/g, ""));
-  if (title) push({ url: `/#${art[1]}`, title: `תיק עבודות: ${title}`, body, type: "תיק עבודות", topics: ["תיק עבודות"], aliases: "תיק עבודות, דוגמאות, עבודות, פרויקטים, לקוחות, הדגמה, portfolio, עיצוב", weight: 0.4 });
-}
 // other sections: [page html, page path, anchor, how to cut it, title, topic, aliases]
 // The custom-projects title names the offer as the homepage card does ("אתר מתקדם או מערכת מותאמת"): its short body never says "מערכת" itself,
 // and without it the query "מערכת" dropped this record, which ranked second when it was #complex on the old homepage.
@@ -89,7 +84,6 @@ const others = [
   [pricingPage, "/pricing", "process", section, "איך זה עובד, שלב אחרי שלב", "תכנון והכנה", "תהליך, שלבים, כמה זמן לוקח, ימי עסקים, מקדמה, סיכום הזמנה, תיקונים, שיחה, בונה הפרויקט"],
   [pricingPage, "/pricing", "transparency", section, "שקיפות: מה כלול ומה לא", "מחירים", "תוספות, מה כלול, מה לא כלול, הפתעות, מחיר סופי, סיכום"],
   [pricingPage, "/pricing", "custom", article, "פרויקטים מורכבים בהתאמה אישית: אתר מתקדם או מערכת מותאמת", "מערכות ותוספות", "מערכת, מערכות, המערכת, אזור אישי, אזור לקוחות, חנות, תורים, קביעת תורים, פיתוח, אפיון, פרויקט מורכב, תוספות"],
-  [home, "/", "contact", section, "יצירת קשר: טופס פנייה, וואטסאפ וטלפון", "תכנון והכנה", "טופס, טופס פנייה, טופס יצירת קשר, הטופס, השארת פרטים, פנייה, פניות, לקבל פניות, יצירת קשר, צור קשר, וואטסאפ, בוואטסאפ, טלפון, שיחה, לדבר"],
 ];
 for (const [html, path, id, cut, title, topic, aliases] of others) {
   const sec = cut(html, id);
@@ -103,7 +97,7 @@ for (const r of records) {
   const res = await index.addHTMLFile({ url: r.url, content });
   if (res.errors?.length) { console.error(r.url, res.errors); process.exit(1); }
 }
-console.log(`virtual records (pricing page + homepage): ${records.length}`);
+console.log(`virtual records (pricing page): ${records.length}`);
 rmSync(join(SITE, "pagefind"), { recursive: true, force: true });   // Pagefind does not remove index files from a previous run
 const out = await index.writeFiles({ outputPath: join(SITE, "pagefind") });
 if (out.errors?.length) { console.error(out.errors); process.exit(1); }

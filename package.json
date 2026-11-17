@@ -4,7 +4,8 @@
   "description": "dscreative.co.il static site. `npm run build` writes the deployable site to dist/: SEO check plus the Pagefind search index.",
   "type": "module",
   "scripts": {
-    "build": "node tools/build.mjs"
+    "build": "node tools/build.mjs",
+    "qa": "python3 tools/qa/run.py"
   },
   "engines": {
     "node": ">=20"

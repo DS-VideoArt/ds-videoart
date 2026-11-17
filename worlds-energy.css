@@ -1,0 +1,129 @@
+/* ============================================================
+   DS Creative Studio, homepage "Creative Worlds", ENERGY EXPERIMENT (2026-10-29)
+   Loaded after worlds.css. Three areas only: the opening planet, 01 gallery, and the way into 02 services.
+   Light plan: gold stays the warm key light; a glowing turquoise is the cool counter light (rim, far room,
+   construction light). Turquoise is light only, never a text colour and never a background.
+   Pictures are unchanged; the light layers sit in the picture's own coordinates (.w-scene, a box with the
+   picture's 3:2 shape that covers its frame like object-fit: cover) and are masked to the paper of the planet
+   and to the light sources of the hall (assets/worlds/light/*.png, derived from the two pictures).
+   Final states are the default; html.w-motion (worlds.js) adds the moving parts.
+   ============================================================ */
+:root {
+  --teal: 46, 227, 211;          /* rgb of the cool light, used with alpha */
+  --teal-hi: 140, 247, 236;
+  --lamp: 255, 226, 168;          /* warm white of the gallery lamps */
+}
+
+/* ---------- the picture box in image space ---------- */
+.w-open-art, .w-frame { container-type: size; }
+.w-scene {
+  position: absolute; width: max(100cqw, 150cqh); height: max(100cqh, 66.6667cqw);
+  left: calc((100cqw - max(100cqw, 150cqh)) * var(--ox, 0.5));
+  top: calc((100cqh - max(100cqh, 66.6667cqw)) * var(--oy, 0.5));
+}
+.w-scene picture, .w-scene img { display: block; width: 100%; height: 100%; }
+.w-scene .w-l { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; }
+.w-scene .w-l i { position: absolute; display: block; }
+
+/* ---------- opening: day and night on the planet. The warm key light stays (it is in the picture); the far side
+   falls into a turquoise night with a glowing rim. The pointer (or a tap) is the sun; without motion the night rests
+   at the lower right, opposite the key light ---------- */
+.w-scene-planet { --ox: 0; --oy: 0.55; --sun: 40deg; transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -10px + var(--h, 0) * 70px), 0) scale(calc(1 + var(--h, 0) * 0.14)); }
+.w-open-art img { object-fit: fill; transform: none; }
+.w-open-art .w-scene-planet img { opacity: 1; scale: none; transition: none; }
+.w-motion .w-open-art picture { animation: none; }
+/* both night layers are a square centred on the planet (centre 28% 49.5%, diameter 48.2% of the picture), turned toward --sun */
+.w-night i, .w-scene .w-glow { inset: auto; left: -10.5%; top: -8.25%; width: 77%; height: auto; aspect-ratio: 1; rotate: var(--sun); }
+.w-scene .w-night { mix-blend-mode: multiply; -webkit-mask: url("/assets/worlds/light/planet-matte.png") 0 0 / 100% 100% no-repeat; mask: url("/assets/worlds/light/planet-matte.png") 0 0 / 100% 100% no-repeat; }
+.w-night i { background: linear-gradient(90deg, transparent 47%, rgba(88, 176, 184, 0.62) 64%, rgba(36, 118, 138, 0.86) 80%, rgba(20, 84, 108, 0.92) 100%); }
+.w-scene .w-glow {   /* the lit atmosphere on the night edge */
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle closest-side, transparent 57%, rgba(var(--teal-hi), 0.7) 62.5%, rgba(var(--teal), 0.26) 68%, rgba(var(--teal), 0.08) 76%, transparent 88%);
+  -webkit-mask: linear-gradient(90deg, transparent 46%, #000 72%); mask: linear-gradient(90deg, transparent 46%, #000 72%);
+}
+/* the window of the little studio is lit, warmer still at night */
+.w-scene .w-window { inset: auto; left: calc(36.3% - 3.2%); top: calc(37.6% - 4.8%); width: 6.4%; aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(255, 214, 140, 0.95), rgba(255, 190, 90, 0.35) 30%, transparent 66%); }
+/* the words stay crisp where they cross the glowing night edge (1100 to 1300 wide) */
+.w-open-copy h1, .w-lead { text-shadow: 0 1px 16px rgba(3, 12, 28, 0.9), 0 0 2px rgba(3, 12, 28, 0.6); }
+.w-kicker::before { background: rgb(var(--teal)); box-shadow: 0 0 10px rgba(var(--teal), 0.9); }   /* the one cool spot in the words */
+
+/* ---------- 01 gallery: the lamps come on down the hall, the next room glows, a hand light ---------- */
+.w-scene-hall { --ox: 0.5; --oy: 0.58; transform: scale(calc(1.16 - var(--p) * 0.16)); }
+.w-frame img { object-fit: fill; transform: none; }
+.w-lamps, .w-spot { -webkit-mask: url("/assets/worlds/light/gallery-light-matte.png") 0 0 / 100% 100% no-repeat; mask: url("/assets/worlds/light/gallery-light-matte.png") 0 0 / 100% 100% no-repeat; }
+/* the hall is a little darker, so the light has something to fight */
+.w-scene .w-dimmer { mix-blend-mode: normal; background: radial-gradient(ellipse 70% 80% at 59.6% 50%, rgba(3, 10, 24, 0.5), rgba(3, 10, 24, 0.72)); opacity: calc(1 - var(--p) * 0.62); }
+/* lamps: a ring of warm light that closes in on the far arch as the hall opens (--p); at rest every lamp is on */
+.w-lamps i {
+  width: 300%; aspect-ratio: 1; left: calc(59.6% - 150%); top: calc(49.8% - 225%);
+  background: radial-gradient(circle, transparent 15%, rgba(var(--lamp), 0.78) 21%, rgba(var(--lamp), 0.78) 100%);
+  transform: scale(calc(2.3 - var(--p) * 2.26));
+}
+/* the hand light: lamps near the pointer or the finger burn brighter */
+.w-spot i { left: 0; top: 0; width: 34%; aspect-ratio: 1; border-radius: 50%; opacity: 0;
+  background: radial-gradient(circle, rgba(255, 244, 214, 0.95), rgba(var(--lamp), 0.4) 40%, transparent 70%);
+  transform: translate(calc(var(--sx, 0px) - 50%), calc(var(--sy, 0px) - 50%)); }
+.w-spot.is-on i { opacity: 1; }
+/* the next room: cool light in the far arch and its reflection on the floor */
+.w-far { opacity: calc(0.35 + var(--p) * 0.65);
+  background:
+    radial-gradient(ellipse 6.5% 11% at 59.6% 50%, rgba(var(--teal-hi), 0.85), rgba(var(--teal), 0.3) 55%, transparent 100%),
+    radial-gradient(ellipse 4% 24% at 59.6% 84%, rgba(var(--teal), 0.45), transparent 100%),
+    radial-gradient(ellipse 22% 26% at 59.6% 50%, rgba(var(--teal), 0.14), transparent 100%); }
+
+/* ---------- way into 02 services: the light chapter is built, block by block, with a cool construction light ---------- */
+.w-day.w-edge-on { --edge-h: 132px; background: none; box-shadow: none; border-radius: 0 0 34px 34px; margin-top: 0; }
+.w-day.w-edge-on::before {   /* the paper starts under the blocks */
+  content: ""; position: absolute; inset: var(--edge-h) 0 0; z-index: -1; border-radius: inherit;
+  background-color: var(--cream-50);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .36 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.w-edge-on .w-workshop { padding-top: calc(var(--edge-h) + clamp(56px, 7vw, 110px)); }
+.w-edge {
+  position: absolute; inset-inline: 0; top: 0; height: var(--edge-h); z-index: 0; pointer-events: none;
+  display: grid; grid-template-columns: repeat(var(--cols, 16), 1fr); grid-template-rows: repeat(3, 1fr);
+}
+.w-edge::before {   /* the construction light, it fades as the last blocks land */
+  content: ""; position: absolute; inset: -40% 0 -10%; z-index: -1;
+  background: radial-gradient(ellipse 60% 70% at 50% 70%, rgba(var(--teal), 0.32), transparent 70%);
+  opacity: calc(1 - var(--t, 1)); mix-blend-mode: screen;
+}
+.w-edge i {
+  --l: clamp(0, (var(--t, 1) - var(--d)) * 4.5, 1);
+  --g: calc(var(--l) * (1 - clamp(0, (var(--t, 1) - var(--d) - 0.24) * 5, 1)));
+  display: block; background-color: var(--cream-50);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .36 0 0 0 0 .2 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: clamp(0, var(--l) * 5, 1); transform: translateY(calc((1 - var(--l)) * -115%));
+  box-shadow: 0 0 0 0.6px var(--cream-50), inset 0 0 0 1.5px rgba(var(--teal), calc(var(--g) * 0.95)), 0 0 22px rgba(var(--teal), calc(var(--g) * 0.7)),
+    0 calc((1 - var(--l)) * 18px) calc((1 - var(--l)) * 26px) rgba(0, 0, 0, calc((1 - var(--l)) * 0.5));
+}
+.w-edge i.gap { visibility: hidden; }   /* the far end stays unfinished, a step down: the building goes on */
+/* the drawing on the paper is a real blueprint now: cool lines */
+.w-edge-on .w-workshop::before {
+  background-image: linear-gradient(rgba(16, 150, 160, 0.13) 1px, transparent 1px), linear-gradient(90deg, rgba(16, 150, 160, 0.13) 1px, transparent 1px);
+}
+
+/* ---------- motion only ---------- */
+.w-motion .w-scene-planet { opacity: 0; scale: 1.06; transition: opacity 1600ms var(--ease-out), scale 2200ms var(--ease-out); animation: w-float 11s ease-in-out infinite alternate; }
+.w-motion .w-ready .w-scene-planet { opacity: 1; scale: 1; }
+.w-motion .w-halo { animation: w-breathe 7s ease-in-out infinite alternate; }
+.w-motion .w-window { animation: w-breathe 3.4s ease-in-out infinite alternate; }
+.w-motion .w-lamps { animation: w-breathe 6s ease-in-out infinite alternate; }
+.w-motion .w-far { transform-origin: 59.6% 50%; animation: w-swell 9s ease-in-out infinite alternate; }
+.w-spot i { transition: opacity 500ms var(--ease-out), transform 260ms var(--ease-out); }
+.w-paused .w-l, .w-paused .w-scene-planet { animation-play-state: paused; }
+@keyframes w-breathe { from { opacity: 0.72; } to { opacity: 1; } }
+@keyframes w-swell { from { scale: 0.94; } to { scale: 1.08; } }
+
+/* ---------- breakpoints: the picture box follows the same framing as before ---------- */
+@media (max-width: 1100px) { .w-scene-planet { --ox: 0.08; } }
+@media (max-width: 899px) {
+  .w-scene-planet { --ox: 0.22; --oy: 0.6; }
+  .w-scene-hall { --oy: 0.5; }
+  .w-day.w-edge-on { --edge-h: 90px; border-radius: 0 0 26px 26px; }
+  .w-edge { --cols: 8; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .w-spot i { transition: none; }
+}

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://dscreative.co.il/</loc>
-    <lastmod>2026-10-15</lastmod>
+    <lastmod>2026-10-27</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
@@ -12,7 +12,7 @@
   </url>
   <url>
     <loc>https://dscreative.co.il/hub/</loc>
-    <lastmod>2026-10-20</lastmod>
+    <lastmod>2026-10-29</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
@@ -56,6 +56,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://dscreative.co.il/hub/diy-ai-or-professional</loc>
+    <lastmod>2026-10-29</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://dscreative.co.il/hub/questions-before-ordering-a-website</loc>
     <lastmod>2026-10-20</lastmod>
     <priority>0.7</priority>
@@ -64,5 +69,45 @@
     <loc>https://dscreative.co.il/haredi</loc>
     <lastmod>2026-10-12</lastmod>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dscreative.co.il/work/</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://dscreative.co.il/work/fit-with-nikita</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dscreative.co.il/work/golondon</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://dscreative.co.il/work/bit-uborg</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dscreative.co.il/work/kemach-umayim</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dscreative.co.il/work/padel-layla</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://dscreative.co.il/studio</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://dscreative.co.il/contact</loc>
+    <lastmod>2026-10-27</lastmod>
+    <priority>0.7</priority>
   </url>
 </urlset>
