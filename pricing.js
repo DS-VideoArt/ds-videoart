@@ -1,6 +1,7 @@
 /* ============================================================
    /pricing: the sticky in-page navigation marks the part of the
    page being read, and on phones keeps that link in view.
+   On phones the seven steps open one by one, or all at once.
    Progressive: without it the links still jump to their sections.
    ============================================================ */
 
@@ -33,19 +34,56 @@
     }
   }
 
-  // On phones the process steps scroll sideways. When they do, the strip takes keyboard focus
-  // (arrow keys scroll it) and is announced as one labelled region.
-  const steps = document.querySelector(".pp-steps");
-  function syncSteps() {
-    if (!steps) return;
-    if (steps.scrollWidth > steps.clientWidth + 1) {
-      steps.tabIndex = 0; steps.setAttribute("aria-label", "שלבי העבודה, 7 שלבים");
-    } else {
-      steps.removeAttribute("tabindex"); steps.removeAttribute("aria-label");
-    }
+  // Phones (round 2.1, 2026-11-17): the seven steps show their titles; each title opens its detail, and one button
+  // opens or closes all of them. Wider screens show every detail. Without this script everything is simply open.
+  const stepList = document.querySelector(".pp-steps");
+  const allBtn = document.querySelector("[data-steps-all]");
+  const phone = window.matchMedia("(max-width: 760px)");
+  const CHEV = '<span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></span>';
+  const items = stepList ? Array.from(stepList.querySelectorAll(".pp-step")) : [];
+  const toggleOf = (li) => li.querySelector(".pp-step-toggle");
+  function setOpen(li, open) {
+    const b = toggleOf(li), body = li.querySelector(".pp-step-body");
+    if (!b || !body) return;
+    b.setAttribute("aria-expanded", String(open));
+    body.hidden = !open;
   }
-  syncSteps();
-  window.addEventListener("resize", syncSteps);
+  function syncAll() {
+    if (!allBtn) return;
+    const allOpen = items.length > 0 && items.every((li) => toggleOf(li) && toggleOf(li).getAttribute("aria-expanded") === "true");
+    allBtn.setAttribute("aria-expanded", String(allOpen));
+    allBtn.textContent = allOpen ? "לסגור את הפירוט של כל השלבים" : "לפתוח את הפירוט של כל השלבים";
+  }
+  function compact(on) {
+    items.forEach((li) => {
+      const h3 = li.querySelector("h3"), body = li.querySelector(".pp-step-body");
+      if (!h3 || !body) return;
+      let b = toggleOf(li);
+      if (on && !b) {
+        b = document.createElement("button");
+        b.type = "button"; b.className = "pp-step-toggle"; b.setAttribute("aria-controls", body.id);
+        const label = document.createElement("span");
+        while (h3.firstChild) label.appendChild(h3.firstChild);
+        b.appendChild(label); b.insertAdjacentHTML("beforeend", CHEV); h3.appendChild(b);
+        b.addEventListener("click", () => { setOpen(li, b.getAttribute("aria-expanded") !== "true"); syncAll(); });
+        setOpen(li, false);
+      } else if (!on && b) {
+        const label = b.querySelector("span:not(.chev)");
+        while (label && label.firstChild) h3.insertBefore(label.firstChild, b);
+        b.remove(); body.hidden = false;
+      }
+    });
+    if (allBtn) allBtn.hidden = !on;
+    syncAll();
+  }
+  if (allBtn) allBtn.addEventListener("click", () => {
+    const open = allBtn.getAttribute("aria-expanded") !== "true";
+    items.forEach((li) => setOpen(li, open)); syncAll();
+  });
+  if (items.length) {
+    compact(phone.matches);
+    if (phone.addEventListener) phone.addEventListener("change", (e) => compact(e.matches));
+  }
 
   const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
   window.addEventListener("scroll", queue, { passive: true });

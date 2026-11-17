@@ -238,13 +238,38 @@ with sync_playwright() as pw:
         # /pricing: the chapter bar marks the chapter being read, its links land on their chapters, a question opens and closes
         for (w, h, mob) in ((1440, 900, False), (390, 844, True)):
             c = ctx(br, w, h, mob); pg = c.new_page(); pg.goto(B + "/pricing", wait_until="networkidle")
+            # every jump lands with its heading in full view: below the header and the chapter bar, never under them
+            BARS = "Math.max(document.querySelector('.site-head').getBoundingClientRect().bottom, document.querySelector('.pp-subnav').getBoundingClientRect().bottom)"
+            def clear(sel):
+                return pg.evaluate(f"(() => {{ const e = document.querySelector('{sel}'); const r = e.getBoundingClientRect(); const bars = {BARS}; return [Math.round(r.top), Math.round(bars), r.top >= bars - 1 && r.bottom <= innerHeight]; }})()")
             marks = []
             for cid in ("packages", "maintenance", "transparency", "process", "faq"):
-                pg.click(f'.pp-subnav a[href="#{cid}"]'); pg.wait_for_timeout(500)
-                top = pg.evaluate(f"document.getElementById('{cid}').getBoundingClientRect().top")
+                pg.click(f'.pp-subnav a[href="#{cid}"]'); pg.wait_for_timeout(900)
                 cur = pg.evaluate("(document.querySelector('.pp-subnav a[aria-current]') || {}).getAttribute?.('href') || null")
-                marks.append((cid, cur == "#" + cid, -2 < top < 200))
-            ok(f"/pricing {w}px: the chapter bar lands on each chapter and marks it", all(m[1] and m[2] for m in marks), marks)
+                marks.append((cid, cur == "#" + cid, clear(f"#{cid} .index-num")))
+            ok(f"/pricing {w}px: the chapter bar lands on each chapter, marks it, and its heading is not under the bars", all(m[1] and m[2][2] for m in marks), marks)
+            topics = []
+            for t in ("topic-start", "topic-domain", "topic-google"):
+                pg.click(f'.pp-topics a[href="#{t}"]'); pg.wait_for_timeout(900); topics.append((t, clear(f"#{t} .pp-faq-title")))
+            ok(f"/pricing {w}px: question topics land with their titles in view", all(x[1][2] for x in topics), topics)
+            hashes = []
+            for h, sel in (("faq-11", "#faq-11 summary"), ("maintenance", "#maintenance .index-num"), ("topic-after", "#topic-after .pp-faq-title"), ("custom", "#custom .kicker-dot")):
+                pg.goto(B + "/pricing#" + h, wait_until="networkidle"); pg.wait_for_timeout(900); hashes.append((h, clear(sel)))
+            ok(f"/pricing {w}px: links straight to a question or chapter open it in view", all(x[1][2] for x in hashes), hashes)
+            pg.goto(B + "/pricing", wait_until="networkidle")
+            # the seven steps: on phones titles that open (one by one or all), on wide screens open; the text is always there
+            st = pg.evaluate("""(() => { const t = [...document.querySelectorAll('.pp-step-toggle')], b = [...document.querySelectorAll('.pp-step-body')], all = document.querySelector('[data-steps-all]');
+              return { toggles: t.length, closed: t.filter(x => x.getAttribute('aria-expanded') === 'false').length, hidden: b.filter(x => x.hidden).length, bodies: b.length, all: !!all && !all.hidden }; })()""")
+            if mob:
+                pg.click(".pp-step:nth-child(3) .pp-step-toggle"); pg.wait_for_timeout(150)
+                one = pg.evaluate("[!document.getElementById('step-3').hidden, document.querySelector('.pp-step:nth-child(3) .pp-step-toggle').getAttribute('aria-expanded'), document.getElementById('step-3').getBoundingClientRect().height > 20]")
+                pg.click("[data-steps-all]"); pg.wait_for_timeout(150)
+                opened = pg.evaluate("[...document.querySelectorAll('.pp-step-body')].every(x => !x.hidden) && document.querySelector('[data-steps-all]').getAttribute('aria-expanded') === 'true'")
+                pg.click("[data-steps-all]"); pg.wait_for_timeout(150)
+                closed = pg.evaluate("[...document.querySelectorAll('.pp-step-body')].every(x => x.hidden)")
+                ok(f"/pricing {w}px: the seven steps are titles that open one by one or all together", st == {"toggles": 7, "closed": 7, "hidden": 7, "bodies": 7, "all": True} and one == [True, "true", True] and opened and closed, [st, one, opened, closed])
+            else:
+                ok(f"/pricing {w}px: all seven steps are open, with no toggles", st == {"toggles": 0, "closed": 0, "hidden": 0, "bodies": 7, "all": False}, st)
             pg.click("#faq-8 summary"); pg.wait_for_timeout(200); opened = pg.evaluate("document.getElementById('faq-8').open")
             pg.click("#faq-8 summary"); pg.wait_for_timeout(200); closed = not pg.evaluate("document.getElementById('faq-8').open")
             pg.click('#package-website .plate-more summary'); pg.wait_for_timeout(200)

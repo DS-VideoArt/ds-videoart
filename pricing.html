@@ -349,14 +349,15 @@
           <h2 id="processTitle">איך זה עובד, <span>שלב אחרי שלב</span></h2>
           <p>בלי שאלון ארוך בכניסה, בלי תשלום באתר ובלי הפתעות. שיחה קצרה, טופס ברור, סיכום כתוב, ואז בונים.</p>
         </div>
+        <button class="pp-steps-all" type="button" data-steps-all aria-expanded="false" aria-controls="step-1 step-2 step-3 step-4 step-5 step-6 step-7" hidden>לפתוח את הפירוט של כל השלבים</button>
         <ol class="pp-steps route">
-          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">1</span><div><h3>מתחילים, איך שנוח לכם</h3><p>יודעים מה אתם צריכים? ממלאים לבד את בונה הפרויקט באתר, כמה דקות ובלי התחייבות. מעדיפים לדבר? משאירים שם וטלפון או כותבים בוואטסאפ.</p><span class="pill">לא מחייב</span></div></li>
-          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">2</span><div><h3>שיחה קצרה, למי שצריך</h3><p>לא בטוחים מה מתאים? נעזור להבין אם זה דף נחיתה או אתר תדמית, ונשלח לכם אחרי השיחה את הטופס המתאים.</p></div></li>
-          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">3</span><div><h3>הפרטים ברורים, משני הכיוונים</h3><p>בבונה באתר או בטופס שנשלח, רואים אותו דבר: מה כלול, מה לא, אילו תוספות אפשר לבחור, אפשרויות תחזוקה, וכמה דברים חשובים על דומיין ואחסון.</p></div></li>
-          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">4</span><div><h3>עוברים על הפרטים יחד</h3><p>אנחנו קוראים את מה שמילאתם. אם צריך, שיחת סיכום קצרה כדי לוודא שהבנו אתכם נכון.</p></div></li>
-          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">5</span><div><h3>סיכום הזמנה כתוב</h3><p>השירות, התוספות שנבחרו, המחיר הסופי, 50% מקדמה, 50% יתרה ומועד המסירה. אתם קוראים ומאשרים.</p></div></li>
-          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">6</span><div><h3>מקדמה, ומתחילים לבנות</h3><p>50% מקדמה, ורק אז העבודה מתחילה. עד 3 ימי עסקים לדף נחיתה, עד 5 לאתר תדמית, מרגע שכל החומרים אצלנו.</p></div></li>
-          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">7</span><div><h3>תיקונים ומסירה</h3><p>עד שני סבבי תיקונים מרוכזים. לפני המסירה הסופית משולמים 50% הנותרים, ואתם מקבלים אתר חי עם כל פרטי הגישה.</p></div></li>
+          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">1</span><div><h3>מתחילים, איך שנוח לכם</h3><div class="pp-step-body" id="step-1"><p>יודעים מה אתם צריכים? ממלאים לבד את בונה הפרויקט באתר, כמה דקות ובלי התחייבות. מעדיפים לדבר? משאירים שם וטלפון או כותבים בוואטסאפ.</p></div><span class="pill">לא מחייב</span></div></li>
+          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">2</span><div><h3>שיחה קצרה, למי שצריך</h3><div class="pp-step-body" id="step-2"><p>לא בטוחים מה מתאים? נעזור להבין אם זה דף נחיתה או אתר תדמית, ונשלח לכם אחרי השיחה את הטופס המתאים.</p></div></div></li>
+          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">3</span><div><h3>הפרטים ברורים, משני הכיוונים</h3><div class="pp-step-body" id="step-3"><p>בבונה באתר או בטופס שנשלח, רואים אותו דבר: מה כלול, מה לא, אילו תוספות אפשר לבחור, אפשרויות תחזוקה, וכמה דברים חשובים על דומיין ואחסון.</p></div></div></li>
+          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">4</span><div><h3>עוברים על הפרטים יחד</h3><div class="pp-step-body" id="step-4"><p>אנחנו קוראים את מה שמילאתם. אם צריך, שיחת סיכום קצרה כדי לוודא שהבנו אתכם נכון.</p></div></div></li>
+          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">5</span><div><h3>סיכום הזמנה כתוב</h3><div class="pp-step-body" id="step-5"><p>השירות, התוספות שנבחרו, המחיר הסופי, 50% מקדמה, 50% יתרה ומועד המסירה. אתם קוראים ומאשרים.</p></div></div></li>
+          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">6</span><div><h3>מקדמה, ומתחילים לבנות</h3><div class="pp-step-body" id="step-6"><p>50% מקדמה, ורק אז העבודה מתחילה. עד 3 ימי עסקים לדף נחיתה, עד 5 לאתר תדמית, מרגע שכל החומרים אצלנו.</p></div></div></li>
+          <li class="pp-step" data-reveal><span class="pp-step-num" aria-hidden="true">7</span><div><h3>תיקונים ומסירה</h3><div class="pp-step-body" id="step-7"><p>עד שני סבבי תיקונים מרוכזים. לפני המסירה הסופית משולמים 50% הנותרים, ואתם מקבלים אתר חי עם כל פרטי הגישה.</p></div></div></li>
         </ol>
       </div>
     </section>
@@ -472,7 +473,7 @@
 
   <script src="analytics.js?v=20261012a"></script>
   <script src="site.js?v=20261012a"></script>
-  <script src="pricing.js?v=20261015a"></script>
+  <script src="pricing.js?v=20261117a"></script>
   <script src="/studio.js?v=20261027b"></script>
   <script src="search.js?v=20261012a" type="module"></script>
 </body>

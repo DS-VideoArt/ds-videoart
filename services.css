@@ -307,3 +307,115 @@
 
 /* taps on the chapter bar, the topics and the toggles show their own state, not the browser's blue flash */
 .pp-subnav a, .pp-topics a, .plate-more summary, .sv-faq .faq summary { -webkit-tap-highlight-color: transparent; }
+
+/* ============================================================
+   Round 2.1 (2026-11-17): the same page, shorter. Phones get the seven steps as titles that open
+   (pricing.js), tighter questions and calmer gaps; wider screens get a tighter question list.
+   Nothing is removed: every text stays on the page, hidden step details are one tap away.
+   ============================================================ */
+.pp-steps-all, .pp-step-toggle { -webkit-tap-highlight-color: transparent; }
+.pp-steps-all {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 18px; border: 0; border-radius: 999px; cursor: pointer;
+  font: 600 0.96rem/1.2 var(--font-body); color: var(--ink); background: none; box-shadow: inset 0 0 0 1px rgba(19, 32, 58, 0.24);
+}
+.pp-steps-all[hidden] { display: none; }
+.pp-steps-all:hover { box-shadow: inset 0 0 0 1px rgba(134, 96, 31, 0.6); color: var(--gold-700); }
+.pp-step-toggle {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px; padding: 0; border: 0;
+  background: none; font: inherit; color: inherit; text-align: start; cursor: pointer;
+}
+.pp-step-toggle .chev {
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; flex: none;
+  box-shadow: inset 0 0 0 1px rgba(19, 32, 58, 0.22); transition: transform 260ms var(--ease-out);
+}
+.pp-step-toggle .chev svg { width: 15px; height: 15px; }
+.pp-step-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.pp-step-body[hidden] { display: none; }
+
+/* questions: less air between rows and groups, the same size of text and of the tap area */
+.sv-faq .faq summary { padding-block: 14px; }
+.pp-faq { gap: clamp(32px, 3.4vw, 46px) clamp(36px, 5vw, 72px); }
+.pp-faq-title { padding-bottom: 10px; }
+.sv-faq .faq .answer { padding-bottom: 20px; }
+
+@media (prefers-reduced-motion: reduce) { .pp-step-toggle .chev { transition: none; } }
+
+@media (max-width: 760px) {
+  .services .chapter { padding-block: 44px; }
+  .services .contact-band { padding-block: 52px; }
+  .services .chapter .index-num { margin-bottom: 10px; gap: 10px; }
+  .services .chapter .index-num b { font-size: 2.5rem; }
+  .services .chapter-head { gap: 14px; }
+  .services .chapter-head p, .sv-process-head > p:not(.index-num), .sv-lead { font-size: 1.02rem; line-height: 1.6; }
+
+  /* 01 packages */
+  .price-sheet { margin-top: 22px; }
+  .package-plate { padding: 26px 20px 22px; }
+  .plate-price { margin-top: 18px; }
+  .plate-price .amount { font-size: 4rem; }
+  .plate-once { margin-top: 10px; font-size: 0.94rem; }
+  .package-desc { margin-top: 14px; font-size: 1rem; line-height: 1.65; }
+  .plate-meta { margin-top: 16px; }
+  .plate-meta li { padding-block: 8px; }
+  .plate-more summary { min-height: 50px; }
+  .plate-actions { padding-top: 18px; gap: 8px 20px; }
+  .pp-beyond { margin-top: 36px; gap: 22px; }
+  .pp-example { gap: 20px; }
+  .pp-example-print { padding: 9px; }
+  .pp-example-print .print-frame { aspect-ratio: 16 / 8; }
+  .pp-example-print .print-frame img { object-fit: cover; object-position: top; height: 100%; }
+  .pp-example-copy .kicker-dot { margin-top: 12px; }
+  .pp-example-copy > p:not(.kicker-dot):not(.pp-fine) { margin-top: 8px; line-height: 1.65; }
+  .pp-fine { margin-top: 10px; }
+  .pp-custom { padding: 26px 20px; border-radius: 20px; }
+  .pp-custom h3 { margin-top: 12px; font-size: 1.8rem; }
+  .pp-custom p:not(.kicker-dot) { margin-top: 12px; line-height: 1.65; }
+  .pp-links { padding-top: 20px; gap: 8px; }
+  .pp-addons { padding-block: 18px; gap: 12px; }
+  .pp-addons p { line-height: 1.65; }
+
+  /* 02 maintenance */
+  .rate-card { margin-top: 26px; }
+  .rate { padding: 16px 0; }
+  .m-price { font-size: 2.7rem; }
+  .rate ul { margin-top: 8px; gap: 4px; }
+  .rate li { font-size: 0.97rem; line-height: 1.55; }
+  .rate-fine { margin-top: 14px; }
+
+  /* 03 the written summary */
+  .sv-summary-grid { gap: 30px; }
+  .sv-lead { margin-top: 14px; }
+  .principles { margin-top: 20px; }
+  .principles li { padding-block: 11px; font-size: 1rem; }
+  .principles li::before { font-size: 1.6rem; }
+  .doc-stage { padding: 0; }
+  .order-doc { padding: 30px 18px 18px; font-size: 0.96rem; }
+  .order-doc .doc-head strong { font-size: 1.5rem; }
+  .order-doc .total { margin-top: 10px; }
+  .order-doc .split { margin-top: 10px; }
+  .order-doc .approve { margin-top: 12px; }
+  .order-doc .doc-head { padding-bottom: 12px; }
+  .order-doc dt, .order-doc dd { padding-block: 7px; }
+
+  /* 04 the route: titles on the dotted line, each opens its detail */
+  .sv-process-grid { gap: 14px; }
+  .pp-steps-all { justify-self: start; }
+  .route::before { inset-inline-start: 19px; top: 22px; bottom: 22px; }
+  .pp-step { grid-template-columns: 40px minmax(0, 1fr); gap: 14px; padding-bottom: 8px; }
+  .pp-step:last-child { padding-bottom: 0; }
+  .pp-step-num { width: 40px; height: 40px; font-size: 1.3rem; margin-top: 2px; }
+  .pp-step h3 { margin-top: 0; font-size: 1.12rem; line-height: 1.3; }
+  .pp-step:not(:has(.pp-step-toggle)) h3 { margin-top: 9px; }   /* without the script: titles line up with their numbers */
+  .pp-step-body p { margin-top: 2px; padding-bottom: 10px; }
+  .pp-step .pill { margin-top: 2px; margin-bottom: 6px; padding: 4px 11px; font-size: 0.86rem; }
+
+  /* 05 questions */
+  .sv-faq-grid { margin-top: 18px; }
+  .pp-topics { gap: 6px; }
+  .pp-topics a { min-height: 44px; padding: 6px 14px; }
+  .pp-faq { margin-top: 22px; gap: 20px; }
+  .pp-faq-title { font-size: 1.3rem; padding-bottom: 6px; }
+  .sv-faq .faq summary { padding-block: 8px; min-height: 48px; font-size: 1rem; line-height: 1.45; gap: 12px; grid-template-columns: minmax(0, 1fr) 32px; }
+  .sv-faq .faq summary .plus { width: 32px; height: 32px; }
+  .sv-faq .faq .answer { padding-bottom: 16px; font-size: 1rem; line-height: 1.7; }
+}
