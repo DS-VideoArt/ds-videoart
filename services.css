@@ -165,7 +165,7 @@
 .rate-fine::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-700); flex: none; }
 
 /* ---------- 03 the written summary: the principles on the night side, the document on the desk ---------- */
-.sv-summary { background: radial-gradient(ellipse 45% 60% at 22% 40%, rgba(214, 173, 98, 0.13), transparent 70%), var(--navy-night); color: var(--on-navy); }
+.sv-summary { overflow: hidden; background: radial-gradient(ellipse 45% 60% at 22% 40%, rgba(214, 173, 98, 0.13), transparent 70%), var(--navy-night); color: var(--on-navy); }
 .sv-summary-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(44px, 6vw, 110px); align-items: center; }
 .sv-summary .index-num { color: var(--gold-300); margin-bottom: 18px; }
 .sv-lead { margin-top: 22px; max-width: 40rem; font-size: var(--t-lead); line-height: 1.7; color: var(--on-navy-72); }
@@ -299,3 +299,6 @@
   .pp-topics { grid-template-columns: 1fr; }
   .order-doc .split { grid-template-columns: 1fr; }
 }
+
+/* taps on the chapter bar, the topics and the toggles show their own state, not the browser's blue flash */
+.pp-subnav a, .pp-topics a, .plate-more summary, .sv-faq .faq summary { -webkit-tap-highlight-color: transparent; }

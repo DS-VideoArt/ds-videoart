@@ -270,7 +270,7 @@ with sync_playwright() as pw:
             c = ctx(br, w, h, True); pg = c.new_page(); bad = []
             for path in KEY_PAGES:
                 pg.goto(B + path, wait_until="networkidle"); pg.wait_for_timeout(300)
-                if pg.evaluate("document.documentElement.scrollWidth > innerWidth + 1"): bad.append(path)
+                if pg.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth || innerWidth > document.documentElement.clientWidth"): bad.append(path)
             ok(f"{w}px: no sideways scroll on {len(KEY_PAGES)} key pages", not bad, bad)
             # tags are whole pills: never squeezed, never touching their frame (R1 polish, 2026-11-17)
             tight = []
